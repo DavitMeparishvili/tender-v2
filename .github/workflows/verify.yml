@@ -8,8 +8,8 @@ permissions:
   contents: read
 
 jobs:
-  phase-0:
-    name: Phase 0 foundation
+  phase-1:
+    name: Phase 1 identity
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -56,40 +56,15 @@ jobs:
       - name: Migrate test database
         run: pnpm db:migrate:test
 
-      - name: Check formatting
-        run: pnpm format:check
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Verify module boundaries
-        run: pnpm verify:boundaries
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Run unit tests
-        run: pnpm test:unit
-        env:
-          NODE_ENV: test
-
-      - name: Run integration tests
-        run: pnpm test:integration
-        env:
-          NODE_ENV: test
-
-      - name: Build production application
-        run: pnpm build
-        env:
-          NODE_ENV: production
-
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Run production-server E2E
-        run: pnpm test:e2e
-        env:
-          NODE_ENV: production
+      - name: Generate Phase 1 seed password
+        shell: bash
+        run: echo "PHASE_1_SEED_PASSWORD=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
+
+      - name: Run Phase 1 gate
+        run: pnpm verify:phase-1
 
       - name: Upload Playwright report
         if: failure()

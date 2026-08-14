@@ -55,3 +55,15 @@ test("unsupported locale returns a bounded not-found document", async ({
   await expect(page.locator("html")).not.toHaveAttribute("lang", "ru");
   await expect(page.locator("main#main-content")).toHaveCount(1);
 });
+
+test("production server keeps the test mailbox unreachable", async ({
+  request,
+}) => {
+  test.skip(!process.env.CI, "Production-server assertion runs in CI");
+  const response = await request.get(
+    "/api/test/mailbox?address=nobody@example.test&template=VERIFY_EMAIL",
+  );
+
+  expect(response.status()).toBe(404);
+  await expect(response.json()).resolves.toEqual({ code: "NOT_FOUND" });
+});

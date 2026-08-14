@@ -83,13 +83,38 @@ pnpm test:e2e
 
 The domain-boundary gate is fail-closed. Production files under `src/modules/**/domain` may import relative paths and repository aliases, but bare third-party packages and Node.js built-ins are rejected unless a package is deliberately added to the empty `domainSafePackages` allowlist. Colocated test files have a test-only exception for Vitest; this does not permit Vitest in production domain code.
 
-The complete local Phase 0 gate preserves this order: format, lint, module boundaries, typecheck, unit, integration, build, and E2E.
+The complete local Phase 0 gate preserves this order: format, lint, module boundaries, typecheck, unit, integration, build, and the pre-Phase-1 E2E suite. It excludes tests tagged `@phase-1`; the Phase 1 gate runs those only after deterministic seeding.
 
 `verify:phase-0` is a verification gate, not a bootstrap command. It assumes the frozen dependencies are installed, the Prisma client has been generated, the test PostgreSQL service is healthy with committed migrations applied, the required environment values are present, and Playwright's Chromium binary is installed.
 
 ```powershell
 pnpm verify:phase-0
 ```
+
+## Phase 1 identity fixtures and gate
+
+Phase 1 browser acceptance uses deterministic account addresses and a random password supplied only through `PHASE_1_SEED_PASSWORD`. The seeder refuses production and always resolves `DATABASE_URL_TEST` through the `_test` database guard. It creates accounts through Better Auth, completes commercial profiles through the onboarding use case, and applies only moderation-owned fixture state (dual capability, disabled, and restricted flags) directly.
+
+Generate a fresh local secret for the current PowerShell session, then seed the disposable test database:
+
+```powershell
+$bytes = [byte[]]::new(24)
+$rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($bytes)
+$rng.Dispose()
+$env:PHASE_1_SEED_PASSWORD = [Convert]::ToBase64String($bytes)
+pnpm seed:phase-1
+```
+
+The seed resets only these fixed `@tender.test` accounts: verified client, verified construction provider, dual-capability company, unverified user, onboarding-incomplete user, restricted user, and disabled user. It never stores or prints the password.
+
+Run the complete Phase 1 gate after the standard first-time setup:
+
+```powershell
+pnpm verify:phase-1
+```
+
+The gate first preserves the complete Phase 0 production-build and production-server suite. It then reapplies committed test migrations, reruns identity/profile integration tests, rebuilds, reseeds, and executes every `@phase-1` browser journey on desktop and mobile Chromium. Tagged verification-email journeys use the development-only in-memory mailbox; the production-server CI smoke test separately proves `/api/test/mailbox` returns only `404 NOT_FOUND`.
 
 ## Reset and shutdown
 

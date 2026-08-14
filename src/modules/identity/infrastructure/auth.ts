@@ -50,6 +50,7 @@ export function createAuth({
       },
     },
     emailVerification: {
+      autoSignInAfterVerification: true,
       sendOnSignUp: true,
       sendVerificationEmail: async ({ user, url }) => {
         await mailSender.send({
