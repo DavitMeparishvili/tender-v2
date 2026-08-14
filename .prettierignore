@@ -1,9 +1,9 @@
-.agents/
-.claude/
-.codex/
-.impeccable/
-.superpowers/
-docs/
-PRODUCT.md
+.agents/skills/impeccable/**
+.claude/skills/impeccable/**
+.superpowers/sdd/2026-08-14-phase-00-foundation-implementation/progress.md
+.superpowers/sdd/2026-08-14-phase-00-foundation-implementation/task-1-brief.md
+docs/superpowers/plans/2026-08-14-phase-00-foundation-implementation.md
+docs/superpowers/plans/2026-08-14-phase-01-identity-implementation.md
+docs/superpowers/specs/2026-08-14-tender-marketplace-program-design.md
 Product_description.md
 Specs.md
