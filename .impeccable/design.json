@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-14T14:23:00.000Z",
+  "title": "Design System: Tender",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Tender Ink",
+        "canonical": "#09090b",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#71717a",
+          "#a1a1aa",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Working Graphite",
+        "canonical": "#3f3f46",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#71717a",
+          "#a1a1aa",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Graphite",
+        "canonical": "#71717a",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#71717a",
+          "#a1a1aa",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "page": {
+        "role": "neutral",
+        "displayName": "Clear Paper",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#09090b",
+          "#27272a",
+          "#52525b",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8",
+          "#f4f4f5",
+          "#ffffff"
+        ]
+      },
+      "subtle": {
+        "role": "neutral",
+        "displayName": "Quiet Paper",
+        "canonical": "#fafafa",
+        "tonalRamp": [
+          "#18181b",
+          "#3f3f46",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8",
+          "#e4e4e7",
+          "#f4f4f5",
+          "#fafafa"
+        ]
+      },
+      "pressed": {
+        "role": "neutral",
+        "displayName": "Pressed Paper",
+        "canonical": "#f4f4f5",
+        "tonalRamp": [
+          "#18181b",
+          "#3f3f46",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8",
+          "#e4e4e7",
+          "#f4f4f5",
+          "#fafafa"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e4e4e7",
+        "tonalRamp": [
+          "#18181b",
+          "#3f3f46",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8",
+          "#e4e4e7",
+          "#f4f4f5",
+          "#fafafa"
+        ]
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "#a1a1aa",
+        "tonalRamp": [
+          "#09090b",
+          "#27272a",
+          "#3f3f46",
+          "#71717a",
+          "#a1a1aa",
+          "#d4d4d8",
+          "#e4e4e7",
+          "#fafafa"
+        ]
+      },
+      "trust": {
+        "role": "primary",
+        "displayName": "Verified Emerald",
+        "canonical": "#047857",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#10b981",
+          "#6ee7b7",
+          "#d1fae5",
+          "#ecfdf5"
+        ]
+      },
+      "trust-soft": {
+        "role": "primary",
+        "displayName": "Verified Wash",
+        "canonical": "#ecfdf5",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#10b981",
+          "#6ee7b7",
+          "#d1fae5",
+          "#ecfdf5"
+        ]
+      },
+      "error": {
+        "role": "primary",
+        "displayName": "Repair Red",
+        "canonical": "#b42318",
+        "tonalRamp": [
+          "#450a0a",
+          "#7f1d1d",
+          "#991b1b",
+          "#b42318",
+          "#ef4444",
+          "#fca5a5",
+          "#fee2e2",
+          "#fef3f2"
+        ]
+      },
+      "error-soft": {
+        "role": "primary",
+        "displayName": "Repair Wash",
+        "canonical": "#fef3f2",
+        "tonalRamp": [
+          "#450a0a",
+          "#7f1d1d",
+          "#991b1b",
+          "#b42318",
+          "#ef4444",
+          "#fca5a5",
+          "#fee2e2",
+          "#fef3f2"
+        ]
+      },
+      "focus": {
+        "role": "primary",
+        "displayName": "Familiar Focus Blue",
+        "canonical": "#2563eb",
+        "tonalRamp": [
+          "#172554",
+          "#1e3a8a",
+          "#1e40af",
+          "#2563eb",
+          "#3b82f6",
+          "#93c5fd",
+          "#dbeafe",
+          "#eff6ff"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Focused Display",
+        "purpose": "The single task or workspace heading."
+      },
+      "title": {
+        "displayName": "State Title",
+        "purpose": "Terminal states and truthful empty states."
+      },
+      "body": {
+        "displayName": "Operational Body",
+        "purpose": "Instructions and explanation inside the readable measure."
+      },
+      "label": {
+        "displayName": "Control Label",
+        "purpose": "Sentence-case fields and capability facts."
+      }
+    },
+    "shadows": [
+      {
+        "name": "overlay-ambient",
+        "value": "0 12px 28px rgb(9 9 11 / 8%)",
+        "purpose": "Contextual help overlay only; forms and primary surfaces remain flat."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-ease",
+        "value": "160ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Short color, border, and focus transitions on controls."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "608px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The full-width, high-confidence action for the current task.",
+      "html": "<button class=\"ds-button-primary\">Create account</button>",
+      "css": ".ds-button-primary { min-height: 44px; padding: 11px 16px; border: 1px solid transparent; border-radius: 8px; background: var(--text-strong, #09090b); color: var(--surface-page, #ffffff); font: 550 1rem/1.5 sans-serif; transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-button-primary:hover { background: #27272a; } .ds-button-primary:focus-visible { outline: 2px solid var(--focus, #2563eb); outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A safe alternate action that remains visually subordinate.",
+      "html": "<button class=\"ds-button-secondary\">Sign in</button>",
+      "css": ".ds-button-secondary { min-height: 44px; padding: 11px 16px; border: 1px solid var(--border-default, #e4e4e7); border-radius: 8px; background: var(--surface-page, #ffffff); color: var(--text-strong, #09090b); font: 550 1rem/1.5 sans-serif; transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1), border-color 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-button-secondary:hover { border-color: var(--border-strong, #a1a1aa); background: var(--surface-subtle, #fafafa); } .ds-button-secondary:focus-visible { outline: 2px solid var(--focus, #2563eb); outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A labeled, described control with crisp neutral and repair states.",
+      "html": "<label class=\"ds-field\"><span>Email address</span><small>Use an address you can verify now.</small><input type=\"email\" /></label>",
+      "css": ".ds-field { display: grid; gap: 8px; color: var(--text-strong, #09090b); font: 600 14px/1.5 sans-serif; } .ds-field small { color: var(--text-muted, #71717a); font-size: 13px; font-weight: 400; } .ds-field input { min-height: 44px; padding: 11px 12px; border: 1px solid var(--border-default, #e4e4e7); border-radius: 8px; background: var(--surface-page, #ffffff); color: var(--text-strong, #09090b); font: 400 16px/1.5 sans-serif; } .ds-field input:hover { border-color: var(--border-strong, #a1a1aa); } .ds-field input:focus-visible { border-color: var(--focus, #2563eb); outline: 0; box-shadow: 0 0 0 3px rgb(37 99 235 / 14%); }"
+    },
+    {
+      "name": "Locale Navigation",
+      "kind": "nav",
+      "description": "A text-led header action that preserves the logical route.",
+      "html": "<nav class=\"ds-locale\"><a href=\"#\">ქართული</a></nav>",
+      "css": ".ds-locale a { display: inline-flex; min-height: 44px; align-items: center; padding-inline: 12px; border-radius: 8px; color: var(--text-body, #3f3f46); font: 400 14px/1.5 sans-serif; text-decoration: none; } .ds-locale a:hover { background: var(--surface-pressed, #f4f4f5); } .ds-locale a:focus-visible { outline: 2px solid var(--focus, #2563eb); outline-offset: 3px; }"
+    },
+    {
+      "name": "Progress Rail",
+      "kind": "custom",
+      "description": "A restrained account, verification, and profile location cue.",
+      "html": "<ol class=\"ds-progress\"><li class=\"is-current\"><span>1</span>Account</li><li><span>2</span>Verification</li><li><span>3</span>Profile</li></ol>",
+      "css": ".ds-progress { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 0; color: var(--text-muted, #71717a); font: 400 12px/1.5 sans-serif; list-style: none; } .ds-progress li { display: grid; gap: 6px; padding-top: 10px; border-top: 1px solid var(--border-default, #e4e4e7); } .ds-progress .is-current { border-color: var(--trust, #047857); color: var(--text-strong, #09090b); }"
+    },
+    {
+      "name": "Verified Status",
+      "kind": "chip",
+      "description": "A compact, non-decorative signal for confirmed account trust.",
+      "html": "<span class=\"ds-verified\"><i></i>Verified account</span>",
+      "css": ".ds-verified { display: inline-flex; align-items: center; gap: 8px; color: var(--trust, #047857); font: 600 13px/1.5 sans-serif; } .ds-verified i { width: 8px; height: 8px; border-radius: 999px; background: var(--trust, #047857); box-shadow: 0 0 0 4px var(--trust-soft, #ecfdf5); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Focused Column",
+    "overview": "Tender uses a deliberately narrow task frame to make commercial identity feel calm, exact, and trustworthy. Vercel is the craft benchmark for restraint and finish, not a template: Tender's verification states, capability truth, and Georgian-first typography make the world its own.\n\nThe system is typographically led and nearly monochrome. Negative space carries hierarchy; crisp borders describe controls; emerald appears only when trust is established; red appears only when repair is required. Interfaces state what is true and never fill an unfinished marketplace with decorative or fabricated content.",
+    "keyCharacteristics": [
+      "One stable, top-anchored task frame across pending, error, and success states.",
+      "Georgian and English receive equal hierarchy, target size, and copy density.",
+      "Flat white surfaces, near-black actions, crisp neutral rules, and rare semantic color.",
+      "Direct-on-page forms instead of floating cards or marketing side panels."
+    ],
+    "rules": [
+      {
+        "name": "The Scarce Signal Rule",
+        "body": "Emerald means verified or safely active; red means repair; blue means focus. Never use those colors as decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper-and-Ink Rule",
+        "body": "White and near-black must still describe the page when every semantic color is removed.",
+        "section": "colors"
+      },
+      {
+        "name": "The Equal-Script Rule",
+        "body": "Georgian may wrap earlier, but it is never reduced to a smaller role or lighter emphasis than English.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tight-Heading Rule",
+        "body": "Display headings use compact tracking; body copy never inherits display compression.",
+        "section": "typography"
+      },
+      {
+        "name": "The Stable Anchor Rule",
+        "body": "State changes replace content inside the same frame. Pending, invalid, expired, reused, success, and access-denied states do not recenter or jump vertically.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-by-Default Rule",
+        "body": "A border or tonal shift must solve separation before elevation is considered.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep primary identity tasks inside the stable 460px measure.",
+      "Do use sentence-case labels and plain, specific repair copy.",
+      "Do preserve the action label during pending states and protect against duplicate submission.",
+      "Do reserve emerald for verified trust, red for repair, and blue for focus.",
+      "Do test Georgian and English at desktop and mobile widths."
+    ],
+    "donts": [
+      "Don't wrap primary forms in floating cards or add a split-screen marketing panel.",
+      "Don't use gradients, glass effects, decorative shadows, or fabricated illustrations.",
+      "Don't introduce fake tenders, bids, ratings, revenue, or statistics to fill empty workspaces.",
+      "Don't expose capability, restriction, verification, or actor identity as editable controls.",
+      "Don't use semantic color as decoration or communicate status by color alone."
+    ]
+  }
+}

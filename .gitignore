@@ -5,6 +5,7 @@
 /src/generated/prisma
 /.worktrees/
 /.superpowers/
+/.impeccable/review/
 /.pnp
 .pnp.*
 .yarn/*

@@ -15,8 +15,6 @@
   --error: #b42318;
   --error-soft: #fef3f2;
   --focus: #2563eb;
-  --font-latin: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
-  --font-georgian: "Noto Sans Georgian", var(--font-latin);
   --radius-control: 0.5rem;
   --content-measure: 28.75rem;
 }
@@ -33,6 +31,8 @@ html {
 }
 
 body {
+  --font-latin: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
+  --font-georgian: "Noto Sans Georgian", var(--font-latin);
   min-block-size: 100vh;
   margin: 0;
   background: var(--surface-page);
