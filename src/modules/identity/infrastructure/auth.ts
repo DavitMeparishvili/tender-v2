@@ -3,12 +3,29 @@ import { betterAuth } from "better-auth";
 import { getServerEnv, type ServerEnv } from "../../../config/env";
 import { database } from "../../../infrastructure/db/client";
 import { LogMailSender } from "../../notifications/adapters/log-mail-sender";
+import { getTestMailbox } from "../../notifications/adapters/test-mailbox";
 import type { MailSender } from "../../notifications/ports/mail-sender";
 
 type AuthDependencies = Readonly<{
   mailSender: MailSender;
   env?: ServerEnv;
 }>;
+
+async function preferredLocaleFor(userId: string): Promise<"ka" | "en"> {
+  const profile = await database.userProfile.findUnique({
+    where: { userId },
+    select: { preferredLocale: true },
+  });
+  return profile?.preferredLocale === "en" ? "en" : "ka";
+}
+
+function anchorToAppUrl(generatedUrl: string, appUrl: string): string {
+  const anchored = new URL(generatedUrl, appUrl);
+  const configured = new URL(appUrl);
+  anchored.protocol = configured.protocol;
+  anchored.host = configured.host;
+  return anchored.toString();
+}
 
 export function createAuth({
   mailSender,
@@ -27,8 +44,8 @@ export function createAuth({
         await mailSender.send({
           to: user.email,
           template: "RESET_PASSWORD",
-          locale: "ka",
-          variables: { resetUrl: url },
+          locale: await preferredLocaleFor(user.id),
+          variables: { resetUrl: anchorToAppUrl(url, env.APP_URL) },
         });
       },
     },
@@ -38,8 +55,10 @@ export function createAuth({
         await mailSender.send({
           to: user.email,
           template: "VERIFY_EMAIL",
-          locale: "ka",
-          variables: { verificationUrl: url },
+          locale: await preferredLocaleFor(user.id),
+          variables: {
+            verificationUrl: anchorToAppUrl(url, env.APP_URL),
+          },
         });
       },
     },
@@ -49,4 +68,10 @@ export function createAuth({
   });
 }
 
-export const auth = createAuth({ mailSender: new LogMailSender() });
+const env = getServerEnv();
+const mailSender =
+  env.NODE_ENV === "production"
+    ? new LogMailSender()
+    : getTestMailbox(env.NODE_ENV);
+
+export const auth = createAuth({ mailSender, env });
