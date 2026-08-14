@@ -467,6 +467,147 @@ a {
   gap: 0.75rem;
 }
 
+.workspace-trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-end: 1.5rem;
+  color: var(--trust);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.workspace-trust > span {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 999px;
+  background: var(--trust);
+  box-shadow: 0 0 0 0.25rem var(--trust-soft);
+}
+
+.workspace-switcher {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem;
+  margin-block-end: 1.5rem;
+  padding: 0.25rem;
+  border-radius: 0.625rem;
+  background: var(--surface-pressed);
+}
+
+.workspace-switcher a {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--text-body);
+  font-size: 0.8125rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.workspace-switcher a[aria-current="page"] {
+  border-color: var(--border-default);
+  background: var(--surface-page);
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.workspace-facts {
+  margin: 0;
+  padding-block: 1rem;
+  border-block: 1px solid var(--border-default);
+}
+
+.workspace-facts div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.workspace-facts dt {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.workspace-facts dd {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.workspace-empty {
+  padding-block: 2rem;
+  border-block-end: 1px solid var(--border-default);
+}
+
+.workspace-empty h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  letter-spacing: -0.025em;
+}
+
+.workspace-empty p {
+  margin: 0.625rem 0 0;
+  color: var(--text-body);
+}
+
+.workspace-actions {
+  display: grid;
+  gap: 0.75rem;
+  margin-block-start: 1.5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  margin-block: -0.75rem 1.5rem;
+  color: var(--text-body);
+  font-size: 0.875rem;
+}
+
+.checkbox-field {
+  display: flex;
+  min-block-size: 2.75rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin-block-start: 0.2rem;
+  accent-color: var(--text-strong);
+}
+
+.checkbox-field span {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.checkbox-field small {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.success-status {
+  margin: 0;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-control);
+  background: var(--trust-soft);
+  color: var(--trust);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
 .progress-rail {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
