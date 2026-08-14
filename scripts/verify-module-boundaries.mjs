@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync } from "node:fs";
+import { builtinModules } from "node:module";
 import { dirname, extname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
@@ -14,38 +15,36 @@ const sourceExtensions = new Set([
   ".ts",
   ".tsx",
 ]);
-const providerSdkPrefixes = [
-  "@anthropic-ai/",
-  "@aws-sdk/",
-  "@better-auth/",
-  "@googlemaps/",
-  "@mapbox/",
-  "@sendgrid/",
-  "@supabase/",
-  "@vercel/blob",
-  "better-auth",
-  "cloudinary",
-  "firebase",
-  "firebase-admin",
-  "mapbox-gl",
-  "nodemailer",
-  "openai",
-  "postmark",
-  "resend",
-  "stripe",
-  "twilio",
-];
+const domainSafePackages = [];
+const domainTestPackages = ["vitest"];
+const nodeBuiltinModules = new Set(
+  builtinModules.map((moduleName) => moduleName.replace(/^node:/, "")),
+);
 
 function isPackageOrSubpath(specifier, packageName) {
   return specifier === packageName || specifier.startsWith(`${packageName}/`);
 }
 
-function providerSdkName(specifier) {
-  return providerSdkPrefixes.find((prefix) =>
-    prefix.endsWith("/")
-      ? specifier.startsWith(prefix)
-      : isPackageOrSubpath(specifier, prefix),
+function isInternalSpecifier(specifier) {
+  return (
+    specifier.startsWith(".") ||
+    specifier.startsWith("@/") ||
+    specifier.startsWith("src/")
   );
+}
+
+function isNodeBuiltin(specifier) {
+  return nodeBuiltinModules.has(specifier.replace(/^node:/, ""));
+}
+
+function isApprovedPackage(specifier, packages) {
+  return packages.some((packageName) =>
+    isPackageOrSubpath(specifier, packageName),
+  );
+}
+
+function isDomainTest(sourceFile) {
+  return /\.(?:spec|test)\.[cm]?[jt]sx?$/.test(sourceFile);
 }
 
 function normalizedRelativePath(root, path) {
@@ -113,12 +112,32 @@ function forbiddenReason(root, sourceFile, specifier) {
     return "PostgreSQL driver";
   }
 
-  const providerSdk = providerSdkName(specifier);
-  if (providerSdk) {
-    return `provider SDK ${providerSdk.replace(/\/$/, "")}`;
+  const crossModuleReason = crossModuleInfrastructureReason(
+    root,
+    sourceFile,
+    specifier,
+  );
+  if (crossModuleReason) {
+    return crossModuleReason;
   }
 
-  return crossModuleInfrastructureReason(root, sourceFile, specifier);
+  if (isInternalSpecifier(specifier)) {
+    return undefined;
+  }
+
+  if (isNodeBuiltin(specifier)) {
+    return "Node.js runtime dependency";
+  }
+
+  if (
+    isApprovedPackage(specifier, domainSafePackages) ||
+    (isDomainTest(sourceFile) &&
+      isApprovedPackage(specifier, domainTestPackages))
+  ) {
+    return undefined;
+  }
+
+  return "unapproved external/provider dependency";
 }
 
 function domainSourceFiles(root) {

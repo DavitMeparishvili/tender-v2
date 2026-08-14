@@ -80,6 +80,8 @@ pnpm test:e2e
 - Integration tests require the healthy test service and always substitute the guarded `DATABASE_URL_TEST` for `DATABASE_URL`.
 - Playwright runs both `desktop-chromium` and `mobile-chromium`. It owns the Next.js server lifecycle, so do not start a second production server for the test. Locally it may reuse an existing development server; CI starts the built application with `pnpm start` through Playwright's `webServer` configuration.
 
+The domain-boundary gate is fail-closed. Production files under `src/modules/**/domain` may import relative paths and repository aliases, but bare third-party packages and Node.js built-ins are rejected unless a package is deliberately added to the empty `domainSafePackages` allowlist. Colocated test files have a test-only exception for Vitest; this does not permit Vitest in production domain code.
+
 The complete local Phase 0 gate preserves this order: format, lint, module boundaries, typecheck, unit, integration, build, and E2E.
 
 ```powershell

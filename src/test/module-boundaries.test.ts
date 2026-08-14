@@ -61,6 +61,34 @@ it("rejects forbidden domain dependencies across supported module syntaxes", () 
   expect(output).toContain("billing/infrastructure/stripe-adapter");
 });
 
+it("rejects an unlisted provider SDK as an unapproved external dependency", () => {
+  const root = createFixture({
+    "src/modules/tenders/domain/provider.ts":
+      'import { ProviderClient } from "unknown-provider-sdk";\n',
+  });
+
+  const result = runChecker(root);
+  const output = `${result.stdout}${result.stderr}`;
+
+  expect(result.status).toBe(1);
+  expect(output).toContain("unknown-provider-sdk");
+  expect(output).toContain("unapproved external/provider dependency");
+});
+
+it("rejects Node.js runtime imports from domain code", () => {
+  const root = createFixture({
+    "src/modules/tenders/domain/hash.ts":
+      'import { createHash } from "node:crypto";\n',
+  });
+
+  const result = runChecker(root);
+  const output = `${result.stdout}${result.stderr}`;
+
+  expect(result.status).toBe(1);
+  expect(output).toContain("node:crypto");
+  expect(output).toContain("Node.js runtime dependency");
+});
+
 it("accepts clean domain imports and ignores import-like comments", () => {
   const root = createFixture({
     "src/modules/shared/domain/result.ts": `
