@@ -12,6 +12,8 @@ for (const locale of ["ka", "en"] as const) {
   }) => {
     await page.goto(`/${locale}`);
     await expect(page.getByRole("main")).toBeVisible();
+    const shell = await request.get(`/${locale}`);
+    expect(await shell.text()).toContain(`<html lang="${locale}">`);
     const live = await request.get("/api/health/live");
     expect(await live.json()).toEqual({ status: "ok" });
     const ready = await request.get("/api/health/ready");
@@ -49,6 +51,7 @@ test("unsupported locale returns a bounded not-found document", async ({
   const response = await page.goto("/ru");
 
   expect(response?.status()).toBe(404);
+  await expect(page).toHaveTitle("გვერდი ვერ მოიძებნა / Page not found");
   await expect(page.locator("html")).not.toHaveAttribute("lang", "ru");
   await expect(page.locator("main#main-content")).toHaveCount(1);
 });

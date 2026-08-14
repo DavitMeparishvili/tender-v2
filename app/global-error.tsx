@@ -11,6 +11,9 @@ export default function GlobalError({
 }>) {
   return (
     <html lang="ka">
+      <head>
+        <title>დაფიქსირდა შეცდომა / Something went wrong</title>
+      </head>
       <body>
         <main id="main-content" tabIndex={-1}>
           <section

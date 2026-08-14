@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "გვერდი ვერ მოიძებნა / Page not found",
+};
 
 export default function GlobalNotFound() {
   return (
