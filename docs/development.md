@@ -14,6 +14,7 @@ Install the pinned dependency graph:
 
 ```powershell
 pnpm install --frozen-lockfile
+pnpm exec playwright install chromium
 ```
 
 For the normal local workflow, copy the development template:
@@ -78,11 +79,13 @@ pnpm test:e2e
 
 - Unit tests are isolated and never connect to PostgreSQL.
 - Integration tests require the healthy test service and always substitute the guarded `DATABASE_URL_TEST` for `DATABASE_URL`.
-- Playwright runs both `desktop-chromium` and `mobile-chromium`. It owns the Next.js server lifecycle, so do not start a second production server for the test. Locally it may reuse an existing development server; CI starts the built application with `pnpm start` through Playwright's `webServer` configuration.
+- Playwright runs both `desktop-chromium` and `mobile-chromium`. It owns a fresh Next.js server lifecycle, never attaches to an existing development server, and maps the guarded `DATABASE_URL_TEST` into that server's `DATABASE_URL`. CI starts the built application with `pnpm start` through Playwright's `webServer` configuration.
 
 The domain-boundary gate is fail-closed. Production files under `src/modules/**/domain` may import relative paths and repository aliases, but bare third-party packages and Node.js built-ins are rejected unless a package is deliberately added to the empty `domainSafePackages` allowlist. Colocated test files have a test-only exception for Vitest; this does not permit Vitest in production domain code.
 
 The complete local Phase 0 gate preserves this order: format, lint, module boundaries, typecheck, unit, integration, build, and E2E.
+
+`verify:phase-0` is a verification gate, not a bootstrap command. It assumes the frozen dependencies are installed, the Prisma client has been generated, the test PostgreSQL service is healthy with committed migrations applied, the required environment values are present, and Playwright's Chromium binary is installed.
 
 ```powershell
 pnpm verify:phase-0

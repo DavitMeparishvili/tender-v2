@@ -12,7 +12,7 @@ export default function GlobalError({
   return (
     <html lang="ka">
       <head>
-        <title>დაფიქსირდა შეცდომა / Something went wrong</title>
+        <title>დაფიქსირდა შეცდომა</title>
       </head>
       <body>
         <main id="main-content" tabIndex={-1}>
@@ -21,18 +21,22 @@ export default function GlobalError({
             aria-labelledby="global-error-heading"
           >
             <h1 id="global-error-heading">
-              დაფიქსირდა შეცდომა. <span lang="en">Something went wrong.</span>
+              <span lang="ka">დაფიქსირდა შეცდომა.</span>{" "}
+              <span lang="en">Something went wrong.</span>
             </h1>
             <p>
-              გთხოვთ, ხელახლა სცადოთ. <span lang="en">Please try again.</span>
+              <span lang="ka">გთხოვთ, ხელახლა სცადოთ.</span>{" "}
+              <span lang="en">Please try again.</span>
             </p>
             {error.digest ? (
               <p className="correlation-id">
-                მითითება / <span lang="en">Reference</span>: {error.digest}
+                <span lang="ka">მითითება</span> /{" "}
+                <span lang="en">Reference</span>: {error.digest}
               </p>
             ) : null}
             <button type="button" onClick={reset}>
-              ხელახლა ცდა / <span lang="en">Try again</span>
+              <span lang="ka">ხელახლა ცდა</span> /{" "}
+              <span lang="en">Try again</span>
             </button>
           </section>
         </main>

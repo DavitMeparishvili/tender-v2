@@ -67,28 +67,94 @@ function importedPath(root, sourceFile, specifier) {
   return undefined;
 }
 
-function crossModuleInfrastructureReason(root, sourceFile, specifier) {
+function isPathWithin(path, directory) {
+  return path === directory || path.startsWith(`${directory}/`);
+}
+
+function isOutsideRepository(root, target) {
+  const relativeTarget = relative(root, target);
+
+  return (
+    relativeTarget === ".." ||
+    relativeTarget.startsWith(`..${sep}`) ||
+    resolve(root, relativeTarget) !== target
+  );
+}
+
+function isSharedPublicEntry(path) {
+  const sharedRoot = "src/modules/shared";
+
+  return (
+    path === sharedRoot ||
+    path === `${sharedRoot}/index` ||
+    [...sourceExtensions].some(
+      (extension) => path === `${sharedRoot}/index${extension}`,
+    )
+  );
+}
+
+function internalImportReason(root, sourceFile, specifier) {
   const sourcePath = normalizedRelativePath(root, sourceFile);
   const sourceModule = /^src\/modules\/([^/]+)\//.exec(sourcePath)?.[1];
   const resolvedImport = importedPath(root, sourceFile, specifier);
 
   if (!sourceModule || !resolvedImport) {
-    return undefined;
+    return "unapproved internal dependency";
+  }
+
+  if (isOutsideRepository(root, resolvedImport)) {
+    return "path outside repository";
   }
 
   const importedSourcePath = normalizedRelativePath(root, resolvedImport);
-  const importedMatch = /^src\/modules\/([^/]+)\/infrastructure(?:\/|$)/.exec(
+  const ownDomain = `src/modules/${sourceModule}/domain`;
+  const sharedDomain = "src/modules/shared/domain";
+
+  if (
+    isPathWithin(importedSourcePath, ownDomain) ||
+    isPathWithin(importedSourcePath, sharedDomain) ||
+    isSharedPublicEntry(importedSourcePath)
+  ) {
+    return undefined;
+  }
+
+  if (isPathWithin(importedSourcePath, "src/infrastructure")) {
+    return "root infrastructure";
+  }
+
+  if (isPathWithin(importedSourcePath, "src/generated")) {
+    return "generated source";
+  }
+
+  if (isPathWithin(importedSourcePath, "app")) {
+    return "application route layer";
+  }
+
+  const moduleLayer =
+    /^src\/modules\/([^/]+)\/(application|infrastructure)(?:\/|$)/.exec(
+      importedSourcePath,
+    );
+
+  if (moduleLayer?.[1] && moduleLayer[2]) {
+    return `${moduleLayer[2]} from module ${moduleLayer[1]}`;
+  }
+
+  const otherModuleDomain = /^src\/modules\/([^/]+)\/domain(?:\/|$)/.exec(
     importedSourcePath,
   );
 
-  if (importedMatch?.[1] && importedMatch[1] !== sourceModule) {
-    return `infrastructure from module ${importedMatch[1]}`;
+  if (otherModuleDomain?.[1]) {
+    return `domain from module ${otherModuleDomain[1]}`;
   }
 
-  return undefined;
+  return "unapproved internal dependency";
 }
 
 function forbiddenReason(root, sourceFile, specifier) {
+  if (isInternalSpecifier(specifier)) {
+    return internalImportReason(root, sourceFile, specifier);
+  }
+
   if (isPackageOrSubpath(specifier, "next")) {
     return "Next.js framework";
   }
@@ -110,19 +176,6 @@ function forbiddenReason(root, sourceFile, specifier) {
 
   if (isPackageOrSubpath(specifier, "pg")) {
     return "PostgreSQL driver";
-  }
-
-  const crossModuleReason = crossModuleInfrastructureReason(
-    root,
-    sourceFile,
-    specifier,
-  );
-  if (crossModuleReason) {
-    return crossModuleReason;
-  }
-
-  if (isInternalSpecifier(specifier)) {
-    return undefined;
   }
 
   if (isNodeBuiltin(specifier)) {

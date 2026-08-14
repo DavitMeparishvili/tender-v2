@@ -1,19 +1,8 @@
 import "dotenv/config";
 import { spawn } from "node:child_process";
+import { validateTestDatabaseUrl } from "../src/config/test-database-url.ts";
 
-const databaseUrl = process.env.DATABASE_URL_TEST;
-
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL_TEST is required");
-}
-
-const parsedDatabaseUrl = new URL(databaseUrl);
-const databaseName = decodeURIComponent(parsedDatabaseUrl.pathname.slice(1));
-
-if (!databaseName.endsWith("_test")) {
-  throw new Error("DATABASE_URL_TEST must target a database ending in _test");
-}
-
+const databaseUrl = validateTestDatabaseUrl(process.env.DATABASE_URL_TEST);
 const command = process.platform === "win32" ? process.env.ComSpec : "pnpm";
 const commandArguments =
   process.platform === "win32"
@@ -25,7 +14,7 @@ if (!command) {
 }
 
 const child = spawn(command, commandArguments, {
-  env: { ...process.env, DATABASE_URL: parsedDatabaseUrl.toString() },
+  env: { ...process.env, DATABASE_URL: databaseUrl },
   stdio: "inherit",
 });
 

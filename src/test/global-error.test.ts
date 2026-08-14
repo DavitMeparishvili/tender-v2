@@ -12,9 +12,7 @@ it("renders a titled bounded global recovery document", () => {
     createElement(GlobalError, { error, reset: () => undefined }),
   );
 
-  expect(html).toContain(
-    "<title>დაფიქსირდა შეცდომა / Something went wrong</title>",
-  );
+  expect(html).toContain("<title>დაფიქსირდა შეცდომა</title>");
   expect(html).toContain("correlation-123");
   expect(html).not.toContain("sensitive internal failure");
 });

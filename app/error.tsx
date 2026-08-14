@@ -10,18 +10,21 @@ export default function ErrorPage({
   return (
     <section className="status-page" aria-labelledby="error-heading">
       <h1 id="error-heading">
-        დაფიქსირდა შეცდომა. <span lang="en">Something went wrong.</span>
+        <span lang="ka">დაფიქსირდა შეცდომა.</span>{" "}
+        <span lang="en">Something went wrong.</span>
       </h1>
       <p>
-        გთხოვთ, ხელახლა სცადოთ. <span lang="en">Please try again.</span>
+        <span lang="ka">გთხოვთ, ხელახლა სცადოთ.</span>{" "}
+        <span lang="en">Please try again.</span>
       </p>
       {error.digest ? (
         <p className="correlation-id">
-          მითითება / <span lang="en">Reference</span>: {error.digest}
+          <span lang="ka">მითითება</span> / <span lang="en">Reference</span>:{" "}
+          {error.digest}
         </p>
       ) : null}
       <button type="button" onClick={reset}>
-        ხელახლა ცდა / <span lang="en">Try again</span>
+        <span lang="ka">ხელახლა ცდა</span> / <span lang="en">Try again</span>
       </button>
     </section>
   );

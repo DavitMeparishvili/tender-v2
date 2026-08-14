@@ -20,7 +20,7 @@
     "db:logs": "docker compose logs --tail=100 postgres-dev postgres-test",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:migrate:test": "node scripts/run-prisma-test.mjs",
+    "db:migrate:test": "tsx scripts/run-prisma-test.mjs",
     "verify:phase-0": "pnpm format:check && pnpm lint && pnpm verify:boundaries && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm build && pnpm test:e2e"
   },
   "dependencies": {

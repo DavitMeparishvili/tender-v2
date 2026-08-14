@@ -51,7 +51,7 @@ test("unsupported locale returns a bounded not-found document", async ({
   const response = await page.goto("/ru");
 
   expect(response?.status()).toBe(404);
-  await expect(page).toHaveTitle("გვერდი ვერ მოიძებნა / Page not found");
+  await expect(page).toHaveTitle("გვერდი ვერ მოიძებნა");
   await expect(page.locator("html")).not.toHaveAttribute("lang", "ru");
   await expect(page.locator("main#main-content")).toHaveCount(1);
 });

@@ -3,7 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "გვერდი ვერ მოიძებნა / Page not found",
+  title: "გვერდი ვერ მოიძებნა",
 };
 
 export default function GlobalNotFound() {
@@ -16,16 +16,19 @@ export default function GlobalNotFound() {
             aria-labelledby="global-not-found-heading"
           >
             <h1 id="global-not-found-heading">
-              გვერდი ვერ მოიძებნა. <span lang="en">Page not found.</span>
+              <span lang="ka">გვერდი ვერ მოიძებნა.</span>{" "}
+              <span lang="en">Page not found.</span>
             </h1>
             <p>
-              შეამოწმეთ მისამართი ან დაბრუნდით მთავარ გვერდზე.{" "}
+              <span lang="ka">
+                შეამოწმეთ მისამართი ან დაბრუნდით მთავარ გვერდზე.
+              </span>{" "}
               <span lang="en">
                 Check the address or return to the home page.
               </span>
             </p>
             <Link href="/ka">
-              მთავარ გვერდზე დაბრუნება /{" "}
+              <span lang="ka">მთავარ გვერდზე დაბრუნება</span> /{" "}
               <span lang="en">Return to the home page</span>
             </Link>
           </section>
