@@ -24,7 +24,7 @@ export default defineConfig({
   ],
   webServer: {
     command: isCi ? "pnpm start" : "pnpm dev",
-    url: baseURL,
+    url: `${baseURL}/api/health/live`,
     reuseExistingServer: !isCi,
   },
 });
