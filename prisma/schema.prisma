@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AuditEvent {
+  id            String   @id
+  actorId       String?
+  action        String
+  targetType    String
+  targetId      String
+  reason        String?
+  correlationId String
+  metadata      Json
+  createdAt     DateTime @default(now())
+
+  @@index([targetType, targetId, createdAt])
+  @@index([actorId, createdAt])
+}
+
+model OutboxMessage {
+  id          String    @id
+  topic       String
+  aggregateId String
+  payload     Json
+  availableAt DateTime
+  processedAt DateTime?
+  attempts    Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  @@index([processedAt, availableAt])
+}

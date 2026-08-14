@@ -1,0 +1,35 @@
+services:
+  postgres-dev:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: tender_dev
+      POSTGRES_USER: tender_local
+      POSTGRES_PASSWORD: tender_local_only
+    ports:
+      - "5432:5432"
+    volumes:
+      - tender_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tender_local -d tender_dev"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  postgres-test:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: tender_test
+      POSTGRES_USER: tender_test
+      POSTGRES_PASSWORD: tender_test_local_only
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tender_test -d tender_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  tender_dev_data:
