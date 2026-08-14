@@ -5,6 +5,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL(".", import.meta.url)),
+      "geist/font/sans": fileURLToPath(
+        new URL("./src/test/stubs/geist-font.ts", import.meta.url),
+      ),
     },
   },
   test: {

@@ -1,17 +1,8 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { isLocale, type Locale } from "@/src/modules/localization/config";
-
-const pageCopy: Record<Locale, { heading: string; summary: string }> = {
-  ka: {
-    heading: "სამშენებლო და სარემონტო ტენდერები",
-    summary:
-      "კლიენტები აქვეყნებენ სამუშაოს მოთხოვნებს, ხოლო შემსრულებლები წარადგენენ შეთავაზებებს.",
-  },
-  en: {
-    heading: "Construction and repair tenders",
-    summary: "Clients publish work requirements, and providers submit offers.",
-  },
-};
+import { isLocale } from "@/src/modules/localization/config";
+import { getMessages } from "@/src/modules/localization/get-messages";
+import { IdentityShell } from "@/src/modules/identity/ui/identity-shell";
 
 export default async function LocaleHome({
   params,
@@ -24,12 +15,22 @@ export default async function LocaleHome({
     notFound();
   }
 
-  const copy = pageCopy[locale];
+  const messages = getMessages(locale);
 
   return (
-    <section className="page-content" aria-labelledby="page-heading">
-      <h1 id="page-heading">{copy.heading}</h1>
-      <p>{copy.summary}</p>
-    </section>
+    <IdentityShell
+      title={messages.auth.homeTitle}
+      subtitle={messages.auth.homeSubtitle}
+    >
+      <div className="action-stack">
+        <Link className="button button-primary" href={`/${locale}/register`}>
+          {messages.auth.register}
+        </Link>
+        <Link className="button button-secondary" href={`/${locale}/login`}>
+          {messages.auth.signIn}
+        </Link>
+      </div>
+      <p className="supporting-note">{messages.auth.verificationRequired}</p>
+    </IdentityShell>
   );
 }
