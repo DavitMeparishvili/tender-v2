@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export type AuthStateKind =
-  "success" | "invalid" | "expired" | "reused" | "access-denied";
+  "pending" | "success" | "invalid" | "expired" | "reused" | "access-denied";
 
 type StateAction = Readonly<{
   href: string;

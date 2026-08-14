@@ -9,8 +9,8 @@ type ControlProps = Readonly<{
 type FieldProps = Readonly<{
   id: string;
   label: string;
-  description?: string;
-  error?: string;
+  description?: string | undefined;
+  error?: string | undefined;
   children: ReactElement<ControlProps>;
   suffix?: ReactNode;
 }>;
