@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TestMailbox } from "../../../../src/modules/notifications/adapters/test-mailbox";
-import { createMailboxHandler } from "./route";
+import { createMailboxHandler } from "../../../../src/modules/notifications/http/mailbox-handler";
 
 describe("test mailbox route", () => {
   it("returns 404 in production without consulting a mailbox", async () => {

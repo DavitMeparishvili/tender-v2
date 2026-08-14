@@ -1,6 +1,6 @@
 import { expect, it, vi } from "vitest";
 import type { CurrentUser } from "../../../../src/modules/identity/application/current-user";
-import { createOnboardingHandler } from "./route";
+import { createOnboardingHandler } from "../../../../src/modules/profiles/http/onboarding-handler";
 
 const currentUser: CurrentUser = {
   id: "route-user",
