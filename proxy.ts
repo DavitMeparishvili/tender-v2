@@ -1,11 +1,32 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { DEFAULT_LOCALE } from "@/src/modules/localization/config";
+import { getSessionCookie } from "better-auth/cookies";
+import { DEFAULT_LOCALE, isLocale } from "@/src/modules/localization/config";
 
 export function proxy(request: NextRequest) {
-  return NextResponse.redirect(new URL(`/${DEFAULT_LOCALE}`, request.url));
+  if (request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL(`/${DEFAULT_LOCALE}`, request.url));
+  }
+
+  const [, locale, workspace] = request.nextUrl.pathname.split("/");
+  if (
+    locale !== undefined &&
+    isLocale(locale) &&
+    workspace !== undefined &&
+    ["client", "provider", "profile"].includes(workspace) &&
+    getSessionCookie(request) === null
+  ) {
+    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: "/",
+  matcher: [
+    "/",
+    "/:locale/client/:path*",
+    "/:locale/provider/:path*",
+    "/:locale/profile/:path*",
+  ],
 };
