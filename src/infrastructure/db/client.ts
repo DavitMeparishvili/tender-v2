@@ -6,9 +6,11 @@ const { DATABASE_URL, NODE_ENV } = getServerEnv();
 const databaseGlobal = globalThis as typeof globalThis & {
   database?: PrismaClient;
 };
+const cachedDatabase =
+  NODE_ENV === "production" ? undefined : databaseGlobal.database;
 
 export const database =
-  databaseGlobal.database ??
+  cachedDatabase ??
   new PrismaClient({
     adapter: new PrismaPg({ connectionString: DATABASE_URL }),
   });
