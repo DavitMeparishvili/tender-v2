@@ -5,8 +5,8 @@ import type {
   UploadAttachmentError,
 } from "../application/upload-tender-attachment";
 import type { TenderActor } from "../application/create-tender-draft";
+import { authorizeCustomer, type RequireCustomer } from "./authorize";
 import { mapTenderError } from "./map-tender-error";
-import type { RequireCustomer } from "./tender-handlers";
 
 type RouteContext = Readonly<{ params: Promise<Readonly<{ id: string }>> }>;
 type DownloadRouteContext = Readonly<{
@@ -52,8 +52,8 @@ export function createAttachmentHandlers({
       request: Request,
       context: RouteContext,
     ): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id } = await context.params;
       const formData = await request.formData();
       const file = formData.get("file");
@@ -62,17 +62,17 @@ export function createAttachmentHandlers({
       const result = await upload(
         id,
         { originalFileName: file.name, body },
-        access.value,
+        access,
       );
       return result.ok
         ? Response.json({ attachment: toAttachmentView(result.value) })
         : mapTenderError(result.error);
     },
     GET: async (request: Request, context: RouteContext): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id } = await context.params;
-      const result = await list(id, access.value);
+      const result = await list(id, access);
       return result.ok
         ? Response.json({
             attachments: result.value.map(toAttachmentView),
@@ -100,10 +100,10 @@ export function createAttachmentDownloadHandler({
       request: Request,
       context: DownloadRouteContext,
     ): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id, attachmentId } = await context.params;
-      const result = await getDownload(id, attachmentId, access.value);
+      const result = await getDownload(id, attachmentId, access);
       return result.ok
         ? Response.json({ url: result.value })
         : mapTenderError(result.error);

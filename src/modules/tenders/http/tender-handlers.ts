@@ -1,4 +1,3 @@
-import type { AuthError } from "../../identity/application/require-capability";
 import type { Result } from "../../shared";
 import type { TenderActor } from "../application/create-tender-draft";
 import type { CancelError } from "../application/cancel-tender";
@@ -6,11 +5,10 @@ import type { PublishError } from "../application/publish-tender";
 import type { SyncLocationError } from "../application/sync-tender-location";
 import type { TenderMutationError } from "../application/update-tender-draft";
 import type { TenderDraft, TenderRecord } from "../domain/tender";
+import { authorizeCustomer, type RequireCustomer } from "./authorize";
 import { mapTenderError } from "./map-tender-error";
 
-export type RequireCustomer = (
-  headers: Headers,
-) => Promise<Result<TenderActor, AuthError>>;
+export type { RequireCustomer };
 
 type RouteContext = Readonly<{ params: Promise<Readonly<{ id: string }>> }>;
 
@@ -30,18 +28,18 @@ export function createTenderHandlers({
 }: TenderHandlersDependencies) {
   return {
     POST: async (request: Request): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const body = await request.json().catch(() => null);
-      const result = await createDraft(body, access.value);
+      const result = await createDraft(body, access);
       return result.ok
         ? Response.json({ tender: result.value })
         : mapTenderError(result.error);
     },
     GET: async (request: Request): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
-      const tenders = await listOwned(access.value);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
+      const tenders = await listOwned(access);
       return Response.json({ tenders });
     },
   };
@@ -67,10 +65,10 @@ export function createOwnedTenderHandlers({
 }: OwnedTenderHandlersDependencies) {
   return {
     GET: async (request: Request, context: RouteContext): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id } = await context.params;
-      const result = await getOwned(id, access.value);
+      const result = await getOwned(id, access);
       return result.ok
         ? Response.json({ tender: result.value })
         : mapTenderError(result.error);
@@ -79,11 +77,11 @@ export function createOwnedTenderHandlers({
       request: Request,
       context: RouteContext,
     ): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id } = await context.params;
       const body = await request.json().catch(() => null);
-      const result = await updateDraft(id, body, access.value);
+      const result = await updateDraft(id, body, access);
       return result.ok
         ? Response.json({ tender: result.value })
         : mapTenderError(result.error);
@@ -109,11 +107,11 @@ export function createLocationHandlers({
       request: Request,
       context: RouteContext,
     ): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id } = await context.params;
       const body = await request.json().catch(() => null);
-      const result = await syncLocation(id, body, access.value);
+      const result = await syncLocation(id, body, access);
       return result.ok
         ? Response.json({ tender: result.value })
         : mapTenderError(result.error);
@@ -138,10 +136,10 @@ export function createPublishHandlers({
       request: Request,
       context: RouteContext,
     ): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id } = await context.params;
-      const result = await publish(id, access.value);
+      const result = await publish(id, access);
       return result.ok
         ? Response.json({ tender: result.value })
         : mapTenderError(result.error);
@@ -167,11 +165,11 @@ export function createCancelHandlers({
       request: Request,
       context: RouteContext,
     ): Promise<Response> => {
-      const access = await requireCustomer(request.headers);
-      if (!access.ok) return mapTenderError(access.error);
+      const access = await authorizeCustomer(requireCustomer, request.headers);
+      if (access instanceof Response) return access;
       const { id } = await context.params;
       const body = await request.json().catch(() => null);
-      const result = await cancel(id, body, access.value);
+      const result = await cancel(id, body, access);
       return result.ok
         ? Response.json({ tender: result.value })
         : mapTenderError(result.error);
