@@ -15,9 +15,10 @@ import type { GetOwnedTenderRepository } from "../application/get-owned-tender";
 import type { GetPublishedTenderRepository } from "../application/get-published-tender";
 import type { ListOwnedTendersRepository } from "../application/list-owned-tenders";
 import type { PublishTenderRepository } from "../application/publish-tender";
-import type {
-  SearchPublishedTendersQuery,
-  SearchPublishedTendersRepository,
+import {
+  MAX_PUBLISHED_TENDER_RESULTS,
+  type SearchPublishedTendersQuery,
+  type SearchPublishedTendersRepository,
 } from "../application/search-published-tenders";
 import type { SyncTenderLocationRepository } from "../application/sync-tender-location";
 import type {
@@ -477,6 +478,7 @@ export class PrismaTenderRepository implements TenderRepository {
     const rows = await database.tender.findMany({
       where: publishedFilterWhere(filter, now),
       orderBy: { publishedAt: "desc" },
+      take: MAX_PUBLISHED_TENDER_RESULTS,
     });
     return rows
       .map(toTenderRecord)

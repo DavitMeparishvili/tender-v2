@@ -3,7 +3,10 @@ import { afterAll, describe, expect, it } from "vitest";
 import { database } from "../../../infrastructure/db/client";
 import { PrismaTenderRepository } from "../infrastructure/prisma-tender-repository";
 import { publishTender } from "./publish-tender";
-import { searchPublishedTenders } from "./search-published-tenders";
+import {
+  MAX_PUBLISHED_TENDER_RESULTS,
+  searchPublishedTenders,
+} from "./search-published-tenders";
 import { updateTenderDraft } from "./update-tender-draft";
 
 const tenders = new PrismaTenderRepository();
@@ -67,6 +70,44 @@ async function seedPublishedTender(
   const published = await publishTender(tenderId, { id: ownerId });
   if (!published.ok) throw new Error("publish seed failed");
   return tenderId;
+}
+
+// Bulk-inserts already-PUBLISHED rows directly, bypassing the draft/publish
+// workflow `seedPublishedTender` exercises one row at a time — the volume
+// this test needs to prove a bound exists would make the full workflow slow
+// for no added coverage, since the fields below are exactly what
+// `toTenderRecord` requires to be non-null for a row to be readable.
+async function seedManyPublishedTenders(
+  ownerId: string,
+  city: string,
+  count: number,
+): Promise<void> {
+  const now = new Date();
+  const deadline = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  await database.tender.createMany({
+    data: Array.from({ length: count }, (_, index) => ({
+      id: randomUUID(),
+      ownerId,
+      status: "PUBLISHED" as const,
+      specialty: "CONSTRUCTION_REPAIR" as const,
+      title: `Bounded discovery tender ${index}`,
+      shortDescription: "Interior repaint, two bedrooms",
+      fullDescription: "Sand, prime, and repaint two bedrooms and a hallway.",
+      scopeOfWork: "Sanding, priming, two coats of paint",
+      budgetMinorUnits: 80_000,
+      currency: "GEL",
+      city,
+      addressLine: "1 Chavchavadze Ave",
+      exactLatitude: 41.7151,
+      exactLongitude: 44.8271,
+      publicLatitude: 41.72,
+      publicLongitude: 44.83,
+      deadline,
+      publishedAt: now,
+      createdAt: now,
+      updatedAt: now,
+    })),
+  });
 }
 
 afterAll(async () => {
@@ -165,6 +206,22 @@ describe("searchPublishedTenders", () => {
         "Case-insensitive city tender",
       ]);
     }
+  });
+
+  it("bounds the discovery result set to the named maximum even when more tenders match", async () => {
+    const ownerId = await seedOwner();
+    const city = `Bounded City ${randomUUID()}`;
+    await seedManyPublishedTenders(
+      ownerId,
+      city,
+      MAX_PUBLISHED_TENDER_RESULTS + 5,
+    );
+
+    const result = await searchPublishedTenders({ city });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value).toHaveLength(MAX_PUBLISHED_TENDER_RESULTS);
   });
 
   it("matches a district regardless of the casing a provider types", async () => {

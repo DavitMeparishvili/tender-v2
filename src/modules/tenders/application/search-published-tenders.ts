@@ -25,6 +25,14 @@ export type SearchPublishedTendersQuery = z.output<
   typeof searchPublishedTendersQuerySchema
 >;
 
+// The discovery surface has no pagination affordance yet, so an unbounded
+// query would hand back every currently published tender that matches a
+// filter — for a public marketplace listing that grows without bound as
+// inventory grows. Cap the repository read at a fixed maximum until real
+// paging exists; `PrismaTenderRepository.searchPublished` applies this as
+// its `take`.
+export const MAX_PUBLISHED_TENDER_RESULTS = 50;
+
 export interface SearchPublishedTendersRepository {
   searchPublished(
     filter: SearchPublishedTendersQuery,

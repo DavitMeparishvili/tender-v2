@@ -7,12 +7,14 @@ import type {
   PublicTenderSummary,
 } from "../domain/masking";
 import { DiscoveryDetailContent } from "./discovery-detail";
+import { discoveryFilterIssues } from "./discovery-filters";
 import { DiscoveryListContent } from "./discovery-list";
 import {
   majorUnitsToMinorUnits,
   MAX_DISCOVERY_BUDGET_MINOR_UNITS,
   parseDiscoverySearchParams,
   serializeDiscoveryFilters,
+  type DiscoveryFilterKey,
 } from "./discovery-query";
 
 const publicTender: PublicTenderDetail = {
@@ -46,6 +48,35 @@ const sensitiveSentinels = [
   "internal-object-key",
   "private conditions sentinel",
 ] as const;
+
+// The exact coordinates the seeded fixtures elsewhere in this suite use as
+// the "never render this" location. A fixed-string sentinel like
+// `not.toContain("41.7151")` only catches a leak that happens to be
+// formatted exactly that way; `formatCoordinate` in discovery-detail.tsx
+// renders through `Intl.NumberFormat` with `maximumFractionDigits: 3` and a
+// locale-dependent decimal separator, so a real leak would very likely never
+// look like the raw fixed string at all. `leaksExactCoordinate` instead
+// parses every number-shaped substring out of the rendered HTML — tolerating
+// both "." and "," as the decimal separator — and fails if any of them is
+// numerically close to an exact coordinate, regardless of how it was
+// formatted or rounded.
+const EXACT_LEAK_LATITUDE = 41.7151;
+const EXACT_LEAK_LONGITUDE = 44.8271;
+const EXACT_LEAK_TOLERANCE = 0.001;
+
+function numericTokensIn(html: string): number[] {
+  return (html.match(/-?\d+(?:[.,]\d+)?/g) ?? [])
+    .map((token) => Number.parseFloat(token.replace(",", ".")))
+    .filter((value) => !Number.isNaN(value));
+}
+
+function leaksExactCoordinate(html: string): boolean {
+  return numericTokensIn(html).some(
+    (value) =>
+      Math.abs(value - EXACT_LEAK_LATITUDE) < EXACT_LEAK_TOLERANCE ||
+      Math.abs(value - EXACT_LEAK_LONGITUDE) < EXACT_LEAK_TOLERANCE,
+  );
+}
 
 function withSensitiveRuntimeFields<T extends PublicTenderSummary>(value: T) {
   return {
@@ -192,6 +223,48 @@ describe("provider discovery query", () => {
   });
 });
 
+describe("provider discovery filter issues", () => {
+  const issueCopy = {
+    invalidInput: en.tenders.errors.invalidInput,
+    invalidBudgetRange: en.tenders.errors.invalidBudgetRange,
+    currencyRequired: en.tenders.errors.currencyRequired,
+  };
+
+  function fieldsOf(keys: readonly DiscoveryFilterKey[]) {
+    return discoveryFilterIssues(new Set(keys), issueCopy).map(
+      (issue) => issue.field,
+    );
+  }
+
+  it("associates a solo invalid maxBudget with the maximum-budget control, not the minimum", () => {
+    const issues = discoveryFilterIssues(new Set(["maxBudget"]), issueCopy);
+    expect(issues).toEqual([
+      { field: "maxBudget", message: en.tenders.errors.invalidBudgetRange },
+    ]);
+  });
+
+  it("associates a solo invalid minBudget with the minimum-budget control", () => {
+    const issues = discoveryFilterIssues(new Set(["minBudget"]), issueCopy);
+    expect(issues).toEqual([
+      { field: "minBudget", message: en.tenders.errors.invalidBudgetRange },
+    ]);
+  });
+
+  it("flags both budget controls for a reversed min/max range", () => {
+    expect(fieldsOf(["minBudget", "maxBudget"])).toEqual([
+      "minBudget",
+      "maxBudget",
+    ]);
+  });
+
+  it("keeps every other filter field's issue independent of the budget fields", () => {
+    expect(fieldsOf(["specialty"])).toEqual(["specialty"]);
+    expect(fieldsOf(["city"])).toEqual(["city"]);
+    expect(fieldsOf(["currency"])).toEqual(["currency"]);
+    expect(fieldsOf(["deadlineBefore"])).toEqual(["deadlineBefore"]);
+  });
+});
+
 describe("provider masked discovery UI", () => {
   it("renders linked semantic summary rows without runtime-sensitive fields", () => {
     const runtimeValue = withSensitiveRuntimeFields(publicTender);
@@ -270,7 +343,9 @@ describe("provider masked discovery UI", () => {
 
   it("keeps exact coordinates out of the provider map markup", () => {
     // The masked projection has no exact coordinates to leak, so this guards
-    // against a future prop change feeding the map an unmasked pair.
+    // against a future prop change feeding the map an unmasked pair. The
+    // assertion tolerates any numeric formatting of the leaked value (see
+    // `leaksExactCoordinate` above) rather than one fixed decimal string.
     const html = renderToStaticMarkup(
       <DiscoveryDetailContent
         locale="en"
@@ -283,8 +358,21 @@ describe("provider masked discovery UI", () => {
       />,
     );
 
-    expect(html).not.toContain("41.7151");
-    expect(html).not.toContain("44.8271");
+    expect(leaksExactCoordinate(html)).toBe(false);
+  });
+
+  it("catches an exact-coordinate leak formatted in a way a fixed-string sentinel would miss", () => {
+    // Proves the new assertion actually does its job: render the exact
+    // coordinate the way the real `formatCoordinate` helper would (Georgian
+    // locale, comma decimal separator, rounded to 3 fraction digits) rather
+    // than as the raw "41.7151" string. The old fixed-string sentinel would
+    // have let this through unnoticed.
+    const leakedHtml = `<dd>${new Intl.NumberFormat("ka", {
+      maximumFractionDigits: 3,
+    }).format(EXACT_LEAK_LATITUDE)}</dd>`;
+
+    expect(leakedHtml).not.toContain("41.7151");
+    expect(leaksExactCoordinate(leakedHtml)).toBe(true);
   });
 
   it("renders localized empty and invalid-filter states", () => {

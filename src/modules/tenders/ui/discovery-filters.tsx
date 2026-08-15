@@ -13,6 +13,7 @@ import {
   discoveryFilterKeys,
   parseDiscoverySearchParams,
   serializeDiscoveryFilters,
+  type DiscoveryFilterKey,
   type DiscoveryFilterValues,
 } from "./discovery-query";
 
@@ -47,6 +48,35 @@ function formValue(formData: FormData, key: keyof DiscoveryFilterValues) {
   return typeof value === "string" ? value : "";
 }
 
+// Each budget fault is associated with the field that actually caused it —
+// an invalid decimal in just one of `minBudget`/`maxBudget`, or both together
+// for a reversed range, per `parseDiscoverySearchParams`'s `fields` array —
+// rather than always pointing at `minBudget`. That keeps the error-summary
+// link (and each `Field`'s own `aria-describedby`/`aria-invalid`) landing on
+// the control that is actually wrong.
+export function discoveryFilterIssues(
+  invalidFields: ReadonlySet<DiscoveryFilterKey>,
+  copy: Pick<
+    DiscoveryFilterCopy,
+    "invalidInput" | "invalidBudgetRange" | "currencyRequired"
+  >,
+): FormIssue[] {
+  const issues: FormIssue[] = [];
+  if (invalidFields.has("specialty"))
+    issues.push({ field: "specialty", message: copy.invalidInput });
+  if (invalidFields.has("city"))
+    issues.push({ field: "city", message: copy.invalidInput });
+  if (invalidFields.has("minBudget"))
+    issues.push({ field: "minBudget", message: copy.invalidBudgetRange });
+  if (invalidFields.has("maxBudget"))
+    issues.push({ field: "maxBudget", message: copy.invalidBudgetRange });
+  if (invalidFields.has("currency"))
+    issues.push({ field: "currency", message: copy.currencyRequired });
+  if (invalidFields.has("deadlineBefore"))
+    issues.push({ field: "deadlineBefore", message: copy.invalidInput });
+  return issues;
+}
+
 export function DiscoveryFilters({
   copy,
 }: Readonly<{ copy: DiscoveryFilterCopy }>) {
@@ -63,20 +93,13 @@ export function DiscoveryFilters({
   );
   const parsed = parseDiscoverySearchParams(currentValues);
   const invalidFields = new Set(parsed.ok ? [] : parsed.fields);
-  const budgetError =
-    invalidFields.has("minBudget") || invalidFields.has("maxBudget")
-      ? copy.invalidBudgetRange
-      : undefined;
-  const issues: FormIssue[] = [];
-  if (invalidFields.has("specialty"))
-    issues.push({ field: "specialty", message: copy.invalidInput });
-  if (invalidFields.has("city"))
-    issues.push({ field: "city", message: copy.invalidInput });
-  if (budgetError) issues.push({ field: "minBudget", message: budgetError });
-  if (invalidFields.has("currency"))
-    issues.push({ field: "currency", message: copy.currencyRequired });
-  if (invalidFields.has("deadlineBefore"))
-    issues.push({ field: "deadlineBefore", message: copy.invalidInput });
+  const minBudgetError = invalidFields.has("minBudget")
+    ? copy.invalidBudgetRange
+    : undefined;
+  const maxBudgetError = invalidFields.has("maxBudget")
+    ? copy.invalidBudgetRange
+    : undefined;
+  const issues = discoveryFilterIssues(invalidFields, copy);
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -130,7 +153,11 @@ export function DiscoveryFilters({
       <fieldset className="discovery-budget-group">
         <legend>{copy.budgetRange}</legend>
         <div className="discovery-budget-fields">
-          <Field id="minBudget" label={copy.minimumBudget} error={budgetError}>
+          <Field
+            id="minBudget"
+            label={copy.minimumBudget}
+            error={minBudgetError}
+          >
             <input
               name="minBudget"
               type="number"
@@ -141,7 +168,11 @@ export function DiscoveryFilters({
               step="0.01"
             />
           </Field>
-          <Field id="maxBudget" label={copy.maximumBudget} error={budgetError}>
+          <Field
+            id="maxBudget"
+            label={copy.maximumBudget}
+            error={maxBudgetError}
+          >
             <input
               name="maxBudget"
               type="number"
