@@ -84,6 +84,12 @@ async function main(): Promise<void> {
         budgetMinorUnits: 450_000,
         currency: "GEL",
         deadline: new Date(Date.now() + THIRTY_DAYS_MS),
+        // Deliberately set so Task 13's e2e masking assertions have a real,
+        // non-empty value to prove is absent from every provider-facing
+        // surface (the masked projection has no `conditions` field at all,
+        // so without this the assertion would be vacuously true).
+        conditions:
+          "Work must be completed on weekdays between 9am and 5pm only.",
       },
       actor,
     );
