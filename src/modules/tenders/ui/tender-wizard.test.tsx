@@ -4,6 +4,7 @@ import { getMessages } from "@/src/modules/localization/get-messages";
 import {
   TenderWizard,
   majorUnitsToMinor,
+  shouldGuardWizardLink,
   validateWizardStep,
   wizardHasUnsavedWork,
 } from "./tender-wizard";
@@ -119,6 +120,29 @@ describe("wizardHasUnsavedWork", () => {
     expect(wizardHasUnsavedWork(null, false)).toBe(false);
     expect(wizardHasUnsavedWork(null, true)).toBe(true);
     expect(wizardHasUnsavedWork("tender-1", false)).toBe(true);
+  });
+});
+
+describe("shouldGuardWizardLink", () => {
+  const current =
+    "https://tender.test/en/client/tenders/new?source=workspace#form-errors";
+
+  it("exempts same-document error and skip-link fragments", () => {
+    expect(shouldGuardWizardLink(current, "#title")).toBe(false);
+    expect(shouldGuardWizardLink(current, "#main-content")).toBe(false);
+  });
+
+  it("guards links that change the path, query, or origin", () => {
+    expect(shouldGuardWizardLink(current, "/en/client")).toBe(true);
+    expect(
+      shouldGuardWizardLink(
+        current,
+        "/en/client/tenders/new?source=header#title",
+      ),
+    ).toBe(true);
+    expect(shouldGuardWizardLink(current, "https://example.com/#title")).toBe(
+      true,
+    );
   });
 });
 

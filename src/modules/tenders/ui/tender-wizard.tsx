@@ -145,6 +145,23 @@ export function wizardHasUnsavedWork(
   return tenderId !== null || modified;
 }
 
+export function shouldGuardWizardLink(
+  currentHref: string,
+  destinationHref: string,
+) {
+  try {
+    const current = new URL(currentHref);
+    const destination = new URL(destinationHref, current);
+    return (
+      destination.origin !== current.origin ||
+      destination.pathname !== current.pathname ||
+      destination.search !== current.search
+    );
+  } catch {
+    return true;
+  }
+}
+
 function isCoordinate(
   value: string | undefined,
   minimum: number,
@@ -565,6 +582,7 @@ export function TenderWizard({
       ) {
         return;
       }
+      if (!shouldGuardWizardLink(window.location.href, anchor.href)) return;
       if (!window.confirm(dirtyWarning)) {
         event.preventDefault();
       }
