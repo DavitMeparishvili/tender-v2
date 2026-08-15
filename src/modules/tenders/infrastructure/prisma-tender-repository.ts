@@ -323,15 +323,25 @@ export class PrismaTenderRepository implements TenderRepository {
     id: string,
     actor: TenderActor,
     now: Date,
-  ): Promise<Result<TenderRecord, TenderMutationError>> {
+  ): Promise<
+    Result<TenderRecord, TenderMutationError | "DEADLINE_NOT_FUTURE">
+  > {
     // Same atomic guard as `updateDraft`/`updateLocation`: the conditional
     // `updateMany` is the state transition itself, so two concurrent
     // publishes race on this single statement and exactly one of them
-    // reports `count === 1`. The loser re-reads the row to distinguish
-    // `TENDER_NOT_FOUND` / `NOT_OWNER` / `NOT_DRAFT` (it will observe
-    // `NOT_DRAFT`, since the winner already moved the row to PUBLISHED).
+    // reports `count === 1`. The `where` clause also re-asserts
+    // `deadline: { gt: now }` — the same predicate
+    // `evaluateDraftForPublication` already checked before this call — so a
+    // deadline that elapses during the round trip between that check and
+    // this write is caught by the write itself, not just by the earlier,
+    // now-stale, in-memory check.
     const { count } = await database.tender.updateMany({
-      where: { id, ownerId: actor.id, status: "DRAFT" },
+      where: {
+        id,
+        ownerId: actor.id,
+        status: "DRAFT",
+        deadline: { gt: now },
+      },
       data: { status: "PUBLISHED", publishedAt: now },
     });
 
@@ -343,7 +353,14 @@ export class PrismaTenderRepository implements TenderRepository {
       if (existing.ownerId !== actor.id) {
         return { ok: false, error: "NOT_OWNER" };
       }
-      return { ok: false, error: "NOT_DRAFT" };
+      if (existing.status !== "DRAFT") {
+        return { ok: false, error: "NOT_DRAFT" };
+      }
+      // Still a DRAFT, still owned by this actor: the only remaining reason
+      // the `where` clause could have matched zero rows is the deadline
+      // predicate, i.e. the deadline elapsed between
+      // `evaluateDraftForPublication` and this write.
+      return { ok: false, error: "DEADLINE_NOT_FUTURE" };
     }
 
     const updated = await database.tender.findUniqueOrThrow({ where: { id } });

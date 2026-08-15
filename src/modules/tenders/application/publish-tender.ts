@@ -15,7 +15,7 @@ export interface PublishTenderRepository extends GetOwnedTenderRepository {
     id: string,
     actor: TenderActor,
     now: Date,
-  ): Promise<Result<TenderRecord, TenderMutationError>>;
+  ): Promise<Result<TenderRecord, TenderMutationError | "DEADLINE_NOT_FUTURE">>;
 }
 
 export function createPublishTender(dependencies: {
