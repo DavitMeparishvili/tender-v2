@@ -527,21 +527,30 @@ export function TenderWizard({
   locale,
   messages,
   api,
+  initialForm,
+  initialTenderId,
 }: Readonly<{
   locale: Locale;
   messages: Messages;
   api?: Partial<TenderWizardApi>;
+  initialForm?: TenderWizardFormState;
+  initialTenderId?: string;
 }>) {
   const tenderApi = { ...defaultApi, ...api };
   const [step, setStep] = useState<WizardStep>(0);
-  const [form, setForm] = useState<TenderWizardFormState>(initialFormState);
-  const [tenderId, setTenderId] = useState<string | null>(null);
+  const [form, setForm] = useState<TenderWizardFormState>(() => ({
+    ...initialFormState,
+    ...initialForm,
+  }));
+  const [tenderId, setTenderId] = useState<string | null>(
+    initialTenderId ?? null,
+  );
   const [issues, setIssues] = useState<readonly FormIssue[]>([]);
   const [pending, setPending] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [modified, setModified] = useState(false);
   const focusRequest = useRef<FocusRequest>(null);
-  const currencyTouched = useRef(false);
+  const currencyTouched = useRef(initialForm?.currency !== undefined);
   const allowNavigation = useRef(false);
   const hasUnsavedWork = wizardHasUnsavedWork(tenderId, modified);
 

@@ -161,4 +161,18 @@ describe("TenderWizard", () => {
     expect(html).toContain('aria-labelledby="wizard-step-1-heading"');
     expect(html).toContain('data-dirty="false"');
   });
+
+  it("resumes an owned draft without changing the create defaults", () => {
+    const html = renderToStaticMarkup(
+      <TenderWizard
+        locale="en"
+        messages={messages}
+        initialTenderId="tender-1"
+        initialForm={{ title: "Resume this draft", currency: "USD" }}
+      />,
+    );
+
+    expect(html).toContain('value="Resume this draft"');
+    expect(html).toContain('data-dirty="true"');
+  });
 });

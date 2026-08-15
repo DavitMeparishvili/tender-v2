@@ -106,11 +106,16 @@ export function WorkspaceView({
             ? messages.workspace.clientEmptyTitle
             : messages.workspace.providerEmptyTitle}
         </h2>
-        <p>
-          {isClient
-            ? messages.workspace.clientEmptyBody
-            : messages.workspace.providerEmptyBody}
-        </p>
+        {isClient ? (
+          <Link
+            className="workspace-empty-link"
+            href={`/${locale}/client/tenders`}
+          >
+            {messages.workspace.clientEmptyBody}
+          </Link>
+        ) : (
+          <p>{messages.workspace.providerEmptyBody}</p>
+        )}
       </section>
       <div className="workspace-actions">
         <Link

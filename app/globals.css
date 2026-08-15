@@ -556,6 +556,13 @@ a {
   color: var(--text-body);
 }
 
+.workspace-empty-link {
+  display: inline-block;
+  margin-block-start: 0.625rem;
+  color: var(--text-strong);
+  font-weight: 550;
+}
+
 .workspace-actions {
   display: grid;
   gap: 0.75rem;
@@ -567,6 +574,193 @@ a {
   margin-block: -0.75rem 1.5rem;
   color: var(--text-body);
   font-size: 0.875rem;
+}
+
+.tender-primary-action {
+  margin-block-end: 2rem;
+}
+
+.tender-primary-action .button {
+  inline-size: 100%;
+}
+
+.tender-empty {
+  padding-block: 2rem;
+  border-block: 1px solid var(--border-default);
+}
+
+.tender-empty p {
+  margin: 0;
+  color: var(--text-body);
+}
+
+.tender-list {
+  padding: 0;
+  margin: 0;
+  border-block-start: 1px solid var(--border-default);
+  list-style: none;
+}
+
+.tender-list > li {
+  display: grid;
+  gap: 1rem;
+  padding-block: 1.5rem;
+  border-block-end: 1px solid var(--border-default);
+}
+
+.tender-list-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tender-list-heading h2 {
+  min-inline-size: 0;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+}
+
+.tender-list-heading a {
+  text-decoration-thickness: 1px;
+}
+
+.tender-status {
+  flex: 0 0 auto;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: var(--surface-pressed);
+  color: var(--text-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+[data-tender-status="PUBLISHED"] .tender-status {
+  background: var(--trust-soft);
+  color: var(--trust);
+}
+
+.tender-list-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.tender-list-facts div {
+  min-inline-size: 0;
+}
+
+.tender-list-facts dt,
+.tender-detail dt {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.tender-list-facts dd {
+  margin: 0.25rem 0 0;
+  color: var(--text-strong);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tender-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.tender-row-actions a {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  color: var(--text-strong);
+  font-size: 0.875rem;
+  font-weight: 550;
+}
+
+.tender-detail-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-end: 1.5rem;
+  color: var(--text-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.tender-detail-status > span {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 999px;
+  background: var(--text-muted);
+}
+
+.tender-detail-status[data-tender-status="PUBLISHED"] {
+  color: var(--trust);
+}
+
+.tender-detail-status[data-tender-status="PUBLISHED"] > span {
+  background: var(--trust);
+  box-shadow: 0 0 0 0.25rem var(--trust-soft);
+}
+
+.tender-detail {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  border-block-start: 1px solid var(--border-default);
+}
+
+.tender-detail > div {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 2fr) minmax(0, 3fr);
+  gap: 1rem;
+  padding-block: 0.75rem;
+  border-block-end: 1px solid var(--border-default);
+}
+
+.tender-detail dd {
+  min-inline-size: 0;
+  margin: 0;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.tender-draft-actions {
+  margin-block-end: 1.5rem;
+}
+
+.tender-draft-actions .button {
+  inline-size: 100%;
+}
+
+.tender-publish,
+.tender-cancel {
+  display: grid;
+  gap: 1.25rem;
+  margin-block-start: 2rem;
+  padding-block-start: 2rem;
+  border-block-start: 1px solid var(--border-default);
+}
+
+.tender-publish h2,
+.tender-cancel h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.tender-action-hint {
+  margin: 0;
+  color: var(--text-body);
 }
 
 .checkbox-field {
@@ -806,8 +1000,17 @@ a {
   }
 
   .wizard-paired-fields,
-  .wizard-review > div {
+  .wizard-review > div,
+  .tender-detail > div {
     grid-template-columns: 1fr;
+  }
+
+  .tender-list-heading {
+    display: grid;
+  }
+
+  .tender-status {
+    justify-self: start;
   }
 }
 
