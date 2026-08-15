@@ -8,6 +8,7 @@ import type {
 } from "../application/create-tender-draft";
 import type { GetOwnedTenderRepository } from "../application/get-owned-tender";
 import type { ListOwnedTendersRepository } from "../application/list-owned-tenders";
+import type { SyncTenderLocationRepository } from "../application/sync-tender-location";
 import type {
   TenderMutationError,
   UpdateTenderDraftCommand,
@@ -25,7 +26,8 @@ export interface TenderRepository
     CreateTenderDraftRepository,
     UpdateTenderDraftRepository,
     GetOwnedTenderRepository,
-    ListOwnedTendersRepository {}
+    ListOwnedTendersRepository,
+    SyncTenderLocationRepository {}
 
 function isRepresentableCurrency(
   value: string | null,
@@ -205,6 +207,48 @@ export class PrismaTenderRepository implements TenderRepository {
     const { count } = await database.tender.updateMany({
       where: { id, ownerId: actor.id, status: "DRAFT" },
       data,
+    });
+
+    if (count === 0) {
+      const existing = await database.tender.findUnique({ where: { id } });
+      if (existing === null) {
+        return { ok: false, error: "TENDER_NOT_FOUND" };
+      }
+      if (existing.ownerId !== actor.id) {
+        return { ok: false, error: "NOT_OWNER" };
+      }
+      return { ok: false, error: "NOT_DRAFT" };
+    }
+
+    const updated = await database.tender.findUniqueOrThrow({ where: { id } });
+    const draft = toTenderDraft(updated);
+    if (draft === null) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    return { ok: true, value: draft };
+  }
+
+  async updateLocation(
+    id: string,
+    location: TenderLocation,
+    actor: TenderActor,
+  ): Promise<Result<TenderDraft, TenderMutationError>> {
+    // Same atomic guard as `updateDraft`: the conditional `updateMany` is the
+    // state transition and the ownership/draft check in one statement, so
+    // there is no read-then-write window a concurrent publish/cancel could
+    // slip through.
+    const { count } = await database.tender.updateMany({
+      where: { id, ownerId: actor.id, status: "DRAFT" },
+      data: {
+        countryCode: location.countryCode,
+        city: location.city,
+        district: location.district,
+        addressLine: location.addressLine,
+        exactLatitude: location.exact.latitude,
+        exactLongitude: location.exact.longitude,
+        publicLatitude: location.public.latitude,
+        publicLongitude: location.public.longitude,
+      },
     });
 
     if (count === 0) {

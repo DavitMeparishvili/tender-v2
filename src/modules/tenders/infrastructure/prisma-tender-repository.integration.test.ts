@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { database } from "../../../infrastructure/db/client";
+import { createSyncTenderLocation } from "../application/sync-tender-location";
+import { GazetteerGeocoder } from "./gazetteer-geocoder";
 import { PrismaTenderRepository } from "./prisma-tender-repository";
 
 const repository = new PrismaTenderRepository();
@@ -53,5 +55,72 @@ describe("PrismaTenderRepository", () => {
       { id: otherId },
     );
     expect(otherUpdate).toEqual({ ok: false, error: "NOT_OWNER" });
+  });
+
+  it("syncs the location for a known city and coarsens the public coordinates", async () => {
+    const ownerId = await createOwner();
+    const now = new Date();
+
+    const created = await repository.createDraft(
+      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      { id: ownerId },
+      { tenderId: randomUUID() },
+      now,
+    );
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+
+    const syncTenderLocation = createSyncTenderLocation({
+      repository,
+      geocoder: new GazetteerGeocoder(),
+    });
+
+    const synced = await syncTenderLocation(
+      created.value.id,
+      {
+        mode: "ADDRESS",
+        city: "Tbilisi",
+        addressLine: "1 Chavchavadze Ave",
+      },
+      { id: ownerId },
+    );
+
+    expect(synced.ok).toBe(true);
+    if (!synced.ok) return;
+    expect(synced.value.location).not.toBeNull();
+    expect(synced.value.location?.public).not.toEqual(
+      synced.value.location?.exact,
+    );
+  });
+
+  it("returns ADDRESS_NOT_FOUND when syncing the location for an unknown city", async () => {
+    const ownerId = await createOwner();
+    const now = new Date();
+
+    const created = await repository.createDraft(
+      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      { id: ownerId },
+      { tenderId: randomUUID() },
+      now,
+    );
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+
+    const syncTenderLocation = createSyncTenderLocation({
+      repository,
+      geocoder: new GazetteerGeocoder(),
+    });
+
+    const synced = await syncTenderLocation(
+      created.value.id,
+      {
+        mode: "ADDRESS",
+        city: "Nonexistentville",
+        addressLine: "1 Main St",
+      },
+      { id: ownerId },
+    );
+
+    expect(synced).toEqual({ ok: false, error: "ADDRESS_NOT_FOUND" });
   });
 });
