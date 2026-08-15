@@ -34,6 +34,7 @@ model User {
   capabilities    UserCapability[]
   profile         UserProfile?
   providerProfile ProviderProfile?
+  tenders         Tender[]
 
   @@unique([email])
   @@map("user")
@@ -142,6 +143,62 @@ model AuditEvent {
 
   @@index([targetType, targetId, createdAt])
   @@index([actorId, createdAt])
+}
+
+enum TenderStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+}
+
+model Tender {
+  id               String        @id
+  ownerId          String
+  owner            User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  status           TenderStatus  @default(DRAFT)
+  specialty        ProviderSpecialtyCode
+  title            String
+  shortDescription String?
+  fullDescription  String?
+  scopeOfWork      String?
+  budgetMinorUnits Int?
+  currency         String?
+  desiredStartDate DateTime?
+  deadline         DateTime?
+  workerNotes      String?
+  equipmentNotes   String?
+  materialNotes    String?
+  countryCode      String?
+  city             String?
+  district         String?
+  addressLine      String?
+  exactLatitude    Float?
+  exactLongitude   Float?
+  publicLatitude   Float?
+  publicLongitude  Float?
+  conditions       String?
+  publishedAt      DateTime?
+  cancelledAt      DateTime?
+  cancelReason     String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  attachments      TenderAttachment[]
+
+  @@index([ownerId, status])
+  @@index([status, specialty, city, deadline])
+}
+
+model TenderAttachment {
+  id               String   @id
+  tenderId         String
+  tender           Tender   @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+  objectKey        String   @unique
+  originalFileName String
+  mimeType         String
+  sizeBytes        Int
+  createdAt        DateTime @default(now())
+
+  @@index([tenderId])
 }
 
 model OutboxMessage {
