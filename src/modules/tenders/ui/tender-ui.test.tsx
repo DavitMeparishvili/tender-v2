@@ -2,10 +2,14 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import en from "../../localization/messages/en.json";
 import type { TenderDraft } from "../domain/tender";
+import { resolveCustomerRouteAccess } from "./customer-route-access";
 import { TenderDetailContent } from "./tender-detail";
 import { formatTenderDate, formatTenderMoney } from "./tender-format";
 import { TenderListContent } from "./tender-list";
-import { cancelTenderRequest } from "./tender-mutation-request";
+import {
+  cancelTenderRequest,
+  publishTenderRequest,
+} from "./tender-mutation-request";
 import { tenderToWizardForm } from "./tender-wizard-initial";
 
 const tender: TenderDraft = {
@@ -111,6 +115,7 @@ describe("client tender UI", () => {
     };
     const html = renderToStaticMarkup(
       <TenderDetailContent
+        publishControl={<button type="button">publish control</button>}
         cancelControl={<button type="button">cancel control</button>}
         locale="en"
         messages={en}
@@ -124,11 +129,13 @@ describe("client tender UI", () => {
     expect(html).toContain(cancelled.location?.addressLine ?? "");
     expect(html).toContain(cancelled.cancelReason ?? "");
     expect(html).not.toContain("cancel control");
+    expect(html).not.toContain("publish control");
   });
 
   it("renders cancellation only for an active tender", () => {
     const html = renderToStaticMarkup(
       <TenderDetailContent
+        publishControl={<button type="button">publish control</button>}
         cancelControl={<button type="button">cancel control</button>}
         locale="en"
         messages={en}
@@ -137,6 +144,7 @@ describe("client tender UI", () => {
     );
 
     expect(html).toContain("cancel control");
+    expect(html).not.toContain("publish control");
     expect(html).toContain('aria-labelledby="cancel-heading"');
   });
 
@@ -162,9 +170,56 @@ describe("client tender UI", () => {
 
     expect(form.budget).toBe("1234.56");
     expect(form.deadline).toBe("2026-08-31T16:00");
+    expect(form.desiredStartDate).toBe("2026-09-02");
     expect(form.locationMode).toBe("PIN");
     expect(form.latitude).toBe("41.71");
     expect(form.attachmentNames).toEqual(["scope.pdf"]);
+  });
+
+  it("hydrates nullable draft fields and the attachment maximum exactly", () => {
+    const attachmentNames = Array.from(
+      { length: 10 },
+      (_, index) => `scope-${index + 1}.pdf`,
+    );
+    const form = tenderToWizardForm(
+      {
+        ...tender,
+        shortDescription: null,
+        fullDescription: null,
+        scopeOfWork: null,
+        budgetMinorUnits: null,
+        currency: null,
+        desiredStartDate: null,
+        deadline: null,
+        workerNotes: null,
+        equipmentNotes: null,
+        materialNotes: null,
+        location: null,
+        conditions: null,
+      },
+      attachmentNames,
+    );
+
+    expect(form).toMatchObject({
+      shortDescription: "",
+      fullDescription: "",
+      scopeOfWork: "",
+      budget: "",
+      desiredStartDate: "",
+      deadline: "",
+      workerNotes: "",
+      equipmentNotes: "",
+      materialNotes: "",
+      conditions: "",
+      locationMode: "ADDRESS",
+      city: "",
+      district: "",
+      addressLine: "",
+      latitude: "",
+      longitude: "",
+    });
+    expect(form.attachmentNames).toEqual(attachmentNames);
+    expect(form.attachmentNames).toHaveLength(10);
   });
 
   it("posts the cancellation command using the application contract", () => {
@@ -175,5 +230,49 @@ describe("client tender UI", () => {
     expect(JSON.parse(String(request.body))).toEqual({
       reason: "The project scope changed.",
     });
+  });
+
+  it("keeps the publish request bodyless", () => {
+    expect(publishTenderRequest).toEqual({ method: "POST" });
+    expect(publishTenderRequest.body).toBeUndefined();
+  });
+
+  it("resolves the reused customer route guard outcomes", () => {
+    const actor = {
+      id: "owner-1",
+      email: "owner@tender.test",
+      emailVerified: true,
+      displayName: "Owner",
+      capabilities: ["CUSTOMER" as const],
+      providerSpecialties: [],
+      preferredLocale: "en" as const,
+      preferredCurrency: "GEL" as const,
+      onboardingComplete: true,
+      disabledAt: null,
+      restrictedUntil: null,
+    };
+
+    expect(resolveCustomerRouteAccess({ ok: true, value: actor })).toEqual({
+      kind: "GRANTED",
+      actor,
+    });
+    expect(
+      resolveCustomerRouteAccess({
+        ok: false,
+        error: "UNAUTHENTICATED",
+      }),
+    ).toEqual({ kind: "LOGIN" });
+    for (const error of [
+      "EMAIL_UNVERIFIED",
+      "ONBOARDING_INCOMPLETE",
+      "ACCOUNT_DISABLED",
+      "ACCOUNT_RESTRICTED",
+      "CAPABILITY_MISSING",
+    ] as const) {
+      expect(resolveCustomerRouteAccess({ ok: false, error })).toEqual({
+        kind: "DENIED",
+        error,
+      });
+    }
   });
 });

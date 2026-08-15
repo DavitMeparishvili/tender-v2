@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
-import type { Messages } from "../../localization/get-messages";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ErrorSummary,
   SubmitButton,
@@ -18,42 +17,74 @@ function responseCode(value: unknown) {
   return typeof value.code === "string" ? value.code : undefined;
 }
 
+export type PublishTenderCopy = Readonly<{
+  label: string;
+  pendingLabel: string;
+  hint: string;
+  success: string;
+  summaryOne: string;
+  summaryMany: string;
+  genericError: string;
+  requiredError: string;
+  shortDescriptionRequired: string;
+  fullDescriptionRequired: string;
+  scopeRequired: string;
+  budgetRequired: string;
+  locationRequired: string;
+  deadlineRequired: string;
+  deadlineNotFuture: string;
+  notFound: string;
+  notOwner: string;
+  unavailable: string;
+}>;
+
 function publicationIssue(
   code: string | undefined,
-  messages: Messages,
+  copy: PublishTenderCopy,
 ): FormIssue {
   const message = {
-    TITLE_REQUIRED: messages.errors.required,
-    SHORT_DESCRIPTION_REQUIRED:
-      messages.tenders.errors.shortDescriptionRequired,
-    FULL_DESCRIPTION_REQUIRED: messages.tenders.errors.fullDescriptionRequired,
-    SCOPE_REQUIRED: messages.tenders.errors.scopeRequired,
-    BUDGET_REQUIRED: messages.tenders.errors.budgetRequired,
-    LOCATION_REQUIRED: messages.tenders.errors.locationRequired,
-    DEADLINE_REQUIRED: messages.tenders.errors.deadlineRequired,
-    DEADLINE_NOT_FUTURE: messages.tenders.errors.deadlineNotFuture,
-    TENDER_NOT_FOUND: messages.tenders.errors.notFound,
-    NOT_OWNER: messages.tenders.errors.notOwner,
-    NOT_DRAFT: messages.tenders.publishUnavailable,
+    TITLE_REQUIRED: copy.requiredError,
+    SHORT_DESCRIPTION_REQUIRED: copy.shortDescriptionRequired,
+    FULL_DESCRIPTION_REQUIRED: copy.fullDescriptionRequired,
+    SCOPE_REQUIRED: copy.scopeRequired,
+    BUDGET_REQUIRED: copy.budgetRequired,
+    LOCATION_REQUIRED: copy.locationRequired,
+    DEADLINE_REQUIRED: copy.deadlineRequired,
+    DEADLINE_NOT_FUTURE: copy.deadlineNotFuture,
+    TENDER_NOT_FOUND: copy.notFound,
+    NOT_OWNER: copy.notOwner,
+    NOT_DRAFT: copy.unavailable,
   }[code ?? ""];
 
   return {
     field: "publish-heading",
-    message: message ?? messages.errors.generic,
+    message: message ?? copy.genericError,
   };
 }
 
 export function PublishTenderForm({
-  messages,
+  copy,
   tenderId,
 }: Readonly<{
-  messages: Messages;
+  copy: PublishTenderCopy;
   tenderId: string;
 }>) {
   const router = useRouter();
   const [issue, setIssue] = useState<FormIssue | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
+  const focusRequest = useRef(false);
+
+  useEffect(() => {
+    if (!focusRequest.current || issue === null) return;
+    focusRequest.current = false;
+    focusErrorSummary("publish-errors");
+  }, [issue]);
+
+  function showIssue(nextIssue: FormIssue) {
+    focusRequest.current = true;
+    setIssue(nextIssue);
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -68,16 +99,14 @@ export function PublishTenderForm({
 
       if (!response.ok) {
         const body: unknown = await response.json().catch(() => null);
-        setIssue(publicationIssue(responseCode(body), messages));
-        queueMicrotask(() => focusErrorSummary("publish-errors"));
+        showIssue(publicationIssue(responseCode(body), copy));
         return;
       }
 
       setIsPublished(true);
       router.refresh();
     } catch {
-      setIssue(publicationIssue(undefined, messages));
-      queueMicrotask(() => focusErrorSummary("publish-errors"));
+      showIssue(publicationIssue(undefined, copy));
     } finally {
       setIsPending(false);
     }
@@ -86,7 +115,7 @@ export function PublishTenderForm({
   if (isPublished) {
     return (
       <p className="success-status" role="status">
-        {messages.tenders.statusPublished}
+        {copy.success}
       </p>
     );
   }
@@ -96,13 +125,13 @@ export function PublishTenderForm({
       <ErrorSummary
         id="publish-errors"
         issues={issue ? [issue] : []}
-        summaryOne={messages.errors.summaryOne}
-        summaryMany={messages.errors.summaryMany}
+        summaryOne={copy.summaryOne}
+        summaryMany={copy.summaryMany}
       />
-      <p className="tender-action-hint">{messages.tenders.publishHint}</p>
+      <p className="tender-action-hint">{copy.hint}</p>
       <SubmitButton
-        label={messages.tenders.publish}
-        pendingLabel={messages.tenders.publishing}
+        label={copy.label}
+        pendingLabel={copy.pendingLabel}
         isPending={isPending}
       />
     </form>

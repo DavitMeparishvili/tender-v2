@@ -21,6 +21,10 @@ import type { CreateTenderDraftCommand } from "../application/create-tender-draf
 import type { SyncTenderLocationCommand } from "../application/sync-tender-location";
 import type { UpdateTenderDraftCommand } from "../application/update-tender-draft";
 import type { Coordinates } from "../domain/coordinates";
+import {
+  parseDateInputValue,
+  parseGeorgiaDateTimeLocal,
+} from "./georgia-date-time";
 
 const MAX_ATTACHMENTS = 10;
 const MAX_PRISMA_INT = BigInt(2_147_483_647);
@@ -249,18 +253,28 @@ export function validateWizardStep(
         message: messages.tenders.errors.deadlineRequired,
       });
     } else {
-      const deadlineTime = new Date(form.deadline ?? "").getTime();
-      if (!Number.isFinite(deadlineTime)) {
+      const deadline = parseGeorgiaDateTimeLocal(form.deadline ?? "");
+      if (deadline === null) {
         issues.push({
           field: "deadline",
           message: messages.tenders.errors.invalidInput,
         });
-      } else if (deadlineTime <= Date.now()) {
+      } else if (deadline.getTime() <= Date.now()) {
         issues.push({
           field: "deadline",
           message: messages.tenders.errors.deadlineNotFuture,
         });
       }
+    }
+    const desiredStartDate = trimmed(form.desiredStartDate);
+    if (
+      desiredStartDate !== "" &&
+      parseDateInputValue(desiredStartDate) === null
+    ) {
+      issues.push({
+        field: "desiredStartDate",
+        message: messages.tenders.errors.invalidInput,
+      });
     }
   }
 
@@ -418,12 +432,25 @@ function stepForPublicationError(code: string | undefined): WizardStep {
   return 3;
 }
 
-function toUpdateCommand(
+export function toUpdateCommand(
   form: TenderWizardFormState,
 ): UpdateTenderDraftCommand {
   const budgetMinorUnits = majorUnitsToMinor(form.budget);
   if (budgetMinorUnits === null) {
     throw new RangeError("Budget must be validated before serialization.");
+  }
+  const deadline = parseGeorgiaDateTimeLocal(form.deadline ?? "");
+  if (deadline === null) {
+    throw new RangeError("Deadline must be validated before serialization.");
+  }
+  const desiredStartDateValue = trimmed(form.desiredStartDate);
+  const desiredStartDate = desiredStartDateValue
+    ? parseDateInputValue(desiredStartDateValue)
+    : null;
+  if (desiredStartDateValue && desiredStartDate === null) {
+    throw new RangeError(
+      "Desired start date must be validated before serialization.",
+    );
   }
   const command: UpdateTenderDraftCommand = {
     shortDescription: trimmed(form.shortDescription),
@@ -431,16 +458,14 @@ function toUpdateCommand(
     scopeOfWork: trimmed(form.scopeOfWork),
     budgetMinorUnits,
     currency: form.currency ?? "GEL",
-    deadline: new Date(form.deadline ?? ""),
+    deadline,
+    desiredStartDate,
     workerNotes: trimmed(form.workerNotes) || null,
     equipmentNotes: trimmed(form.equipmentNotes) || null,
     materialNotes: trimmed(form.materialNotes) || null,
     conditions: trimmed(form.conditions) || null,
   };
-  const desiredStartDate = trimmed(form.desiredStartDate);
-  return desiredStartDate
-    ? { ...command, desiredStartDate: new Date(desiredStartDate) }
-    : command;
+  return command;
 }
 
 function toLocationCommand(

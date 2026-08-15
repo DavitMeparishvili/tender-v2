@@ -5,6 +5,7 @@ import {
   TenderWizard,
   majorUnitsToMinor,
   shouldGuardWizardLink,
+  toUpdateCommand,
   validateWizardStep,
   wizardHasUnsavedWork,
 } from "./tender-wizard";
@@ -97,6 +98,27 @@ describe("validateWizardStep", () => {
       ),
     ).toEqual([]);
   });
+
+  it("rejects a malformed optional desired start date", () => {
+    expect(
+      validateWizardStep(
+        1,
+        {
+          shortDescription: "1234567890",
+          fullDescription: "12345678901234567890",
+          scopeOfWork: "1234567890",
+          budget: "100.00",
+          currency: "GEL",
+          deadline: "2999-01-01T12:00",
+          desiredStartDate: "2026-02-29",
+        },
+        messages,
+      ),
+    ).toContainEqual({
+      field: "desiredStartDate",
+      message: messages.tenders.errors.invalidInput,
+    });
+  });
 });
 
 describe("majorUnitsToMinor", () => {
@@ -112,6 +134,49 @@ describe("majorUnitsToMinor", () => {
     expect(majorUnitsToMinor("1e2")).toBeNull();
     expect(majorUnitsToMinor("999999999999999999999999")).toBeNull();
     expect(majorUnitsToMinor("0")).toBeNull();
+  });
+});
+
+describe("toUpdateCommand", () => {
+  const complete = {
+    shortDescription: "Prepare and repaint two rooms.",
+    fullDescription:
+      "Protect the floors, prepare the walls, and apply two coats.",
+    scopeOfWork: "Two bedrooms with minor wall repairs.",
+    budget: "1234.56",
+    currency: "GEL" as const,
+    deadline: "2026-08-31T16:00",
+    workerNotes: "",
+    equipmentNotes: "",
+    materialNotes: "",
+    conditions: "",
+  };
+
+  it("serializes Georgia wall time without consulting the host timezone", () => {
+    expect(toUpdateCommand(complete)).toMatchObject({
+      budgetMinorUnits: 123_456,
+      deadline: new Date("2026-08-31T12:00:00.000Z"),
+    });
+  });
+
+  it("sends an explicit null when the desired date is cleared", () => {
+    expect(
+      toUpdateCommand({ ...complete, desiredStartDate: "" }),
+    ).toMatchObject({
+      desiredStartDate: null,
+      workerNotes: null,
+      equipmentNotes: null,
+      materialNotes: null,
+      conditions: null,
+    });
+  });
+
+  it("serializes a valid desired date as its date-only UTC value", () => {
+    expect(
+      toUpdateCommand({ ...complete, desiredStartDate: "2026-09-02" }),
+    ).toMatchObject({
+      desiredStartDate: new Date("2026-09-02T00:00:00.000Z"),
+    });
   });
 });
 

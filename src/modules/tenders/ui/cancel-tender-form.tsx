@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
-import type { Messages } from "../../localization/get-messages";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ErrorSummary,
   SubmitButton,
@@ -19,34 +18,62 @@ function responseCode(value: unknown) {
   return typeof value.code === "string" ? value.code : undefined;
 }
 
+export type CancelTenderCopy = Readonly<{
+  label: string;
+  pendingLabel: string;
+  reasonLabel: string;
+  reasonHint: string;
+  success: string;
+  summaryOne: string;
+  summaryMany: string;
+  requiredError: string;
+  invalidError: string;
+  notFound: string;
+  notOwner: string;
+  alreadyCancelled: string;
+  genericError: string;
+}>;
+
 function cancellationIssue(
   code: string | undefined,
-  messages: Messages,
+  copy: CancelTenderCopy,
 ): FormIssue {
   const message = {
-    INVALID_INPUT: messages.tenders.errors.invalidInput,
-    TENDER_NOT_FOUND: messages.tenders.errors.notFound,
-    NOT_OWNER: messages.tenders.errors.notOwner,
-    ALREADY_CANCELLED: messages.tenders.errors.alreadyCancelled,
+    INVALID_INPUT: copy.invalidError,
+    TENDER_NOT_FOUND: copy.notFound,
+    NOT_OWNER: copy.notOwner,
+    ALREADY_CANCELLED: copy.alreadyCancelled,
   }[code ?? ""];
 
   return {
     field: "cancelReason",
-    message: message ?? messages.errors.generic,
+    message: message ?? copy.genericError,
   };
 }
 
 export function CancelTenderForm({
-  messages,
+  copy,
   tenderId,
 }: Readonly<{
-  messages: Messages;
+  copy: CancelTenderCopy;
   tenderId: string;
 }>) {
   const router = useRouter();
   const [issue, setIssue] = useState<FormIssue | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [isCancelled, setIsCancelled] = useState(false);
+  const focusRequest = useRef(false);
+
+  useEffect(() => {
+    if (!focusRequest.current || issue === null) return;
+    focusRequest.current = false;
+    focusErrorSummary("cancel-errors");
+  }, [issue]);
+
+  function showIssue(nextIssue: FormIssue) {
+    focusRequest.current = true;
+    setIssue(nextIssue);
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -54,14 +81,10 @@ export function CancelTenderForm({
     const reason = String(new FormData(form).get("cancelReason") ?? "").trim();
 
     if (reason.length < 5) {
-      setIssue({
+      showIssue({
         field: "cancelReason",
-        message:
-          reason.length === 0
-            ? messages.errors.required
-            : messages.tenders.errors.invalidInput,
+        message: reason.length === 0 ? copy.requiredError : copy.invalidError,
       });
-      queueMicrotask(() => focusErrorSummary("cancel-errors"));
       return;
     }
 
@@ -76,16 +99,14 @@ export function CancelTenderForm({
 
       if (!response.ok) {
         const body: unknown = await response.json().catch(() => null);
-        setIssue(cancellationIssue(responseCode(body), messages));
-        queueMicrotask(() => focusErrorSummary("cancel-errors"));
+        showIssue(cancellationIssue(responseCode(body), copy));
         return;
       }
 
       setIsCancelled(true);
       router.refresh();
     } catch {
-      setIssue(cancellationIssue(undefined, messages));
-      queueMicrotask(() => focusErrorSummary("cancel-errors"));
+      showIssue(cancellationIssue(undefined, copy));
     } finally {
       setIsPending(false);
     }
@@ -94,7 +115,7 @@ export function CancelTenderForm({
   if (isCancelled) {
     return (
       <p className="success-status" role="status">
-        {messages.tenders.statusCancelled}
+        {copy.success}
       </p>
     );
   }
@@ -104,13 +125,13 @@ export function CancelTenderForm({
       <ErrorSummary
         id="cancel-errors"
         issues={issue ? [issue] : []}
-        summaryOne={messages.errors.summaryOne}
-        summaryMany={messages.errors.summaryMany}
+        summaryOne={copy.summaryOne}
+        summaryMany={copy.summaryMany}
       />
       <Field
         id="cancelReason"
-        label={messages.tenders.cancelReason}
-        description={messages.tenders.cancelReasonHint}
+        label={copy.reasonLabel}
+        description={copy.reasonHint}
         error={issue?.field === "cancelReason" ? issue.message : undefined}
       >
         <textarea
@@ -122,8 +143,8 @@ export function CancelTenderForm({
         />
       </Field>
       <SubmitButton
-        label={messages.tenders.cancel}
-        pendingLabel={messages.tenders.cancelling}
+        label={copy.label}
+        pendingLabel={copy.pendingLabel}
         isPending={isPending}
       />
     </form>

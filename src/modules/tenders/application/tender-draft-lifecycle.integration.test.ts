@@ -92,4 +92,34 @@ describe("tender draft application entry points", () => {
 
     expect(result).toEqual({ ok: false, error: "NOT_OWNER" });
   });
+
+  it("clears a persisted desired start date through the application entry point", async () => {
+    const ownerId = await createOwner();
+    const created = await createTenderDraft(
+      { specialty: "CONSTRUCTION_REPAIR", title: "Replace kitchen tiles" },
+      { id: ownerId },
+    );
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+
+    const dated = await updateTenderDraft(
+      created.value.id,
+      { desiredStartDate: new Date("2026-09-02T00:00:00.000Z") },
+      { id: ownerId },
+    );
+    expect(dated).toMatchObject({
+      ok: true,
+      value: { desiredStartDate: new Date("2026-09-02T00:00:00.000Z") },
+    });
+
+    const cleared = await updateTenderDraft(
+      created.value.id,
+      { desiredStartDate: null },
+      { id: ownerId },
+    );
+    expect(cleared).toMatchObject({
+      ok: true,
+      value: { desiredStartDate: null },
+    });
+  });
 });

@@ -11,7 +11,7 @@ export const updateTenderDraftCommandSchema = z
     scopeOfWork: z.string().trim().min(10).max(2_000).optional(),
     budgetMinorUnits: z.number().int().positive().optional(),
     currency: z.enum(["GEL", "USD"]).optional(),
-    desiredStartDate: z.coerce.date().optional(),
+    desiredStartDate: z.coerce.date().nullable().optional(),
     deadline: z.coerce.date().optional(),
     workerNotes: z.string().trim().max(1_000).nullable().optional(),
     equipmentNotes: z.string().trim().max(1_000).nullable().optional(),

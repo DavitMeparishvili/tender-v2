@@ -5,6 +5,7 @@ import { WorkspaceDenied } from "@/src/modules/identity/ui/workspace-view";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { TenderList } from "@/src/modules/tenders/ui/tender-list";
+import { resolveCustomerRouteAccess } from "@/src/modules/tenders/ui/customer-route-access";
 
 export default async function ClientTenderListPage({
   params,
@@ -13,13 +14,14 @@ export default async function ClientTenderListPage({
   if (!isLocale(locale)) notFound();
   const messages = getMessages(locale);
   const access = await requireCapability(requestHeaders, "CUSTOMER");
-  if (!access.ok) {
-    if (access.error === "UNAUTHENTICATED") {
-      redirect("/" + locale + "/login");
-    }
+  const routeAccess = resolveCustomerRouteAccess(access);
+  if (routeAccess.kind === "LOGIN") {
+    redirect("/" + locale + "/login");
+  }
+  if (routeAccess.kind === "DENIED") {
     return (
       <WorkspaceDenied
-        error={access.error}
+        error={routeAccess.error}
         locale={locale}
         messages={messages}
       />
@@ -27,6 +29,6 @@ export default async function ClientTenderListPage({
   }
 
   return (
-    <TenderList actor={access.value} locale={locale} messages={messages} />
+    <TenderList actor={routeAccess.actor} locale={locale} messages={messages} />
   );
 }

@@ -173,4 +173,42 @@ describe("PrismaTenderRepository", () => {
 
     expect(synced).toEqual({ ok: false, error: "ADDRESS_NOT_FOUND" });
   });
+
+  it("persists an explicit null desired start date", async () => {
+    const ownerId = await createOwner();
+    const created = await repository.createDraft(
+      { specialty: "CONSTRUCTION_REPAIR", title: "Replace kitchen tiles" },
+      { id: ownerId },
+      { tenderId: randomUUID() },
+      new Date(),
+    );
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+
+    const dated = await repository.updateDraft(
+      created.value.id,
+      { desiredStartDate: new Date("2026-09-02T00:00:00.000Z") },
+      { id: ownerId },
+    );
+    expect(dated).toMatchObject({
+      ok: true,
+      value: { desiredStartDate: new Date("2026-09-02T00:00:00.000Z") },
+    });
+
+    const cleared = await repository.updateDraft(
+      created.value.id,
+      { desiredStartDate: null },
+      { id: ownerId },
+    );
+    expect(cleared).toMatchObject({
+      ok: true,
+      value: { desiredStartDate: null },
+    });
+    await expect(
+      database.tender.findUniqueOrThrow({
+        where: { id: created.value.id },
+        select: { desiredStartDate: true },
+      }),
+    ).resolves.toEqual({ desiredStartDate: null });
+  });
 });

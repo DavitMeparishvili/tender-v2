@@ -8,6 +8,7 @@ import type { Messages } from "../../localization/get-messages";
 import { IdentityShell } from "../../identity/ui/identity-shell";
 import { CancelTenderForm } from "./cancel-tender-form";
 import { PublishTenderForm } from "./publish-tender-form";
+import { cancelTenderCopy, publishTenderCopy } from "./tender-action-copy";
 import {
   formatTenderDate,
   formatTenderMoney,
@@ -201,8 +202,12 @@ export async function TenderDetail({
         locale={locale}
         messages={messages}
         tender={owned.value}
-        publishControl={<PublishTenderForm tenderId={id} messages={messages} />}
-        cancelControl={<CancelTenderForm tenderId={id} messages={messages} />}
+        publishControl={
+          <PublishTenderForm tenderId={id} copy={publishTenderCopy(messages)} />
+        }
+        cancelControl={
+          <CancelTenderForm tenderId={id} copy={cancelTenderCopy(messages)} />
+        }
       />
     </IdentityShell>
   );

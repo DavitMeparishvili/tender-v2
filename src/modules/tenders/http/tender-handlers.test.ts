@@ -96,6 +96,26 @@ describe("owned tender handlers", () => {
       code: "NOT_OWNER",
     });
   });
+
+  it("passes an explicit desired-start clear command through PATCH", async () => {
+    let receivedInput: unknown;
+    const handlers = createOwnedTenderHandlers({
+      requireCustomer: authorizedActor,
+      getOwned: async () => ({ ok: true, value: {} as never }),
+      updateDraft: async (_id, input) => {
+        receivedInput = input;
+        return { ok: true, value: { desiredStartDate: null } as never };
+      },
+    });
+
+    const response = await handlers.PATCH(
+      jsonRequest({ desiredStartDate: null }, "PATCH"),
+      routeContext("tender-1"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(receivedInput).toEqual({ desiredStartDate: null });
+  });
 });
 
 describe("location handlers", () => {
