@@ -22,8 +22,10 @@
     "db:migrate": "prisma migrate dev",
     "db:migrate:test": "tsx scripts/run-prisma-test.mjs",
     "seed:phase-1": "tsx scripts/seed-phase-01.ts",
-    "verify:phase-0": "pnpm format:check && pnpm lint && pnpm verify:boundaries && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm build && pnpm test:e2e --grep-invert @phase-1",
-    "verify:phase-1": "pnpm verify:phase-0 && pnpm db:migrate:test && pnpm test:integration -- identity profiles && pnpm build && pnpm seed:phase-1 && pnpm test:e2e --grep @phase-1"
+    "seed:phase-2": "tsx scripts/seed-phase-02.ts",
+    "verify:phase-0": "pnpm format:check && pnpm lint && pnpm verify:boundaries && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm build && pnpm test:e2e --grep-invert \"@phase-1|@phase-2\"",
+    "verify:phase-1": "pnpm verify:phase-0 && pnpm db:migrate:test && pnpm test:integration -- identity profiles && pnpm build && pnpm seed:phase-1 && pnpm test:e2e --grep @phase-1",
+    "verify:phase-2": "pnpm verify:phase-1 && pnpm db:migrate:test && pnpm test:integration -- tenders && pnpm build && pnpm seed:phase-2 && pnpm test:e2e --grep @phase-2"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1110.0",
