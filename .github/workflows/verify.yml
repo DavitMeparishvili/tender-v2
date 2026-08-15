@@ -19,6 +19,12 @@ jobs:
       AUTH_SECRET: ci-only-auth-secret-0123456789012345
       APP_URL: http://127.0.0.1:3000
       NODE_ENV: development
+      STORAGE_ENDPOINT: http://127.0.0.1:9000
+      STORAGE_REGION: us-east-1
+      STORAGE_BUCKET: tender-ci-test
+      STORAGE_ACCESS_KEY_ID: tender_local
+      STORAGE_SECRET_ACCESS_KEY: tender_local_only
+      STORAGE_FORCE_PATH_STYLE: "true"
     services:
       postgres:
         image: postgres:17
@@ -37,6 +43,39 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+
+      # MinIO cannot be a `services:` entry: that block cannot supply the
+      # `server /data` command the image needs, and its default command exits
+      # immediately. The gate runs `pnpm test:integration` unfiltered, which
+      # now includes attachment tests that hit real object storage.
+      - name: Start MinIO
+        shell: bash
+        run: |
+          docker run --detach --name minio \
+            --publish 9000:9000 \
+            --env MINIO_ROOT_USER=tender_local \
+            --env MINIO_ROOT_PASSWORD=tender_local_only \
+            --health-cmd "mc ready local" \
+            --health-interval 2s \
+            --health-timeout 3s \
+            --health-retries 20 \
+            minio/minio:RELEASE.2025-09-07T16-13-09Z server /data
+          for _ in $(seq 1 30); do
+            if [ "$(docker inspect --format '{{.State.Health.Status}}' minio)" = "healthy" ]; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "MinIO did not become healthy in time." >&2
+          docker logs minio >&2
+          exit 1
+
+      - name: Create MinIO bucket
+        shell: bash
+        run: |
+          docker run --rm --network host \
+            --entrypoint sh minio/mc:RELEASE.2025-08-13T08-35-41Z -c \
+            "mc alias set ci http://127.0.0.1:9000 tender_local tender_local_only && mc mb --ignore-existing ci/${STORAGE_BUCKET}"
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v6

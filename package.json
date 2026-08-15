@@ -15,7 +15,7 @@
     "test:unit": "vitest run --config vitest.config.ts",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:e2e": "playwright test",
-    "db:up": "docker compose up -d --wait",
+    "db:up": "docker compose up -d --wait postgres-dev postgres-test minio && docker compose run --rm minio-init",
     "db:down": "docker compose down",
     "db:logs": "docker compose logs --tail=100 postgres-dev postgres-test",
     "db:generate": "prisma generate",
@@ -26,6 +26,8 @@
     "verify:phase-1": "pnpm verify:phase-0 && pnpm db:migrate:test && pnpm test:integration -- identity profiles && pnpm build && pnpm seed:phase-1 && pnpm test:e2e --grep @phase-1"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1110.0",
+    "@aws-sdk/s3-request-presigner": "3.1110.0",
     "@better-auth/prisma-adapter": "1.6.28",
     "@fontsource/noto-sans-georgian": "5.3.0",
     "@prisma/adapter-pg": "7.9.1",

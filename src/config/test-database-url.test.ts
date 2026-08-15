@@ -12,6 +12,11 @@ const validInput = {
     "postgresql://tender_test:tender_test_local_only@localhost:5433/tender_test",
   AUTH_SECRET: "01234567890123456789012345678901",
   APP_URL: "http://localhost:3000",
+  STORAGE_ENDPOINT: "http://localhost:9000",
+  STORAGE_REGION: "us-east-1",
+  STORAGE_BUCKET: "tender-test",
+  STORAGE_ACCESS_KEY_ID: "tender_local",
+  STORAGE_SECRET_ACCESS_KEY: "tender_local_only",
 } satisfies NodeJS.ProcessEnv;
 
 describe("test database configuration", () => {
@@ -24,6 +29,12 @@ describe("test database configuration", () => {
         "postgresql://tender_test:tender_test_local_only@localhost:5433/tender_test",
       AUTH_SECRET: "01234567890123456789012345678901",
       APP_URL: "http://localhost:3000",
+      STORAGE_ENDPOINT: "http://localhost:9000",
+      STORAGE_REGION: "us-east-1",
+      STORAGE_BUCKET: "tender-test",
+      STORAGE_ACCESS_KEY_ID: "tender_local",
+      STORAGE_SECRET_ACCESS_KEY: "tender_local_only",
+      STORAGE_FORCE_PATH_STYLE: true,
     });
   });
 
