@@ -2,12 +2,18 @@ import type { Tender } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
 import type { Result } from "../../shared";
 import type {
+  CancelTenderCommand,
+  CancelError,
+  CancelTenderRepository,
+} from "../application/cancel-tender";
+import type {
   CreateTenderDraftCommand,
   CreateTenderDraftRepository,
   TenderActor,
 } from "../application/create-tender-draft";
 import type { GetOwnedTenderRepository } from "../application/get-owned-tender";
 import type { ListOwnedTendersRepository } from "../application/list-owned-tenders";
+import type { PublishTenderRepository } from "../application/publish-tender";
 import type { SyncTenderLocationRepository } from "../application/sync-tender-location";
 import type {
   TenderMutationError,
@@ -19,6 +25,7 @@ import type {
   TenderCurrency,
   TenderDraft,
   TenderLocation,
+  TenderRecord,
 } from "../domain/tender";
 
 export interface TenderRepository
@@ -27,7 +34,9 @@ export interface TenderRepository
     UpdateTenderDraftRepository,
     GetOwnedTenderRepository,
     ListOwnedTendersRepository,
-    SyncTenderLocationRepository {}
+    SyncTenderLocationRepository,
+    PublishTenderRepository,
+    CancelTenderRepository {}
 
 function isRepresentableCurrency(
   value: string | null,
@@ -101,6 +110,46 @@ function toTenderDraft(row: Tender): TenderDraft | null {
     cancelReason: row.cancelReason,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
+  };
+}
+
+// Maps a row already flipped to PUBLISHED to the narrower `TenderRecord`
+// projection. `evaluateDraftForPublication` guarantees every field below is
+// non-null at the moment `publish` runs, and none of the update paths in this
+// module ever unset a field once it is set, so this mapping cannot fail in
+// practice. It still follows the never-throw convention of `toTenderDraft`:
+// a row this module cannot represent as a `TenderRecord` is treated the same
+// way an unrepresentable row is treated elsewhere in this file — as absent.
+function toTenderRecord(row: Tender): TenderRecord | null {
+  const draft = toTenderDraft(row);
+  if (draft === null) {
+    return null;
+  }
+  if (
+    draft.status !== "PUBLISHED" ||
+    draft.shortDescription === null ||
+    draft.fullDescription === null ||
+    draft.scopeOfWork === null ||
+    draft.budgetMinorUnits === null ||
+    draft.currency === null ||
+    draft.deadline === null ||
+    draft.location === null ||
+    draft.publishedAt === null
+  ) {
+    return null;
+  }
+
+  return {
+    ...draft,
+    status: draft.status,
+    shortDescription: draft.shortDescription,
+    fullDescription: draft.fullDescription,
+    scopeOfWork: draft.scopeOfWork,
+    budgetMinorUnits: draft.budgetMinorUnits,
+    currency: draft.currency,
+    deadline: draft.deadline,
+    location: draft.location,
+    publishedAt: draft.publishedAt,
   };
 }
 
@@ -260,6 +309,82 @@ export class PrismaTenderRepository implements TenderRepository {
         return { ok: false, error: "NOT_OWNER" };
       }
       return { ok: false, error: "NOT_DRAFT" };
+    }
+
+    const updated = await database.tender.findUniqueOrThrow({ where: { id } });
+    const draft = toTenderDraft(updated);
+    if (draft === null) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    return { ok: true, value: draft };
+  }
+
+  async publish(
+    id: string,
+    actor: TenderActor,
+    now: Date,
+  ): Promise<Result<TenderRecord, TenderMutationError>> {
+    // Same atomic guard as `updateDraft`/`updateLocation`: the conditional
+    // `updateMany` is the state transition itself, so two concurrent
+    // publishes race on this single statement and exactly one of them
+    // reports `count === 1`. The loser re-reads the row to distinguish
+    // `TENDER_NOT_FOUND` / `NOT_OWNER` / `NOT_DRAFT` (it will observe
+    // `NOT_DRAFT`, since the winner already moved the row to PUBLISHED).
+    const { count } = await database.tender.updateMany({
+      where: { id, ownerId: actor.id, status: "DRAFT" },
+      data: { status: "PUBLISHED", publishedAt: now },
+    });
+
+    if (count === 0) {
+      const existing = await database.tender.findUnique({ where: { id } });
+      if (existing === null) {
+        return { ok: false, error: "TENDER_NOT_FOUND" };
+      }
+      if (existing.ownerId !== actor.id) {
+        return { ok: false, error: "NOT_OWNER" };
+      }
+      return { ok: false, error: "NOT_DRAFT" };
+    }
+
+    const updated = await database.tender.findUniqueOrThrow({ where: { id } });
+    const record = toTenderRecord(updated);
+    if (record === null) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    return { ok: true, value: record };
+  }
+
+  async cancel(
+    id: string,
+    command: CancelTenderCommand,
+    actor: TenderActor,
+    now: Date,
+  ): Promise<Result<TenderDraft, CancelError>> {
+    // Cancellation is legal from DRAFT and PUBLISHED alike, so the guard
+    // condition differs from `updateDraft`/`publish`: any status other than
+    // CANCELLED is eligible. The conditional `updateMany` is still the sole
+    // state transition, so two concurrent cancellations race on this one
+    // statement and exactly one of them reports `count === 1`; the loser
+    // re-reads the row and observes `status === "CANCELLED"`, reporting
+    // `ALREADY_CANCELLED`.
+    const { count } = await database.tender.updateMany({
+      where: { id, ownerId: actor.id, status: { in: ["DRAFT", "PUBLISHED"] } },
+      data: {
+        status: "CANCELLED",
+        cancelledAt: now,
+        cancelReason: command.reason,
+      },
+    });
+
+    if (count === 0) {
+      const existing = await database.tender.findUnique({ where: { id } });
+      if (existing === null) {
+        return { ok: false, error: "TENDER_NOT_FOUND" };
+      }
+      if (existing.ownerId !== actor.id) {
+        return { ok: false, error: "NOT_OWNER" };
+      }
+      return { ok: false, error: "ALREADY_CANCELLED" };
     }
 
     const updated = await database.tender.findUniqueOrThrow({ where: { id } });
