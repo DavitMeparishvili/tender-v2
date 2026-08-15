@@ -1,4 +1,4 @@
-import type { Tender } from "../../../generated/prisma/client";
+import type { Prisma, Tender } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
 import type { Result } from "../../shared";
 import type {
@@ -12,8 +12,13 @@ import type {
   TenderActor,
 } from "../application/create-tender-draft";
 import type { GetOwnedTenderRepository } from "../application/get-owned-tender";
+import type { GetPublishedTenderRepository } from "../application/get-published-tender";
 import type { ListOwnedTendersRepository } from "../application/list-owned-tenders";
 import type { PublishTenderRepository } from "../application/publish-tender";
+import type {
+  SearchPublishedTendersQuery,
+  SearchPublishedTendersRepository,
+} from "../application/search-published-tenders";
 import type { SyncTenderLocationRepository } from "../application/sync-tender-location";
 import type {
   TenderMutationError,
@@ -36,7 +41,9 @@ export interface TenderRepository
     ListOwnedTendersRepository,
     SyncTenderLocationRepository,
     PublishTenderRepository,
-    CancelTenderRepository {}
+    CancelTenderRepository,
+    SearchPublishedTendersRepository,
+    GetPublishedTenderRepository {}
 
 function isRepresentableCurrency(
   value: string | null,
@@ -150,6 +157,47 @@ function toTenderRecord(row: Tender): TenderRecord | null {
     deadline: draft.deadline,
     location: draft.location,
     publishedAt: draft.publishedAt,
+  };
+}
+
+// Shared by `searchPublished` and `getPublished`: both discovery query
+// methods only ever see rows that are currently PUBLISHED and whose
+// deadline has not yet elapsed, so the base predicate lives in one place.
+// The optional filters are merged into the same `deadline`/`budgetMinorUnits`
+// keys the base predicate uses (rather than spread as sibling keys) because a
+// second spread of the same key would silently overwrite the first instead
+// of combining both bounds.
+function publishedFilterWhere(
+  filter: SearchPublishedTendersQuery,
+  now: Date,
+): Prisma.TenderWhereInput {
+  return {
+    status: "PUBLISHED",
+    deadline: {
+      gt: now,
+      ...(filter.deadlineBefore === undefined
+        ? {}
+        : { lt: filter.deadlineBefore }),
+    },
+    ...(filter.specialty === undefined ? {} : { specialty: filter.specialty }),
+    ...(filter.city === undefined ? {} : { city: filter.city }),
+    ...(filter.district === undefined ? {} : { district: filter.district }),
+    ...(filter.minBudgetMinorUnits === undefined &&
+    filter.maxBudgetMinorUnits === undefined
+      ? {}
+      : {
+          budgetMinorUnits: {
+            ...(filter.minBudgetMinorUnits === undefined
+              ? {}
+              : { gte: filter.minBudgetMinorUnits }),
+            ...(filter.maxBudgetMinorUnits === undefined
+              ? {}
+              : { lte: filter.maxBudgetMinorUnits }),
+          },
+        }),
+    ...(filter.publishedAfter === undefined
+      ? {}
+      : { publishedAt: { gt: filter.publishedAfter } }),
   };
 }
 
@@ -410,6 +458,36 @@ export class PrismaTenderRepository implements TenderRepository {
       return { ok: false, error: "TENDER_NOT_FOUND" };
     }
     return { ok: true, value: draft };
+  }
+
+  async searchPublished(
+    filter: SearchPublishedTendersQuery,
+    now: Date,
+  ): Promise<readonly TenderRecord[]> {
+    const rows = await database.tender.findMany({
+      where: publishedFilterWhere(filter, now),
+      orderBy: { publishedAt: "desc" },
+    });
+    return rows
+      .map(toTenderRecord)
+      .filter((record): record is TenderRecord => record !== null);
+  }
+
+  async getPublished(
+    id: string,
+    now: Date,
+  ): Promise<Result<TenderRecord, "TENDER_NOT_FOUND">> {
+    const row = await database.tender.findFirst({
+      where: { id, status: "PUBLISHED", deadline: { gt: now } },
+    });
+    if (row === null) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    const record = toTenderRecord(row);
+    if (record === null) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    return { ok: true, value: record };
   }
 }
 

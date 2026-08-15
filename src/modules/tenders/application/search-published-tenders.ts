@@ -1,0 +1,82 @@
+import { z } from "zod";
+import type { Clock } from "@/src/modules/shared";
+import { distanceKilometers } from "../domain/coordinates";
+import { toPublicSummary, type PublicTenderSummary } from "../domain/masking";
+import type { TenderRecord } from "../domain/tender";
+
+export const searchPublishedTendersQuerySchema = z
+  .object({
+    specialty: z.literal("CONSTRUCTION_REPAIR").optional(),
+    city: z.string().trim().min(1).max(120).optional(),
+    district: z.string().trim().min(1).max(120).optional(),
+    minBudgetMinorUnits: z.coerce.number().int().nonnegative().optional(),
+    maxBudgetMinorUnits: z.coerce.number().int().nonnegative().optional(),
+    publishedAfter: z.coerce.date().optional(),
+    deadlineBefore: z.coerce.date().optional(),
+    nearLatitude: z.coerce.number().min(-90).max(90).optional(),
+    nearLongitude: z.coerce.number().min(-180).max(180).optional(),
+    nearRadiusKilometers: z.coerce.number().positive().max(500).optional(),
+  })
+  .strict();
+export type SearchPublishedTendersQuery = z.output<
+  typeof searchPublishedTendersQuerySchema
+>;
+
+export interface SearchPublishedTendersRepository {
+  searchPublished(
+    filter: SearchPublishedTendersQuery,
+    now: Date,
+  ): Promise<readonly TenderRecord[]>;
+}
+
+export function createSearchPublishedTenders(dependencies: {
+  repository: SearchPublishedTendersRepository;
+  clock: Clock;
+}) {
+  return async function searchPublishedTenders(
+    input: unknown,
+  ): Promise<
+    | { ok: true; value: readonly PublicTenderSummary[] }
+    | { ok: false; error: "INVALID_INPUT" }
+  > {
+    const parsed = searchPublishedTendersQuerySchema.safeParse(input);
+    if (!parsed.success) return { ok: false, error: "INVALID_INPUT" };
+
+    const now = dependencies.clock.now();
+    const matches = await dependencies.repository.searchPublished(
+      parsed.data,
+      now,
+    );
+    const near =
+      parsed.data.nearLatitude !== undefined &&
+      parsed.data.nearLongitude !== undefined &&
+      parsed.data.nearRadiusKilometers !== undefined
+        ? {
+            latitude: parsed.data.nearLatitude,
+            longitude: parsed.data.nearLongitude,
+            radiusKilometers: parsed.data.nearRadiusKilometers,
+          }
+        : null;
+
+    const filtered = near
+      ? matches.filter(
+          (tender) =>
+            distanceKilometers(near, tender.location.public) <=
+            near.radiusKilometers,
+        )
+      : matches;
+
+    return { ok: true, value: filtered.map(toPublicSummary) };
+  };
+}
+
+export async function searchPublishedTenders(
+  input: unknown,
+): ReturnType<ReturnType<typeof createSearchPublishedTenders>> {
+  const { prismaTenderRepository } =
+    await import("../infrastructure/prisma-tender-repository");
+  return createSearchPublishedTenders({
+    repository: prismaTenderRepository,
+    clock: { now: () => new Date() },
+  })(input);
+}
