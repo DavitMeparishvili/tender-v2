@@ -55,7 +55,11 @@ export function createAttachmentHandlers({
       const access = await authorizeCustomer(requireCustomer, request.headers);
       if (access instanceof Response) return access;
       const { id } = await context.params;
-      const formData = await request.formData();
+      // A request with no body, or one that is not multipart, makes
+      // `formData()` reject. That is a malformed client request, not a server
+      // fault, so it must not escape as a 500.
+      const formData = await request.formData().catch(() => null);
+      if (formData === null) return mapTenderError("INVALID_INPUT");
       const file = formData.get("file");
       if (!(file instanceof File)) return mapTenderError("INVALID_INPUT");
       const body = new Uint8Array(await file.arrayBuffer());

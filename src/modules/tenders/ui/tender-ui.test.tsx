@@ -1,10 +1,18 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import en from "../../localization/messages/en.json";
+import ka from "../../localization/messages/ka.json";
 import type { TenderDraft } from "../domain/tender";
 import { resolveCustomerRouteAccess } from "./customer-route-access";
-import { TenderDetailContent } from "./tender-detail";
-import { formatTenderDate, formatTenderMoney } from "./tender-format";
+import {
+  TenderDetailContent,
+  type TenderAttachmentView,
+} from "./tender-detail";
+import {
+  formatAttachmentSize,
+  formatTenderDate,
+  formatTenderMoney,
+} from "./tender-format";
 import { TenderListContent } from "./tender-list";
 import {
   cancelTenderRequest,
@@ -43,6 +51,29 @@ const tender: TenderDraft = {
   cancelReason: null,
   createdAt: new Date("2026-08-14T12:00:00.000Z"),
   updatedAt: new Date("2026-08-15T12:00:00.000Z"),
+};
+
+const attachments: readonly TenderAttachmentView[] = [
+  {
+    id: "attachment-1",
+    originalFileName: "site-photo.jpg",
+    mimeType: "image/jpeg",
+    sizeBytes: 9_551_713,
+    url: "https://storage.test/site-photo",
+  },
+  {
+    id: "attachment-2",
+    originalFileName: "scope.pdf",
+    mimeType: "application/pdf",
+    sizeBytes: 2048,
+    url: "https://storage.test/scope",
+  },
+];
+
+const sizeUnits = {
+  bytes: en.tenders.attachmentSizeBytes,
+  kilobytes: en.tenders.attachmentSizeKilobytes,
+  megabytes: en.tenders.attachmentSizeMegabytes,
 };
 
 describe("client tender UI", () => {
@@ -163,6 +194,73 @@ describe("client tender UI", () => {
     expect(html.indexOf("publish control")).toBeLessThan(
       html.indexOf("cancel control"),
     );
+  });
+
+  it("formats attachment sizes with the same 1024-based units as the upload cap", () => {
+    expect(formatAttachmentSize(160, "en", sizeUnits)).toBe("160 B");
+    expect(formatAttachmentSize(2048, "en", sizeUnits)).toBe("2 KB");
+    expect(formatAttachmentSize(9_551_713, "en", sizeUnits)).toBe("9.1 MB");
+    expect(formatAttachmentSize(15 * 1024 * 1024, "en", sizeUnits)).toBe(
+      "15 MB",
+    );
+  });
+
+  it("formats attachment sizes with the Georgian decimal separator", () => {
+    const kaUnits = {
+      bytes: ka.tenders.attachmentSizeBytes,
+      kilobytes: ka.tenders.attachmentSizeKilobytes,
+      megabytes: ka.tenders.attachmentSizeMegabytes,
+    };
+
+    expect(formatAttachmentSize(9_551_713, "ka", kaUnits)).toContain("9,1");
+  });
+
+  it("shows owner attachments as thumbnails for images and named links for documents", () => {
+    const html = renderToStaticMarkup(
+      <TenderDetailContent
+        locale="en"
+        messages={en}
+        tender={tender}
+        attachments={attachments}
+      />,
+    );
+
+    expect(html).toContain('aria-labelledby="attachments-heading"');
+    expect(html).toContain(en.tenders.attachments);
+    expect(html).toContain('href="https://storage.test/site-photo"');
+    expect(html).toContain('src="https://storage.test/site-photo"');
+    expect(html).toContain("site-photo.jpg");
+    expect(html).toContain('href="https://storage.test/scope"');
+    expect(html).toContain("scope.pdf");
+    expect(html).toContain("9.1 MB");
+  });
+
+  it("keeps a document attachment out of the image thumbnails", () => {
+    const html = renderToStaticMarkup(
+      <TenderDetailContent
+        locale="en"
+        messages={en}
+        tender={tender}
+        attachments={[attachments[1] as TenderAttachmentView]}
+      />,
+    );
+
+    expect(html).toContain("scope.pdf");
+    expect(html).not.toContain("<img");
+  });
+
+  it("omits the attachment section entirely when a tender has no files", () => {
+    const html = renderToStaticMarkup(
+      <TenderDetailContent
+        locale="en"
+        messages={en}
+        tender={tender}
+        attachments={[]}
+      />,
+    );
+
+    expect(html).not.toContain('aria-labelledby="attachments-heading"');
+    expect(html).not.toContain(en.tenders.attachments);
   });
 
   it("hydrates an owned draft into the wizard without money or timezone drift", () => {

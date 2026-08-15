@@ -1,6 +1,15 @@
 import type { Messages } from "../../localization/get-messages";
 import type { CancelTenderCopy } from "./cancel-tender-form";
+import type { LocationMapCopy } from "./location-map";
 import type { PublishTenderCopy } from "./publish-tender-form";
+
+export function locationMapCopy(messages: Messages): LocationMapCopy {
+  return {
+    interactiveLabel: messages.tenders.mapInteractiveLabel,
+    preciseLabel: messages.tenders.mapPreciseLabel,
+    approximateLabel: messages.tenders.mapApproximateLabel,
+  };
+}
 
 export function publishTenderCopy(messages: Messages): PublishTenderCopy {
   return {

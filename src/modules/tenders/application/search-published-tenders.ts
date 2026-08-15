@@ -9,6 +9,9 @@ export const searchPublishedTendersQuerySchema = z
     specialty: z.literal("CONSTRUCTION_REPAIR").optional(),
     city: z.string().trim().min(1).max(120).optional(),
     district: z.string().trim().min(1).max(120).optional(),
+    // A budget bound is only comparable within one currency, since amounts are
+    // integer minor units and no conversion rate exists in this phase.
+    currency: z.enum(["GEL", "USD"]).optional(),
     minBudgetMinorUnits: z.coerce.number().int().nonnegative().optional(),
     maxBudgetMinorUnits: z.coerce.number().int().nonnegative().optional(),
     publishedAfter: z.coerce.date().optional(),

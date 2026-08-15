@@ -79,6 +79,7 @@ describe("provider discovery query", () => {
       city: " Tbilisi ",
       minBudget: "100.25",
       maxBudget: "2000",
+      currency: "GEL",
       deadlineBefore: "2026-09-01",
     });
 
@@ -87,6 +88,7 @@ describe("provider discovery query", () => {
     expect(parsed.value).toMatchObject({
       specialty: "CONSTRUCTION_REPAIR",
       city: "Tbilisi",
+      currency: "GEL",
       minBudgetMinorUnits: 10_025,
       maxBudgetMinorUnits: 200_000,
     });
@@ -98,8 +100,13 @@ describe("provider discovery query", () => {
   it.each([
     [{ city: ["Tbilisi", "Batumi"] }, ["city"]],
     [{ specialty: "PLUMBING" }, ["specialty"]],
-    [{ minBudget: "1.234" }, ["minBudget"]],
-    [{ minBudget: "20", maxBudget: "10" }, ["minBudget", "maxBudget"]],
+    // A currency accompanies every budget case so the assertion isolates the
+    // budget fault rather than also tripping the currency requirement.
+    [{ minBudget: "1.234", currency: "GEL" }, ["minBudget"]],
+    [
+      { minBudget: "20", maxBudget: "10", currency: "GEL" },
+      ["minBudget", "maxBudget"],
+    ],
     [{ deadlineBefore: "2026-02-30" }, ["deadlineBefore"]],
   ] as const)(
     "rejects ambiguous or invalid filters: %o",
@@ -111,6 +118,46 @@ describe("provider discovery query", () => {
     },
   );
 
+  it("passes a chosen currency through so a budget range compares like for like", () => {
+    const parsed = parseDiscoverySearchParams({
+      minBudget: "20000",
+      maxBudget: "90000",
+      currency: "USD",
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) return;
+    expect(parsed.value).toMatchObject({
+      currency: "USD",
+      minBudgetMinorUnits: 2_000_000,
+      maxBudgetMinorUnits: 9_000_000,
+    });
+  });
+
+  it("refuses a budget bound with no currency to compare it against", () => {
+    // Budgets are integer minor units in whichever currency the client chose,
+    // so an unscoped bound would match a USD tender against a GEL threshold.
+    expect(parseDiscoverySearchParams({ minBudget: "20000" })).toEqual({
+      ok: false,
+      fields: ["currency"],
+    });
+    expect(parseDiscoverySearchParams({ maxBudget: "90000" })).toEqual({
+      ok: false,
+      fields: ["currency"],
+    });
+  });
+
+  it("accepts a currency on its own and rejects one outside the supported set", () => {
+    const alone = parseDiscoverySearchParams({ currency: "GEL" });
+    expect(alone.ok).toBe(true);
+    if (alone.ok) expect(alone.value).toMatchObject({ currency: "GEL" });
+
+    expect(parseDiscoverySearchParams({ currency: "EUR" })).toEqual({
+      ok: false,
+      fields: ["currency"],
+    });
+  });
+
   it("serializes filters deterministically while preserving unrelated params", () => {
     const href = serializeDiscoveryFilters(
       "/en/provider/tenders",
@@ -120,12 +167,13 @@ describe("provider discovery query", () => {
         city: " Tbilisi & Vake ",
         minBudget: "100.25",
         maxBudget: "500",
+        currency: "GEL",
         deadlineBefore: "2026-09-01",
       },
     );
 
     expect(href).toBe(
-      "/en/provider/tenders?page=2&specialty=CONSTRUCTION_REPAIR&city=Tbilisi+%26+Vake&minBudget=100.25&maxBudget=500&deadlineBefore=2026-09-01",
+      "/en/provider/tenders?page=2&specialty=CONSTRUCTION_REPAIR&city=Tbilisi+%26+Vake&minBudget=100.25&maxBudget=500&currency=GEL&deadlineBefore=2026-09-01",
     );
     expect(
       serializeDiscoveryFilters(
@@ -136,6 +184,7 @@ describe("provider discovery query", () => {
           city: "",
           minBudget: "",
           maxBudget: "",
+          currency: "",
           deadlineBefore: "",
         },
       ),
@@ -200,6 +249,42 @@ describe("provider masked discovery UI", () => {
     expect(html).not.toContain(ka.tenders.addressLine);
     expect(html).not.toContain(ka.tenders.attachments);
     expect(html).not.toContain(ka.tenders.conditions);
+  });
+
+  it("gives a provider an approximate-area map and never a precise one", () => {
+    const html = renderToStaticMarkup(
+      <DiscoveryDetailContent
+        locale="en"
+        messages={en}
+        tender={publicTender}
+      />,
+    );
+
+    expect(html).toContain('aria-labelledby="map-heading"');
+    expect(html).toContain(en.tenders.mapHeading);
+    expect(html).toContain(en.tenders.mapApproximateLabel);
+    expect(html).not.toContain(en.tenders.mapPreciseLabel);
+    expect(html).not.toContain(en.tenders.mapInteractiveLabel);
+    expect(html).toContain('data-interactive="false"');
+  });
+
+  it("keeps exact coordinates out of the provider map markup", () => {
+    // The masked projection has no exact coordinates to leak, so this guards
+    // against a future prop change feeding the map an unmasked pair.
+    const html = renderToStaticMarkup(
+      <DiscoveryDetailContent
+        locale="en"
+        messages={en}
+        tender={{
+          ...publicTender,
+          publicLatitude: 41.7,
+          publicLongitude: 44.8,
+        }}
+      />,
+    );
+
+    expect(html).not.toContain("41.7151");
+    expect(html).not.toContain("44.8271");
   });
 
   it("renders localized empty and invalid-filter states", () => {

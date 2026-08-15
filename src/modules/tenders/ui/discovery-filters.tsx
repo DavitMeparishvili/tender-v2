@@ -30,6 +30,10 @@ export type DiscoveryFilterCopy = Readonly<{
   budgetRange: string;
   minimumBudget: string;
   maximumBudget: string;
+  currency: string;
+  currencyHint: string;
+  anyCurrency: string;
+  currencyRequired: string;
   deadlineBefore: string;
   deadlineHint: string;
   invalidInput: string;
@@ -69,6 +73,8 @@ export function DiscoveryFilters({
   if (invalidFields.has("city"))
     issues.push({ field: "city", message: copy.invalidInput });
   if (budgetError) issues.push({ field: "minBudget", message: budgetError });
+  if (invalidFields.has("currency"))
+    issues.push({ field: "currency", message: copy.currencyRequired });
   if (invalidFields.has("deadlineBefore"))
     issues.push({ field: "deadlineBefore", message: copy.invalidInput });
 
@@ -80,6 +86,7 @@ export function DiscoveryFilters({
       city: formValue(formData, "city"),
       minBudget: formValue(formData, "minBudget"),
       maxBudget: formValue(formData, "maxBudget"),
+      currency: formValue(formData, "currency"),
       deadlineBefore: formValue(formData, "deadlineBefore"),
     };
     const href = serializeDiscoveryFilters(pathname, searchParams, values);
@@ -144,6 +151,23 @@ export function DiscoveryFilters({
               max={maximumBudgetMajorUnits}
               step="0.01"
             />
+          </Field>
+          <Field
+            id="currency"
+            label={copy.currency}
+            description={copy.currencyHint}
+            error={
+              invalidFields.has("currency") ? copy.currencyRequired : undefined
+            }
+          >
+            <select
+              name="currency"
+              defaultValue={searchParams.get("currency") ?? ""}
+            >
+              <option value="">{copy.anyCurrency}</option>
+              <option value="GEL">GEL</option>
+              <option value="USD">USD</option>
+            </select>
           </Field>
         </div>
       </fieldset>

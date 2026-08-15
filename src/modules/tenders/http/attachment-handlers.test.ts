@@ -125,6 +125,31 @@ describe("attachment handlers", () => {
     expect(uploadCalled).toBe(false);
   });
 
+  it("rejects an upload carrying no multipart body instead of failing open", async () => {
+    let uploadCalled = false;
+    const handlers = createAttachmentHandlers({
+      requireCustomer: authorizedActor,
+      upload: async () => {
+        uploadCalled = true;
+        return { ok: true, value: storedAttachment };
+      },
+      list: async () => ({ ok: true, value: [] }),
+    });
+
+    // A bodyless POST reaches `request.formData()`, which rejects. Left
+    // unhandled that surfaces as a 500, reporting a server fault for what is
+    // a malformed client request.
+    const request = new Request(
+      "http://localhost/api/tenders/tender-1/attachments",
+      { method: "POST" },
+    );
+    const response = await handlers.POST(request, routeContext("tender-1"));
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({ code: "INVALID_INPUT" });
+    expect(uploadCalled).toBe(false);
+  });
+
   it("lists attachments without ever exposing objectKey in the serialized response", async () => {
     const handlers = createAttachmentHandlers({
       requireCustomer: authorizedActor,

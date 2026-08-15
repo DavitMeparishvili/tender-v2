@@ -183,6 +183,16 @@ Account, verification, and profile appear as three equal columns with one-pixel 
 
 Terminal auth states use a small semantic dot, concise title/body, and the next safe action inside the stable frame. Workspace empty states use horizontal rules and truthful copy rather than illustrations, cards, metrics, or sample marketplace records.
 
+### Map
+
+The map is a control, not a canvas: it takes the full 460px measure at 260px tall (220px at ≤608px), inside the same one-pixel border and 8px radius as an input. Raster basemap tiles are desaturated so the page stays paper-and-ink and the marks on top stay legible. A precise location is a near-black circular pin with a white ring; an approximate location is a translucent ink area circle and never a pin. Zoom controls are restyled to match secondary buttons, and tile attribution is always visible at Supporting size in Muted Graphite. Scroll-wheel zoom is off so a map inside a scrolling page never traps the page.
+
+**The Quiet-Basemap Rule.** The basemap is context, not content. It is desaturated so the pin, the area circle, and the surrounding form remain the loudest elements.
+
+**The Coarse-Circle Rule.** A map shown before entitlement draws an area, never a point, and that area is sized from the real coordinate coarsening rather than a chosen radius. Drawing a smaller circle would imply precision the viewer was never given.
+
+**The Map-Is-Enhancement Rule.** A map never becomes the only way to complete a task. The latitude and longitude fields stay visible and functional beside it, so the location can be set without a pointer, without tiles, and without sight of the basemap.
+
 ## Do's and Don'ts
 
 ### Do:

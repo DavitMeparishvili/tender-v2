@@ -1,27 +1,103 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { TenderActor } from "../application/create-tender-draft";
+import { getAttachmentDownload } from "../application/get-attachment-download";
 import { getOwnedTender } from "../application/get-owned-tender";
+import { listTenderAttachments } from "../application/list-tender-attachments";
 import type { TenderDraft, TenderStatus } from "../domain/tender";
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import { IdentityShell } from "../../identity/ui/identity-shell";
 import { CancelTenderForm } from "./cancel-tender-form";
+import { LocationMap } from "./location-map";
 import { PublishTenderForm } from "./publish-tender-form";
-import { cancelTenderCopy, publishTenderCopy } from "./tender-action-copy";
 import {
+  cancelTenderCopy,
+  locationMapCopy,
+  publishTenderCopy,
+} from "./tender-action-copy";
+import {
+  formatAttachmentSize,
   formatTenderDate,
   formatTenderMoney,
   tenderStatusLabel,
 } from "./tender-format";
 
+// The signed URL is resolved on the server for each attachment, so this view
+// carries a ready-to-use link and never exposes the underlying object key.
+export type TenderAttachmentView = Readonly<{
+  id: string;
+  originalFileName: string;
+  mimeType: string;
+  sizeBytes: number;
+  url: string;
+}>;
+
 type TenderDetailContentProps = Readonly<{
+  attachments?: readonly TenderAttachmentView[];
   cancelControl?: ReactNode;
   publishControl?: ReactNode;
   locale: Locale;
   messages: Messages;
   tender: TenderDraft;
 }>;
+
+function TenderAttachments({
+  attachments,
+  locale,
+  messages,
+}: Readonly<{
+  attachments: readonly TenderAttachmentView[];
+  locale: Locale;
+  messages: Messages;
+}>) {
+  const units = {
+    bytes: messages.tenders.attachmentSizeBytes,
+    kilobytes: messages.tenders.attachmentSizeKilobytes,
+    megabytes: messages.tenders.attachmentSizeMegabytes,
+  };
+
+  return (
+    <section
+      className="tender-attachments"
+      aria-labelledby="attachments-heading"
+    >
+      <h2 id="attachments-heading">{messages.tenders.attachments}</h2>
+      <ul className="attachment-gallery">
+        {attachments.map((attachment) => (
+          <li key={attachment.id}>
+            <a
+              href={attachment.url}
+              target="_blank"
+              rel="noreferrer"
+              download={attachment.originalFileName}
+            >
+              {attachment.mimeType.startsWith("image/") ? (
+                // `next/image` is deliberately avoided: it would fetch this
+                // owner-only signed URL through the image optimizer and cache
+                // the optimized copy on disk, keyed by URL and served without
+                // re-checking ownership. A plain element keeps a private
+                // attachment private, and the short signature TTL would defeat
+                // the optimizer's caching anyway.
+                //
+                // The file name is already the link's accessible name, so the
+                // preview stays decorative rather than repeating it.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={attachment.url} alt="" loading="lazy" />
+              ) : null}
+              <span className="attachment-name">
+                {attachment.originalFileName}
+              </span>
+            </a>
+            <span className="attachment-size">
+              {formatAttachmentSize(attachment.sizeBytes, locale, units)}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 function DetailRow({
   label,
@@ -36,6 +112,7 @@ function DetailRow({
 }
 
 export function TenderDetailContent({
+  attachments = [],
   cancelControl,
   publishControl,
   locale,
@@ -149,6 +226,23 @@ export function TenderDetailContent({
           value={formatTenderDate(tender.updatedAt, locale)}
         />
       </dl>
+      {location ? (
+        <section className="tender-map" aria-labelledby="map-heading">
+          <h2 id="map-heading">{messages.tenders.mapHeading}</h2>
+          <LocationMap
+            coordinates={location.exact}
+            precision="PRECISE"
+            copy={locationMapCopy(messages)}
+          />
+        </section>
+      ) : null}
+      {attachments.length > 0 ? (
+        <TenderAttachments
+          attachments={attachments}
+          locale={locale}
+          messages={messages}
+        />
+      ) : null}
       {tender.status === "DRAFT" && publishControl ? (
         <section className="tender-publish" aria-labelledby="publish-heading">
           <h2 id="publish-heading">{messages.tenders.publish}</h2>
@@ -163,6 +257,36 @@ export function TenderDetailContent({
       ) : null}
     </>
   );
+}
+
+// Every URL is signed for this owner at render time. An attachment whose
+// signature cannot be produced is dropped rather than rendered as a broken
+// link, which keeps a storage fault from hiding the rest of the tender.
+async function resolveOwnerAttachments(
+  tenderId: string,
+  actor: TenderActor,
+): Promise<readonly TenderAttachmentView[]> {
+  const listed = await listTenderAttachments(tenderId, actor);
+  if (!listed.ok) return [];
+
+  const resolved = await Promise.all(
+    listed.value.map(async (attachment) => {
+      const download = await getAttachmentDownload(
+        tenderId,
+        attachment.id,
+        actor,
+      );
+      if (!download.ok) return null;
+      return {
+        id: attachment.id,
+        originalFileName: attachment.originalFileName,
+        mimeType: attachment.mimeType,
+        sizeBytes: attachment.sizeBytes,
+        url: download.value,
+      };
+    }),
+  );
+  return resolved.filter((view) => view !== null);
 }
 
 export async function TenderDetail({
@@ -183,6 +307,8 @@ export async function TenderDetail({
     : await getOwnedTender(id, actor);
   if (!owned.ok) return null;
 
+  const attachments = await resolveOwnerAttachments(id, actor);
+
   return (
     <IdentityShell title={owned.value.title}>
       <Link className="back-link" href={`/${locale}/client/tenders`}>
@@ -199,6 +325,7 @@ export async function TenderDetail({
         </div>
       ) : null}
       <TenderDetailContent
+        attachments={attachments}
         locale={locale}
         messages={messages}
         tender={owned.value}

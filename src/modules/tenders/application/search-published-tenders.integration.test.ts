@@ -118,4 +118,73 @@ describe("searchPublishedTenders", () => {
     const result = await searchPublishedTenders({ specialty: "PLUMBING" });
     expect(result).toEqual({ ok: false, error: "INVALID_INPUT" });
   });
+
+  it("keeps a budget range inside one currency instead of comparing minor units across them", async () => {
+    const ownerId = await seedOwner();
+    const city = `Currency City ${randomUUID()}`;
+    await seedPublishedTender(ownerId, city, "GEL tender");
+    const usdId = await seedPublishedTender(ownerId, city, "USD tender");
+    // Same integer minor units, different currency: without a currency scope
+    // both would satisfy the same numeric bound.
+    await database.tender.update({
+      where: { id: usdId },
+      data: { currency: "USD" },
+    });
+
+    const gel = await searchPublishedTenders({
+      city,
+      currency: "GEL",
+      minBudgetMinorUnits: 1,
+    });
+    const usd = await searchPublishedTenders({
+      city,
+      currency: "USD",
+      minBudgetMinorUnits: 1,
+    });
+
+    expect(gel.ok).toBe(true);
+    expect(usd.ok).toBe(true);
+    if (!gel.ok || !usd.ok) return;
+    expect(gel.value.map((tender) => tender.title)).toEqual(["GEL tender"]);
+    expect(usd.value.map((tender) => tender.title)).toEqual(["USD tender"]);
+  });
+
+  it("matches a city regardless of the casing a provider types", async () => {
+    const ownerId = await seedOwner();
+    const city = `Kutaisi ${randomUUID()}`;
+    await seedPublishedTender(ownerId, city, "Case-insensitive city tender");
+
+    // The filter is a free-text field, so a provider typing the city in any
+    // casing must reach the same tenders as the exact stored spelling.
+    for (const typed of [city, city.toLowerCase(), city.toUpperCase()]) {
+      const result = await searchPublishedTenders({ city: typed });
+
+      expect(result.ok).toBe(true);
+      if (!result.ok) return;
+      expect(result.value.map((tender) => tender.title)).toEqual([
+        "Case-insensitive city tender",
+      ]);
+    }
+  });
+
+  it("matches a district regardless of the casing a provider types", async () => {
+    const ownerId = await seedOwner();
+    const city = `Rustavi ${randomUUID()}`;
+    await seedPublishedTender(
+      ownerId,
+      city,
+      "Case-insensitive district tender",
+    );
+    const district = "Vake";
+    await database.tender.updateMany({ where: { city }, data: { district } });
+
+    const result = await searchPublishedTenders({
+      city,
+      district: district.toLowerCase(),
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value).toHaveLength(1);
+  });
 });

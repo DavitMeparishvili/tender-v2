@@ -180,8 +180,18 @@ function publishedFilterWhere(
         : { lt: filter.deadlineBefore }),
     },
     ...(filter.specialty === undefined ? {} : { specialty: filter.specialty }),
-    ...(filter.city === undefined ? {} : { city: filter.city }),
-    ...(filter.district === undefined ? {} : { district: filter.district }),
+    // City and district reach this query as free text a provider typed, so
+    // they match case-insensitively; an exact match would silently return
+    // nothing for "batumi".
+    ...(filter.city === undefined
+      ? {}
+      : { city: { equals: filter.city, mode: "insensitive" as const } }),
+    ...(filter.district === undefined
+      ? {}
+      : {
+          district: { equals: filter.district, mode: "insensitive" as const },
+        }),
+    ...(filter.currency === undefined ? {} : { currency: filter.currency }),
     ...(filter.minBudgetMinorUnits === undefined &&
     filter.maxBudgetMinorUnits === undefined
       ? {}

@@ -21,6 +21,8 @@ import type { CreateTenderDraftCommand } from "../application/create-tender-draf
 import type { SyncTenderLocationCommand } from "../application/sync-tender-location";
 import type { UpdateTenderDraftCommand } from "../application/update-tender-draft";
 import type { Coordinates } from "../domain/coordinates";
+import { LocationMap } from "./location-map";
+import { locationMapCopy } from "./tender-action-copy";
 import {
   parseDateInputValue,
   parseGeorgiaDateTimeLocal,
@@ -314,11 +316,33 @@ export function validateWizardStep(
   return issues;
 }
 
+// Six decimal places is roughly 0.1 m — far finer than any pin a person can
+// place, and short enough that the coordinate fields stay readable.
+const PIN_DECIMAL_PLACES = 6;
+
 export function onPinSelected(coordinates: Coordinates) {
   return {
-    latitude: String(coordinates.latitude),
-    longitude: String(coordinates.longitude),
+    latitude: coordinates.latitude.toFixed(PIN_DECIMAL_PLACES),
+    longitude: coordinates.longitude.toFixed(PIN_DECIMAL_PLACES),
   } as const;
+}
+
+// The map draws a pin only once both coordinate fields hold a usable number,
+// so a half-typed value never throws the view to the null island.
+export function pinCoordinates(
+  form: TenderWizardFormState,
+): Coordinates | null {
+  const latitude = Number(form.latitude);
+  const longitude = Number(form.longitude);
+  if (
+    trimmed(form.latitude) === "" ||
+    trimmed(form.longitude) === "" ||
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude)
+  ) {
+    return null;
+  }
+  return { latitude, longitude };
 }
 
 function issueFor(issues: readonly FormIssue[], field: string) {
@@ -655,6 +679,25 @@ export function TenderWizard({
   function updateField(field: keyof TenderWizardFormState, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
     setIssues((current) => current.filter((issue) => issue.field !== field));
+    setModified(true);
+  }
+
+  // Choosing a point on the map is the same act as ticking "choose on map" and
+  // typing the numbers, so it switches the form to PIN mode rather than leaving
+  // a placed pin that the address branch would silently ignore on submit.
+  function selectPin(coordinates: Coordinates) {
+    const picked = onPinSelected(coordinates);
+    setForm((current) => ({
+      ...current,
+      locationMode: "PIN",
+      latitude: picked.latitude,
+      longitude: picked.longitude,
+    }));
+    setIssues((current) =>
+      current.filter(
+        (issue) => issue.field !== "latitude" && issue.field !== "longitude",
+      ),
+    );
     setModified(true);
   }
 
@@ -1130,6 +1173,17 @@ export function TenderWizard({
             />
             <span>{messages.tenders.chooseOnMap}</span>
           </label>
+          <div className="wizard-map">
+            <p className="wizard-map-hint" id="map-hint">
+              {messages.tenders.mapHint}
+            </p>
+            <LocationMap
+              coordinates={pinCoordinates(form)}
+              precision="PRECISE"
+              copy={locationMapCopy(messages)}
+              onPick={selectPin}
+            />
+          </div>
           {form.locationMode === "PIN" ? (
             <div className="wizard-paired-fields">
               <Field

@@ -27,6 +27,8 @@
 2. **`TenderStatus` has three values in this phase: `DRAFT`, `PUBLISHED`, `CANCELLED`.** `EXPIRED` is Phase 3's concern (it owns the "expired-without-bids" path per the roadmap). Discovery and listing queries filter `deadline > now` at query time so a past-deadline tender never appears as available, without this phase persisting an expiry transition or running a background job.
 3. **Object storage runs against a local MinIO container** (S3-compatible) in dev/test/CI, matching the roadmap's "S3-compatible storage adapter" requirement without waiting on a managed provider decision (mirrors Phase 5's deferred real-payment-provider evaluation).
 
+4. **Maps render with Leaflet against OpenStreetMap tiles** (added 2026-08-15, after this plan shipped `Choose on map` as two numeric inputs with no map). The roadmap's Phase 2 scope requires "map pin synchronization" and its automated proof requires Playwright to "select a map location"; neither was satisfied. A tile layer needs no API key, account, or vendor contract, so it does not reopen the geocoding-vendor deferral in decision 1 — that stub remains. See `docs/superpowers/specs/2026-08-15-phase-02-map-design.md` for the masking rule, visual treatment, and the production tile-source constraint.
+
 ---
 
 ## Planned file structure
