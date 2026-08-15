@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import {
@@ -17,9 +23,15 @@ import type { UpdateTenderDraftCommand } from "../application/update-tender-draf
 import type { Coordinates } from "../domain/coordinates";
 
 const MAX_ATTACHMENTS = 10;
+const MAX_PRISMA_INT = BigInt(2_147_483_647);
 
 type WizardStep = 0 | 1 | 2 | 3;
 type LocationMode = "ADDRESS" | "PIN";
+type FocusRequest = "heading" | "errors" | null;
+
+function stepHeadingId(step: WizardStep) {
+  return `wizard-step-${step + 1}-heading`;
+}
 
 export type TenderWizardFormState = Readonly<{
   specialty?: "CONSTRUCTION_REPAIR";
@@ -112,29 +124,25 @@ const initialFormState: TenderWizardFormState = {
   attachmentNames: [],
 };
 
-const localCopy = {
-  en: {
-    specialty: "Construction & repair",
-    latitude: "Latitude",
-    longitude: "Longitude",
-    attachmentCount: (count: number) => `${count} of ${MAX_ATTACHMENTS} files`,
-  },
-  ka: {
-    specialty: "მშენებლობა და რემონტი",
-    latitude: "განედი",
-    longitude: "გრძედი",
-    attachmentCount: (count: number) => `${count} / ${MAX_ATTACHMENTS} ფაილი`,
-  },
-} as const;
-
 function trimmed(value: string | undefined) {
   return value?.trim() ?? "";
 }
 
-function isPositiveBudget(value: string | undefined) {
-  if (!value) return false;
-  const amount = Number(value);
-  return Number.isFinite(amount) && amount > 0;
+export function majorUnitsToMinor(value: string | undefined): number | null {
+  const match = /^(\d{1,8})(?:\.(\d{1,2}))?$/.exec(trimmed(value));
+  if (!match) return null;
+  const major = BigInt(match[1] ?? "0");
+  const fraction = BigInt((match[2] ?? "").padEnd(2, "0") || "0");
+  const minor = major * BigInt(100) + fraction;
+  if (minor <= BigInt(0) || minor > MAX_PRISMA_INT) return null;
+  return Number(minor);
+}
+
+export function wizardHasUnsavedWork(
+  tenderId: string | null,
+  modified: boolean,
+) {
+  return tenderId !== null || modified;
 }
 
 function isCoordinate(
@@ -158,33 +166,64 @@ export function validateWizardStep(
 ): FormIssue[] {
   const issues: FormIssue[] = [];
 
-  if (step === 0 && trimmed(form.title) === "") {
-    issues.push({ field: "title", message: messages.errors.required });
+  if (step === 0) {
+    const title = trimmed(form.title);
+    if (title === "") {
+      issues.push({ field: "title", message: messages.errors.required });
+    } else if (title.length < 5) {
+      issues.push({
+        field: "title",
+        message: messages.tenders.errors.invalidInput,
+      });
+    }
   }
 
   if (step === 1) {
-    if (trimmed(form.shortDescription) === "") {
+    const shortDescription = trimmed(form.shortDescription);
+    const fullDescription = trimmed(form.fullDescription);
+    const scopeOfWork = trimmed(form.scopeOfWork);
+    if (shortDescription === "") {
       issues.push({
         field: "shortDescription",
         message: messages.tenders.errors.shortDescriptionRequired,
       });
+    } else if (shortDescription.length < 10) {
+      issues.push({
+        field: "shortDescription",
+        message: messages.tenders.errors.invalidInput,
+      });
     }
-    if (trimmed(form.fullDescription) === "") {
+    if (fullDescription === "") {
       issues.push({
         field: "fullDescription",
         message: messages.tenders.errors.fullDescriptionRequired,
       });
+    } else if (fullDescription.length < 20) {
+      issues.push({
+        field: "fullDescription",
+        message: messages.tenders.errors.invalidInput,
+      });
     }
-    if (trimmed(form.scopeOfWork) === "") {
+    if (scopeOfWork === "") {
       issues.push({
         field: "scopeOfWork",
         message: messages.tenders.errors.scopeRequired,
       });
+    } else if (scopeOfWork.length < 10) {
+      issues.push({
+        field: "scopeOfWork",
+        message: messages.tenders.errors.invalidInput,
+      });
     }
-    if (!isPositiveBudget(form.budget) || !form.currency) {
+    if (trimmed(form.budget) === "" || !form.currency) {
       issues.push({
         field: "budget",
         message: messages.tenders.errors.budgetRequired,
+      });
+    } else if (majorUnitsToMinor(form.budget) === null) {
+      issues.push({
+        field: "budget",
+        message: messages.tenders.errors.invalidInput,
       });
     }
     if (trimmed(form.deadline) === "") {
@@ -192,17 +231,31 @@ export function validateWizardStep(
         field: "deadline",
         message: messages.tenders.errors.deadlineRequired,
       });
-    } else if (new Date(form.deadline ?? "").getTime() <= Date.now()) {
-      issues.push({
-        field: "deadline",
-        message: messages.tenders.errors.deadlineNotFuture,
-      });
+    } else {
+      const deadlineTime = new Date(form.deadline ?? "").getTime();
+      if (!Number.isFinite(deadlineTime)) {
+        issues.push({
+          field: "deadline",
+          message: messages.tenders.errors.invalidInput,
+        });
+      } else if (deadlineTime <= Date.now()) {
+        issues.push({
+          field: "deadline",
+          message: messages.tenders.errors.deadlineNotFuture,
+        });
+      }
     }
   }
 
   if (step === 2) {
-    if (trimmed(form.city) === "") {
+    const city = trimmed(form.city);
+    if (city === "") {
       issues.push({ field: "city", message: messages.errors.required });
+    } else if (city.length < 2) {
+      issues.push({
+        field: "city",
+        message: messages.tenders.errors.invalidInput,
+      });
     }
     if (form.locationMode === "PIN") {
       if (!isCoordinate(form.latitude, -90, 90)) {
@@ -211,8 +264,19 @@ export function validateWizardStep(
       if (!isCoordinate(form.longitude, -180, 180)) {
         issues.push({ field: "longitude", message: messages.errors.required });
       }
-    } else if (trimmed(form.addressLine) === "") {
-      issues.push({ field: "addressLine", message: messages.errors.required });
+    } else {
+      const addressLine = trimmed(form.addressLine);
+      if (addressLine === "") {
+        issues.push({
+          field: "addressLine",
+          message: messages.errors.required,
+        });
+      } else if (addressLine.length < 3) {
+        issues.push({
+          field: "addressLine",
+          message: messages.tenders.errors.invalidInput,
+        });
+      }
     }
   }
 
@@ -340,11 +404,15 @@ function stepForPublicationError(code: string | undefined): WizardStep {
 function toUpdateCommand(
   form: TenderWizardFormState,
 ): UpdateTenderDraftCommand {
+  const budgetMinorUnits = majorUnitsToMinor(form.budget);
+  if (budgetMinorUnits === null) {
+    throw new RangeError("Budget must be validated before serialization.");
+  }
   const command: UpdateTenderDraftCommand = {
     shortDescription: trimmed(form.shortDescription),
     fullDescription: trimmed(form.fullDescription),
     scopeOfWork: trimmed(form.scopeOfWork),
-    budgetMinorUnits: Math.round(Number(form.budget) * 100),
+    budgetMinorUnits,
     currency: form.currency ?? "GEL",
     deadline: new Date(form.deadline ?? ""),
     workerNotes: trimmed(form.workerNotes) || null,
@@ -448,13 +516,66 @@ export function TenderWizard({
   api?: Partial<TenderWizardApi>;
 }>) {
   const tenderApi = { ...defaultApi, ...api };
-  const copy = localCopy[locale];
   const [step, setStep] = useState<WizardStep>(0);
   const [form, setForm] = useState<TenderWizardFormState>(initialFormState);
   const [tenderId, setTenderId] = useState<string | null>(null);
   const [issues, setIssues] = useState<readonly FormIssue[]>([]);
   const [pending, setPending] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [modified, setModified] = useState(false);
+  const focusRequest = useRef<FocusRequest>(null);
+  const currencyTouched = useRef(false);
+  const allowNavigation = useRef(false);
+  const hasUnsavedWork = wizardHasUnsavedWork(tenderId, modified);
+
+  useEffect(() => {
+    const request = focusRequest.current;
+    if (request === null) return;
+    focusRequest.current = null;
+    if (request === "errors") {
+      focusErrorSummary();
+      return;
+    }
+    document.getElementById(stepHeadingId(step))?.focus();
+  }, [issues, step]);
+
+  useEffect(() => {
+    if (!hasUnsavedWork) return;
+    const dirtyWarning = messages.tenders.dirtyWarning;
+    function warnBeforeUnload(event: BeforeUnloadEvent) {
+      if (allowNavigation.current) return;
+      event.preventDefault();
+      event.returnValue = "";
+    }
+    function warnBeforeLinkNavigation(event: MouseEvent) {
+      if (allowNavigation.current || event.defaultPrevented) return;
+      const target = event.target;
+      const anchor =
+        target instanceof Element
+          ? target.closest<HTMLAnchorElement>("a[href]")
+          : null;
+      if (
+        anchor === null ||
+        anchor.classList.contains("locale-link") ||
+        anchor.target === "_blank" ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+      if (!window.confirm(dirtyWarning)) {
+        event.preventDefault();
+      }
+    }
+    window.addEventListener("beforeunload", warnBeforeUnload);
+    document.addEventListener("click", warnBeforeLinkNavigation, true);
+    return () => {
+      window.removeEventListener("beforeunload", warnBeforeUnload);
+      document.removeEventListener("click", warnBeforeLinkNavigation, true);
+    };
+  }, [hasUnsavedWork, messages.tenders.dirtyWarning]);
 
   useEffect(() => {
     let active = true;
@@ -467,6 +588,7 @@ export function TenderWizard({
         const preferredCurrency = result.profile?.preferredCurrency;
         if (
           active &&
+          !currencyTouched.current &&
           (preferredCurrency === "GEL" || preferredCurrency === "USD")
         ) {
           setForm((current) => ({ ...current, currency: preferredCurrency }));
@@ -481,11 +603,18 @@ export function TenderWizard({
   function updateField(field: keyof TenderWizardFormState, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
     setIssues((current) => current.filter((issue) => issue.field !== field));
+    setModified(true);
   }
 
   function showIssues(nextIssues: readonly FormIssue[]) {
+    focusRequest.current = "errors";
     setIssues(nextIssues);
-    queueMicrotask(() => focusErrorSummary());
+  }
+
+  function moveToStep(nextStep: WizardStep) {
+    focusRequest.current = "heading";
+    setIssues([]);
+    setStep(nextStep);
   }
 
   async function parseResponse(response: Response) {
@@ -532,7 +661,7 @@ export function TenderWizard({
         }
         setTenderId(id);
       }
-      setStep(1);
+      moveToStep(1);
     } catch {
       showIssues([serverIssue(undefined, messages, "title")]);
     } finally {
@@ -563,7 +692,7 @@ export function TenderWizard({
         ]);
         return;
       }
-      setStep(2);
+      moveToStep(2);
     } catch {
       showIssues([serverIssue(undefined, messages, "shortDescription")]);
     } finally {
@@ -598,7 +727,7 @@ export function TenderWizard({
         ]);
         return;
       }
-      setStep(3);
+      moveToStep(3);
     } catch {
       showIssues([serverIssue(undefined, messages, "city")]);
     } finally {
@@ -657,12 +786,19 @@ export function TenderWizard({
       if (!response.ok) {
         const code = readErrorCode(result);
         setStep(stepForPublicationError(code));
-        showIssues([serverIssue(code, messages, "publish")]);
+        showIssues([
+          serverIssue(
+            code,
+            messages,
+            stepHeadingId(stepForPublicationError(code)),
+          ),
+        ]);
         return;
       }
+      allowNavigation.current = true;
       window.location.assign(`/${locale}/client/tenders/${tenderId}`);
     } catch {
-      showIssues([serverIssue(undefined, messages, "publish")]);
+      showIssues([serverIssue(undefined, messages, stepHeadingId(3))]);
     } finally {
       setPending(false);
     }
@@ -674,8 +810,14 @@ export function TenderWizard({
     <IdentityShell title={messages.tenders.newTender}>
       <WizardRail current={step} messages={messages} />
       {step === 0 ? (
-        <form className="identity-form" noValidate onSubmit={submitBasics}>
-          <h2 className="wizard-step-title">
+        <form
+          className="identity-form"
+          data-dirty={hasUnsavedWork ? "true" : "false"}
+          aria-labelledby={stepHeadingId(0)}
+          noValidate
+          onSubmit={submitBasics}
+        >
+          <h2 className="wizard-step-title" id={stepHeadingId(0)} tabIndex={-1}>
             {messages.tenders.wizardBasicsStep}
           </h2>
           <ErrorSummary
@@ -686,12 +828,12 @@ export function TenderWizard({
           <Field
             id="specialty"
             label={messages.tenders.filterSpecialty}
-            description={messages.auth.constructionSpecialty}
+            description={messages.tenders.specialtyConstructionRepairHint}
           >
             <input
               name="specialty"
               type="text"
-              value={copy.specialty}
+              value={messages.tenders.specialtyConstructionRepair}
               readOnly
             />
           </Field>
@@ -703,7 +845,9 @@ export function TenderWizard({
             <input
               name="title"
               type="text"
+              minLength={5}
               maxLength={160}
+              required
               autoComplete="off"
               value={form.title}
               onChange={(event) => updateField("title", event.target.value)}
@@ -719,8 +863,14 @@ export function TenderWizard({
       ) : null}
 
       {step === 1 ? (
-        <form className="identity-form" noValidate onSubmit={submitScope}>
-          <h2 className="wizard-step-title">
+        <form
+          className="identity-form"
+          data-dirty={hasUnsavedWork ? "true" : "false"}
+          aria-labelledby={stepHeadingId(1)}
+          noValidate
+          onSubmit={submitScope}
+        >
+          <h2 className="wizard-step-title" id={stepHeadingId(1)} tabIndex={-1}>
             {messages.tenders.wizardScopeStep}
           </h2>
           <ErrorSummary
@@ -735,7 +885,9 @@ export function TenderWizard({
           >
             <textarea
               name="shortDescription"
+              minLength={10}
               maxLength={240}
+              required
               value={form.shortDescription}
               onChange={(event) =>
                 updateField("shortDescription", event.target.value)
@@ -749,7 +901,9 @@ export function TenderWizard({
           >
             <textarea
               name="fullDescription"
+              minLength={20}
               maxLength={5000}
+              required
               value={form.fullDescription}
               onChange={(event) =>
                 updateField("fullDescription", event.target.value)
@@ -763,7 +917,9 @@ export function TenderWizard({
           >
             <textarea
               name="scopeOfWork"
+              minLength={10}
               maxLength={2000}
+              required
               value={form.scopeOfWork}
               onChange={(event) =>
                 updateField("scopeOfWork", event.target.value)
@@ -780,8 +936,10 @@ export function TenderWizard({
                 name="budget"
                 type="number"
                 min="0.01"
+                max="21474836.47"
                 step="0.01"
                 inputMode="decimal"
+                required
                 value={form.budget}
                 onChange={(event) => updateField("budget", event.target.value)}
               />
@@ -790,9 +948,10 @@ export function TenderWizard({
               <select
                 name="currency"
                 value={form.currency}
-                onChange={(event) =>
-                  updateField("currency", event.target.value)
-                }
+                onChange={(event) => {
+                  currencyTouched.current = true;
+                  updateField("currency", event.target.value);
+                }}
               >
                 <option value="GEL">GEL</option>
                 <option value="USD">USD</option>
@@ -807,6 +966,7 @@ export function TenderWizard({
             <input
               name="deadline"
               type="datetime-local"
+              required
               value={form.deadline}
               onChange={(event) => updateField("deadline", event.target.value)}
             />
@@ -851,17 +1011,20 @@ export function TenderWizard({
             canGoBack
             isPending={pending}
             messages={messages}
-            onBack={() => {
-              setIssues([]);
-              setStep(0);
-            }}
+            onBack={() => moveToStep(0)}
           />
         </form>
       ) : null}
 
       {step === 2 ? (
-        <form className="identity-form" noValidate onSubmit={submitLocation}>
-          <h2 className="wizard-step-title">
+        <form
+          className="identity-form"
+          data-dirty={hasUnsavedWork ? "true" : "false"}
+          aria-labelledby={stepHeadingId(2)}
+          noValidate
+          onSubmit={submitLocation}
+        >
+          <h2 className="wizard-step-title" id={stepHeadingId(2)} tabIndex={-1}>
             {messages.tenders.wizardLocationStep}
           </h2>
           <ErrorSummary
@@ -878,7 +1041,9 @@ export function TenderWizard({
               name="city"
               type="text"
               autoComplete="address-level2"
+              minLength={2}
               maxLength={120}
+              required
               value={form.city}
               onChange={(event) => updateField("city", event.target.value)}
             />
@@ -908,6 +1073,7 @@ export function TenderWizard({
                   locationMode: event.target.checked ? "PIN" : "ADDRESS",
                 }));
                 setIssues([]);
+                setModified(true);
               }}
             />
             <span>{messages.tenders.chooseOnMap}</span>
@@ -916,7 +1082,7 @@ export function TenderWizard({
             <div className="wizard-paired-fields">
               <Field
                 id="latitude"
-                label={copy.latitude}
+                label={messages.tenders.latitude}
                 error={issueFor(issues, "latitude")}
               >
                 <input
@@ -926,6 +1092,7 @@ export function TenderWizard({
                   max="90"
                   step="any"
                   inputMode="decimal"
+                  required
                   value={form.latitude}
                   onChange={(event) =>
                     updateField("latitude", event.target.value)
@@ -934,7 +1101,7 @@ export function TenderWizard({
               </Field>
               <Field
                 id="longitude"
-                label={copy.longitude}
+                label={messages.tenders.longitude}
                 error={issueFor(issues, "longitude")}
               >
                 <input
@@ -944,6 +1111,7 @@ export function TenderWizard({
                   max="180"
                   step="any"
                   inputMode="decimal"
+                  required
                   value={form.longitude}
                   onChange={(event) =>
                     updateField("longitude", event.target.value)
@@ -961,7 +1129,9 @@ export function TenderWizard({
                 name="addressLine"
                 type="text"
                 autoComplete="street-address"
+                minLength={3}
                 maxLength={240}
+                required
                 value={form.addressLine}
                 onChange={(event) =>
                   updateField("addressLine", event.target.value)
@@ -976,7 +1146,10 @@ export function TenderWizard({
             error={issueFor(issues, "attachments")}
             suffix={
               <span className="attachment-count" aria-live="polite">
-                {copy.attachmentCount(attachmentNames.length)}
+                {messages.tenders.attachmentCount.replace(
+                  "{count}",
+                  String(attachmentNames.length),
+                )}
               </span>
             }
           >
@@ -1003,17 +1176,20 @@ export function TenderWizard({
             canGoBack
             isPending={pending || uploading}
             messages={messages}
-            onBack={() => {
-              setIssues([]);
-              setStep(1);
-            }}
+            onBack={() => moveToStep(1)}
           />
         </form>
       ) : null}
 
       {step === 3 ? (
-        <form className="identity-form" noValidate onSubmit={publish}>
-          <h2 className="wizard-step-title" id="publish">
+        <form
+          className="identity-form"
+          data-dirty={hasUnsavedWork ? "true" : "false"}
+          aria-labelledby={stepHeadingId(3)}
+          noValidate
+          onSubmit={publish}
+        >
+          <h2 className="wizard-step-title" id={stepHeadingId(3)} tabIndex={-1}>
             {messages.tenders.wizardReviewStep}
           </h2>
           <ErrorSummary
@@ -1023,7 +1199,10 @@ export function TenderWizard({
           />
           <dl className="wizard-review">
             {[
-              [messages.tenders.filterSpecialty, copy.specialty],
+              [
+                messages.tenders.filterSpecialty,
+                messages.tenders.specialtyConstructionRepair,
+              ],
               [messages.tenders.title, form.title],
               [messages.tenders.shortDescription, form.shortDescription],
               [messages.tenders.fullDescription, form.fullDescription],
@@ -1061,10 +1240,7 @@ export function TenderWizard({
               className="button button-secondary"
               type="button"
               disabled={pending}
-              onClick={() => {
-                setIssues([]);
-                setStep(2);
-              }}
+              onClick={() => moveToStep(2)}
             >
               {messages.common.back}
             </button>

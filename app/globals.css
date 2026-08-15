@@ -638,7 +638,7 @@ a {
 
 .wizard-rail {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
   padding: 0;
   margin: 0 0 2rem;
@@ -649,9 +649,12 @@ a {
 
 .wizard-rail li {
   display: grid;
+  min-inline-size: 0;
   gap: 0.4rem;
   border-block-start: 1px solid var(--border-default);
   padding-block-start: 0.6rem;
+  hyphens: auto;
+  overflow-wrap: anywhere;
 }
 
 .wizard-rail li.is-complete {
