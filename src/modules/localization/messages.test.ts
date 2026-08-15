@@ -21,6 +21,7 @@ describe("identity message catalogs", () => {
       "errors",
       "onboarding",
       "profile",
+      "tenders",
       "workspace",
     ]);
     expect(Object.keys(ka).sort()).toEqual(Object.keys(en).sort());
