@@ -4,6 +4,7 @@ import { database } from "../../../infrastructure/db/client";
 import { createTenderDraft } from "./create-tender-draft";
 import { getOwnedTender } from "./get-owned-tender";
 import { listOwnedTenders } from "./list-owned-tenders";
+import { syncTenderLocation } from "./sync-tender-location";
 import { updateTenderDraft } from "./update-tender-draft";
 
 async function createOwner(): Promise<string> {
@@ -122,4 +123,45 @@ describe("tender draft application entry points", () => {
       value: { desiredStartDate: null },
     });
   });
+
+  // The mode has to survive the database round trip, not just the command:
+  // it is what the authoring wizard reads to decide whether resuming this
+  // draft submits an address or a pin on the next pass through step 3.
+  it.each([
+    [
+      "ADDRESS",
+      { mode: "ADDRESS", city: "Tbilisi", addressLine: "12 Rustaveli Avenue" },
+      "12 Rustaveli Avenue",
+    ],
+    [
+      "PIN",
+      { mode: "PIN", city: "Tbilisi", latitude: 41.7333, longitude: 44.7912 },
+      "Near Tbilisi, Georgia",
+    ],
+  ])(
+    "reads back a %s location with the mode the client used",
+    async (mode, command, addressLine) => {
+      const ownerId = await createOwner();
+      const created = await createTenderDraft(
+        { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+        { id: ownerId },
+      );
+      expect(created.ok).toBe(true);
+      if (!created.ok) return;
+
+      const located = await syncTenderLocation(created.value.id, command, {
+        id: ownerId,
+      });
+      expect(located).toMatchObject({
+        ok: true,
+        value: { location: { mode, addressLine } },
+      });
+
+      const read = await getOwnedTender(created.value.id, { id: ownerId });
+      expect(read).toMatchObject({
+        ok: true,
+        value: { location: { mode, addressLine } },
+      });
+    },
+  );
 });

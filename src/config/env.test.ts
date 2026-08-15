@@ -33,6 +33,18 @@ describe("getServerEnv", () => {
     expect(() => getServerEnv(withoutBucket)).toThrow(/STORAGE_BUCKET/);
   });
 
+  // `STORAGE_BUCKET_TEST` is consumed only by the integration-test setup, the
+  // same way `DATABASE_URL_TEST` is, so a production deployment must not be
+  // forced to invent a value for it. `validateTestStorageBucket` is what keeps
+  // the test side safe, not this schema.
+  it("accepts a deployment with no test storage bucket", () => {
+    const withoutTestBucket: NodeJS.ProcessEnv = { ...testEnvironment };
+    delete withoutTestBucket.STORAGE_BUCKET_TEST;
+    const env = getServerEnv(withoutTestBucket);
+    expect(env.STORAGE_BUCKET_TEST).toBeUndefined();
+    expect(env.STORAGE_BUCKET).toBe("tender-dev");
+  });
+
   it("lets a deployment disable path-style addressing", () => {
     expect(getServerEnv(testEnvironment).STORAGE_FORCE_PATH_STYLE).toBe(true);
     expect(

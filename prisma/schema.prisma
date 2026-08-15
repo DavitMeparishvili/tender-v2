@@ -151,6 +151,16 @@ enum TenderStatus {
   CANCELLED
 }
 
+// How the client located the job. It is persisted because it is not derivable
+// from the stored location: an ADDRESS tender keeps the street address the
+// client typed, a PIN tender keeps the pin they placed, and resuming a draft
+// in the wrong mode makes the wizard re-submit the other kind of command and
+// destroy whichever of the two the client actually provided.
+enum TenderLocationMode {
+  ADDRESS
+  PIN
+}
+
 model Tender {
   id               String        @id
   ownerId          String
@@ -169,6 +179,7 @@ model Tender {
   equipmentNotes   String?
   materialNotes    String?
   countryCode      String?
+  locationMode     TenderLocationMode?
   city             String?
   district         String?
   addressLine      String?

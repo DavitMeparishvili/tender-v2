@@ -72,6 +72,11 @@ export function createSyncTenderLocation(dependencies: {
 
     const location: TenderLocation = {
       countryCode: "GE",
+      // Persisted so that resuming this draft reopens step 3 in the mode the
+      // client used, and so the wizard re-submits the same kind of command
+      // instead of overwriting the address with a reverse-geocoded label (or
+      // the pin with a city centroid).
+      mode: parsed.data.mode,
       city: parsed.data.city,
       district: parsed.data.district ?? null,
       addressLine:

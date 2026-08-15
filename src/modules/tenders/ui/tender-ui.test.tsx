@@ -39,6 +39,7 @@ const tender: TenderDraft = {
   materialNotes: "Low-VOC paint required.",
   location: {
     countryCode: "GE",
+    mode: "ADDRESS",
     city: "Tbilisi",
     district: "Vake",
     addressLine: "1 Chavchavadze Ave",
@@ -269,9 +270,33 @@ describe("client tender UI", () => {
     expect(form.budget).toBe("1234.56");
     expect(form.deadline).toBe("2026-08-31T16:00");
     expect(form.desiredStartDate).toBe("2026-09-02");
-    expect(form.locationMode).toBe("PIN");
+    // The draft was located by address, so it must resume in ADDRESS mode:
+    // resuming in PIN mode would make step 3 submit a pin command, and
+    // `syncTenderLocation` would overwrite the client's exact street address
+    // with the reverse geocoder's "Near <city>, Georgia".
+    expect(form.locationMode).toBe("ADDRESS");
+    expect(form.addressLine).toBe("1 Chavchavadze Ave");
     expect(form.latitude).toBe("41.71");
     expect(form.attachmentNames).toEqual(["scope.pdf"]);
+  });
+
+  it("resumes a pin-located draft in PIN mode with its pin intact", () => {
+    const form = tenderToWizardForm({
+      ...tender,
+      location: {
+        countryCode: "GE",
+        mode: "PIN",
+        city: "Tbilisi",
+        district: null,
+        addressLine: "Near Tbilisi, Georgia",
+        exact: { latitude: 41.733_3, longitude: 44.791_2 },
+        public: { latitude: 41.73, longitude: 44.79 },
+      },
+    });
+
+    expect(form.locationMode).toBe("PIN");
+    expect(form.latitude).toBe("41.7333");
+    expect(form.longitude).toBe("44.7912");
   });
 
   it("hydrates nullable draft fields and the attachment maximum exactly", () => {

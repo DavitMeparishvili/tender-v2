@@ -9,7 +9,11 @@ const serverEnvSchema = z.object({
   STORAGE_ENDPOINT: z.string().url(),
   STORAGE_REGION: z.string().min(1),
   STORAGE_BUCKET: z.string().min(1),
-  STORAGE_BUCKET_TEST: z.string().min(1),
+  // Consumed only by `src/test/integration/setup.ts`, exactly like
+  // `DATABASE_URL_TEST` above, so a production deployment is not made to
+  // supply it. `validateTestStorageBucket` refuses a missing value on the
+  // test side, so requiredness here buys no safety.
+  STORAGE_BUCKET_TEST: z.string().min(1).optional(),
   STORAGE_ACCESS_KEY_ID: z.string().min(1),
   STORAGE_SECRET_ACCESS_KEY: z.string().min(1),
   // `z.coerce.boolean()` is deliberately avoided: it turns the string "false"

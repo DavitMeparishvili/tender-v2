@@ -20,6 +20,7 @@ import { IdentityShell } from "../../identity/ui/identity-shell";
 import type { CreateTenderDraftCommand } from "../application/create-tender-draft";
 import type { SyncTenderLocationCommand } from "../application/sync-tender-location";
 import type { UpdateTenderDraftCommand } from "../application/update-tender-draft";
+import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import type { Coordinates } from "../domain/coordinates";
 import { LocationMap } from "./location-map";
 import { locationMapCopy } from "./tender-action-copy";
@@ -29,7 +30,7 @@ import {
 } from "./georgia-date-time";
 
 const MAX_ATTACHMENTS = 10;
-const MAX_PRISMA_INT = BigInt(2_147_483_647);
+const MAX_PRISMA_INT = BigInt(MAX_BUDGET_MINOR_UNITS);
 
 type WizardStep = 0 | 1 | 2 | 3;
 type LocationMode = "ADDRESS" | "PIN";
@@ -492,7 +493,7 @@ export function toUpdateCommand(
   return command;
 }
 
-function toLocationCommand(
+export function toLocationCommand(
   form: TenderWizardFormState,
 ): SyncTenderLocationCommand {
   const shared = {

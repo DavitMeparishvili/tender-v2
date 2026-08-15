@@ -1,14 +1,17 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { getMessages } from "@/src/modules/localization/get-messages";
+import type { TenderDraft } from "../domain/tender";
 import {
   TenderWizard,
   majorUnitsToMinor,
   shouldGuardWizardLink,
+  toLocationCommand,
   toUpdateCommand,
   validateWizardStep,
   wizardHasUnsavedWork,
 } from "./tender-wizard";
+import { tenderToWizardForm } from "./tender-wizard-initial";
 
 const messages = getMessages("en");
 
@@ -176,6 +179,77 @@ describe("toUpdateCommand", () => {
       toUpdateCommand({ ...complete, desiredStartDate: "2026-09-02" }),
     ).toMatchObject({
       desiredStartDate: new Date("2026-09-02T00:00:00.000Z"),
+    });
+  });
+});
+
+describe("toLocationCommand", () => {
+  const resumedDraft: TenderDraft = {
+    id: "tender-1",
+    ownerId: "owner-1",
+    status: "DRAFT",
+    specialty: "CONSTRUCTION_REPAIR",
+    title: "Repaint two bedrooms",
+    shortDescription: null,
+    fullDescription: null,
+    scopeOfWork: null,
+    budgetMinorUnits: null,
+    currency: null,
+    desiredStartDate: null,
+    deadline: null,
+    workerNotes: null,
+    equipmentNotes: null,
+    materialNotes: null,
+    location: {
+      countryCode: "GE",
+      mode: "ADDRESS",
+      city: "Tbilisi",
+      district: null,
+      addressLine: "12 Rustaveli Avenue",
+      exact: { latitude: 41.7151, longitude: 44.8271 },
+      public: { latitude: 41.72, longitude: 44.83 },
+    },
+    conditions: null,
+    publishedAt: null,
+    cancelledAt: null,
+    cancelReason: null,
+    createdAt: new Date("2026-08-14T12:00:00.000Z"),
+    updatedAt: new Date("2026-08-14T12:00:00.000Z"),
+  };
+
+  // The whole point of this phase is collecting and masking an exact address.
+  // Resuming a draft and clicking through step 3 must re-submit the same
+  // address, not a pin command that makes `syncTenderLocation` replace the
+  // address with the reverse geocoder's approximation.
+  it("round-trips a resumed address draft without losing the street address", () => {
+    expect(toLocationCommand(tenderToWizardForm(resumedDraft))).toEqual({
+      mode: "ADDRESS",
+      city: "Tbilisi",
+      district: null,
+      addressLine: "12 Rustaveli Avenue",
+    });
+  });
+
+  it("round-trips a resumed pin draft without losing the pin", () => {
+    const pinned: TenderDraft = {
+      ...resumedDraft,
+      location: {
+        countryCode: "GE",
+        mode: "PIN",
+        city: "Tbilisi",
+        district: "Vake",
+        addressLine: "Near Tbilisi, Georgia",
+        exact: { latitude: 41.7333, longitude: 44.7912 },
+        public: { latitude: 41.73, longitude: 44.79 },
+      },
+    };
+
+    expect(toLocationCommand(tenderToWizardForm(pinned))).toEqual({
+      mode: "PIN",
+      city: "Tbilisi",
+      district: "Vake",
+      latitude: 41.7333,
+      longitude: 44.7912,
     });
   });
 });

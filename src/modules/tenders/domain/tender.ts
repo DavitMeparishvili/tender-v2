@@ -4,8 +4,15 @@ export type TenderStatus = "DRAFT" | "PUBLISHED" | "CANCELLED";
 export type TenderSpecialty = "CONSTRUCTION_REPAIR";
 export type TenderCurrency = "GEL" | "USD";
 
+// How the client located the job: by typing a street address, or by placing a
+// pin. The two carry different authoritative fields — `addressLine` for
+// ADDRESS, `exact` for PIN, with the other derived by the geocoder — so the
+// mode has to travel with the location rather than be guessed from it.
+export type TenderLocationMode = "ADDRESS" | "PIN";
+
 export type TenderLocation = Readonly<{
   countryCode: "GE";
+  mode: TenderLocationMode;
   city: string;
   district: string | null;
   addressLine: string;

@@ -24,6 +24,7 @@ const complete: TenderDraft = {
   materialNotes: null,
   location: {
     countryCode: "GE",
+    mode: "ADDRESS",
     city: "Tbilisi",
     district: "Vake",
     addressLine: "1 Chavchavadze Ave",

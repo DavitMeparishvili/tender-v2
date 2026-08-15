@@ -58,6 +58,7 @@ async function seedPublishedTender(
     tenderId,
     {
       countryCode: "GE",
+      mode: "ADDRESS",
       city,
       district: null,
       addressLine: "1 Chavchavadze Ave",

@@ -51,6 +51,7 @@ async function seedCompleteDraftId(ownerId: string): Promise<string> {
     tenderId,
     {
       countryCode: "GE",
+      mode: "ADDRESS",
       city: "Tbilisi",
       district: null,
       addressLine: "1 Chavchavadze Ave",

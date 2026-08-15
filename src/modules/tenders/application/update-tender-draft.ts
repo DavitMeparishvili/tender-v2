@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Result } from "../../shared";
+import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import type { TenderDraft } from "../domain/tender";
 import type { TenderActor } from "./create-tender-draft";
 
@@ -9,7 +10,16 @@ export const updateTenderDraftCommandSchema = z
     shortDescription: z.string().trim().min(10).max(240).optional(),
     fullDescription: z.string().trim().min(20).max(5_000).optional(),
     scopeOfWork: z.string().trim().min(10).max(2_000).optional(),
-    budgetMinorUnits: z.number().int().positive().optional(),
+    // Bounded, not merely positive: `budgetMinorUnits` is written to an INT4
+    // column, so an unbounded amount would reach Prisma and fail there as an
+    // uncaught overflow — a 500 with a stack trace where the caller should
+    // have received a 400.
+    budgetMinorUnits: z
+      .number()
+      .int()
+      .positive()
+      .max(MAX_BUDGET_MINOR_UNITS)
+      .optional(),
     currency: z.enum(["GEL", "USD"]).optional(),
     desiredStartDate: z.coerce.date().nullable().optional(),
     deadline: z.coerce.date().optional(),

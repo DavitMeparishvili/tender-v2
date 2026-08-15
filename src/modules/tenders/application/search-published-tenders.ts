@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Clock } from "@/src/modules/shared";
+import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import { distanceKilometers } from "../domain/coordinates";
 import { toPublicSummary, type PublicTenderSummary } from "../domain/masking";
 import type { TenderRecord } from "../domain/tender";
@@ -12,15 +13,40 @@ export const searchPublishedTendersQuerySchema = z
     // A budget bound is only comparable within one currency, since amounts are
     // integer minor units and no conversion rate exists in this phase.
     currency: z.enum(["GEL", "USD"]).optional(),
-    minBudgetMinorUnits: z.coerce.number().int().nonnegative().optional(),
-    maxBudgetMinorUnits: z.coerce.number().int().nonnegative().optional(),
+    minBudgetMinorUnits: z.coerce
+      .number()
+      .int()
+      .nonnegative()
+      .max(MAX_BUDGET_MINOR_UNITS)
+      .optional(),
+    maxBudgetMinorUnits: z.coerce
+      .number()
+      .int()
+      .nonnegative()
+      .max(MAX_BUDGET_MINOR_UNITS)
+      .optional(),
     publishedAfter: z.coerce.date().optional(),
     deadlineBefore: z.coerce.date().optional(),
     nearLatitude: z.coerce.number().min(-90).max(90).optional(),
     nearLongitude: z.coerce.number().min(-180).max(180).optional(),
     nearRadiusKilometers: z.coerce.number().positive().max(500).optional(),
   })
-  .strict();
+  .strict()
+  // The currency-scoping rule belongs to the contract, not to one caller: the
+  // API route feeds this schema raw query parameters, so a bound accepted here
+  // without a currency would compare a GEL amount against a USD threshold on
+  // the same integer. The UI parser rejects the same combination earlier and
+  // is unaffected.
+  .refine(
+    (query) =>
+      query.currency !== undefined ||
+      (query.minBudgetMinorUnits === undefined &&
+        query.maxBudgetMinorUnits === undefined),
+    {
+      path: ["currency"],
+      message: "A budget bound requires a currency to scope the comparison.",
+    },
+  );
 export type SearchPublishedTendersQuery = z.output<
   typeof searchPublishedTendersQuerySchema
 >;

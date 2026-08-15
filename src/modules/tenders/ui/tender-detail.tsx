@@ -1,7 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { TenderActor } from "../application/create-tender-draft";
-import { getAttachmentDownload } from "../application/get-attachment-download";
+import {
+  RENDERED_LINK_DOWNLOAD_URL_TTL_SECONDS,
+  getAttachmentDownload,
+} from "../application/get-attachment-download";
 import { getOwnedTender } from "../application/get-owned-tender";
 import { listTenderAttachments } from "../application/list-tender-attachments";
 import type { TenderDraft, TenderStatus } from "../domain/tender";
@@ -262,6 +265,10 @@ export function TenderDetailContent({
 // Every URL is signed for this owner at render time. An attachment whose
 // signature cannot be produced is dropped rather than rendered as a broken
 // link, which keeps a storage fault from hiding the rest of the tender.
+//
+// These links are embedded in the markup and clicked whenever the owner gets
+// to them, so they are signed for the longer server-rendered lifetime rather
+// than the API route's one-round-trip default.
 async function resolveOwnerAttachments(
   tenderId: string,
   actor: TenderActor,
@@ -275,6 +282,7 @@ async function resolveOwnerAttachments(
         tenderId,
         attachment.id,
         actor,
+        RENDERED_LINK_DOWNLOAD_URL_TTL_SECONDS,
       );
       if (!download.ok) return null;
       return {

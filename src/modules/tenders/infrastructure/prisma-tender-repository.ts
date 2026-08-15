@@ -70,6 +70,12 @@ function toTenderLocation(row: Tender): TenderLocation | null {
 
   return {
     countryCode: "GE",
+    // `locationMode` is written by every path that sets a location, and the
+    // migration that introduced the column backfilled the rows that predate
+    // it, so a located row without a mode cannot occur. ADDRESS is the safe
+    // reading if one ever did: it keeps a stored `addressLine` on screen and
+    // resubmittable, whereas assuming PIN would discard it.
+    mode: row.locationMode ?? "ADDRESS",
     city: row.city,
     district: row.district,
     addressLine: row.addressLine,
@@ -349,6 +355,7 @@ export class PrismaTenderRepository implements TenderRepository {
       where: { id, ownerId: actor.id, status: "DRAFT" },
       data: {
         countryCode: location.countryCode,
+        locationMode: location.mode,
         city: location.city,
         district: location.district,
         addressLine: location.addressLine,

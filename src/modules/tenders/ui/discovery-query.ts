@@ -1,4 +1,5 @@
 import type { SearchPublishedTendersQuery } from "../application/search-published-tenders";
+import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import { parseGeorgiaDateTimeLocal } from "./georgia-date-time";
 
 export const discoveryFilterKeys = [
@@ -18,7 +19,10 @@ function isSupportedCurrency(value: string): value is DiscoveryCurrency {
 }
 export type DiscoveryFilterKey = (typeof discoveryFilterKeys)[number];
 
-export const MAX_DISCOVERY_BUDGET_MINOR_UNITS = 2_147_483_647;
+// Re-exported under the filter-facing name this module's callers already use;
+// the value itself lives with the other domain constraints so the wizard, the
+// filters, and both server-side schemas cannot drift apart.
+export const MAX_DISCOVERY_BUDGET_MINOR_UNITS = MAX_BUDGET_MINOR_UNITS;
 
 export type DiscoverySearchParams = Readonly<
   Record<string, string | readonly string[] | undefined>

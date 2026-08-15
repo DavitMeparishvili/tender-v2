@@ -28,7 +28,11 @@ export function tenderToWizardForm(
     equipmentNotes: tender.equipmentNotes ?? "",
     materialNotes: tender.materialNotes ?? "",
     conditions: tender.conditions ?? "",
-    locationMode: location ? "PIN" : "ADDRESS",
+    // The stored mode, never a guess from the presence of coordinates: every
+    // located draft has coordinates (an address is geocoded into a pair), so
+    // guessing opened every resumed draft in PIN mode and made step 3 replace
+    // the client's street address with a reverse-geocoded label.
+    locationMode: location?.mode ?? "ADDRESS",
     city: location?.city ?? "",
     district: location?.district ?? "",
     addressLine: location?.addressLine ?? "",
