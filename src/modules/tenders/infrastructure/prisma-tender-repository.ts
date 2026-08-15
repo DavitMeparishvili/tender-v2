@@ -63,19 +63,17 @@ function toTenderLocation(row: Tender): TenderLocation | null {
 // provider profiles, and `Tender.currency` is a plain, unconstrained string
 // column — both wider than what `TenderDraft` can represent. This module only
 // ever writes `CONSTRUCTION_REPAIR` specialties and `GEL`/`USD` currencies, so a
-// row that fails either check means the stored data has drifted outside what
-// this module can safely model. Coercing it into a `TenderDraft` anyway would
-// silently hide that corruption, so we throw instead of returning a value.
-function toTenderDraft(row: Tender): TenderDraft {
+// row that fails either check has drifted outside what this module can safely
+// model. Such a row is dropped (mapped to `null`) rather than coerced to a
+// default: money is stored in integer minor units, so silently coercing an
+// unrecognized currency to e.g. "GEL" would misreport an amount, which is
+// worse than treating the tender as absent.
+function toTenderDraft(row: Tender): TenderDraft | null {
   if (row.specialty !== "CONSTRUCTION_REPAIR") {
-    throw new Error(
-      `Tender ${row.id} has unsupported specialty "${row.specialty}"; only CONSTRUCTION_REPAIR tenders are representable as a TenderDraft.`,
-    );
+    return null;
   }
   if (!isRepresentableCurrency(row.currency)) {
-    throw new Error(
-      `Tender ${row.id} has unsupported currency "${row.currency}"; only GEL and USD are representable as a TenderDraft.`,
-    );
+    return null;
   }
 
   return {
@@ -122,7 +120,15 @@ export class PrismaTenderRepository implements TenderRepository {
         updatedAt: now,
       },
     });
-    return { ok: true, value: toTenderDraft(created) };
+    const draft = toTenderDraft(created);
+    if (draft === null) {
+      // Cannot happen: this call always writes a supported specialty and no
+      // currency, so the row it just created is always representable.
+      throw new Error(
+        `Failed to map newly created tender ${created.id} to a TenderDraft.`,
+      );
+    }
+    return { ok: true, value: draft };
   }
 
   async getOwned(
@@ -136,7 +142,11 @@ export class PrismaTenderRepository implements TenderRepository {
     if (row.ownerId !== actor.id) {
       return { ok: false, error: "NOT_OWNER" };
     }
-    return { ok: true, value: toTenderDraft(row) };
+    const draft = toTenderDraft(row);
+    if (draft === null) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    return { ok: true, value: draft };
   }
 
   async listOwned(actor: TenderActor): Promise<readonly TenderDraft[]> {
@@ -144,7 +154,9 @@ export class PrismaTenderRepository implements TenderRepository {
       where: { ownerId: actor.id },
       orderBy: { createdAt: "desc" },
     });
-    return rows.map(toTenderDraft);
+    return rows
+      .map(toTenderDraft)
+      .filter((draft): draft is TenderDraft => draft !== null);
   }
 
   async updateDraft(
@@ -152,57 +164,66 @@ export class PrismaTenderRepository implements TenderRepository {
     command: UpdateTenderDraftCommand,
     actor: TenderActor,
   ): Promise<Result<TenderDraft, TenderMutationError>> {
-    const existing = await database.tender.findUnique({ where: { id } });
-    if (existing === null) {
-      return { ok: false, error: "TENDER_NOT_FOUND" };
-    }
-    if (existing.ownerId !== actor.id) {
-      return { ok: false, error: "NOT_OWNER" };
-    }
-    if (existing.status !== "DRAFT") {
+    const data = {
+      ...(command.title === undefined ? {} : { title: command.title }),
+      ...(command.shortDescription === undefined
+        ? {}
+        : { shortDescription: command.shortDescription }),
+      ...(command.fullDescription === undefined
+        ? {}
+        : { fullDescription: command.fullDescription }),
+      ...(command.scopeOfWork === undefined
+        ? {}
+        : { scopeOfWork: command.scopeOfWork }),
+      ...(command.budgetMinorUnits === undefined
+        ? {}
+        : { budgetMinorUnits: command.budgetMinorUnits }),
+      ...(command.currency === undefined ? {} : { currency: command.currency }),
+      ...(command.desiredStartDate === undefined
+        ? {}
+        : { desiredStartDate: command.desiredStartDate }),
+      ...(command.deadline === undefined ? {} : { deadline: command.deadline }),
+      ...(command.workerNotes === undefined
+        ? {}
+        : { workerNotes: command.workerNotes }),
+      ...(command.equipmentNotes === undefined
+        ? {}
+        : { equipmentNotes: command.equipmentNotes }),
+      ...(command.materialNotes === undefined
+        ? {}
+        : { materialNotes: command.materialNotes }),
+      ...(command.conditions === undefined
+        ? {}
+        : { conditions: command.conditions }),
+    };
+
+    // The state transition is the guard: only a row that is still owned by
+    // this actor and still a DRAFT gets updated, in one atomic statement, so
+    // there is no window between reading `status` and writing where a
+    // concurrent publish/cancel could let a published tender's material
+    // fields be edited in place.
+    const { count } = await database.tender.updateMany({
+      where: { id, ownerId: actor.id, status: "DRAFT" },
+      data,
+    });
+
+    if (count === 0) {
+      const existing = await database.tender.findUnique({ where: { id } });
+      if (existing === null) {
+        return { ok: false, error: "TENDER_NOT_FOUND" };
+      }
+      if (existing.ownerId !== actor.id) {
+        return { ok: false, error: "NOT_OWNER" };
+      }
       return { ok: false, error: "NOT_DRAFT" };
     }
 
-    const updated = await database.tender.update({
-      where: { id },
-      data: {
-        ...(command.title === undefined ? {} : { title: command.title }),
-        ...(command.shortDescription === undefined
-          ? {}
-          : { shortDescription: command.shortDescription }),
-        ...(command.fullDescription === undefined
-          ? {}
-          : { fullDescription: command.fullDescription }),
-        ...(command.scopeOfWork === undefined
-          ? {}
-          : { scopeOfWork: command.scopeOfWork }),
-        ...(command.budgetMinorUnits === undefined
-          ? {}
-          : { budgetMinorUnits: command.budgetMinorUnits }),
-        ...(command.currency === undefined
-          ? {}
-          : { currency: command.currency }),
-        ...(command.desiredStartDate === undefined
-          ? {}
-          : { desiredStartDate: command.desiredStartDate }),
-        ...(command.deadline === undefined
-          ? {}
-          : { deadline: command.deadline }),
-        ...(command.workerNotes === undefined
-          ? {}
-          : { workerNotes: command.workerNotes }),
-        ...(command.equipmentNotes === undefined
-          ? {}
-          : { equipmentNotes: command.equipmentNotes }),
-        ...(command.materialNotes === undefined
-          ? {}
-          : { materialNotes: command.materialNotes }),
-        ...(command.conditions === undefined
-          ? {}
-          : { conditions: command.conditions }),
-      },
-    });
-    return { ok: true, value: toTenderDraft(updated) };
+    const updated = await database.tender.findUniqueOrThrow({ where: { id } });
+    const draft = toTenderDraft(updated);
+    if (draft === null) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    return { ok: true, value: draft };
   }
 }
 
