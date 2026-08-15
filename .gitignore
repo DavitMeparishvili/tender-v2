@@ -3,7 +3,6 @@
 # dependencies
 /node_modules
 /src/generated/prisma
-/.worktrees/
 /.superpowers/
 /.impeccable/review/
 /.pnp
