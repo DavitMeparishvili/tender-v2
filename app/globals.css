@@ -584,6 +584,37 @@ a {
   inline-size: 100%;
 }
 
+.discovery-filters {
+  display: grid;
+  gap: 1.25rem;
+  margin-block-end: 2rem;
+}
+
+.discovery-budget-group {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.discovery-budget-group > legend {
+  padding: 0;
+  color: var(--text-strong);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.discovery-budget-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.discovery-filters .submit-button {
+  inline-size: 100%;
+}
+
 .tender-empty {
   padding-block: 2rem;
   border-block: 1px solid var(--border-default);
@@ -606,6 +637,12 @@ a {
   gap: 1rem;
   padding-block: 1.5rem;
   border-block-end: 1px solid var(--border-default);
+}
+
+.discovery-summary {
+  margin: 0;
+  color: var(--text-body);
+  overflow-wrap: anywhere;
 }
 
 .tender-list-heading {
@@ -1000,6 +1037,8 @@ a {
   }
 
   .wizard-paired-fields,
+  .discovery-budget-fields,
+  .discovery-list-facts,
   .wizard-review > div,
   .tender-detail > div {
     grid-template-columns: 1fr;

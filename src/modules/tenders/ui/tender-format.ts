@@ -6,14 +6,17 @@ const intlLocales: Readonly<Record<Locale, string>> = {
   ka: "ka",
 };
 
-export function formatTenderDate(value: Date | null, locale: Locale) {
+export function formatTenderDate(value: Date | string | null, locale: Locale) {
   if (value === null) return null;
+
+  const date = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(date.valueOf())) return null;
 
   return new Intl.DateTimeFormat(intlLocales[locale], {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Asia/Tbilisi",
-  }).format(value);
+  }).format(date);
 }
 
 export function formatTenderMoney(

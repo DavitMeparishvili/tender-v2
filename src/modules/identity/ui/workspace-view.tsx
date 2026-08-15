@@ -114,7 +114,12 @@ export function WorkspaceView({
             {messages.workspace.clientEmptyBody}
           </Link>
         ) : (
-          <p>{messages.workspace.providerEmptyBody}</p>
+          <Link
+            className="workspace-empty-link"
+            href={`/${locale}/provider/tenders`}
+          >
+            {messages.workspace.providerEmptyBody}
+          </Link>
         )}
       </section>
       <div className="workspace-actions">
