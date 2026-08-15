@@ -12,6 +12,14 @@ const GEORGIAN_CITIES: ReadonlyArray<
   { name: "Zugdidi", latitude: 42.5088, longitude: 41.8709 },
 ];
 
+// 150 km comfortably covers Georgian territory from the six gazetteer cities
+// (the farthest inhabited corners — Kakheti in the east, Kazbegi in the
+// north, Svaneti in the northwest — are all within ~120 km of a listed city)
+// while rejecting neighbouring-country pins such as Yerevan (~173 km from
+// Tbilisi). It fails in the safe direction: a rejected pin falls back to the
+// address form.
+const MAX_PIN_DISTANCE_FROM_GAZETTEER_KILOMETERS = 150;
+
 function normalize(value: string): string {
   return value.trim().toLowerCase();
 }
@@ -46,7 +54,12 @@ export class GazetteerGeocoder implements Geocoder {
         nearest = { city, distance };
       }
     }
-    if (nearest === null) return { ok: false, error: "COORDINATES_NOT_FOUND" };
+    if (
+      nearest === null ||
+      nearest.distance > MAX_PIN_DISTANCE_FROM_GAZETTEER_KILOMETERS
+    ) {
+      return { ok: false, error: "COORDINATES_NOT_FOUND" };
+    }
 
     const result: GeocodeResult = {
       latitude: coordinates.latitude,

@@ -34,4 +34,13 @@ describe("GazetteerGeocoder", () => {
     expect(result.ok).toBe(true);
     if (result.ok) expect(result.value.normalizedAddress).toContain("Tbilisi");
   });
+
+  it("returns COORDINATES_NOT_FOUND for a pin far outside Georgia", async () => {
+    // Mid-Atlantic Ocean: thousands of km from any gazetteer city.
+    const result = await geocoder.reverseGeocode({
+      latitude: 0,
+      longitude: -30,
+    });
+    expect(result).toEqual({ ok: false, error: "COORDINATES_NOT_FOUND" });
+  });
 });

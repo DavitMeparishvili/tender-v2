@@ -93,6 +93,56 @@ describe("PrismaTenderRepository", () => {
     );
   });
 
+  it("syncs the location for a PIN using the submitted coordinates as the exact location", async () => {
+    const ownerId = await createOwner();
+    const now = new Date();
+
+    const created = await repository.createDraft(
+      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      { id: ownerId },
+      { tenderId: randomUUID() },
+      now,
+    );
+    expect(created.ok).toBe(true);
+    if (!created.ok) return;
+
+    const syncTenderLocation = createSyncTenderLocation({
+      repository,
+      geocoder: new GazetteerGeocoder(),
+    });
+
+    // Close to, but distinct from, the Tbilisi gazetteer entry
+    // (41.7151, 44.8271) so `exact` can be checked against the submitted pin
+    // rather than the reverse-geocoded city centre, and precise enough that
+    // coarsening actually changes the value (so `public` can be checked
+    // against the coarsened form rather than an accidental no-op round).
+    const submittedPin = { latitude: 41.7333, longitude: 44.7912 };
+
+    const synced = await syncTenderLocation(
+      created.value.id,
+      {
+        mode: "PIN",
+        city: "Tbilisi",
+        latitude: submittedPin.latitude,
+        longitude: submittedPin.longitude,
+      },
+      { id: ownerId },
+    );
+
+    expect(synced.ok).toBe(true);
+    if (!synced.ok) return;
+    expect(synced.value.location).not.toBeNull();
+    expect(synced.value.location?.exact).toEqual(submittedPin);
+    expect(synced.value.location?.exact).not.toEqual({
+      latitude: 41.7151,
+      longitude: 44.8271,
+    });
+    expect(synced.value.location?.public).toEqual({
+      latitude: 41.73,
+      longitude: 44.79,
+    });
+  });
+
   it("returns ADDRESS_NOT_FOUND when syncing the location for an unknown city", async () => {
     const ownerId = await createOwner();
     const now = new Date();
