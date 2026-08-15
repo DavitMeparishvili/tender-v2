@@ -636,6 +636,127 @@ a {
   font-variant-numeric: tabular-nums;
 }
 
+.wizard-rail {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0 0 2rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  list-style: none;
+}
+
+.wizard-rail li {
+  display: grid;
+  gap: 0.4rem;
+  border-block-start: 1px solid var(--border-default);
+  padding-block-start: 0.6rem;
+}
+
+.wizard-rail li.is-complete {
+  border-color: var(--trust);
+  color: var(--text-strong);
+}
+
+.wizard-rail span {
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.wizard-step-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+}
+
+.wizard-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.wizard-actions > :only-child {
+  grid-column: 1 / -1;
+}
+
+.wizard-actions .button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.wizard-paired-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(7rem, 1fr);
+  gap: 0.75rem;
+}
+
+.wizard-location-toggle {
+  padding-block: 0.25rem;
+}
+
+.attachment-count {
+  flex: 0 0 100%;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.field-control:has(#attachments) {
+  flex-wrap: wrap;
+}
+
+#attachments {
+  min-inline-size: 0;
+}
+
+.attachment-list {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0;
+  margin: -0.5rem 0 0;
+  color: var(--text-body);
+  font-size: 0.8125rem;
+  list-style: none;
+}
+
+.attachment-list li {
+  padding-block: 0.4rem;
+  border-block-end: 1px solid var(--border-default);
+  overflow-wrap: anywhere;
+}
+
+.wizard-review {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  border-block-start: 1px solid var(--border-default);
+}
+
+.wizard-review > div {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 2fr) minmax(0, 3fr);
+  gap: 1rem;
+  padding-block: 0.75rem;
+  border-block-end: 1px solid var(--border-default);
+}
+
+.wizard-review dt {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.wizard-review dd {
+  min-inline-size: 0;
+  margin: 0;
+  color: var(--text-strong);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
 .status-page {
   inline-size: min(100% - 3rem, var(--content-measure));
   margin-inline: auto;
@@ -675,6 +796,15 @@ a {
   .locale-link,
   .help-menu > summary {
     padding-inline: 0.625rem;
+  }
+
+  .wizard-rail {
+    gap: 0.35rem;
+  }
+
+  .wizard-paired-fields,
+  .wizard-review > div {
+    grid-template-columns: 1fr;
   }
 }
 
