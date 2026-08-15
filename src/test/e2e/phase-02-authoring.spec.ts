@@ -1,20 +1,15 @@
 import { expect, test } from "@playwright/test";
 import { messagesFor, signInSeededAccount } from "./fixtures/accounts";
-import { fillScopeStep, fixtureFile } from "./fixtures/tenders";
+import {
+  fillScopeStep,
+  fixtureFile,
+  warmUpDevServer,
+} from "./fixtures/tenders";
 
-// The webServer's own readiness probe (`/api/health/live`) only proves the
-// dev server is listening — it does not compile any page route. Outside CI
-// this suite runs against `next dev`, which compiles each route on its
-// first hit; whichever test in this file runs first would otherwise pay
-// that compile cost against `signInSeededAccount`'s fixed 5-second
-// `toHaveURL` assertion and fail on cold-start latency that has nothing to
-// do with this suite's own behaviour. Warming the post-login redirect route
-// once, before any test runs, keeps every test's timing about the
-// application rather than the dev server's JIT compilation.
+// See `warmUpDevServer`'s own comment: this keeps this file
+// independently runnable against a cold `next dev` server.
 test.beforeAll(async ({ request }) => {
-  for (const locale of ["ka", "en"] as const) {
-    await request.get(`/${locale}/continue`);
-  }
+  await warmUpDevServer(request);
 });
 
 for (const locale of ["ka", "en"] as const) {

@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import type { Page } from "@playwright/test";
+import type { APIRequestContext, Page } from "@playwright/test";
 import type { Locale } from "../../../modules/localization/config";
 import { formatGeorgiaDateTimeLocal } from "../../../modules/tenders/ui/georgia-date-time";
 
@@ -9,6 +9,45 @@ import { formatGeorgiaDateTimeLocal } from "../../../modules/tenders/ui/georgia-
 
 export function fixtureFile(name: string): string {
   return fileURLToPath(new URL(`../fixtures/files/${name}`, import.meta.url));
+}
+
+// The seeded client account that owns every Phase 2 seed tender (see
+// scripts/seed-phase-01.ts — the account is created there, not by
+// scripts/seed-phase-02.ts, which only looks it up). Used to assert the
+// client's identity/contact details never reach a provider, alongside the
+// tender-field masking assertions.
+export const SEEDED_CLIENT = {
+  email: "phase1.client@tender.test",
+  name: "Seeded Client",
+} as const;
+
+// Outside CI, Playwright's `webServer` runs `next dev`, which compiles each
+// route on its first real hit — the `/api/health/live` readiness probe the
+// config waits on never touches a page route. Whichever spec file's first
+// test happens to run first against a freshly started server pays that
+// compile cost against a bare `expect(...)`'s fixed 5-second default
+// timeout — first for `signInSeededAccount`'s post-login redirect, then
+// again for whichever page that spec navigates to next. Every route these
+// two spec files' own tests visit is warmed here (a plain, unauthenticated
+// GET still forces Next to compile the route module, redirect or not), and
+// both files call this from their own `test.beforeAll` so each is
+// independently runnable (e.g. `--grep phase-02-discovery` alone) without
+// depending on the other file having already warmed the server up.
+const WARM_UP_ROUTES = [
+  "/continue",
+  "/client/tenders/new",
+  "/provider/tenders",
+  "/provider/tenders/00000000-0000-0000-0000-000000000000",
+] as const;
+
+export async function warmUpDevServer(
+  request: APIRequestContext,
+): Promise<void> {
+  for (const locale of ["ka", "en"] as const) {
+    for (const route of WARM_UP_ROUTES) {
+      await request.get(`/${locale}${route}`);
+    }
+  }
 }
 
 // The values `scripts/seed-phase-02.ts` actually writes for its PUBLISHED
