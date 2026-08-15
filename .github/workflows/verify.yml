@@ -21,7 +21,8 @@ jobs:
       NODE_ENV: development
       STORAGE_ENDPOINT: http://127.0.0.1:9000
       STORAGE_REGION: us-east-1
-      STORAGE_BUCKET: tender-ci-test
+      STORAGE_BUCKET: tender-ci-dev
+      STORAGE_BUCKET_TEST: tender-ci-test
       STORAGE_ACCESS_KEY_ID: tender_local
       STORAGE_SECRET_ACCESS_KEY: tender_local_only
       STORAGE_FORCE_PATH_STYLE: "true"
@@ -70,12 +71,15 @@ jobs:
           docker logs minio >&2
           exit 1
 
-      - name: Create MinIO bucket
+      # Both buckets exist for the same reason `compose.yaml` creates both:
+      # `src/test/integration/setup.ts` swaps STORAGE_BUCKET for
+      # STORAGE_BUCKET_TEST and refuses to run if the two name one bucket.
+      - name: Create MinIO buckets
         shell: bash
         run: |
           docker run --rm --network host \
             --entrypoint sh minio/mc:RELEASE.2025-08-13T08-35-41Z -c \
-            "mc alias set ci http://127.0.0.1:9000 tender_local tender_local_only && mc mb --ignore-existing ci/${STORAGE_BUCKET}"
+            "mc alias set ci http://127.0.0.1:9000 tender_local tender_local_only && mc mb --ignore-existing ci/${STORAGE_BUCKET} ci/${STORAGE_BUCKET_TEST}"
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v6

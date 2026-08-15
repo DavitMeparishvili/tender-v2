@@ -96,6 +96,36 @@ describe("tender attachment uploads", () => {
     const denied = await getAttachmentDownload(tenderId, uploaded.value.id, {
       id: strangerId,
     });
-    expect(denied.ok).toBe(false);
+    // Asserting the exact error, not just `ok === false`: a bare falsy check
+    // also passes for NOT_FOUND, which would prove nothing about ownership.
+    expect(denied).toEqual({ ok: false, error: "NOT_OWNER" });
+  });
+
+  it("issues the owning client a signed URL that downloads the stored bytes", async () => {
+    const { ownerId, tenderId } = await seedOwnedDraft();
+    const body = new TextEncoder().encode("%PDF-1.7\n%%EOF");
+    const uploaded = await uploadTenderAttachment(
+      tenderId,
+      { originalFileName: "plan.pdf", body },
+      { id: ownerId },
+    );
+    if (!uploaded.ok) throw new Error("upload failed");
+
+    const download = await getAttachmentDownload(tenderId, uploaded.value.id, {
+      id: ownerId,
+    });
+    expect(download.ok).toBe(true);
+    if (!download.ok) return;
+
+    const url = new URL(download.value);
+    expect(url.pathname).toBe(
+      `/${process.env.STORAGE_BUCKET}/${uploaded.value.objectKey}`,
+    );
+    expect(url.searchParams.get("X-Amz-Expires")).toBe("60");
+    expect(url.searchParams.get("X-Amz-Signature")).toMatch(/^[0-9a-f]{64}$/);
+
+    const response = await fetch(download.value);
+    expect(response.status).toBe(200);
+    expect(new Uint8Array(await response.arrayBuffer())).toEqual(body);
   });
 });

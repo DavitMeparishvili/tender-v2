@@ -11,7 +11,8 @@ const testEnvironment = {
   APP_URL: "http://localhost:3000",
   STORAGE_ENDPOINT: "http://localhost:9000",
   STORAGE_REGION: "us-east-1",
-  STORAGE_BUCKET: "tender-test",
+  STORAGE_BUCKET: "tender-dev",
+  STORAGE_BUCKET_TEST: "tender-test",
   STORAGE_ACCESS_KEY_ID: "tender_local",
   STORAGE_SECRET_ACCESS_KEY: "tender_local_only",
 } satisfies NodeJS.ProcessEnv;
