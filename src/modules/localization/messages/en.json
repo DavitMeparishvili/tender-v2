@@ -199,6 +199,7 @@
       "notOwner": "That tender belongs to another account.",
       "notDraft": "A published tender can no longer be edited.",
       "alreadyCancelled": "That tender is already cancelled.",
+      "tenderHasBids": "A tender that already has offers can no longer be cancelled.",
       "tooManyAttachments": "You can attach up to 10 files.",
       "unsupportedFileType": "Attach a PDF, JPEG, PNG, or WebP file.",
       "fileTooLarge": "Each file must be 15 MB or smaller.",
