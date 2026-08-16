@@ -17,7 +17,9 @@ describe("identity message catalogs", () => {
     expect(Object.keys(en).sort()).toEqual([
       "access",
       "auth",
+      "bidding",
       "common",
+      "entitlements",
       "errors",
       "onboarding",
       "profile",
