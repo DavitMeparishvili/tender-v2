@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { database } from "../../../infrastructure/db/client";
 import { createPublishReview } from "../application/publish-review";
+import { createRedactReview } from "../application/redact-review";
 import { PrismaReviewRepository } from "./prisma-review-repository";
 
 const ids = { next: () => randomUUID() };
@@ -80,6 +81,11 @@ const publish = createPublishReview({
   ids,
   clock,
 });
+const redact = createRedactReview({
+  repository: new PrismaReviewRepository(),
+  ids,
+  clock,
+});
 
 describe("review lifecycle", () => {
   it("rejects incomplete agreements, outsiders, and invalid drafts", async () => {
@@ -142,6 +148,49 @@ describe("review lifecycle", () => {
         },
       }),
     ).resolves.toBe(1);
+  });
+
+  it("redacts immutably and removes the review from public aggregates", async () => {
+    const agreement = await completedAgreement();
+    const published = await publish(agreement.agreementId, validReview, {
+      id: agreement.clientId,
+    });
+    if (!published.ok) throw new Error("expected published review");
+    const adminId = await user();
+    const first = await redact(
+      published.value.id,
+      { reason: "Contains a private telephone number." },
+      { id: adminId },
+    );
+    expect(first).toMatchObject({ ok: true, value: { changed: true } });
+    const stored = await database.review.findUniqueOrThrow({
+      where: { id: published.value.id },
+    });
+    expect(stored).toMatchObject({
+      status: "REDACTED",
+      comment: validReview.comment,
+      quality: validReview.quality,
+      redactedById: adminId,
+      redactionReason: "Contains a private telephone number.",
+    });
+    await expect(
+      new PrismaReviewRepository().getForProfile(agreement.providerId),
+    ).resolves.toMatchObject({ aggregate: { reviewCount: 0 }, reviews: [] });
+    const auditsBeforeRetry = await database.auditEvent.count({
+      where: { action: "REVIEW_REDACTED", targetId: published.value.id },
+    });
+    await expect(
+      redact(
+        published.value.id,
+        { reason: "Contains a private telephone number." },
+        { id: adminId },
+      ),
+    ).resolves.toMatchObject({ ok: true, value: { changed: false } });
+    await expect(
+      database.auditEvent.count({
+        where: { action: "REVIEW_REDACTED", targetId: published.value.id },
+      }),
+    ).resolves.toBe(auditsBeforeRetry);
   });
 });
 

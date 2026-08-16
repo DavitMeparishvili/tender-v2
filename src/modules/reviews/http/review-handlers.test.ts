@@ -8,10 +8,16 @@ const valid = {
   agreedPrice: 4,
   comment: "Careful work, clear updates, and the agreed price was kept.",
 };
+const moderationDependencies = {
+  requireAdmin: async () => ({ ok: true as const, value: { id: "admin" } }),
+  listForModeration: async () => [],
+  redact: async () => ({ ok: true as const, value: {} }),
+};
 
 describe("review handlers", () => {
   it("uses strict input and maps publication errors", async () => {
     const handlers = createReviewHandlers({
+      ...moderationDependencies,
       require: async () => ({ ok: true as const, value: { id: "reviewer" } }),
       publish: async (_id, input) =>
         typeof input === "object" && input !== null && "extra" in input
@@ -45,6 +51,7 @@ describe("review handlers", () => {
 
   it("does not require authentication for public profile review reads", async () => {
     const handlers = createReviewHandlers({
+      ...moderationDependencies,
       require: async () => ({ ok: false as const, error: "UNAUTHENTICATED" }),
       publish: async () => ({ ok: false as const, error: "NOT_PARTICIPANT" }),
       getForProfile: async (id) => ({

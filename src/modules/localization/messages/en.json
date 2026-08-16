@@ -386,6 +386,50 @@
     "reviewPublished": "A review was published.",
     "reviewRedacted": "A review was redacted."
   },
+  "reviews": {
+    "title": "Completed-job reviews",
+    "quality": "Quality",
+    "deadline": "Deadline adherence",
+    "communication": "Communication",
+    "agreedPrice": "Agreed-price adherence",
+    "overall": "Overall rating",
+    "comment": "Review comment",
+    "commentHint": "Use at least 30 characters and five words.",
+    "remaining": "{count} characters remaining",
+    "publish": "Publish review",
+    "publishing": "Publishing review",
+    "publicationNotice": "Published reviews are public and cannot be edited.",
+    "published": "Your review was published.",
+    "ineligible": "A review is available after both parties confirm completion.",
+    "alreadyReviewed": "You have already reviewed this completed job.",
+    "empty": "No completed-job reviews yet.",
+    "reviewCount": "{count} reviews",
+    "errors": {
+      "INVALID_REVIEW": "Check the scores and comment, then try again.",
+      "AGREEMENT_NOT_FOUND": "This agreement is no longer available.",
+      "NOT_PARTICIPANT": "You cannot review this agreement.",
+      "AGREEMENT_NOT_COMPLETED": "This agreement is not completed yet.",
+      "REVIEW_ALREADY_EXISTS": "You have already reviewed this completed job.",
+      "generic": "We could not publish this review. Try again safely."
+    }
+  },
+  "moderation": {
+    "title": "Review moderation",
+    "empty": "No reviews need moderation.",
+    "reviewer": "Reviewer",
+    "reviewed": "Reviewed party",
+    "redact": "Redact review",
+    "reason": "Redaction reason",
+    "reasonHint": "Describe the policy concern in 10 to 500 characters.",
+    "notice": "Redaction removes a review from public views and aggregates. It does not delete the stored record.",
+    "redacted": "This review has been redacted.",
+    "success": "The review was redacted.",
+    "errors": {
+      "REVIEW_NOT_FOUND": "This review is no longer available.",
+      "INVALID_REDACTION_REASON": "Enter a reason between 10 and 500 characters.",
+      "generic": "We could not redact this review. Try again safely."
+    }
+  },
   "errors": {
     "summaryOne": "There is 1 problem to fix.",
     "summaryMany": "There are {count} problems to fix.",

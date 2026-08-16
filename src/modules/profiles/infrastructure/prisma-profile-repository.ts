@@ -11,6 +11,10 @@ import type {
 } from "../application/complete-onboarding";
 import type { ProviderDisplayNameRepository } from "../application/get-provider-display-names";
 import type {
+  PublicProfileRepository,
+  PublicProfileView,
+} from "../application/get-public-profile";
+import type {
   OwnProfileRepository,
   ProfileActor,
   ProfileUpdateError,
@@ -71,7 +75,8 @@ export class PrismaProfileRepository
   implements
     OnboardingRepository,
     OwnProfileRepository,
-    ProviderDisplayNameRepository
+    ProviderDisplayNameRepository,
+    PublicProfileRepository
 {
   async getOwn(
     actor: ProfileActor,
@@ -250,6 +255,40 @@ export class PrismaProfileRepository
       select: { userId: true, displayName: true },
     });
     return new Map(rows.map((row) => [row.userId, row.displayName]));
+  }
+
+  async getPublic(userId: string) {
+    const profile = await database.userProfile.findUnique({
+      where: { userId },
+      select: {
+        userId: true,
+        displayName: true,
+        accountKind: true,
+        city: true,
+        activityDescription: true,
+        user: {
+          select: {
+            providerProfile: { select: { specialties: true } },
+          },
+        },
+      },
+    });
+    if (profile === null)
+      return { ok: false as const, error: "PROFILE_NOT_FOUND" as const };
+    const value: PublicProfileView = {
+      userId: profile.userId,
+      displayName: profile.displayName,
+      accountKind: profile.accountKind === "COMPANY" ? "COMPANY" : "PERSON",
+      city: profile.city,
+      activityDescription: profile.activityDescription,
+      providerSpecialties: (
+        profile.user.providerProfile?.specialties ?? []
+      ).filter(
+        (specialty): specialty is "CONSTRUCTION_REPAIR" =>
+          specialty === "CONSTRUCTION_REPAIR",
+      ),
+    };
+    return { ok: true as const, value };
   }
 }
 

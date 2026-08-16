@@ -127,6 +127,25 @@ describe("AgreementDetail", () => {
       cancelled.indexOf(messages.agreements.cancelConsequence),
     ).toBeLessThan(cancelled.indexOf(messages.agreements.cancel));
   });
+
+  it("replaces the review form with an already-reviewed state", () => {
+    const html = renderToStaticMarkup(
+      <AgreementDetail
+        agreement={{
+          ...baseAgreement,
+          status: "COMPLETED",
+          canConfirm: false,
+          canDecline: false,
+          canReview: true,
+        }}
+        hasPublishedReview
+        locale="en"
+        messages={messages}
+      />,
+    );
+    expect(html).toContain(messages.reviews.alreadyReviewed);
+    expect(html).not.toContain(messages.reviews.publish);
+  });
 });
 
 describe("AgreementList", () => {

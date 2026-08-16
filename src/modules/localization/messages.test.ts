@@ -22,9 +22,11 @@ describe("identity message catalogs", () => {
       "common",
       "entitlements",
       "errors",
+      "moderation",
       "notifications",
       "onboarding",
       "profile",
+      "reviews",
       "tenders",
       "workspace",
     ]);

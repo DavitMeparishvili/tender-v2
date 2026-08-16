@@ -6,6 +6,7 @@ import {
 } from "../../tenders/ui/tender-format";
 import type { AgreementView } from "../infrastructure/prisma-agreement-gateway";
 import { AgreementActionForm } from "./agreement-action-form";
+import { ReviewForm } from "../../reviews/ui/review-form";
 
 function statusLabel(status: AgreementView["status"], messages: Messages) {
   return {
@@ -57,10 +58,12 @@ function LifecycleCheckpoint({
 
 export function AgreementDetail({
   agreement,
+  hasPublishedReview = false,
   locale,
   messages,
 }: Readonly<{
   agreement: AgreementView;
+  hasPublishedReview?: boolean;
   locale: Locale;
   messages: Messages;
 }>) {
@@ -251,6 +254,15 @@ export function AgreementDetail({
           copy={messages.agreements}
           label={messages.agreements.cancel}
         />
+      ) : null}
+      {agreement.canReview && !hasPublishedReview ? (
+        <section aria-labelledby="review-heading">
+          <h2 id="review-heading">{messages.reviews.title}</h2>
+          <ReviewForm agreementId={agreement.id} copy={messages.reviews} />
+        </section>
+      ) : null}
+      {agreement.canReview && hasPublishedReview ? (
+        <p role="status">{messages.reviews.alreadyReviewed}</p>
       ) : null}
     </>
   );

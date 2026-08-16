@@ -1,7 +1,5 @@
 import type { Clock, IdGenerator, Result } from "../../shared";
-import {
-  validateReviewDraft,
-} from "../domain/review";
+import { validateReviewDraft } from "../domain/review";
 import type {
   ReviewRepository,
   ReviewView,

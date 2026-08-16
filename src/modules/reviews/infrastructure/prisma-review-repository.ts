@@ -39,6 +39,26 @@ export type ProfileReviewView = Readonly<{
   reviews: readonly PublicReviewView[];
 }>;
 
+export type ModerationReviewView = Readonly<{
+  id: string;
+  tenderTitle: string;
+  reviewerDisplayName: string;
+  reviewedDisplayName: string;
+  scores: ReviewScores;
+  overall: number;
+  comment: string;
+  status: "PUBLISHED" | "REDACTED";
+  publishedAt: Date;
+  redactedAt: Date | null;
+  redactionReason: string | null;
+}>;
+
+export type RedactReviewResult = Readonly<{
+  id: string;
+  status: "PUBLISHED" | "REDACTED";
+  changed: boolean;
+}>;
+
 export interface ReviewRepository {
   publish(
     agreementId: string,
@@ -56,6 +76,17 @@ export interface ReviewRepository {
     >
   >;
   getForProfile(reviewedId: string): Promise<ProfileReviewView>;
+}
+
+export interface ReviewModerationRepository {
+  redact(
+    reviewId: string,
+    reason: string,
+    adminId: string,
+    ids: IdGenerator,
+    now: Date,
+  ): Promise<Result<RedactReviewResult, "REVIEW_NOT_FOUND">>;
+  listForModeration(): Promise<readonly ModerationReviewView[]>;
 }
 
 function scores(
@@ -101,7 +132,9 @@ function reviewView(
   };
 }
 
-export class PrismaReviewRepository implements ReviewRepository {
+export class PrismaReviewRepository
+  implements ReviewRepository, ReviewModerationRepository
+{
   constructor(
     private readonly agreements: AgreementReviewGateway = prismaAgreementGateway,
   ) {}
@@ -182,9 +215,7 @@ export class PrismaReviewRepository implements ReviewRepository {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === "P2002" &&
-        Array.isArray(error.meta?.target) &&
-        error.meta.target.includes("agreementId") &&
-        error.meta.target.includes("reviewerId")
+        JSON.stringify(error.meta).includes("Review_agreementId_reviewerId_key")
       ) {
         return { ok: false as const, error: "REVIEW_ALREADY_EXISTS" as const };
       }
@@ -230,6 +261,118 @@ export class PrismaReviewRepository implements ReviewRepository {
       ),
       reviews,
     };
+  }
+
+  async getForAgreementReviewer(agreementId: string, reviewerId: string) {
+    const row = await database.review.findUnique({
+      where: { agreementId_reviewerId: { agreementId, reviewerId } },
+    });
+    return row === null ? null : reviewView(row);
+  }
+
+  async redact(
+    reviewId: string,
+    reason: string,
+    adminId: string,
+    ids: IdGenerator,
+    now: Date,
+  ): Promise<Result<RedactReviewResult, "REVIEW_NOT_FOUND">> {
+    return database.$transaction(async (transaction) => {
+      await transaction.$queryRaw`
+        SELECT "id" FROM "Review" WHERE "id" = ${reviewId} FOR UPDATE
+      `;
+      const review = await transaction.review.findUnique({
+        where: { id: reviewId },
+      });
+      if (review === null)
+        return { ok: false as const, error: "REVIEW_NOT_FOUND" as const };
+      if (review.status === "REDACTED") {
+        return {
+          ok: true as const,
+          value: { id: review.id, status: "REDACTED" as const, changed: false },
+        };
+      }
+      const updated = await transaction.review.update({
+        where: { id: reviewId },
+        data: {
+          status: "REDACTED",
+          redactedAt: now,
+          redactedById: adminId,
+          redactionReason: reason,
+        },
+      });
+      await transaction.auditEvent.create({
+        data: {
+          id: ids.next(),
+          actorId: adminId,
+          action: "REVIEW_REDACTED",
+          targetType: "Review",
+          targetId: reviewId,
+          reason,
+          correlationId: reviewId,
+          metadata: {},
+        },
+      });
+      await prismaNotificationPublisher.publish(
+        transaction,
+        [
+          {
+            recipientId: review.reviewerId,
+            topic: OUTBOX_TOPICS.reviewRedacted,
+            aggregateType: "Review",
+            aggregateId: reviewId,
+            messageKey: "notifications.reviewRedacted",
+            variables: { tenderTitle: "" },
+          },
+        ],
+        [{ outboxId: ids.next(), inboxId: ids.next() }],
+        now,
+      );
+      return {
+        ok: true as const,
+        value: { id: updated.id, status: "REDACTED" as const, changed: true },
+      };
+    });
+  }
+
+  async listForModeration(): Promise<readonly ModerationReviewView[]> {
+    const rows = await database.review.findMany({
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        reviewerId: true,
+        reviewedId: true,
+        quality: true,
+        deadline: true,
+        communication: true,
+        agreedPrice: true,
+        comment: true,
+        status: true,
+        createdAt: true,
+        redactedAt: true,
+        redactionReason: true,
+        agreement: { select: { tenderTitle: true } },
+      },
+    });
+    const names = await getProviderDisplayNames(
+      rows.flatMap((row) => [row.reviewerId, row.reviewedId]),
+    );
+    return rows.map((row) => {
+      const reviewScores = scores(row);
+      return {
+        id: row.id,
+        tenderTitle: row.agreement.tenderTitle,
+        reviewerDisplayName: names.get(row.reviewerId) ?? "",
+        reviewedDisplayName: names.get(row.reviewedId) ?? "",
+        scores: reviewScores,
+        overall: deriveOverallRating(reviewScores),
+        comment: row.comment,
+        status: row.status,
+        publishedAt: row.createdAt,
+        redactedAt: row.redactedAt,
+        redactionReason: row.redactionReason,
+      };
+    });
   }
 }
 
