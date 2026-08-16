@@ -923,6 +923,76 @@ a {
   font-variant-numeric: tabular-nums;
 }
 
+.agreement-list-group {
+  display: grid;
+  gap: 0.75rem;
+  margin-block: 2rem;
+}
+
+.agreement-list-group > h2,
+.review-form > p,
+.review-summary > p {
+  margin: 0;
+}
+
+.review-form,
+.review-moderation-list form {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 1.5rem;
+}
+
+.review-form label,
+.review-moderation-list label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.review-summary {
+  display: grid;
+  gap: 0.75rem;
+  margin-block: 1.5rem;
+  padding-block: 1.5rem;
+  border-block: 1px solid var(--border-default);
+}
+
+.review-summary dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.review-summary dt,
+.inbox-item-meta {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.review-summary dd {
+  margin: 0.25rem 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.inbox-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+@media (min-width: 56rem) {
+  .identity-frame:has(.progress-rail) .tender-detail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+
+  .identity-frame:has(.progress-rail) .tender-detail > div {
+    grid-template-columns: 1fr;
+  }
+}
+
 .wizard-rail {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1358,6 +1428,11 @@ a {
 
   .tender-list-heading {
     display: grid;
+  }
+
+  .progress-rail,
+  .review-summary dl {
+    grid-template-columns: 1fr;
   }
 
   .tender-status {
