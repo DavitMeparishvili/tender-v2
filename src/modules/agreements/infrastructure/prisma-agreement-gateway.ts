@@ -37,6 +37,13 @@ export type AgreementView = Readonly<{
   canCancel: boolean;
   canReview: boolean;
 }>;
+export type CompletedAgreementForReview = Readonly<{
+  id: string;
+  clientId: string;
+  providerId: string;
+  tenderTitle: string;
+  status: Agreement["status"];
+}>;
 export type AgreementRepository = {
   manage(
     id: string,
@@ -74,6 +81,12 @@ export interface AgreementGateway {
     snapshot: AgreementSnapshot,
     now: Date,
   ): Promise<string>;
+}
+export interface AgreementReviewGateway {
+  lockForReview(
+    transaction: Prisma.TransactionClient,
+    agreementId: string,
+  ): Promise<CompletedAgreementForReview | null>;
 }
 const view = (row: Agreement, actorId = row.clientId): AgreementView => ({
   ...row,
@@ -140,7 +153,7 @@ const messageKeys = {
   AGREEMENT_CANCELLED: "notifications.agreementCancelled",
 } as const;
 export class PrismaAgreementGateway
-  implements AgreementGateway, AgreementRepository
+  implements AgreementGateway, AgreementRepository, AgreementReviewGateway
 {
   async createPending(
     transaction: Prisma.TransactionClient,
@@ -178,6 +191,24 @@ export class PrismaAgreementGateway
         select: { id: true },
       })
     ).map((row) => row.id);
+  }
+  async lockForReview(
+    transaction: Prisma.TransactionClient,
+    agreementId: string,
+  ): Promise<CompletedAgreementForReview | null> {
+    await transaction.$queryRaw`
+      SELECT "id" FROM "Agreement" WHERE "id" = ${agreementId} FOR UPDATE
+    `;
+    return transaction.agreement.findUnique({
+      where: { id: agreementId },
+      select: {
+        id: true,
+        clientId: true,
+        providerId: true,
+        tenderTitle: true,
+        status: true,
+      },
+    });
   }
   async get(id: string, actorId: string) {
     const row = await database.agreement.findUnique({ where: { id } });
