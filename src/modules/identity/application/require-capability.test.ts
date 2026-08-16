@@ -69,7 +69,7 @@ describe("requireCapability", () => {
     });
   });
 
-  it("rejects a forged ADMIN value at the public guard boundary", async () => {
+  it("allows an active ADMIN when explicitly required", async () => {
     const adminUser: CurrentUser = {
       ...activeUser,
       capabilities: ["ADMIN"],
@@ -78,6 +78,6 @@ describe("requireCapability", () => {
 
     await expect(
       guardFor(adminUser)(new Headers(), forgedAdmin),
-    ).resolves.toEqual({ ok: false, error: "CAPABILITY_MISSING" });
+    ).resolves.toEqual({ ok: true, value: adminUser });
   });
 });

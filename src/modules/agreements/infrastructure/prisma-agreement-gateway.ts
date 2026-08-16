@@ -232,7 +232,11 @@ export class PrismaAgreementGateway
                 error: next.error === "NOT_DUE" ? "INVALID_STATE" : next.error,
               };
             }
-            if (!next.value.changed) return { ok: true, value: view(row) };
+            if (!next.value.changed)
+              return {
+                ok: true,
+                value: view(row, action.actorId ?? row.clientId),
+              };
             const r = next.value.record;
             const updated = await tx.agreement.update({
               where: { id },
@@ -299,7 +303,10 @@ export class PrismaAgreementGateway
               })),
               now,
             );
-            return { ok: true, value: view(updated) };
+            return {
+              ok: true,
+              value: view(updated, action.actorId ?? row.clientId),
+            };
           },
           { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
         );

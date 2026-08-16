@@ -27,6 +27,7 @@ const serverEnvSchema = z.object({
   // winner selection, and the Phase 0 exit criterion forbids a missing-secret
   // fallback in a production build. 32 characters matches AUTH_SECRET.
   SELECTION_WORKER_SECRET: z.string().min(32),
+  AGREEMENT_WORKER_SECRET: z.string().min(32),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

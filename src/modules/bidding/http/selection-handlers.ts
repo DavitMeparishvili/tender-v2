@@ -1,5 +1,5 @@
-import { timingSafeEqual } from "node:crypto";
 import type { SelectionResult } from "../application/run-deadline-selection";
+import { matchesWorkerSecret } from "../../shared/http/worker-secret";
 
 export const SELECTION_WORKER_HEADER = "x-selection-worker-secret";
 
@@ -7,11 +7,7 @@ export const SELECTION_WORKER_HEADER = "x-selection-worker-secret";
 // throws on differing lengths, and an early `return false` on length is not
 // a leak — the secret's length is not secret.
 function matchesSecret(presented: string | null, expected: string): boolean {
-  if (presented === null) return false;
-  const presentedBytes = Buffer.from(presented, "utf8");
-  const expectedBytes = Buffer.from(expected, "utf8");
-  if (presentedBytes.length !== expectedBytes.length) return false;
-  return timingSafeEqual(presentedBytes, expectedBytes);
+  return matchesWorkerSecret(presented, expected);
 }
 
 export function createSelectionHandlers({

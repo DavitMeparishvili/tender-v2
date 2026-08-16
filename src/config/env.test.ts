@@ -16,6 +16,7 @@ const testEnvironment = {
   STORAGE_ACCESS_KEY_ID: "tender_local",
   STORAGE_SECRET_ACCESS_KEY: "tender_local_only",
   SELECTION_WORKER_SECRET: "0123456789012345678901234567890123",
+  AGREEMENT_WORKER_SECRET: "0123456789012345678901234567890123",
 } satisfies NodeJS.ProcessEnv;
 
 describe("getServerEnv", () => {
@@ -59,6 +60,14 @@ describe("getServerEnv", () => {
     delete withoutSecret.SELECTION_WORKER_SECRET;
     expect(() => getServerEnv(withoutSecret)).toThrow(
       /SELECTION_WORKER_SECRET/,
+    );
+  });
+
+  it("rejects a missing agreement worker secret", () => {
+    const withoutSecret: NodeJS.ProcessEnv = { ...testEnvironment };
+    delete withoutSecret.AGREEMENT_WORKER_SECRET;
+    expect(() => getServerEnv(withoutSecret)).toThrow(
+      /AGREEMENT_WORKER_SECRET/,
     );
   });
 });

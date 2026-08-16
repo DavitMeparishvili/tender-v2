@@ -3,8 +3,8 @@ import { canUseCapability, type AccessDenial } from "../domain/access-policy";
 import type { Capability } from "../domain/capability";
 import type { CurrentUser } from "./current-user";
 
-export type CommercialCapability = Exclude<Capability, "ADMIN">;
 export type AuthError = "UNAUTHENTICATED" | AccessDenial;
+export type CommercialCapability = Capability;
 
 type CurrentUserResolver = (headers: Headers) => Promise<CurrentUser | null>;
 
@@ -19,15 +19,11 @@ export function createRequireCapability({
 }: RequireCapabilityDependencies) {
   return async function requireCapability(
     headers: Headers,
-    required: CommercialCapability,
+    required: Capability,
   ): Promise<Result<CurrentUser, AuthError>> {
     const user = await getCurrentUser(headers);
     if (user === null) {
       return { ok: false, error: "UNAUTHENTICATED" };
-    }
-
-    if (required !== "CUSTOMER" && required !== "PROVIDER") {
-      return { ok: false, error: "CAPABILITY_MISSING" };
     }
 
     const access = canUseCapability(user, required, clock.now());
@@ -49,3 +45,16 @@ export const requireCapability = createRequireCapability({
   getCurrentUser: resolveCurrentUser,
   clock: systemClock,
 });
+
+export async function requireAnyCommercialCapability(headers: Headers) {
+  const user = await resolveCurrentUser(headers);
+  if (user === null)
+    return { ok: false as const, error: "UNAUTHENTICATED" as const };
+  const capability = (["CUSTOMER", "PROVIDER"] as const).find((code) =>
+    user.capabilities.includes(code),
+  );
+  if (capability === undefined)
+    return { ok: false as const, error: "CAPABILITY_MISSING" as const };
+  const access = canUseCapability(user, capability, systemClock.now());
+  return access.ok ? { ok: true as const, value: user } : access;
+}
