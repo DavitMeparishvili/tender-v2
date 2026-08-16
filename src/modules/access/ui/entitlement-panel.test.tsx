@@ -1,0 +1,56 @@
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it, vi } from "vitest";
+import en from "../../localization/messages/en.json";
+import type { Messages } from "../../localization/get-messages";
+import { EntitlementPanel, entitlementPanelCopy } from "./entitlement-panel";
+
+// `AccessCheckoutForm` calls `useRouter()` for its post-confirm refresh, which
+// throws outside an actual app-router tree. `renderToStaticMarkup` renders no
+// tree at all, so the hook is stubbed the same way client-only navigation is
+// stubbed elsewhere in this suite.
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: () => {} }),
+}));
+
+const messages = en as Messages;
+
+describe("EntitlementPanel", () => {
+  it("states the three prices exactly as the source documents fix them", () => {
+    const markup = renderToStaticMarkup(
+      <EntitlementPanel
+        copy={entitlementPanelCopy(messages)}
+        disclosure="MASKED"
+        tenderId="tender-1"
+      />,
+    );
+
+    expect(markup).toContain("USD 1");
+    expect(markup).toContain("USD 20");
+    expect(markup).toContain("USD 200");
+  });
+
+  it("tells the provider payments are simulated", () => {
+    const markup = renderToStaticMarkup(
+      <EntitlementPanel
+        copy={entitlementPanelCopy(messages)}
+        disclosure="MASKED"
+        tenderId="tender-1"
+      />,
+    );
+
+    expect(markup).toContain(messages.entitlements.mockNotice);
+  });
+
+  it("renders no purchase control once the provider is entitled", () => {
+    const markup = renderToStaticMarkup(
+      <EntitlementPanel
+        copy={entitlementPanelCopy(messages)}
+        disclosure="FULL"
+        tenderId="tender-1"
+      />,
+    );
+
+    expect(markup).not.toContain(messages.entitlements.unlockSingle);
+    expect(markup).toContain(messages.entitlements.unlocked);
+  });
+});

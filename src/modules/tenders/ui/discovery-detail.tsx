@@ -1,6 +1,7 @@
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
-import type { PublicTenderDetail } from "../domain/masking";
+import type { ProviderTenderView } from "../application/get-tender-for-provider";
+import type { TenderAttachmentView } from "./tender-detail";
 import { LocationMap } from "./location-map";
 import { locationMapCopy } from "./tender-action-copy";
 import { formatTenderDate, formatTenderMoney } from "./tender-format";
@@ -24,14 +25,17 @@ function formatCoordinate(value: number, locale: Locale) {
 }
 
 export function DiscoveryDetailContent({
+  attachments,
   locale,
   messages,
-  tender,
+  view,
 }: Readonly<{
+  attachments?: readonly TenderAttachmentView[];
   locale: Locale;
   messages: Messages;
-  tender: PublicTenderDetail;
+  view: ProviderTenderView;
 }>) {
+  const { disclosure, tender } = view;
   const fallback = messages.tenders.notProvided;
   const approximateCoordinates = `${formatCoordinate(
     tender.publicLatitude,
@@ -102,23 +106,65 @@ export function DiscoveryDetailContent({
           label={messages.tenders.publishedAt}
           value={formatTenderDate(tender.publishedAt, locale) ?? fallback}
         />
+        {disclosure === "FULL" ? (
+          <>
+            <DetailRow
+              label={messages.tenders.addressLine}
+              value={tender.addressLine}
+            />
+            <DetailRow
+              label={messages.tenders.conditions}
+              value={tender.conditions ?? fallback}
+            />
+          </>
+        ) : null}
       </dl>
       {/*
-        The masked projection carries only the coarsened point, so the map is
-        fed the same coordinates the provider already received. It draws an
-        area rather than a pin, per The Coarse-Circle Rule.
+        Masked disclosure carries only the coarsened point, so the map is fed
+        the same coordinates the provider already received and draws an area
+        rather than a pin, per The Coarse-Circle Rule. Full disclosure feeds
+        the exact pin the entitlement unlocked.
       */}
       <section className="tender-map" aria-labelledby="map-heading">
         <h2 id="map-heading">{messages.tenders.mapHeading}</h2>
         <LocationMap
-          coordinates={{
-            latitude: tender.publicLatitude,
-            longitude: tender.publicLongitude,
-          }}
-          precision="APPROXIMATE"
+          coordinates={
+            disclosure === "FULL"
+              ? { latitude: tender.exactLatitude, longitude: tender.exactLongitude }
+              : { latitude: tender.publicLatitude, longitude: tender.publicLongitude }
+          }
+          precision={disclosure === "FULL" ? "PRECISE" : "APPROXIMATE"}
           copy={locationMapCopy(messages)}
         />
       </section>
+      {disclosure === "FULL" && attachments !== undefined ? (
+        <section
+          className="tender-attachments"
+          aria-labelledby="attachments-heading"
+        >
+          <h2 id="attachments-heading">{messages.tenders.attachments}</h2>
+          <ul className="attachment-gallery">
+            {attachments.map((attachment) => (
+              <li key={attachment.id}>
+                <a
+                  href={attachment.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  download={attachment.originalFileName}
+                >
+                  {attachment.mimeType.startsWith("image/") ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={attachment.url} alt="" loading="lazy" />
+                  ) : null}
+                  <span className="attachment-name">
+                    {attachment.originalFileName}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </>
   );
 }

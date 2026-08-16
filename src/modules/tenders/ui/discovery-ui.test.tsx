@@ -295,7 +295,7 @@ describe("provider masked discovery UI", () => {
       <DiscoveryDetailContent
         locale="ka"
         messages={ka}
-        tender={runtimeValue}
+        view={{ disclosure: "MASKED", tender: runtimeValue }}
       />,
     );
 
@@ -325,12 +325,37 @@ describe("provider masked discovery UI", () => {
     expect(html).not.toContain(ka.tenders.conditions);
   });
 
+  it("renders the exact address and conditions once entitlement discloses FULL", () => {
+    const html = renderToStaticMarkup(
+      <DiscoveryDetailContent
+        locale="en"
+        messages={en}
+        view={{
+          disclosure: "FULL",
+          tender: {
+            ...publicTender,
+            addressLine: "1 Chavchavadze Ave",
+            exactLatitude: 41.7151,
+            exactLongitude: 44.8271,
+            conditions: "Weekdays only, 9am to 5pm.",
+          },
+        }}
+      />,
+    );
+
+    expect(html).toContain(en.tenders.addressLine);
+    expect(html).toContain("1 Chavchavadze Ave");
+    expect(html).toContain(en.tenders.conditions);
+    expect(html).toContain("Weekdays only, 9am to 5pm.");
+    expect(html).toContain(en.tenders.mapPreciseLabel);
+  });
+
   it("gives a provider an approximate-area map and never a precise one", () => {
     const html = renderToStaticMarkup(
       <DiscoveryDetailContent
         locale="en"
         messages={en}
-        tender={publicTender}
+        view={{ disclosure: "MASKED", tender: publicTender }}
       />,
     );
 
@@ -351,10 +376,13 @@ describe("provider masked discovery UI", () => {
       <DiscoveryDetailContent
         locale="en"
         messages={en}
-        tender={{
-          ...publicTender,
-          publicLatitude: 41.7,
-          publicLongitude: 44.8,
+        view={{
+          disclosure: "MASKED",
+          tender: {
+            ...publicTender,
+            publicLatitude: 41.7,
+            publicLongitude: 44.8,
+          },
         }}
       />,
     );
