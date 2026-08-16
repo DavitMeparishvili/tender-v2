@@ -13,6 +13,10 @@ import type {
 } from "../application/create-tender-draft";
 import type { GetOwnedTenderRepository } from "../application/get-owned-tender";
 import type { GetPublishedTenderRepository } from "../application/get-published-tender";
+import type {
+  TenderBiddingContext,
+  TenderBiddingContextRepository,
+} from "../application/get-tender-bidding-context";
 import type { GetSettleableTenderRepository } from "../application/get-tender-for-provider";
 import type { ListOwnedTendersRepository } from "../application/list-owned-tenders";
 import type { PublishTenderRepository } from "../application/publish-tender";
@@ -46,7 +50,8 @@ export interface TenderRepository
     CancelTenderRepository,
     SearchPublishedTendersRepository,
     GetPublishedTenderRepository,
-    GetSettleableTenderRepository {}
+    GetSettleableTenderRepository,
+    TenderBiddingContextRepository {}
 
 function isRepresentableCurrency(
   value: string | null,
@@ -525,6 +530,49 @@ export class PrismaTenderRepository implements TenderRepository {
     return record === null
       ? { ok: false, error: "TENDER_NOT_FOUND" }
       : { ok: true, value: record };
+  }
+
+  async getBiddingContext(
+    id: string,
+  ): Promise<Result<TenderBiddingContext, "TENDER_NOT_FOUND">> {
+    const row = await database.tender.findFirst({
+      where: { id, status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+      select: {
+        id: true,
+        ownerId: true,
+        title: true,
+        status: true,
+        currency: true,
+        budgetMinorUnits: true,
+        deadline: true,
+      },
+    });
+    // A settled tender keeps a non-null currency, budget, and deadline —
+    // publication required all three — so a row failing these checks has
+    // drifted outside what this module can model and is reported as absent,
+    // exactly as `toTenderDraft` treats an unrepresentable row.
+    if (
+      row === null ||
+      row.deadline === null ||
+      row.budgetMinorUnits === null ||
+      (row.currency !== "GEL" && row.currency !== "USD") ||
+      row.status === "DRAFT" ||
+      row.status === "CANCELLED"
+    ) {
+      return { ok: false, error: "TENDER_NOT_FOUND" };
+    }
+    return {
+      ok: true,
+      value: {
+        id: row.id,
+        ownerId: row.ownerId,
+        title: row.title,
+        status: row.status,
+        currency: row.currency,
+        budgetMinorUnits: row.budgetMinorUnits,
+        deadline: row.deadline,
+      },
+    };
   }
 }
 
