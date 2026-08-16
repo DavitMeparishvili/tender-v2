@@ -65,10 +65,18 @@ export default async function ClientTenderDetailPage({
       </>
     );
 
+  // `bids` includes every offer ever made on this tender, including
+  // withdrawn ones (the client can see the full history in the comparison
+  // table). The cancel-control hint must match the server's own guard
+  // (`tenderHasActiveBids`), which only counts bids that are still active —
+  // otherwise a withdrawn-down-to-zero tender would stay wrongly "blocked"
+  // in the UI even though the server would accept the cancellation.
+  const hasActiveBids = bids.some((bid) => bid.status !== "WITHDRAWN");
+
   return (
     <TenderDetail
       actor={routeAccess.actor}
-      hasBids={bids.length > 0}
+      hasBids={hasActiveBids}
       id={id}
       locale={locale}
       messages={messages}

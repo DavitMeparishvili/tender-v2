@@ -113,8 +113,24 @@ export default async function ProviderTenderDetailPage({
           summary={summary.value}
         />
       ) : null}
-      {view.value.disclosure === "FULL" && isOpen ? (
+      {/*
+        A withdrawn bid keeps its row (submit-bid.ts) and can never be
+        revised or resubmitted on this tender (revise-bid.ts and the unique
+        (tenderId, providerId) constraint both require an active row) — that
+        withdrawal is final is a deliberate program-design rule, not a gap.
+        Rendering the Submit/Revise form here would offer controls that
+        always fail server-side with BID_NOT_ACTIVE, so a withdrawn bid gets
+        its own terminal notice instead.
+      */}
+      {view.value.disclosure === "FULL" &&
+      isOpen &&
+      bid?.status !== "WITHDRAWN" ? (
         <BidForm copy={bidFormCopy(messages)} existing={bid} tenderId={id} />
+      ) : null}
+      {view.value.disclosure === "FULL" &&
+      isOpen &&
+      bid?.status === "WITHDRAWN" ? (
+        <p className="tender-action-hint">{messages.bidding.withdrawn}</p>
       ) : null}
       {/*
         The outcome is stated in text, never by colour alone, and it is the
