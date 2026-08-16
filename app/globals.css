@@ -1133,6 +1133,57 @@ a {
   .location-map {
     block-size: 13.75rem;
   }
+
+  /*
+    The comparison stays ONE table in the DOM at every width — see the
+    component comment in bid-comparison.tsx. Narrow viewports reflow it into
+    labelled cards by turning rows into blocks and printing each cell's
+    `data-label` before its content, rather than rendering a second,
+    duplicate markup structure.
+  */
+  .bid-comparison-scroll {
+    overflow-x: visible;
+  }
+
+  .bid-comparison table,
+  .bid-comparison thead,
+  .bid-comparison tbody,
+  .bid-comparison th,
+  .bid-comparison td,
+  .bid-comparison tr {
+    display: block;
+  }
+
+  .bid-comparison thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .bid-comparison tbody tr {
+    margin-block-end: 1.25rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    padding: 0.5rem 1rem;
+  }
+
+  .bid-comparison th,
+  .bid-comparison td {
+    border-block-end: 0;
+    padding: 0.4rem 0;
+  }
+
+  .bid-comparison th::before,
+  .bid-comparison td::before {
+    display: block;
+    margin-block-end: 0.15rem;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    content: attr(data-label);
+  }
 }
 
 .attachment-gallery {
@@ -1209,6 +1260,47 @@ a {
   color: var(--text-strong);
   overflow-wrap: anywhere;
   white-space: pre-wrap;
+}
+
+.bid-comparison {
+  display: grid;
+  gap: 1.25rem;
+  margin-block-start: 2rem;
+  padding-block-start: 2rem;
+  border-block-start: 1px solid var(--border-default);
+}
+
+.bid-comparison-scroll {
+  overflow-x: auto;
+}
+
+.bid-comparison table {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+.bid-comparison th,
+.bid-comparison td {
+  padding: 0.75rem 1rem;
+  border-block-end: 1px solid var(--border-default);
+  text-align: start;
+  font-size: 0.875rem;
+  vertical-align: top;
+}
+
+.bid-comparison thead th {
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bid-comparison tbody th {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.bid-comparison td {
+  color: var(--text-strong);
 }
 
 .status-page {

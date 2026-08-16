@@ -39,7 +39,16 @@ export type TenderAttachmentView = Readonly<{
 type TenderDetailContentProps = Readonly<{
   attachments?: readonly TenderAttachmentView[];
   cancelControl?: ReactNode;
+  // True once a provider has placed an active bid. A cancel command that
+  // reaches the server at this point is refused with `TENDER_HAS_BIDS`
+  // (program design §4.2); this only stops the UI offering a control that
+  // must fail — the server-side rejection is what enforces the rule.
+  hasBids?: boolean;
   publishControl?: ReactNode;
+  // The bid comparison (and, once settled, the outcome heading) for this
+  // tender. Opaque `ReactNode` on purpose: this module renders bid data
+  // without knowing its shape, so no bidding-specific import lands here.
+  comparison?: ReactNode;
   locale: Locale;
   messages: Messages;
   tender: TenderDraft;
@@ -117,6 +126,8 @@ function DetailRow({
 export function TenderDetailContent({
   attachments = [],
   cancelControl,
+  comparison,
+  hasBids = false,
   publishControl,
   locale,
   messages,
@@ -257,9 +268,16 @@ export function TenderDetailContent({
       {tender.status !== "CANCELLED" && cancelControl ? (
         <section className="tender-cancel" aria-labelledby="cancel-heading">
           <h2 id="cancel-heading">{messages.tenders.cancel}</h2>
-          {cancelControl}
+          {hasBids ? (
+            <p className="tender-action-hint">
+              {messages.tenders.errors.tenderHasBids}
+            </p>
+          ) : (
+            cancelControl
+          )}
         </section>
       ) : null}
+      {comparison}
     </>
   );
 }
@@ -301,12 +319,16 @@ async function resolveOwnerAttachments(
 
 export async function TenderDetail({
   actor,
+  comparison,
+  hasBids = false,
   id,
   locale,
   messages,
   tender,
 }: Readonly<{
   actor: TenderActor;
+  comparison?: ReactNode;
+  hasBids?: boolean;
   id: string;
   locale: Locale;
   messages: Messages;
@@ -336,6 +358,8 @@ export async function TenderDetail({
       ) : null}
       <TenderDetailContent
         attachments={attachments}
+        {...(comparison === undefined ? {} : { comparison })}
+        hasBids={hasBids}
         locale={locale}
         messages={messages}
         tender={owned.value}
