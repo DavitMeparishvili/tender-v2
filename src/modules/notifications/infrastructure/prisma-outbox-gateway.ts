@@ -1,44 +1,57 @@
 import type { Prisma } from "../../../generated/prisma/client";
-import type { OutboxDraft } from "../domain/outbox-topic";
+import type { NotificationDraft } from "../domain/outbox-topic";
 
-// Written inside the caller's transaction so a notification cannot exist for
-// a state change that rolled back, and a state change cannot commit without
-// its notification — the transactional-outbox guarantee the program design
-// requires (§3.1).
-export interface OutboxGateway {
-  enqueue(
+export type NotificationIds = Readonly<{ outboxId: string; inboxId: string }>;
+
+export interface NotificationPublisher {
+  publish(
     transaction: Prisma.TransactionClient,
-    drafts: readonly OutboxDraft[],
-    ids: readonly string[],
+    drafts: readonly NotificationDraft[],
+    ids: readonly NotificationIds[],
     now: Date,
   ): Promise<void>;
 }
 
-export class PrismaOutboxGateway implements OutboxGateway {
-  async enqueue(
+export class PrismaNotificationPublisher implements NotificationPublisher {
+  async publish(
     transaction: Prisma.TransactionClient,
-    drafts: readonly OutboxDraft[],
-    ids: readonly string[],
+    drafts: readonly NotificationDraft[],
+    ids: readonly NotificationIds[],
     now: Date,
   ): Promise<void> {
     if (drafts.length === 0) return;
     if (ids.length !== drafts.length) {
       throw new Error(
-        `Outbox enqueue needs one id per draft (${drafts.length} drafts, ${ids.length} ids).`,
+        `Notification publish needs one id pair per draft (${drafts.length} drafts, ${ids.length} id pairs).`,
       );
     }
     await transaction.outboxMessage.createMany({
       data: drafts.map((draft, index) => ({
-        id: ids[index]!,
+        id: ids[index]!.outboxId,
         topic: draft.topic,
         aggregateId: draft.aggregateId,
-        payload: draft.payload as unknown as Prisma.InputJsonValue,
-        // Available immediately: Phase 5 introduces the delivery worker and
-        // may schedule retries into the future by moving this forward.
+        payload: {
+          recipientId: draft.recipientId,
+          aggregateType: draft.aggregateType,
+          messageKey: draft.messageKey,
+          variables: draft.variables,
+        } as Prisma.InputJsonValue,
         availableAt: now,
+      })),
+    });
+    await transaction.inboxNotification.createMany({
+      data: drafts.map((draft, index) => ({
+        id: ids[index]!.inboxId,
+        recipientId: draft.recipientId,
+        topic: draft.topic,
+        aggregateType: draft.aggregateType,
+        aggregateId: draft.aggregateId,
+        messageKey: draft.messageKey,
+        variables: draft.variables as Prisma.InputJsonValue,
+        createdAt: now,
       })),
     });
   }
 }
 
-export const prismaOutboxGateway = new PrismaOutboxGateway();
+export const prismaNotificationPublisher = new PrismaNotificationPublisher();

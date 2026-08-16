@@ -276,6 +276,12 @@ describe("runDeadlineSelection", () => {
         where: { targetId: tenderId, action: "TENDER_WINNER_SELECTED" },
       }),
     ).resolves.toBe(1);
+    // Client, winner, and each losing bidder receive exactly one inbox item.
+    await expect(
+      database.inboxNotification.count({
+        where: { aggregateType: "Tender", aggregateId: tenderId },
+      }),
+    ).resolves.toBe(4);
   });
 
   it("re-running returns the existing result with no new side effects", async () => {
@@ -287,6 +293,9 @@ describe("runDeadlineSelection", () => {
     const outboxAfterFirst = await database.outboxMessage.count({
       where: { aggregateId: tenderId },
     });
+    const inboxAfterFirst = await database.inboxNotification.count({
+      where: { aggregateType: "Tender", aggregateId: tenderId },
+    });
 
     const second = await runDeadlineSelection(tenderId);
 
@@ -297,6 +306,11 @@ describe("runDeadlineSelection", () => {
     await expect(
       database.outboxMessage.count({ where: { aggregateId: tenderId } }),
     ).resolves.toBe(outboxAfterFirst);
+    await expect(
+      database.inboxNotification.count({
+        where: { aggregateType: "Tender", aggregateId: tenderId },
+      }),
+    ).resolves.toBe(inboxAfterFirst);
   });
 });
 

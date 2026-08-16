@@ -3,12 +3,26 @@ export const OUTBOX_TOPICS = {
   bidWon: "BID_WON",
   bidLost: "BID_LOST",
   tenderExpiredNoBids: "TENDER_EXPIRED_NO_BIDS",
+  agreementPartyConfirmed: "AGREEMENT_PARTY_CONFIRMED",
+  agreementAgreed: "AGREEMENT_AGREED",
+  agreementDeclined: "AGREEMENT_DECLINED",
+  agreementExpired: "AGREEMENT_EXPIRED",
+  workStartAcknowledged: "WORK_START_ACKNOWLEDGED",
+  workStarted: "WORK_STARTED",
+  completionConfirmed: "COMPLETION_CONFIRMED",
+  agreementCompleted: "AGREEMENT_COMPLETED",
+  agreementCancelled: "AGREEMENT_CANCELLED",
+  reviewPublished: "REVIEW_PUBLISHED",
+  reviewRedacted: "REVIEW_REDACTED",
 } as const;
 
 export type OutboxTopic = (typeof OUTBOX_TOPICS)[keyof typeof OUTBOX_TOPICS];
 
-export type OutboxDraft = Readonly<{
+export type NotificationDraft = Readonly<{
+  recipientId: string;
   topic: OutboxTopic;
+  aggregateType: "Tender" | "Agreement" | "Review";
   aggregateId: string;
-  payload: Readonly<Record<string, string | number | null>>;
+  messageKey: `notifications.${string}`;
+  variables: Readonly<Record<string, string | number | null>>;
 }>;

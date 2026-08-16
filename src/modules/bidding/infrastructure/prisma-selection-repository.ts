@@ -4,9 +4,9 @@ import { prismaAgreementGateway } from "../../agreements/infrastructure/prisma-a
 import type { AgreementSnapshot } from "../../agreements/domain/agreement";
 import {
   OUTBOX_TOPICS,
-  type OutboxDraft,
+  type NotificationDraft,
 } from "../../notifications/domain/outbox-topic";
-import { prismaOutboxGateway } from "../../notifications/infrastructure/prisma-outbox-gateway";
+import { prismaNotificationPublisher } from "../../notifications/infrastructure/prisma-outbox-gateway";
 import type { IdGenerator, Result } from "../../shared";
 import { prismaTenderSelectionGateway } from "../../tenders/infrastructure/prisma-tender-selection-gateway";
 import type {
@@ -144,17 +144,20 @@ export class PrismaSelectionRepository implements SelectionRepository {
               ranAt: now,
             },
           });
-          const drafts: OutboxDraft[] = [
+          const drafts: NotificationDraft[] = [
             {
+              recipientId: tender.ownerId,
               topic: OUTBOX_TOPICS.tenderExpiredNoBids,
+              aggregateType: "Tender",
               aggregateId: tenderId,
-              payload: { tenderId, clientId: tender.ownerId },
+              messageKey: "notifications.tenderExpiredNoBids",
+              variables: { tenderId, tenderTitle: tender.title },
             },
           ];
-          await prismaOutboxGateway.enqueue(
+          await prismaNotificationPublisher.publish(
             transaction,
             drafts,
-            drafts.map(() => ids.next()),
+            drafts.map(() => ({ outboxId: ids.next(), inboxId: ids.next() })),
             now,
           );
           await transaction.auditEvent.create({
@@ -232,38 +235,47 @@ export class PrismaSelectionRepository implements SelectionRepository {
           },
         });
 
-        const drafts: OutboxDraft[] = [
+        const drafts: NotificationDraft[] = [
           {
+            recipientId: tender.ownerId,
             topic: OUTBOX_TOPICS.tenderWinnerSelected,
+            aggregateType: "Tender",
             aggregateId: tenderId,
-            payload: { tenderId, clientId: tender.ownerId, agreementId },
+            messageKey: "notifications.tenderWinnerSelected",
+            variables: { tenderId, agreementId, tenderTitle: tender.title },
           },
           {
+            recipientId: winningRow.providerId,
             topic: OUTBOX_TOPICS.bidWon,
+            aggregateType: "Tender",
             aggregateId: tenderId,
-            payload: {
+            messageKey: "notifications.bidWon",
+            variables: {
               tenderId,
               bidId: winner.id,
-              providerId: winningRow.providerId,
               agreementId,
+              tenderTitle: tender.title,
             },
           },
           ...rows
             .filter((row) => row.id !== winner.id && row.status === "SUBMITTED")
             .map((row) => ({
+              recipientId: row.providerId,
               topic: OUTBOX_TOPICS.bidLost,
+              aggregateType: "Tender" as const,
               aggregateId: tenderId,
-              payload: {
+              messageKey: "notifications.bidLost" as const,
+              variables: {
                 tenderId,
                 bidId: row.id,
-                providerId: row.providerId,
+                tenderTitle: tender.title,
               },
             })),
         ];
-        await prismaOutboxGateway.enqueue(
+        await prismaNotificationPublisher.publish(
           transaction,
           drafts,
-          drafts.map(() => ids.next()),
+          drafts.map(() => ({ outboxId: ids.next(), inboxId: ids.next() })),
           now,
         );
         await transaction.auditEvent.create({
