@@ -9,6 +9,7 @@ import type { BidActor, TenderContextLookup } from "./submit-bid";
 // accepts a client-selected winner.
 export type ClientBidView = Readonly<{
   id: string;
+  providerId: string;
   providerDisplayName: string;
   amountMinorUnits: number;
   currency: Bid["currency"];
@@ -65,6 +66,7 @@ export function createListTenderBids(dependencies: {
       ok: true,
       value: ordered.map((bid) => ({
         id: bid.id,
+        providerId: bid.providerId,
         providerDisplayName: names.get(bid.providerId) ?? "",
         amountMinorUnits: bid.amountMinorUnits,
         currency: bid.currency,

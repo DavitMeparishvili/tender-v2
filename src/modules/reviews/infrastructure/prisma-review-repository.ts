@@ -32,6 +32,10 @@ export type PublicReviewView = Readonly<{
   overall: number;
   comment: string;
   publishedAt: Date;
+  // The agreement's recorded value, so a public review can show what the
+  // engagement was worth without exposing the losing offers behind it.
+  engagementAmountMinorUnits: number;
+  engagementCurrency: string;
 }>;
 
 export type ProfileReviewView = Readonly<{
@@ -235,7 +239,13 @@ export class PrismaReviewRepository
         agreedPrice: true,
         comment: true,
         createdAt: true,
-        agreement: { select: { tenderTitle: true } },
+        agreement: {
+          select: {
+            tenderTitle: true,
+            amountMinorUnits: true,
+            currency: true,
+          },
+        },
       },
     });
     const names = await getProviderDisplayNames(
@@ -250,6 +260,8 @@ export class PrismaReviewRepository
         overall: deriveOverallRating(reviewScores),
         comment: row.comment,
         publishedAt: row.createdAt,
+        engagementAmountMinorUnits: row.agreement.amountMinorUnits,
+        engagementCurrency: row.agreement.currency,
       };
     });
     return {
@@ -351,7 +363,13 @@ export class PrismaReviewRepository
         createdAt: true,
         redactedAt: true,
         redactionReason: true,
-        agreement: { select: { tenderTitle: true } },
+        agreement: {
+          select: {
+            tenderTitle: true,
+            amountMinorUnits: true,
+            currency: true,
+          },
+        },
       },
     });
     const names = await getProviderDisplayNames(

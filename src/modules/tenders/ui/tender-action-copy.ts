@@ -1,5 +1,6 @@
 import type { Messages } from "../../localization/get-messages";
 import type { CancelTenderCopy } from "./cancel-tender-form";
+import type { DatePickerCopy } from "./date-field";
 import type { LocationMapCopy } from "./location-map";
 import type { PublishTenderCopy } from "./publish-tender-form";
 
@@ -8,6 +9,17 @@ export function locationMapCopy(messages: Messages): LocationMapCopy {
     interactiveLabel: messages.tenders.mapInteractiveLabel,
     preciseLabel: messages.tenders.mapPreciseLabel,
     approximateLabel: messages.tenders.mapApproximateLabel,
+  };
+}
+
+export function datePickerCopy(messages: Messages): DatePickerCopy {
+  return {
+    previousMonth: messages.tenders.datePickerPreviousMonth,
+    nextMonth: messages.tenders.datePickerNextMonth,
+    today: messages.tenders.datePickerToday,
+    clear: messages.tenders.datePickerClear,
+    chooseDate: messages.tenders.datePickerChooseDate,
+    time: messages.tenders.datePickerTime,
   };
 }
 

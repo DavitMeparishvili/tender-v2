@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import {
@@ -23,6 +24,15 @@ export type BidComparisonCopy = Readonly<{
   statusLabels: Readonly<Record<BidStatus, string>>;
 }>;
 
+// Green is reserved for the winning offer; every other status shares the
+// same neutral tag so the win is the one thing colour calls out.
+const STATUS_TAG_CLASS: Readonly<Record<BidStatus, string>> = {
+  SUBMITTED: "tag-grey",
+  WINNER: "tag-green",
+  LOST: "tag-grey",
+  WITHDRAWN: "tag-grey",
+};
+
 export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
   return {
     title: messages.bidding.comparisonTitle,
@@ -46,9 +56,11 @@ export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
   };
 }
 
-// A server component with no interactive element at all. That is the point:
-// the client may compare offers and may not choose one, and the surest way to
-// guarantee that is for this view to contain no control that could.
+// A server component with no control that could select a winner. The client
+// may compare offers and may not choose one, and the surest way to guarantee
+// that is for this view to contain no button or form. The provider name does
+// link out to that provider's public profile, but a read-only navigation link
+// is not a selection control.
 //
 // One DOM structure, not two. The table reflows into labelled cards at 608px
 // through the `data-label` attributes below, rather than by rendering a second
@@ -89,9 +101,11 @@ export function BidComparison({
             </thead>
             <tbody>
               {bids.map((bid) => (
-                <tr key={bid.id}>
+                <tr key={bid.id} data-status={bid.status}>
                   <th scope="row" data-label={copy.provider}>
-                    {bid.providerDisplayName}
+                    <Link href={`/${locale}/profiles/${bid.providerId}`}>
+                      {bid.providerDisplayName}
+                    </Link>
                   </th>
                   <td data-label={copy.amount}>
                     {formatTenderMoney(
@@ -114,9 +128,11 @@ export function BidComparison({
                     {formatTenderDate(bid.qualifyingSubmittedAt, locale) ??
                       copy.notProvided}
                   </td>
-                  {/* Status is text, never colour alone. */}
                   <td data-label={copy.status}>
-                    {copy.statusLabels[bid.status]}
+                    {/* Status is a labelled tag, never colour alone. */}
+                    <span className={`tag ${STATUS_TAG_CLASS[bid.status]}`}>
+                      {copy.statusLabels[bid.status]}
+                    </span>
                   </td>
                 </tr>
               ))}

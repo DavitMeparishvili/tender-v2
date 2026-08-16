@@ -26,7 +26,7 @@ export default async function AdminReviewsPage({
     );
   }
   return (
-    <IdentityShell title={messages.moderation.title}>
+    <IdentityShell title={messages.moderation.title} width="wide">
       <ReviewModerationList
         reviews={await listReviewsForModeration()}
         copy={messages.moderation}

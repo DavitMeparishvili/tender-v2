@@ -27,7 +27,7 @@ export default async function NotificationsPage({
   }
   const items = await listInbox(access.value);
   return (
-    <IdentityShell title={messages.notifications.title}>
+    <IdentityShell title={messages.notifications.title} width="form">
       <InboxList
         items={items}
         locale={locale}

@@ -29,8 +29,10 @@ import {
   type TenderServiceCode,
   type TenderSpecialty,
 } from "../domain/service-taxonomy";
+import { AmountInput } from "./amount-input";
+import { DateField, DateTimeField } from "./date-field";
 import { LocationMap } from "./location-map";
-import { locationMapCopy } from "./tender-action-copy";
+import { datePickerCopy, locationMapCopy } from "./tender-action-copy";
 import {
   parseDateInputValue,
   parseGeorgiaDateTimeLocal,
@@ -992,9 +994,12 @@ export function TenderWizard({
   }
 
   const attachmentNames = form.attachmentNames ?? [];
+  // The map is the only way to set a pin, so both coordinate issues collapse
+  // onto one message anchored at the map rather than two invisible fields.
+  const pinIssue = issueFor(issues, "latitude") ?? issueFor(issues, "longitude");
 
   return (
-    <IdentityShell title={messages.tenders.newTender}>
+    <IdentityShell title={messages.tenders.newTender} width="form">
       <WizardRail current={step} messages={messages} />
       {step === 0 ? (
         <form
@@ -1156,22 +1161,17 @@ export function TenderWizard({
               }
             />
           </Field>
-          <div className="wizard-paired-fields">
+          <div className="wizard-compact-fields">
             <Field
               id="budget"
               label={messages.tenders.budget}
               error={issueFor(issues, "budget")}
             >
-              <input
+              <AmountInput
                 name="budget"
-                type="number"
-                min="0.01"
-                max="21474836.47"
-                step="0.01"
-                inputMode="decimal"
                 required
-                value={form.budget}
-                onChange={(event) => updateField("budget", event.target.value)}
+                value={form.budget ?? ""}
+                onChange={(value) => updateField("budget", value)}
               />
             </Field>
             <Field id="currency" label={messages.tenders.currency}>
@@ -1193,12 +1193,13 @@ export function TenderWizard({
             label={messages.tenders.deadline}
             error={issueFor(issues, "deadline")}
           >
-            <input
+            <DateTimeField
               name="deadline"
-              type="datetime-local"
               required
-              value={form.deadline}
-              onChange={(event) => updateField("deadline", event.target.value)}
+              locale={locale}
+              copy={datePickerCopy(messages)}
+              value={form.deadline ?? ""}
+              onChange={(value) => updateField("deadline", value)}
             />
           </Field>
           <Field
@@ -1206,37 +1207,46 @@ export function TenderWizard({
             label={messages.tenders.desiredStartDate}
             description={messages.common.optional}
           >
-            <input
+            <DateField
               name="desiredStartDate"
-              type="date"
-              value={form.desiredStartDate}
-              onChange={(event) =>
-                updateField("desiredStartDate", event.target.value)
-              }
+              locale={locale}
+              copy={datePickerCopy(messages)}
+              value={form.desiredStartDate ?? ""}
+              onChange={(value) => updateField("desiredStartDate", value)}
             />
           </Field>
-          {(
-            [
-              ["workerNotes", messages.tenders.workerNotes, 1000],
-              ["equipmentNotes", messages.tenders.equipmentNotes, 1000],
-              ["materialNotes", messages.tenders.materialNotes, 1000],
-              ["conditions", messages.tenders.conditions, 2000],
-            ] as const
-          ).map(([field, label, maxLength]) => (
-            <Field
-              id={field}
-              label={label}
-              description={messages.common.optional}
-              key={field}
-            >
-              <textarea
-                name={field}
-                maxLength={maxLength}
-                value={form[field]}
-                onChange={(event) => updateField(field, event.target.value)}
-              />
-            </Field>
-          ))}
+          <details className="wizard-more">
+            <summary>
+              <span>{messages.tenders.additionalDetails}</span>
+              <span className="wizard-more-hint">
+                {messages.tenders.additionalDetailsHint}
+              </span>
+            </summary>
+            <div className="wizard-more-body">
+              {(
+                [
+                  ["workerNotes", messages.tenders.workerNotes, 1000],
+                  ["equipmentNotes", messages.tenders.equipmentNotes, 1000],
+                  ["materialNotes", messages.tenders.materialNotes, 1000],
+                  ["conditions", messages.tenders.conditions, 2000],
+                ] as const
+              ).map(([field, label, maxLength]) => (
+                <Field
+                  id={field}
+                  label={label}
+                  description={messages.common.optional}
+                  key={field}
+                >
+                  <textarea
+                    name={field}
+                    maxLength={maxLength}
+                    value={form[field]}
+                    onChange={(event) => updateField(field, event.target.value)}
+                  />
+                </Field>
+              ))}
+            </div>
+          </details>
           <StepActions
             canGoBack
             isPending={pending}
@@ -1333,46 +1343,11 @@ export function TenderWizard({
             />
           </div>
           {form.locationMode === "PIN" ? (
-            <div className="wizard-paired-fields">
-              <Field
-                id="latitude"
-                label={messages.tenders.latitude}
-                error={issueFor(issues, "latitude")}
-              >
-                <input
-                  name="latitude"
-                  type="number"
-                  min="-90"
-                  max="90"
-                  step="any"
-                  inputMode="decimal"
-                  required
-                  value={form.latitude}
-                  onChange={(event) =>
-                    updateField("latitude", event.target.value)
-                  }
-                />
-              </Field>
-              <Field
-                id="longitude"
-                label={messages.tenders.longitude}
-                error={issueFor(issues, "longitude")}
-              >
-                <input
-                  name="longitude"
-                  type="number"
-                  min="-180"
-                  max="180"
-                  step="any"
-                  inputMode="decimal"
-                  required
-                  value={form.longitude}
-                  onChange={(event) =>
-                    updateField("longitude", event.target.value)
-                  }
-                />
-              </Field>
-            </div>
+            pinIssue !== undefined ? (
+              <p className="field-error" id="latitude" role="alert">
+                {pinIssue}
+              </p>
+            ) : null
           ) : (
             <Field
               id="addressLine"
@@ -1484,7 +1459,7 @@ export function TenderWizard({
                   ? messages.tenders.chooseOnMap
                   : messages.tenders.addressLine,
                 form.locationMode === "PIN"
-                  ? `${form.latitude ?? ""}, ${form.longitude ?? ""}`
+                  ? messages.tenders.locationPinned
                   : form.addressLine,
               ],
               [messages.tenders.attachments, attachmentNames.join(", ")],

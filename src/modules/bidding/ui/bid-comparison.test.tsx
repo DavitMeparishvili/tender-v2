@@ -10,6 +10,7 @@ const messages = en as Messages;
 const bids: ClientBidView[] = [
   {
     id: "bid-cheap",
+    providerId: "provider-alpha",
     providerDisplayName: "Alpha Builders",
     amountMinorUnits: 40_000,
     currency: "GEL",
@@ -23,6 +24,7 @@ const bids: ClientBidView[] = [
   },
   {
     id: "bid-expensive",
+    providerId: "provider-beta",
     providerDisplayName: "Beta Repairs",
     amountMinorUnits: 90_000,
     currency: "GEL",
@@ -73,9 +75,22 @@ describe("BidComparison", () => {
     );
 
     // The single most important assertion on this surface: there is no
-    // button, no form, and no link through which a client could choose.
+    // button and no form through which a client could choose a winner.
     expect(markup).not.toContain("<button");
     expect(markup).not.toContain("<form");
+  });
+
+  it("links each provider's name to their public profile", () => {
+    const markup = renderToStaticMarkup(
+      <BidComparison
+        bids={bids}
+        copy={bidComparisonCopy(messages)}
+        locale="en"
+      />,
+    );
+
+    expect(markup).toContain('href="/en/profiles/provider-alpha"');
+    expect(markup).toContain('href="/en/profiles/provider-beta"');
   });
 
   it("renders a truthful empty state rather than sample offers", () => {

@@ -27,12 +27,15 @@ export default async function ProfilePage({
 
   return (
     <IdentityShell
+      eyebrow={
+        <Link className="back-link" href={workspace}>
+          {messages.profile.backToWorkspace}
+        </Link>
+      }
       title={messages.profile.title}
       subtitle={messages.profile.subtitle}
+      width="form"
     >
-      <Link className="back-link" href={workspace}>
-        {messages.profile.backToWorkspace}
-      </Link>
       <ProfileForm locale={locale} profile={result.value} messages={messages} />
     </IdentityShell>
   );

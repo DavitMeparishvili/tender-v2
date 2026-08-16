@@ -1,46 +1,19 @@
 import type { ReactNode } from "react";
-import type { Locale } from "../../localization/config";
-import type { Messages } from "../../localization/get-messages";
-import { LocaleLink } from "./locale-link";
-
-type IdentityHeaderProps = Readonly<{
-  locale: Locale;
-  messages: Messages;
-}>;
-
-export function IdentityHeader({ locale, messages }: IdentityHeaderProps) {
-  const otherLocale = locale === "ka" ? "en" : "ka";
-
-  return (
-    <header className="site-header">
-      <a className="wordmark" href={`/${locale}`} aria-label="Tender home">
-        {messages.common.brand}
-      </a>
-      <nav className="header-actions" aria-label={messages.common.language}>
-        <details className="help-menu">
-          <summary aria-label={messages.common.helpLabel}>
-            {messages.common.help}
-          </summary>
-          <p>{messages.common.helpBody}</p>
-        </details>
-        <LocaleLink
-          currentLocale={locale}
-          targetLocale={otherLocale}
-          label={
-            otherLocale === "ka"
-              ? messages.common.georgian
-              : messages.common.english
-          }
-          dirtyWarning={messages.errors.dirtyLocale}
-        />
-      </nav>
-    </header>
-  );
-}
 
 type IdentityShellProps = Readonly<{
   title: string;
   subtitle?: string;
+  /**
+   * `task` is the 460px identity column — one decision, no competition.
+   * `form` is the 720px authoring column, wide enough for paired fields and a
+   * map without stretching a form across the page. `wide` is the full 1200px
+   * band for lists, detail pages and dashboards built out of cards.
+   */
+  width?: "task" | "form" | "wide";
+  /** Rendered above the heading — a back link, status pill or breadcrumb. */
+  eyebrow?: ReactNode;
+  /** Rendered opposite the heading — the page's primary action. */
+  actions?: ReactNode;
   progress?: Readonly<{
     current: 1 | 2 | 3;
     labels: readonly [string, string, string];
@@ -48,37 +21,64 @@ type IdentityShellProps = Readonly<{
   children: ReactNode;
 }>;
 
+/**
+ * Every page inside the app shell renders through here, so the banded grey
+ * page, the content measure and the single h1 stay consistent no matter which
+ * module owns the route.
+ */
 export function IdentityShell({
   title,
   subtitle,
+  width = "task",
+  eyebrow,
+  actions,
   progress,
   children,
 }: IdentityShellProps) {
   return (
-    <section className="identity-page" aria-labelledby="page-heading">
-      <div className="identity-frame" data-identity-frame="">
-        {progress ? (
-          <ol className="progress-rail" aria-label={`${progress.current} / 3`}>
-            {progress.labels.map((label, index) => {
-              const step = index + 1;
-              return (
-                <li
-                  className={step <= progress.current ? "is-complete" : ""}
-                  key={label}
-                  aria-current={step === progress.current ? "step" : undefined}
-                >
-                  <span>{step}</span>
-                  {label}
-                </li>
-              );
-            })}
-          </ol>
-        ) : null}
-        <div className="identity-heading">
-          <h1 id="page-heading">{title}</h1>
-          {subtitle ? <p>{subtitle}</p> : null}
+    <section
+      aria-labelledby="page-heading"
+      className="identity-page band band-grey"
+    >
+      <div className="band-inner">
+        <div
+          className={`identity-frame identity-frame-${width}`}
+          data-identity-frame=""
+        >
+          {progress ? (
+            <ol
+              className="progress-rail"
+              aria-label={`${progress.current} / 3`}
+            >
+              {progress.labels.map((label, index) => {
+                const step = index + 1;
+                return (
+                  <li
+                    className={step <= progress.current ? "is-complete" : ""}
+                    key={label}
+                    aria-current={
+                      step === progress.current ? "step" : undefined
+                    }
+                  >
+                    <span>{step}</span>
+                    {label}
+                  </li>
+                );
+              })}
+            </ol>
+          ) : null}
+          {eyebrow}
+          <div className="identity-heading">
+            <div className="identity-heading-row">
+              <h1 id="page-heading">{title}</h1>
+              {actions ? (
+                <div className="identity-heading-actions">{actions}</div>
+              ) : null}
+            </div>
+            {subtitle ? <p>{subtitle}</p> : null}
+          </div>
+          {children}
         </div>
-        {children}
       </div>
     </section>
   );

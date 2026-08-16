@@ -1,212 +1,500 @@
 ---
 name: Tender
-description: A focused, trustworthy interface for Georgia's construction marketplace.
+description: A live construction marketplace in ink, paper and a single gold — structured requirements, comparable offers, recorded agreements.
 colors:
-  ink: "#09090b"
-  body: "#3f3f46"
-  muted: "#71717a"
-  page: "#ffffff"
-  subtle: "#fafafa"
-  pressed: "#f4f4f5"
-  border: "#e4e4e7"
-  border-strong: "#a1a1aa"
-  trust: "#047857"
-  trust-soft: "#ecfdf5"
-  error: "#b42318"
-  error-soft: "#fef3f2"
-  focus: "#2563eb"
+  brand: "#FFB600"
+  brand-hover: "#E0A000"
+  brand-active: "#B98300"
+  gold-50: "#FFF8E6"
+  gold-100: "#FFEFBF"
+  gold-200: "#FFE08A"
+  gold-300: "#FFD24D"
+  gold-400: "#FFC526"
+  gold-700: "#B98300"
+  gold-800: "#8A6200"
+  gold-soft: "#FFF3D1"
+  ink: "#16181C"
+  black: "#000000"
+  page: "#FFFFFF"
+  grey-50: "#F8F8F9"
+  grey-100: "#F1F1F3"
+  grey-200: "#E5E6E9"
+  grey-300: "#D2D4D8"
+  grey-400: "#ABADB4"
+  grey-500: "#83868E"
+  grey-600: "#5E616A"
+  grey-700: "#44464D"
+  grey-800: "#2B2D33"
+  on-inverse: "#F2F2F3"
+  periwinkle: "#8194DD"
+  periwinkle-50: "#EEF0FA"
+  periwinkle-200: "#C5CDEC"
+  periwinkle-700: "#4E5E9E"
+  periwinkle-800: "#3C4877"
+  mauve: "#A664A6"
+  mauve-text: "#7A3F7A"
+  pale-violet: "#EEE5FA"
+  sage: "#C9D6C9"
+  green: "#466644"
+  green-dark: "#3A5638"
+  green-soft: "#E7EEE6"
+  red: "#BA5147"
+  red-dark: "#8F3A32"
+  red-soft: "#F6E7E5"
 typography:
   display:
-    fontFamily: "Geist Sans, Noto Sans Georgian, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(1.875rem, 6vw, 2.5rem)"
-    fontWeight: 650
-    lineHeight: 1.08
-    letterSpacing: "-0.04em"
-  title:
-    fontFamily: "Geist Sans, Noto Sans Georgian, Helvetica Neue, Arial, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 600
-    lineHeight: 1.5
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "56px"
+    fontWeight: 800
+    lineHeight: 1.03
+    letterSpacing: "-0.03em"
+  h1:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "42px"
+    fontWeight: 800
+    lineHeight: 1.05
+    letterSpacing: "-0.03em"
+  h2:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "36px"
+    fontWeight: 700
+    lineHeight: 1.1
     letterSpacing: "-0.02em"
-  body:
-    fontFamily: "Geist Sans, Noto Sans Georgian, Helvetica Neue, Arial, sans-serif"
-    fontSize: "1rem"
+  h3:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "22px"
+    fontWeight: 700
+    lineHeight: 1.25
+    letterSpacing: "-0.02em"
+  h4:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "20px"
+    fontWeight: 700
+    lineHeight: 1.3
+    letterSpacing: "-0.01em"
+  lead:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.5
-  label:
-    fontFamily: "Geist Sans, Noto Sans Georgian, Helvetica Neue, Arial, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 600
+  body:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: 1.6
+  small:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "14px"
+    fontWeight: 500
+    lineHeight: 1.55
+  caption:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "12px"
+    fontWeight: 500
+    lineHeight: 1.4
+  overline:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "12px"
+    fontWeight: 700
+    lineHeight: 1.3
+    letterSpacing: "0.14em"
+  mono:
+    fontFamily: "ui-monospace, SF Mono, Menlo, Consolas, monospace"
+    fontSize: "13px"
+    fontWeight: 500
     lineHeight: 1.5
+  score:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "52px"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "-0.03em"
+  display-ka:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "44px"
+    fontWeight: 800
+    lineHeight: 1.06
+    letterSpacing: "-0.015em"
+  display-md:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "46px"
+    fontWeight: 800
+    lineHeight: 1.05
+    letterSpacing: "-0.03em"
+  page-title:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "40px"
+    fontWeight: 800
+    lineHeight: 1.06
+    letterSpacing: "-0.03em"
+  title-lg:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "34px"
+    fontWeight: 800
+    lineHeight: 1.1
+    letterSpacing: "-0.025em"
+  stat-lg:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "30px"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "-0.02em"
+  title-md:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "28px"
+    fontWeight: 800
+    lineHeight: 1.1
+    letterSpacing: "-0.015em"
+  title-sm:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "27px"
+    fontWeight: 700
+    lineHeight: 1.18
+    letterSpacing: "-0.015em"
+  stat:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "26px"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "-0.02em"
+  headline-sm:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "24px"
+    fontWeight: 800
+    lineHeight: 1.1
+    letterSpacing: "-0.02em"
+  headline-xs:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "23px"
+    fontWeight: 800
+    lineHeight: 1.15
+    letterSpacing: "-0.01em"
+  wordmark:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "19px"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "-0.02em"
+  figure-lg:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "18px"
+    fontWeight: 800
+    lineHeight: 1.2
+  action:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "15px"
+    fontWeight: 600
+    lineHeight: 1.4
+  label-xs:
+    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontSize: "10.5px"
+    fontWeight: 700
+    lineHeight: 1.3
+    letterSpacing: "0.1em"
 rounded:
-  control: "8px"
-  segmented: "10px"
-  status: "999px"
-spacing:
+  track: "2px"
   xs: "4px"
-  sm: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "24px"
-  2xl: "32px"
+  sm: "6px"
+  mark: "7px"
+  avatar: "8px"
+  chip-sm: "9px"
+  md: "10px"
+  chip: "11px"
+  lg: "14px"
+  xl: "20px"
+  2xl: "28px"
+  sheet: "22px"
+  pill: "999px"
+spacing:
+  1: "4px"
+  2: "8px"
+  3: "12px"
+  4: "16px"
+  5: "20px"
+  6: "24px"
+  8: "32px"
+  10: "40px"
+  12: "48px"
+  16: "64px"
+  20: "80px"
+  24: "96px"
+  32: "128px"
 components:
-  button-primary:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.page}"
-    rounded: "{rounded.control}"
-    padding: "11px 16px"
+  pill-brand:
+    backgroundColor: "{colors.brand}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+    padding: "11px 18px"
     height: "44px"
-  button-secondary:
+  pill-outline:
     backgroundColor: "{colors.page}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
-    padding: "11px 16px"
+    borderColor: "{colors.grey-300}"
+    rounded: "{rounded.pill}"
+    padding: "11px 18px"
+    height: "44px"
+  pill-ink:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.page}"
+    rounded: "{rounded.pill}"
+    padding: "11px 18px"
     height: "44px"
   input:
     backgroundColor: "{colors.page}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
+    borderColor: "{colors.grey-300}"
+    rounded: "{rounded.md}"
     padding: "11px 12px"
     height: "44px"
+  card:
+    backgroundColor: "{colors.page}"
+    borderColor: "{colors.grey-200}"
+    rounded: "{rounded.xl}"
+    padding: "20px 22px"
+  card-feature:
+    backgroundColor: "{colors.page}"
+    borderColor: "{colors.grey-200}"
+    rounded: "{rounded.2xl}"
+    padding: "26px 28px"
+  tag:
+    backgroundColor: "{colors.periwinkle-50}"
+    textColor: "{colors.periwinkle-800}"
+    rounded: "{rounded.pill}"
+    padding: "5px 10px"
 ---
 
 # Design System: Tender
 
 ## Overview
 
-**Creative North Star: "Focused Column"**
+**Creative North Star: "Live Supply, Honest Mechanism"**
 
-Tender uses a deliberately narrow task frame to make commercial identity feel calm, exact, and trustworthy. Vercel is the craft benchmark for restraint and finish, not a template: Tender's verification states, capability truth, and Georgian-first typography make the world its own.
+Tender is a construction marketplace, and a marketplace earns trust by showing
+what is actually open right now and by being explicit about the mechanism that
+closes a tender. The interface leads with live work — open tenders, offer
+counts, closing countdowns, category volumes — and states the rule that decides
+the winner rather than implying negotiation.
 
-The system is typographically led and nearly monochrome. Negative space carries hierarchy; crisp borders describe controls; emerald appears only when trust is established; red appears only when repair is required. Interfaces state what is true and never fill an unfinished marketplace with decorative or fabricated content.
+The system is built on the Tipalti EU foundations: near-black ink and paper
+carry the page, a single brand gold marks the one thing to do next, and a
+hairline grid motif signs every banded surface. Depth is soft and cool, never
+glassy. Numbers are typeset as quantities, not as decoration.
 
 **Key Characteristics:**
 
-- One stable, top-anchored task frame across pending, error, and success states.
-- Georgian and English receive equal hierarchy, target size, and copy density.
-- Flat white surfaces, near-black actions, crisp neutral rules, and rare semantic color.
-- Direct-on-page forms instead of floating cards or marketing side panels.
+- Gold is the single pop, used for the primary action, the active tab and the
+  live countdown — never as a background for body text.
+- A 1200px content column with 40px gutters governs every band, marketing and
+  workspace alike.
+- Cards are the unit of structure: hairline border, soft cool shadow, 20–28px
+  radius, and a raise on hover only where the card is a destination.
+- The grid motif is always masked with a fade, so it reads as a watermark
+  rather than graph paper.
+- Privacy and selection rules are visible in the UI, not buried in copy.
 
 ## Colors
 
-The palette is restrained and operational: neutral ink and paper own the interface, while semantic color is scarce enough to remain meaningful.
-
 ### Primary
 
-- **Tender Ink:** The governing near-black for primary actions, headings, and high-confidence text.
-- **Verified Emerald:** Reserved for verified identity, safely active access, and completed progress.
-- **Repair Red:** Reserved for invalid fields, denial states, and actions the user must repair.
-- **Focus Blue:** Used only for keyboard focus and active input focus, where familiarity outranks brand color.
+- **Brand Gold (#FFB600):** the single accent. Primary actions, the active nav
+  underline, countdowns, histogram fills, the lowest-offer highlight.
+- **Tender Ink (#16181C):** headings, high-confidence text, the utility strip,
+  the footer, and dark lanes.
 
 ### Neutral
 
-- **Clear Paper:** The page and control surface.
-- **Quiet Paper:** The subtle hover and low-emphasis surface.
-- **Pressed Paper:** Segmented-control beds and neutral state halos.
-- **Working Graphite:** Body copy that supports rather than competes with headings.
-- **Muted Graphite:** Descriptions, inactive progress, and secondary metadata.
-- **Hairline / Strong Hairline:** Default and interactive border roles.
+The grey ramp is a true neutral from paper (#F8F8F9) to near-ink (#2B2D33).
+`grey-200` is the default hairline; `grey-300` is the interactive border;
+`grey-500` is muted text; `grey-700` is body copy.
+
+### Secondary
+
+- **Periwinkle (#8194DD):** category tags and links.
+- **Mauve (#A664A6) with Pale Violet:** a second category tone.
+- **Green (#466644) with Green Soft:** verified, open, available.
+- **Red (#BA5147) with Red Soft:** repair and cancellation only.
 
 ### Named Rules
 
-**The Scarce Signal Rule.** Emerald means verified or safely active; red means repair; blue means focus. Never use those colors as decoration.
+**The No-White-On-Gold Rule.** Text on brand gold is always ink. White on gold
+fails contrast and is never used, including on hover and active states.
 
-**The Paper-and-Ink Rule.** White and near-black must still describe the page when every semantic color is removed.
+**The Single-Pop Rule.** One gold element owns each decision. If two gold
+elements compete inside a card, one of them is wrong.
+
+**The Scarce-Signal Rule.** Green means verified or open, red means repair.
+Neither is decoration, and neither carries meaning by colour alone.
 
 ## Typography
 
-**Display Font:** Geist Sans with Noto Sans Georgian glyph fallback  
-**Body Font:** Geist Sans with Noto Sans Georgian glyph fallback
+**Display and Body Font:** Inter Tight Tipalti, with Noto Sans Georgian as the
+per-glyph fallback.
 
-**Character:** Geist provides compact, professional Latin forms; Noto Sans Georgian supplies a strong native Georgian texture without changing the hierarchy. Both scripts use the same roles and spacing logic.
+**Character:** Inter Tight Tipalti is a compact grotesque that holds tight
+tracking at large sizes; Georgian glyphs fall through to Noto Sans Georgian
+inside the same declaration, so one font stack serves both locales without a
+language branch.
 
 ### Hierarchy
 
-- **Display** (650, fluid 30–40px, 1.08): page task and workspace headings only.
-- **Title** (600, 18px, 1.5): state, empty-state, and section titles.
-- **Body** (400, 16px, 1.5): instructions and explanatory copy inside the 460px measure.
-- **Label** (600, 14px, 1.5): sentence-case field and capability labels.
-- **Supporting** (400, 13px): field descriptions, inactive progress, and secondary metadata.
+- **Display** (800, 56px, 1.03, -0.03em): the landing headline only.
+- **H1** (800, 40–42px, 1.05, -0.03em): discovery and tender detail.
+- **H2** (700, 36px, 1.1, -0.02em): landing section titles.
+- **H3** (700, 22px, 1.25, -0.02em): card titles.
+- **Body** (400, 16px, 1.65): descriptions and scope copy.
+- **Small** (500–600, 13.5–14.5px): card metadata and figure values.
+- **Figure label** (500, 11.5px): the label above every number.
+- **Overline** (700, 12px, 0.14em, uppercase, gold): section eyebrows.
+
+Half-step sizes (11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5px) are part of the
+ramp and come from the bound design system, not from drift.
 
 ### Named Rules
 
-**The Equal-Script Rule.** Georgian may wrap earlier, but it is never reduced to a smaller role or lighter emphasis than English.
+**The Tabular-Number Rule.** Any number a user compares — budget, offer amount,
+rating, count, coordinate — is set with `font-variant-numeric: tabular-nums`.
 
-**The Tight-Heading Rule.** Display headings use compact tracking; body copy never inherits display compression.
+**The Equal-Script Rule.** Georgian may wrap earlier, but it is never given a
+smaller role or a lighter weight than English.
 
 ## Layout
 
-Identity and workspace surfaces use a 460px maximum content measure. The frame is centered horizontally and anchored with 48–104px of responsive top space below a 64px header. Desktop adds negative space instead of additional regions or marketing content.
+Every band centres a 1200px column with 40px gutters, narrowing to 24px below
+1180px and 18px below 640px.
 
-At 608px and below, the frame becomes full width with 20px inline gutters. The header stays compact, and Georgian copy wraps without truncation. Form fields stack in one column; only the workspace switcher uses a paired layout, and each target remains at least 44px tall.
+- **Landing:** full-width bands alternating white, grey-50, ink and brand.
+- **Discovery:** a 296px filter rail beside `minmax(0, 1fr)` of results.
+- **Tender detail:** `minmax(0, 1fr)` beside a 372px sticky rail.
+- **Profile:** `minmax(0, 1fr)` beside a 340px sticky rail.
 
-Spacing follows a 4px base with recurring 8, 12, 16, 24, and 32px intervals. Related label/description/control content stays close; transitions between progress, heading, form, and workspace regions receive the larger steps.
+Below 1024px each two-column layout collapses to one. On tender detail the
+unlock card moves **above** the description, because the unlock is the decision
+the page exists to support. Below 640px a five-item bottom tab bar appears and
+the header nav tabs hide; the tab bar's centre "Post" action is a 40px gold
+circle offset 8px upward.
 
-**The Stable Anchor Rule.** State changes replace content inside the same frame. Pending, invalid, expired, reused, success, and access-denied states do not recenter or jump vertically.
+**The One-Column Rule.** A collapsed layout reorders by decision priority, not
+by source order.
 
 ## Elevation & Depth
 
-Primary surfaces are flat. Hierarchy comes from whitespace, one-pixel rules, tonal surface changes, and type—not shadows. The contextual help overlay is the sole ambient lift (0 12px 28px rgb(9 9 11 / 8%)) because it temporarily overlaps the page; cards and forms remain shadowless.
+Shadows are soft and cool-tinted (`rgb(11 27 59 / …)`), five steps from `xs` to
+`xl`. A card at rest uses `xs` or `sm`; a card that is a destination raises to
+`md` or `lg` on hover and takes a `gold-300` border. The hero preview card and
+the mobile filter sheet are the only surfaces at `xl`.
 
-**The Flat-by-Default Rule.** A border or tonal shift must solve separation before elevation is considered.
+**The Raise-Means-Reachable Rule.** A hover raise promises a destination. A
+card that does not navigate does not raise.
 
 ## Shapes
 
-Controls use gently curved 8px corners; the workspace switcher bed uses 10px to contain 8px destinations. Status dots are circular. Borders are crisp, one pixel, and neutral at rest. The system does not use ornamental clipping, oversized pills, or container geometry around whole forms.
+Radii run 4 / 6 / 10 / 14 / 20 / 28 and the pill. Controls and inputs use 10px;
+result and category cards use 14–20px; feature cards and the unlock gate use
+28px; every button and chip is a pill. Icon chips are 42px squares at 11px
+radius on a gold-soft ground.
 
 ## Components
 
 ### Buttons
 
-- **Shape:** 8px corners and a minimum 44px target.
-- **Primary:** Tender Ink on Clear Paper text, full width inside task forms.
-- **Secondary:** Clear Paper with a Hairline border and Tender Ink text.
-- **Hover / Focus:** Short 160ms exponential ease-out color/border transition; familiar blue focus ring with 3px separation.
-- **Pending:** Keep the action label visible, append lower-emphasis status copy, disable duplicate input, and never collapse to a spinner-only control.
+- **Shape:** pill, minimum 44px target, 11px/18px padding.
+- **Brand:** gold ground, ink text, `xs` shadow; hover `#E0A000`, active
+  `#B98300`. No scale change on press.
+- **Outline:** paper ground, `grey-300` border, ink text; hover border to ink.
+- **Ink:** used where gold would compete with a gold element already present.
+- **Pending:** the action label stays visible with lower-emphasis status copy
+  appended; the control never collapses to a spinner.
 
 ### Inputs / Fields
 
-- **Style:** Clear Paper, Hairline border, 8px corners, 44px minimum height.
-- **Focus:** Focus Blue border with a restrained translucent ring.
-- **Error:** Repair Red border and specific repair copy below; form-level errors link back to each field.
-- **Structure:** Label, optional description, control, then error. Password-manager autocomplete and native input semantics remain intact.
+Paper ground, `grey-300` border, 10px radius, 44px minimum height. Focus takes
+a gold border plus the 4px soft focus ring. Error takes a red border with
+specific repair copy below, and the form-level summary links back to each
+field. Disabled controls take the grey-50 ground — used for "Specific service"
+before a category is chosen.
 
 ### Navigation
 
-The 64px header holds the wordmark, native help disclosure, and one route-preserving locale destination. Actions are text-led and maintain 44px targets. A dual-capability workspace adds a compact two-part segmented switcher; single-capability users receive no unavailable destination.
+A 34px ink utility strip carries the market statement, help and the locale
+switch. Below it a 68px white nav (sticky, 86% white with a 10px blur) carries
+the wordmark, the destination tabs and the primary action. The active tab takes
+a 2px gold bottom border and 700 weight. Destinations are built from the
+viewer's capabilities in one place, so a route the server would deny is never
+offered as navigation.
 
-### Progress Rail
+### Cards and Figures
 
-Account, verification, and profile appear as three equal columns with one-pixel top rules. Completed/current steps use Verified Emerald; future steps remain neutral. The rail communicates position without gamification and disappears where it adds no information.
+A figure is a 11.5px muted label above a 700-weight tabular value. Four figures
+above a hairline is the standard strip for tender and profile summaries. The
+hairline field grid (1px gaps over a `grey-200` ground) is used where empty
+values must still read as fields; an empty value renders "Not provided" in
+`grey-400` and stays programmatically associated with its label.
 
-### Status and Empty States
+### The Unlock Gate
 
-Terminal auth states use a small semantic dot, concise title/body, and the next safe action inside the stable frame. Workspace empty states use horizontal rules and truthful copy rather than illustrations, cards, metrics, or sample marketplace records.
+The unlock card is the only surface with a 1.5px gold border. It carries a
+gold-soft header with a lock icon, the verbatim access copy, one gold primary
+action, a labelled divider, and the two subscription options as outlined rows.
+The simulated-payment note is always present and never softened.
+
+### Countdown
+
+Counters tick once per second and read `Nd Nh` above a day, `Nh NNm` above an
+hour, and `Nm NNs` below it. The first value is rendered on the server so the
+markup is correct before hydration. A passed deadline switches the tender to
+its closed presentation and stops the timer.
+
+### Reviews
+
+A review is presented only against a verified completed engagement. The
+summary is a 52px score, a gold star string, a five-row histogram with 7px
+tracks, and the four per-criteria scores. Star strings always carry a text
+equivalent ("4.8 out of 5, 61 reviews").
 
 ### Map
 
-The map is a control, not a canvas: it takes the full 460px measure at 260px tall (220px at ≤608px), inside the same one-pixel border and 8px radius as an input. Raster basemap tiles are desaturated so the page stays paper-and-ink and the marks on top stay legible. A precise location is a near-black circular pin with a white ring; an approximate location is a translucent ink area circle and never a pin. Zoom controls are restyled to match secondary buttons, and tile attribution is always visible at Supporting size in Muted Graphite. Scroll-wheel zoom is off so a map inside a scrolling page never traps the page.
+The map is a control, not a canvas: one hairline border, 14px radius, inside
+the detail card. Raster basemap tiles are muted (lightly desaturated, not
+greyscale) so their natural greens, blues and road tones stay legible while the
+marks on top still read as the loudest thing on the card. A precise location
+is an ink circular pin with a white ring; an
+approximate location is a gold area circle and never a pin. Attribution is
+always visible.
 
-**The Quiet-Basemap Rule.** The basemap is context, not content. It is desaturated so the pin, the area circle, and the surrounding form remain the loudest elements.
+**The Quiet-Basemap Rule.** The basemap is context, not content.
 
-**The Coarse-Circle Rule.** A map shown before entitlement draws an area, never a point, and that area is sized from the real coordinate coarsening rather than a chosen radius. Drawing a smaller circle would imply precision the viewer was never given.
+**The Coarse-Circle Rule.** A map shown before entitlement draws an area, never
+a point, and that area is sized from the real coordinate coarsening.
 
-**The Map-Is-Enhancement Rule.** A map never becomes the only way to complete a task. The latitude and longitude fields stay visible and functional beside it, so the location can be set without a pointer, without tiles, and without sight of the basemap.
+**The Map-Is-Enhancement Rule.** A map never becomes the only way to complete a
+task; the coordinate fields stay visible and functional beside it.
+
+## Motion
+
+Short fades and small translate-ups on scroll-in, 200–300ms ease-out. Colour
+and border transitions are 150ms. No bounce, no looping motion on content. The
+only continuous mark in the system is the pulsing dot on the live-offer toast,
+and it is decorative and `aria-hidden`.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** keep primary identity tasks inside the stable 460px measure.
-- **Do** use sentence-case labels and plain, specific repair copy.
-- **Do** preserve the action label during pending states and protect against duplicate submission.
-- **Do** reserve emerald for verified trust, red for repair, and blue for focus.
-- **Do** test Georgian and English at desktop and mobile widths.
+- **Do** show real supply: real open tenders, real counts, real reviews.
+- **Do** keep every number tabular and every number labelled.
+- **Do** reserve gold for the single next action on the surface.
+- **Do** state the selection rule wherever offers are shown.
+- **Do** test Georgian and English at 1280px, 1024px and 390px.
 
 ### Don't:
 
-- **Don't** wrap primary forms in floating cards or add a split-screen marketing panel.
-- **Don't** use gradients, glass effects, decorative shadows, or fabricated illustrations.
-- **Don't** introduce fake tenders, bids, ratings, revenue, or statistics to fill empty workspaces.
-- **Don't** expose capability, restriction, verification, or actor identity as editable controls.
-- **Don't** use semantic color as decoration or communicate status by color alone.
+- **Don't** put white text on gold, anywhere, in any state.
+- **Don't** invent tenders, offers, ratings, revenue or statistics to fill a
+  section. An empty section says it is empty; a placeholder says it is a
+  placeholder.
+- **Don't** reveal client identity, exact location, attachments or conditions
+  before an entitlement — the projection is enforced on the server, never by
+  hiding markup on the client.
+- **Don't** use the grid motif unmasked, or at a density that competes with
+  content.
+- **Don't** communicate status by colour alone.

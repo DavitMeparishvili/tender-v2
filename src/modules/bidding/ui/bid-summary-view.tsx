@@ -6,41 +6,58 @@ import type { BidSummary } from "../domain/bid-summary";
 // Renders exactly what `BidSummary` carries and nothing more. The type has no
 // bidder identity, terms, or timestamps in it, and this view must not add any.
 export function BidSummaryView({
+  isOpen = true,
   locale,
   messages,
   summary,
 }: Readonly<{
+  isOpen?: boolean;
   locale: Locale;
   messages: Messages;
   summary: BidSummary;
 }>) {
+  const lowest = formatTenderMoney(
+    summary.lowestAmountMinorUnits,
+    summary.currency,
+    locale,
+  );
+
   return (
-    <section className="bid-summary" aria-labelledby="bid-summary-heading">
-      <h2 id="bid-summary-heading">{messages.bidding.summaryTitle}</h2>
-      {summary.bidCount === 0 ? (
-        <p>{messages.bidding.noBidsYet}</p>
+    <section aria-labelledby="bid-summary-heading" className="rail-card">
+      <div className="rail-head">
+        <h2 id="bid-summary-heading">{messages.bidding.summaryTitle}</h2>
+        <span className={isOpen ? "tag tag-green" : "tag tag-grey"}>
+          {isOpen
+            ? messages.detail.competitionOpen
+            : messages.detail.competitionClosed}
+        </span>
+      </div>
+
+      {summary.bidCount === 0 || lowest === null ? (
+        <>
+          <p className="rail-headline">{messages.bidding.noBidsYet}</p>
+          <p>{messages.detail.firstOfferNote}</p>
+        </>
       ) : (
-        <dl>
-          <div>
-            <dt>{messages.bidding.summaryTitle}</dt>
-            <dd>
-              {messages.bidding.bidCount.replace(
-                "{count}",
-                String(summary.bidCount),
-              )}
-            </dd>
-          </div>
-          <div>
-            <dt>{messages.bidding.currentLowest}</dt>
-            <dd>
-              {formatTenderMoney(
-                summary.lowestAmountMinorUnits,
-                summary.currency,
-                locale,
-              )}
-            </dd>
-          </div>
-        </dl>
+        <>
+          <p className="rail-headline">{lowest}</p>
+          <p>{messages.bidding.automaticWinner}</p>
+          <dl className="rail-figures">
+            <div>
+              <dt>{messages.detail.offersLabel}</dt>
+              <dd>
+                {messages.bidding.bidCount.replace(
+                  "{count}",
+                  String(summary.bidCount),
+                )}
+              </dd>
+            </div>
+            <div>
+              <dt>{messages.bidding.currentLowest}</dt>
+              <dd>{lowest}</dd>
+            </div>
+          </dl>
+        </>
       )}
     </section>
   );

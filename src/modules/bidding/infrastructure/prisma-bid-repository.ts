@@ -3,6 +3,7 @@ import type { Bid as BidRow } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
 import type { Result } from "../../shared";
 import type { BidSummaryRepository } from "../application/get-bid-summary";
+import type { BidSummariesRepository } from "../application/list-bid-summaries";
 import type { ListTenderBidsRepository } from "../application/list-tender-bids";
 import type { BidPresenceRepository } from "../application/tender-has-active-bids";
 import type { ReviseBidRepository } from "../application/revise-bid";
@@ -55,6 +56,7 @@ export class PrismaBidRepository
     WithdrawBidRepository,
     BidPresenceRepository,
     BidSummaryRepository,
+    BidSummariesRepository,
     ListTenderBidsRepository
 {
   async insertBid(
@@ -244,6 +246,45 @@ export class PrismaBidRepository
         status: row.status,
         qualifyingSubmittedAt: row.qualifyingSubmittedAt,
       }));
+  }
+
+  async listRankableBidsForTenders(
+    tenderIds: readonly string[],
+  ): Promise<ReadonlyMap<string, readonly RankableBid[]>> {
+    const grouped = new Map<string, RankableBid[]>();
+    if (tenderIds.length === 0) return grouped;
+
+    const rows = await database.bid.findMany({
+      where: { tenderId: { in: [...tenderIds] } },
+      select: {
+        id: true,
+        tenderId: true,
+        amountMinorUnits: true,
+        currency: true,
+        status: true,
+        qualifyingSubmittedAt: true,
+      },
+      orderBy: [
+        { amountMinorUnits: "asc" },
+        { qualifyingSubmittedAt: "asc" },
+        { id: "asc" },
+      ],
+    });
+
+    for (const row of rows) {
+      if (row.currency !== "GEL" && row.currency !== "USD") continue;
+      const bucket = grouped.get(row.tenderId) ?? [];
+      bucket.push({
+        id: row.id,
+        amountMinorUnits: row.amountMinorUnits,
+        currency: row.currency as BidCurrency,
+        status: row.status,
+        qualifyingSubmittedAt: row.qualifyingSubmittedAt,
+      });
+      grouped.set(row.tenderId, bucket);
+    }
+
+    return grouped;
   }
 
   async findOwnBid(tenderId: string, providerId: string): Promise<Bid | null> {

@@ -94,33 +94,44 @@ export function InboxList({
           const date = formatTenderDate(item.createdAt, locale);
           const isMarking = markingId === item.id;
           return (
-            <li key={item.id}>
-              <p>{notificationText(item, messages)}</p>
+            <li data-unread={item.readAt === null} key={item.id}>
+              <p className="inbox-item-text">
+                {notificationText(item, messages)}
+              </p>
               <div className="inbox-item-meta">
+                {/* Unread is a labelled tag, never weight or colour alone. */}
                 {item.readAt === null ? (
-                  <strong>{messages.notifications.unread}</strong>
+                  <span className="tag tag-gold">
+                    {messages.notifications.unread}
+                  </span>
                 ) : (
-                  <span>{messages.notifications.read}</span>
+                  <span className="tag tag-grey">
+                    {messages.notifications.read}
+                  </span>
                 )}
                 {date ? (
                   <time dateTime={item.createdAt.toISOString()}>{date}</time>
                 ) : null}
               </div>
-              {href ? (
-                <Link href={href}>{messages.notifications.open}</Link>
-              ) : null}
-              {item.readAt === null ? (
-                <button
-                  className="button button-secondary"
-                  type="button"
-                  disabled={isMarking}
-                  onClick={() => void markRead(item.id)}
-                >
-                  {isMarking
-                    ? messages.notifications.markingRead
-                    : messages.notifications.markRead}
-                </button>
-              ) : null}
+              <div className="inbox-item-actions">
+                {href ? (
+                  <Link className="pill pill-outline" href={href}>
+                    {messages.notifications.open}
+                  </Link>
+                ) : null}
+                {item.readAt === null ? (
+                  <button
+                    className="pill pill-outline"
+                    type="button"
+                    disabled={isMarking}
+                    onClick={() => void markRead(item.id)}
+                  >
+                    {isMarking
+                      ? messages.notifications.markingRead
+                      : messages.notifications.markRead}
+                  </button>
+                ) : null}
+              </div>
             </li>
           );
         })}

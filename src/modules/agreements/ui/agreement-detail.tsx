@@ -1,5 +1,6 @@
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
+import { BrandIcon } from "../../shell/ui/brand-icon";
 import {
   formatTenderDate,
   formatTenderMoney,
@@ -30,9 +31,16 @@ function checkpointText(
     : messages.agreements.waiting;
 }
 
-function LifecycleCheckpoint({
+/**
+ * A step's title says what happened; the chip says whether it has. Putting
+ * both in the same muted colour (the old flat list) made a reader compare
+ * eight look-alike lines to find the one that mattered. The chip's colour
+ * and the "You" tag do that comparison for them.
+ */
+function PartyRow({
   complete,
   current,
+  isViewer,
   label,
   locale,
   messages,
@@ -40,18 +48,84 @@ function LifecycleCheckpoint({
 }: Readonly<{
   complete: boolean;
   current: boolean;
+  isViewer: boolean;
   label: string;
   locale: Locale;
   messages: Messages;
   recordedAt: Date | null;
 }>) {
   return (
+    <div className={current ? "lifecycle-party is-current" : "lifecycle-party"}>
+      <span className="lifecycle-party-label">
+        {label}
+        {isViewer ? (
+          <span className="tag tag-gold lifecycle-you">
+            {messages.agreements.you}
+          </span>
+        ) : null}
+      </span>
+      <span className={complete ? "tag tag-green" : "tag tag-grey"}>
+        {checkpointText(recordedAt, locale, messages)}
+      </span>
+    </div>
+  );
+}
+
+function LifecyclePhase({
+  clientComplete,
+  clientCurrent,
+  clientRecordedAt,
+  locale,
+  messages,
+  providerComplete,
+  providerCurrent,
+  providerRecordedAt,
+  title,
+  viewerRole,
+}: Readonly<{
+  clientComplete: boolean;
+  clientCurrent: boolean;
+  clientRecordedAt: Date | null;
+  locale: Locale;
+  messages: Messages;
+  providerComplete: boolean;
+  providerCurrent: boolean;
+  providerRecordedAt: Date | null;
+  title: string;
+  viewerRole: AgreementView["partyRole"];
+}>) {
+  const bothComplete = clientComplete && providerComplete;
+
+  return (
     <li
-      aria-current={current ? "step" : undefined}
-      className={complete ? "is-complete" : ""}
+      className={
+        bothComplete ? "lifecycle-phase is-complete" : "lifecycle-phase"
+      }
     >
-      <span>{label}</span>
-      <span>{checkpointText(recordedAt, locale, messages)}</span>
+      <h3 className="lifecycle-phase-title">
+        {bothComplete ? <BrandIcon name="check" size={14} /> : null}
+        {title}
+      </h3>
+      <div className="lifecycle-parties">
+        <PartyRow
+          complete={clientComplete}
+          current={clientCurrent}
+          isViewer={viewerRole === "CLIENT"}
+          label={messages.agreements.partyClient}
+          locale={locale}
+          messages={messages}
+          recordedAt={clientRecordedAt}
+        />
+        <PartyRow
+          complete={providerComplete}
+          current={providerCurrent}
+          isViewer={viewerRole === "PROVIDER"}
+          label={messages.agreements.partyProvider}
+          locale={locale}
+          messages={messages}
+          recordedAt={providerRecordedAt}
+        />
+      </div>
     </li>
   );
 }
@@ -76,14 +150,24 @@ export function AgreementDetail({
         ? "start"
         : agreement.status === "IN_PROGRESS" || agreement.status === "COMPLETED"
           ? "completion"
-          : agreement.status === "CANCELLED"
-            ? "cancellation"
-            : undefined;
+          : undefined;
   const deadline = formatTenderDate(agreement.confirmDeadline, locale);
+  const cancelledByLabel =
+    agreement.cancelledAt === null
+      ? null
+      : agreement.cancelledById === agreement.clientId
+        ? messages.agreements.cancelledByClient
+        : agreement.cancelledById === agreement.providerId
+          ? messages.agreements.cancelledByProvider
+          : messages.agreements.cancelledGeneric;
 
   return (
     <>
-      <p className="tender-detail-status">
+      <p
+        className="tender-detail-status"
+        data-agreement-status={agreement.status}
+      >
+        <span aria-hidden="true" />
         {messages.agreements.status}: {statusLabel(agreement.status, messages)}
       </p>
       <dl className="tender-detail">
@@ -148,73 +232,78 @@ export function AgreementDetail({
           </dd>
         </div>
       </dl>
-      <ol className="progress-rail">
-        <LifecycleCheckpoint
-          complete={agreement.clientConfirmedAt !== null}
-          current={currentStep === "client"}
-          label={messages.agreements.clientConfirmation}
+
+      {/*
+        Cancellation ends the sequence rather than sitting inside it, so it
+        gets its own banner instead of a "Waiting" row alongside every step
+        that is actually still in play.
+      */}
+      {agreement.cancelledAt === null ? null : (
+        <div className="cancellation-banner" role="status">
+          <span className="tag tag-red">
+            {messages.agreements.cancellation}
+          </span>
+          <p className="cancellation-summary">
+            {cancelledByLabel}
+            {" · "}
+            {formatTenderDate(agreement.cancelledAt, locale)}
+          </p>
+          {agreement.cancellationExplanation ? (
+            <p className="cancellation-explanation">
+              {agreement.cancellationExplanation}
+            </p>
+          ) : null}
+        </div>
+      )}
+
+      <ol className="lifecycle-rail">
+        <LifecyclePhase
+          title={messages.agreements.phaseConfirmation}
+          clientComplete={agreement.clientConfirmedAt !== null}
+          clientCurrent={currentStep === "client"}
+          clientRecordedAt={agreement.clientConfirmedAt}
+          providerComplete={agreement.providerConfirmedAt !== null}
+          providerCurrent={currentStep === "provider"}
+          providerRecordedAt={agreement.providerConfirmedAt}
           locale={locale}
           messages={messages}
-          recordedAt={agreement.clientConfirmedAt}
+          viewerRole={agreement.partyRole}
         />
-        <LifecycleCheckpoint
-          complete={agreement.providerConfirmedAt !== null}
-          current={currentStep === "provider"}
-          label={messages.agreements.providerConfirmation}
-          locale={locale}
-          messages={messages}
-          recordedAt={agreement.providerConfirmedAt}
-        />
-        <LifecycleCheckpoint
-          complete={agreement.clientStartedAt !== null}
-          current={
+        <LifecyclePhase
+          title={messages.agreements.phaseWorkStarted}
+          clientComplete={agreement.clientStartedAt !== null}
+          clientCurrent={
             currentStep === "start" && agreement.clientStartedAt === null
           }
-          label={messages.agreements.clientWorkStarted}
-          locale={locale}
-          messages={messages}
-          recordedAt={agreement.clientStartedAt}
-        />
-        <LifecycleCheckpoint
-          complete={agreement.providerStartedAt !== null}
-          current={
+          clientRecordedAt={agreement.clientStartedAt}
+          providerComplete={agreement.providerStartedAt !== null}
+          providerCurrent={
             currentStep === "start" && agreement.providerStartedAt === null
           }
-          label={messages.agreements.providerWorkStarted}
+          providerRecordedAt={agreement.providerStartedAt}
           locale={locale}
           messages={messages}
-          recordedAt={agreement.providerStartedAt}
+          viewerRole={agreement.partyRole}
         />
-        <LifecycleCheckpoint
-          complete={agreement.clientCompletedAt !== null}
-          current={
+        <LifecyclePhase
+          title={messages.agreements.phaseCompletion}
+          clientComplete={agreement.clientCompletedAt !== null}
+          clientCurrent={
             currentStep === "completion" && agreement.clientCompletedAt === null
           }
-          label={messages.agreements.clientCompletion}
-          locale={locale}
-          messages={messages}
-          recordedAt={agreement.clientCompletedAt}
-        />
-        <LifecycleCheckpoint
-          complete={agreement.providerCompletedAt !== null}
-          current={
+          clientRecordedAt={agreement.clientCompletedAt}
+          providerComplete={agreement.providerCompletedAt !== null}
+          providerCurrent={
             currentStep === "completion" &&
             agreement.providerCompletedAt === null
           }
-          label={messages.agreements.providerCompletion}
+          providerRecordedAt={agreement.providerCompletedAt}
           locale={locale}
           messages={messages}
-          recordedAt={agreement.providerCompletedAt}
-        />
-        <LifecycleCheckpoint
-          complete={agreement.cancelledAt !== null}
-          current={currentStep === "cancellation"}
-          label={messages.agreements.cancellation}
-          locale={locale}
-          messages={messages}
-          recordedAt={agreement.cancelledAt}
+          viewerRole={agreement.partyRole}
         />
       </ol>
+
       {agreement.canConfirm ? (
         <AgreementActionForm
           agreementId={agreement.id}

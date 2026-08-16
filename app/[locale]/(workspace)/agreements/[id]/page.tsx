@@ -35,7 +35,7 @@ export default async function AgreementPage({
     ? await getAgreementReview(id, access.value)
     : null;
   return (
-    <IdentityShell title={messages.agreements.detailTitle}>
+    <IdentityShell title={messages.agreements.detailTitle} width="form">
       <AgreementDetail
         agreement={agreement.value}
         hasPublishedReview={existingReview !== null}

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ErrorSummary,
-  SubmitButton,
   focusErrorSummary,
   type FormIssue,
 } from "../../identity/ui/identity-form";
@@ -12,6 +11,9 @@ import type { AccessProductCode } from "../domain/access-product";
 
 export type AccessCheckoutCopy = Readonly<{
   label: string;
+  /** Secondary line and price, rendered only by the option variant. */
+  note?: string;
+  price?: string;
   pendingLabel: string;
   summaryOne: string;
   summaryMany: string;
@@ -46,10 +48,13 @@ export function AccessCheckoutForm({
   copy,
   product,
   tenderId,
+  variant = "primary",
 }: Readonly<{
   copy: AccessCheckoutCopy;
   product: AccessProductCode;
   tenderId: string;
+  /** `primary` is the gold action; `option` is an outlined subscription row. */
+  variant?: "primary" | "option";
 }>) {
   const router = useRouter();
   const [issue, setIssue] = useState<FormIssue | null>(null);
@@ -117,11 +122,39 @@ export function AccessCheckoutForm({
         summaryOne={copy.summaryOne}
         summaryMany={copy.summaryMany}
       />
-      <SubmitButton
-        label={copy.label}
-        pendingLabel={copy.pendingLabel}
-        isPending={isPending}
-      />
+      {variant === "primary" ? (
+        <button
+          aria-describedby={isPending ? `${errorsId}-pending` : undefined}
+          className="pill pill-brand unlock-primary"
+          disabled={isPending}
+          type="submit"
+        >
+          <span>{copy.label}</span>
+          {isPending ? (
+            <span
+              className="button-status"
+              id={`${errorsId}-pending`}
+              role="status"
+            >
+              {copy.pendingLabel}
+            </span>
+          ) : null}
+        </button>
+      ) : (
+        <button className="unlock-option" disabled={isPending} type="submit">
+          <span>
+            <span className="unlock-option-name">{copy.label}</span>
+            {copy.note ? (
+              <span className="unlock-option-note">
+                {isPending ? copy.pendingLabel : copy.note}
+              </span>
+            ) : null}
+          </span>
+          {copy.price ? (
+            <span className="unlock-option-price">{copy.price}</span>
+          ) : null}
+        </button>
+      )}
     </form>
   );
 }

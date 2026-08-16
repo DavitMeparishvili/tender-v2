@@ -26,16 +26,19 @@ export function createGetTenderForProvider(dependencies: {
 }) {
   return async function getTenderForProvider(
     id: string,
-    actor: Readonly<{ id: string }>,
+    // `null` is a visitor with no provider identity to check entitlement
+    // against — an unauthenticated browser or a signed-in non-provider — and
+    // always resolves to the masked projection without touching the
+    // entitlement port.
+    actor: Readonly<{ id: string }> | null,
   ): Promise<Result<ProviderTenderView, "TENDER_NOT_FOUND">> {
     const found = await dependencies.repository.getSettleable(id);
     if (!found.ok) return found;
 
-    const entitled = await dependencies.isEntitled(
-      actor.id,
-      id,
-      dependencies.clock.now(),
-    );
+    const entitled =
+      actor === null
+        ? false
+        : await dependencies.isEntitled(actor.id, id, dependencies.clock.now());
     return {
       ok: true,
       value: entitled
@@ -47,7 +50,7 @@ export function createGetTenderForProvider(dependencies: {
 
 export async function getTenderForProvider(
   id: string,
-  actor: Readonly<{ id: string }>,
+  actor: Readonly<{ id: string }> | null,
 ): Promise<Result<ProviderTenderView, "TENDER_NOT_FOUND">> {
   const [{ prismaTenderRepository }, { hasTenderEntitlement }] =
     await Promise.all([

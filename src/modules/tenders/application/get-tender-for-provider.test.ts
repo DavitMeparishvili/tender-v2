@@ -90,6 +90,21 @@ describe("getTenderForProvider", () => {
     expect(seen).toEqual([["provider-7", "tender-1"]]);
   });
 
+  it("returns the masked projection without checking entitlement when there is no actor", async () => {
+    let called = false;
+    const view = await createGetTenderForProvider({
+      repository,
+      clock,
+      isEntitled: async () => {
+        called = true;
+        return true;
+      },
+    })("tender-1", null);
+
+    expect(view).toMatchObject({ ok: true, value: { disclosure: "MASKED" } });
+    expect(called).toBe(false);
+  });
+
   it("reports a missing tender rather than an empty masked view", async () => {
     const view = await createGetTenderForProvider({
       repository,

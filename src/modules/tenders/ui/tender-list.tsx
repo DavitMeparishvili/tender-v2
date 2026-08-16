@@ -116,15 +116,18 @@ export async function TenderList({
   const tenders = await listOwnedTenders(actor);
 
   return (
-    <IdentityShell title={messages.tenders.clientListTitle}>
-      <div className="tender-primary-action">
+    <IdentityShell
+      actions={
         <Link
-          className="button button-primary"
+          className="pill pill-brand"
           href={`/${locale}/client/tenders/new`}
         >
           {messages.tenders.newTender}
         </Link>
-      </div>
+      }
+      title={messages.tenders.clientListTitle}
+      width="wide"
+    >
       <TenderListContent
         locale={locale}
         messages={messages}

@@ -1,345 +1,432 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-14T14:23:00.000Z",
+  "generatedAt": "2026-08-16T19:20:00.000Z",
   "title": "Design System: Tender",
   "extensions": {
     "colorMeta": {
+      "brand": {
+        "role": "primary",
+        "displayName": "Brand Gold",
+        "canonical": "#FFB600",
+        "tonalRamp": [
+          "#8A6200",
+          "#B98300",
+          "#E0A000",
+          "#FFB600",
+          "#FFC526",
+          "#FFD24D",
+          "#FFE08A",
+          "#FFF8E6"
+        ]
+      },
+      "brand-hover": {
+        "role": "primary",
+        "displayName": "Gold Hover",
+        "canonical": "#E0A000",
+        "tonalRamp": [
+          "#8A6200",
+          "#B98300",
+          "#E0A000",
+          "#FFB600",
+          "#FFC526",
+          "#FFD24D",
+          "#FFE08A",
+          "#FFF8E6"
+        ]
+      },
+      "brand-active": {
+        "role": "primary",
+        "displayName": "Gold Active",
+        "canonical": "#B98300",
+        "tonalRamp": [
+          "#8A6200",
+          "#B98300",
+          "#E0A000",
+          "#FFB600",
+          "#FFC526",
+          "#FFD24D",
+          "#FFE08A",
+          "#FFF8E6"
+        ]
+      },
       "ink": {
         "role": "primary",
         "displayName": "Tender Ink",
-        "canonical": "#09090b",
+        "canonical": "#16181C",
         "tonalRamp": [
-          "#09090b",
-          "#18181b",
-          "#27272a",
-          "#3f3f46",
-          "#71717a",
-          "#a1a1aa",
-          "#e4e4e7",
-          "#fafafa"
-        ]
-      },
-      "body": {
-        "role": "neutral",
-        "displayName": "Working Graphite",
-        "canonical": "#3f3f46",
-        "tonalRamp": [
-          "#09090b",
-          "#18181b",
-          "#27272a",
-          "#3f3f46",
-          "#71717a",
-          "#a1a1aa",
-          "#e4e4e7",
-          "#fafafa"
-        ]
-      },
-      "muted": {
-        "role": "neutral",
-        "displayName": "Muted Graphite",
-        "canonical": "#71717a",
-        "tonalRamp": [
-          "#09090b",
-          "#18181b",
-          "#27272a",
-          "#3f3f46",
-          "#71717a",
-          "#a1a1aa",
-          "#e4e4e7",
-          "#fafafa"
+          "#000000",
+          "#16181C",
+          "#2B2D33",
+          "#44464D",
+          "#5E616A",
+          "#83868E",
+          "#D2D4D8",
+          "#F8F8F9"
         ]
       },
       "page": {
         "role": "neutral",
-        "displayName": "Clear Paper",
-        "canonical": "#ffffff",
+        "displayName": "Paper",
+        "canonical": "#FFFFFF",
         "tonalRamp": [
-          "#09090b",
-          "#27272a",
-          "#52525b",
-          "#71717a",
-          "#a1a1aa",
-          "#d4d4d8",
-          "#f4f4f5",
-          "#ffffff"
+          "#16181C",
+          "#2B2D33",
+          "#44464D",
+          "#83868E",
+          "#ABADB4",
+          "#E5E6E9",
+          "#F1F1F3",
+          "#FFFFFF"
         ]
       },
-      "subtle": {
-        "role": "neutral",
-        "displayName": "Quiet Paper",
-        "canonical": "#fafafa",
-        "tonalRamp": [
-          "#18181b",
-          "#3f3f46",
-          "#71717a",
-          "#a1a1aa",
-          "#d4d4d8",
-          "#e4e4e7",
-          "#f4f4f5",
-          "#fafafa"
-        ]
-      },
-      "pressed": {
-        "role": "neutral",
-        "displayName": "Pressed Paper",
-        "canonical": "#f4f4f5",
-        "tonalRamp": [
-          "#18181b",
-          "#3f3f46",
-          "#71717a",
-          "#a1a1aa",
-          "#d4d4d8",
-          "#e4e4e7",
-          "#f4f4f5",
-          "#fafafa"
-        ]
-      },
-      "border": {
+      "grey-200": {
         "role": "neutral",
         "displayName": "Hairline",
-        "canonical": "#e4e4e7",
+        "canonical": "#E5E6E9",
         "tonalRamp": [
-          "#18181b",
-          "#3f3f46",
-          "#71717a",
-          "#a1a1aa",
-          "#d4d4d8",
-          "#e4e4e7",
-          "#f4f4f5",
-          "#fafafa"
+          "#16181C",
+          "#2B2D33",
+          "#44464D",
+          "#83868E",
+          "#ABADB4",
+          "#D2D4D8",
+          "#E5E6E9",
+          "#F8F8F9"
         ]
       },
-      "border-strong": {
+      "grey-300": {
         "role": "neutral",
-        "displayName": "Strong Hairline",
-        "canonical": "#a1a1aa",
+        "displayName": "Interactive Hairline",
+        "canonical": "#D2D4D8",
         "tonalRamp": [
-          "#09090b",
-          "#27272a",
-          "#3f3f46",
-          "#71717a",
-          "#a1a1aa",
-          "#d4d4d8",
-          "#e4e4e7",
-          "#fafafa"
+          "#16181C",
+          "#2B2D33",
+          "#44464D",
+          "#83868E",
+          "#ABADB4",
+          "#D2D4D8",
+          "#E5E6E9",
+          "#F8F8F9"
         ]
       },
-      "trust": {
-        "role": "primary",
-        "displayName": "Verified Emerald",
-        "canonical": "#047857",
+      "grey-500": {
+        "role": "neutral",
+        "displayName": "Muted Text",
+        "canonical": "#83868E",
         "tonalRamp": [
-          "#022c22",
-          "#064e3b",
-          "#065f46",
-          "#047857",
-          "#10b981",
-          "#6ee7b7",
-          "#d1fae5",
-          "#ecfdf5"
+          "#16181C",
+          "#2B2D33",
+          "#44464D",
+          "#5E616A",
+          "#83868E",
+          "#ABADB4",
+          "#D2D4D8",
+          "#F1F1F3"
         ]
       },
-      "trust-soft": {
-        "role": "primary",
-        "displayName": "Verified Wash",
-        "canonical": "#ecfdf5",
+      "grey-700": {
+        "role": "neutral",
+        "displayName": "Body Text",
+        "canonical": "#44464D",
         "tonalRamp": [
-          "#022c22",
-          "#064e3b",
-          "#065f46",
-          "#047857",
-          "#10b981",
-          "#6ee7b7",
-          "#d1fae5",
-          "#ecfdf5"
+          "#16181C",
+          "#2B2D33",
+          "#44464D",
+          "#5E616A",
+          "#83868E",
+          "#ABADB4",
+          "#D2D4D8",
+          "#F1F1F3"
         ]
       },
-      "error": {
-        "role": "primary",
+      "periwinkle": {
+        "role": "secondary",
+        "displayName": "Periwinkle",
+        "canonical": "#8194DD",
+        "tonalRamp": [
+          "#3C4877",
+          "#4E5E9E",
+          "#6678C4",
+          "#8194DD",
+          "#94A2DF",
+          "#ABB7E5",
+          "#C5CDEC",
+          "#EEF0FA"
+        ]
+      },
+      "mauve": {
+        "role": "secondary",
+        "displayName": "Mauve",
+        "canonical": "#A664A6",
+        "tonalRamp": [
+          "#4A2C4A",
+          "#5E3A5E",
+          "#7A3F7A",
+          "#A664A6",
+          "#BC85BC",
+          "#D2A6D2",
+          "#E4C9E4",
+          "#EEE5FA"
+        ]
+      },
+      "green": {
+        "role": "success",
+        "displayName": "Verified Green",
+        "canonical": "#466644",
+        "tonalRamp": [
+          "#1E2C1D",
+          "#2C412B",
+          "#3A5638",
+          "#466644",
+          "#66875F",
+          "#8FA88A",
+          "#C9D6C9",
+          "#E7EEE6"
+        ]
+      },
+      "red": {
+        "role": "error",
         "displayName": "Repair Red",
-        "canonical": "#b42318",
+        "canonical": "#BA5147",
         "tonalRamp": [
-          "#450a0a",
-          "#7f1d1d",
-          "#991b1b",
-          "#b42318",
-          "#ef4444",
-          "#fca5a5",
-          "#fee2e2",
-          "#fef3f2"
-        ]
-      },
-      "error-soft": {
-        "role": "primary",
-        "displayName": "Repair Wash",
-        "canonical": "#fef3f2",
-        "tonalRamp": [
-          "#450a0a",
-          "#7f1d1d",
-          "#991b1b",
-          "#b42318",
-          "#ef4444",
-          "#fca5a5",
-          "#fee2e2",
-          "#fef3f2"
-        ]
-      },
-      "focus": {
-        "role": "primary",
-        "displayName": "Familiar Focus Blue",
-        "canonical": "#2563eb",
-        "tonalRamp": [
-          "#172554",
-          "#1e3a8a",
-          "#1e40af",
-          "#2563eb",
-          "#3b82f6",
-          "#93c5fd",
-          "#dbeafe",
-          "#eff6ff"
+          "#4E211C",
+          "#6C2E27",
+          "#8F3A32",
+          "#BA5147",
+          "#CE7770",
+          "#DFA09A",
+          "#EFC9C5",
+          "#F6E7E5"
         ]
       }
     },
     "typographyMeta": {
       "display": {
-        "displayName": "Focused Display",
-        "purpose": "The single task or workspace heading."
+        "displayName": "Display",
+        "purpose": "The landing headline only. Optically reduced to 44px for Georgian."
       },
-      "title": {
-        "displayName": "State Title",
-        "purpose": "Terminal states and truthful empty states."
+      "h1": {
+        "displayName": "Page title",
+        "purpose": "Discovery and tender detail. One per page."
+      },
+      "h2": {
+        "displayName": "Section title",
+        "purpose": "Landing section titles above an overline eyebrow."
+      },
+      "h3": {
+        "displayName": "Card title",
+        "purpose": "Feature-card and rail-card headings."
       },
       "body": {
-        "displayName": "Operational Body",
-        "purpose": "Instructions and explanation inside the readable measure."
+        "displayName": "Body",
+        "purpose": "Descriptions and scope copy, max 720px measure."
       },
-      "label": {
-        "displayName": "Control Label",
-        "purpose": "Sentence-case fields and capability facts."
+      "overline": {
+        "displayName": "Overline",
+        "purpose": "Gold uppercase eyebrow above a section title."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Tender reference UUIDs and coordinates only."
       }
     },
     "shadows": [
       {
-        "name": "overlay-ambient",
-        "value": "0 12px 28px rgb(9 9 11 / 8%)",
-        "purpose": "Contextual help overlay only; forms and primary surfaces remain flat."
+        "name": "xs",
+        "value": "0 1px 2px rgb(11 27 59 / 6%)",
+        "purpose": "Result cards and category tiles at rest."
+      },
+      {
+        "name": "sm",
+        "value": "0 1px 3px rgb(11 27 59 / 8%), 0 1px 2px rgb(11 27 59 / 4%)",
+        "purpose": "Feature cards, the filter rail, and rail cards at rest."
+      },
+      {
+        "name": "md",
+        "value": "0 4px 12px rgb(11 27 59 / 8%), 0 2px 4px rgb(11 27 59 / 4%)",
+        "purpose": "Hover raise on a card that is a destination."
+      },
+      {
+        "name": "lg",
+        "value": "0 12px 28px rgb(11 27 59 / 12%), 0 4px 8px rgb(11 27 59 / 5%)",
+        "purpose": "The unlock gate and the live-offer toast."
+      },
+      {
+        "name": "xl",
+        "value": "0 24px 56px rgb(11 27 59 / 16%)",
+        "purpose": "The hero preview card and the mobile filter sheet."
+      },
+      {
+        "name": "focus",
+        "value": "0 0 0 4px rgb(255 182 0 / 55%)",
+        "purpose": "The 4px soft focus ring on form controls."
       }
     ],
     "motion": [
       {
-        "name": "state-ease",
-        "value": "160ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Short color, border, and focus transitions on controls."
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Colour, border and elevation transitions at 150ms."
+      },
+      {
+        "name": "scroll-in",
+        "value": "200-300ms ease-out",
+        "purpose": "Short fade and small translate-up on scroll-in. No bounce."
+      },
+      {
+        "name": "sheet",
+        "value": "220ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The mobile filter sheet translating up over its scrim."
       }
     ],
     "breakpoints": [
-      {
-        "name": "compact",
-        "value": "608px"
-      }
+      { "name": "wide", "value": "1180px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "md", "value": "900px" },
+      { "name": "sm", "value": "640px" }
     ]
   },
   "components": [
     {
       "name": "Primary Button",
       "kind": "button",
-      "refersTo": "button-primary",
-      "description": "The full-width, high-confidence action for the current task.",
-      "html": "<button class=\"ds-button-primary\">Create account</button>",
-      "css": ".ds-button-primary { min-height: 44px; padding: 11px 16px; border: 1px solid transparent; border-radius: 8px; background: var(--text-strong, #09090b); color: var(--surface-page, #ffffff); font: 550 1rem/1.5 sans-serif; transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-button-primary:hover { background: #27272a; } .ds-button-primary:focus-visible { outline: 2px solid var(--focus, #2563eb); outline-offset: 3px; }"
+      "refersTo": "pill-brand",
+      "description": "The single next action on a surface. Ink text on gold, never white.",
+      "html": "<button class=\"ds-pill ds-pill-brand\">Post a tender</button>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 11px 18px; border: 1px solid transparent; border-radius: 999px; font: 600 15px/1.4 var(--font-sans, 'Inter Tight Tipalti', sans-serif); text-decoration: none; cursor: pointer; transition: background-color 150ms cubic-bezier(0.16,1,0.3,1), border-color 150ms cubic-bezier(0.16,1,0.3,1), color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-pill-brand { background: #FFB600; color: #16181C; font-weight: 700; box-shadow: 0 1px 2px rgb(11 27 59 / 6%); } .ds-pill-brand:hover { background: #E0A000; } .ds-pill-brand:active { background: #B98300; } .ds-pill-brand:focus-visible { outline: 2px solid #B98300; outline-offset: 2px; }"
     },
     {
-      "name": "Secondary Button",
+      "name": "Outline Button",
       "kind": "button",
-      "refersTo": "button-secondary",
-      "description": "A safe alternate action that remains visually subordinate.",
-      "html": "<button class=\"ds-button-secondary\">Sign in</button>",
-      "css": ".ds-button-secondary { min-height: 44px; padding: 11px 16px; border: 1px solid var(--border-default, #e4e4e7); border-radius: 8px; background: var(--surface-page, #ffffff); color: var(--text-strong, #09090b); font: 550 1rem/1.5 sans-serif; transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1), border-color 160ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-button-secondary:hover { border-color: var(--border-strong, #a1a1aa); background: var(--surface-subtle, #fafafa); } .ds-button-secondary:focus-visible { outline: 2px solid var(--focus, #2563eb); outline-offset: 3px; }"
+      "refersTo": "pill-outline",
+      "description": "Secondary action and the per-card 'View details' affordance.",
+      "html": "<button class=\"ds-pill ds-pill-outline\">View details</button>",
+      "css": ".ds-pill-outline { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 11px 18px; border: 1px solid #D2D4D8; border-radius: 999px; background: #fff; color: #16181C; font: 600 15px/1.4 var(--font-sans, 'Inter Tight Tipalti', sans-serif); cursor: pointer; transition: border-color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-pill-outline:hover { border-color: #16181C; } .ds-pill-outline:focus-visible { outline: 2px solid #B98300; outline-offset: 2px; }"
     },
     {
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "A labeled, described control with crisp neutral and repair states.",
-      "html": "<label class=\"ds-field\"><span>Email address</span><small>Use an address you can verify now.</small><input type=\"email\" /></label>",
-      "css": ".ds-field { display: grid; gap: 8px; color: var(--text-strong, #09090b); font: 600 14px/1.5 sans-serif; } .ds-field small { color: var(--text-muted, #71717a); font-size: 13px; font-weight: 400; } .ds-field input { min-height: 44px; padding: 11px 12px; border: 1px solid var(--border-default, #e4e4e7); border-radius: 8px; background: var(--surface-page, #ffffff); color: var(--text-strong, #09090b); font: 400 16px/1.5 sans-serif; } .ds-field input:hover { border-color: var(--border-strong, #a1a1aa); } .ds-field input:focus-visible { border-color: var(--focus, #2563eb); outline: 0; box-shadow: 0 0 0 3px rgb(37 99 235 / 14%); }"
+      "description": "Label, optional description, control, then error. 44px minimum target.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-city\">City</label><input id=\"ds-city\" type=\"text\" placeholder=\"Tbilisi\"></div>",
+      "css": ".ds-field { display: grid; gap: 8px; font-family: var(--font-sans, 'Inter Tight Tipalti', sans-serif); } .ds-field > label { color: #16181C; font-size: 14px; font-weight: 600; } .ds-field input { width: 100%; min-height: 44px; padding: 11px 12px; border: 1px solid #D2D4D8; border-radius: 10px; background: #fff; color: #16181C; font-size: 14px; font-weight: 500; transition: border-color 150ms cubic-bezier(0.16,1,0.3,1), box-shadow 150ms cubic-bezier(0.16,1,0.3,1); } .ds-field input:hover { border-color: #83868E; } .ds-field input:focus { border-color: #FFB600; outline: 0; box-shadow: 0 0 0 4px rgb(255 182 0 / 55%); }"
     },
     {
-      "name": "Locale Navigation",
-      "kind": "nav",
-      "description": "A text-led header action that preserves the logical route.",
-      "html": "<nav class=\"ds-locale\"><a href=\"#\">ქართული</a></nav>",
-      "css": ".ds-locale a { display: inline-flex; min-height: 44px; align-items: center; padding-inline: 12px; border-radius: 8px; color: var(--text-body, #3f3f46); font: 400 14px/1.5 sans-serif; text-decoration: none; } .ds-locale a:hover { background: var(--surface-pressed, #f4f4f5); } .ds-locale a:focus-visible { outline: 2px solid var(--focus, #2563eb); outline-offset: 3px; }"
-    },
-    {
-      "name": "Progress Rail",
-      "kind": "custom",
-      "description": "A restrained account, verification, and profile location cue.",
-      "html": "<ol class=\"ds-progress\"><li class=\"is-current\"><span>1</span>Account</li><li><span>2</span>Verification</li><li><span>3</span>Profile</li></ol>",
-      "css": ".ds-progress { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 0; color: var(--text-muted, #71717a); font: 400 12px/1.5 sans-serif; list-style: none; } .ds-progress li { display: grid; gap: 6px; padding-top: 10px; border-top: 1px solid var(--border-default, #e4e4e7); } .ds-progress .is-current { border-color: var(--trust, #047857); color: var(--text-strong, #09090b); }"
-    },
-    {
-      "name": "Verified Status",
+      "name": "Category Tag",
       "kind": "chip",
-      "description": "A compact, non-decorative signal for confirmed account trust.",
-      "html": "<span class=\"ds-verified\"><i></i>Verified account</span>",
-      "css": ".ds-verified { display: inline-flex; align-items: center; gap: 8px; color: var(--trust, #047857); font: 600 13px/1.5 sans-serif; } .ds-verified i { width: 8px; height: 8px; border-radius: 999px; background: var(--trust, #047857); box-shadow: 0 0 0 4px var(--trust-soft, #ecfdf5); }"
+      "refersTo": "tag",
+      "description": "Service category on a tender card. Tone groups, the label carries the meaning.",
+      "html": "<span class=\"ds-tag ds-tag-blue\">Construction &amp; repair</span> <span class=\"ds-tag ds-tag-gold\">Open for offers</span> <span class=\"ds-tag ds-tag-green\">Verified</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: #F1F1F3; color: #44464D; font: 700 10.5px/1.3 var(--font-sans, 'Inter Tight Tipalti', sans-serif); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; } .ds-tag-blue { background: #EEF0FA; color: #3C4877; } .ds-tag-gold { background: #FFF3D1; color: #8A6200; } .ds-tag-green { background: #E7EEE6; color: #3A5638; }"
+    },
+    {
+      "name": "Navigation Tab",
+      "kind": "nav",
+      "refersTo": "nav-tab",
+      "description": "Header destination. The active tab takes a 2px gold underline and 700 weight.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-tab\" aria-current=\"page\" href=\"#\">Discover tenders</a><a class=\"ds-nav-tab\" href=\"#\">Agreements</a><a class=\"ds-nav-tab\" href=\"#\">Inbox</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 2px; background: #fff; } .ds-nav-tab { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; border-bottom: 2px solid transparent; color: #44464D; font: 600 15px/1.4 var(--font-sans, 'Inter Tight Tipalti', sans-serif); text-decoration: none; transition: color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-nav-tab:hover { color: #16181C; } .ds-nav-tab[aria-current='page'] { border-bottom-color: #FFB600; color: #16181C; font-weight: 700; }"
+    },
+    {
+      "name": "Result Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "One tender in discovery: tags and countdown, title, description, right-aligned budget.",
+      "html": "<article class=\"ds-result\"><div class=\"ds-result-top\"><div><span class=\"ds-tag ds-tag-blue\">Construction &amp; repair</span> <span class=\"ds-countdown\">29d 19h left to bid</span><h3>Renovate two-bedroom apartment interior</h3><p>Full interior renovation of a two-bedroom flat.</p></div><div class=\"ds-result-money\"><span class=\"ds-figure-label\">Budget</span><span class=\"ds-amount\">GEL 4,500.00</span></div></div></article>",
+      "css": ".ds-result { display: block; padding: 20px 22px; border: 1px solid #E5E6E9; border-radius: 20px; background: #fff; box-shadow: 0 1px 2px rgb(11 27 59 / 6%); font-family: var(--font-sans, 'Inter Tight Tipalti', sans-serif); transition: box-shadow 150ms cubic-bezier(0.16,1,0.3,1), border-color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-result:hover { border-color: #FFD24D; box-shadow: 0 4px 12px rgb(11 27 59 / 8%), 0 2px 4px rgb(11 27 59 / 4%); } .ds-result-top { display: flex; align-items: flex-start; gap: 20px; } .ds-result h3 { margin: 9px 0 0; color: #16181C; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; } .ds-result p { margin: 6px 0 0; color: #44464D; font-size: 14.5px; line-height: 1.55; } .ds-countdown { color: #B98300; font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; } .ds-result-money { flex: none; width: 170px; text-align: right; } .ds-figure-label { display: block; color: #83868E; font-size: 11.5px; font-weight: 500; } .ds-amount { display: block; color: #16181C; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }"
+    },
+    {
+      "name": "Unlock Gate",
+      "kind": "custom",
+      "refersTo": "card-feature",
+      "description": "The paid-access card. The only 1.5px gold-bordered surface in the system.",
+      "html": "<section class=\"ds-unlock\"><h3 class=\"ds-unlock-head\">Full details are locked</h3><div class=\"ds-unlock-body\"><p>Buy access to see the exact location, the client's conditions, and any attached files, and to send a free offer.</p><button class=\"ds-unlock-primary\">Unlock this tender — USD 1</button><p class=\"ds-unlock-foot\">Payments are simulated in this release. No card is charged and no money moves.</p></div></section>",
+      "css": ".ds-unlock { display: block; overflow: hidden; border: 1.5px solid #FFB600; border-radius: 28px; background: #fff; box-shadow: 0 12px 28px rgb(11 27 59 / 12%), 0 4px 8px rgb(11 27 59 / 5%); font-family: var(--font-sans, 'Inter Tight Tipalti', sans-serif); } .ds-unlock-head { margin: 0; padding: 16px 20px; border-bottom: 1px solid #FFE08A; background: #FFF3D1; color: #16181C; font-size: 17px; font-weight: 800; letter-spacing: -0.01em; } .ds-unlock-body { padding: 18px 20px 20px; } .ds-unlock-body > p { margin: 0 0 16px; color: #44464D; font-size: 14.5px; line-height: 1.55; } .ds-unlock-primary { width: 100%; padding: 15px 0; border: 0; border-radius: 999px; background: #FFB600; color: #16181C; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgb(11 27 59 / 8%); transition: background-color 150ms cubic-bezier(0.16,1,0.3,1); } .ds-unlock-primary:hover { background: #E0A000; } .ds-unlock-foot { margin: 14px 0 0; color: #83868E; font-size: 11.5px; line-height: 1.5; }"
+    },
+    {
+      "name": "Grid Motif Band",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "The signature background: 1px hairlines at --grid-cell, always masked with a fade.",
+      "html": "<div class=\"ds-band\"><div class=\"ds-band-motif\"></div><p class=\"ds-band-copy\">Construction tenders across Georgia</p></div>",
+      "css": ".ds-band { position: relative; overflow: hidden; padding: 40px 24px; background: linear-gradient(180deg, #fff 0%, #F8F8F9 100%); font-family: var(--font-sans, 'Inter Tight Tipalti', sans-serif); } .ds-band-motif { position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(to right, rgb(38 38 38 / 14%) 0 1px, transparent 1px 48px), repeating-linear-gradient(to bottom, rgb(38 38 38 / 14%) 0 1px, transparent 1px 48px); mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%); } .ds-band-copy { position: relative; margin: 0; color: #16181C; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }"
     }
   ],
   "narrative": {
-    "northStar": "Focused Column",
-    "overview": "Tender uses a deliberately narrow task frame to make commercial identity feel calm, exact, and trustworthy. Vercel is the craft benchmark for restraint and finish, not a template: Tender's verification states, capability truth, and Georgian-first typography make the world its own.\n\nThe system is typographically led and nearly monochrome. Negative space carries hierarchy; crisp borders describe controls; emerald appears only when trust is established; red appears only when repair is required. Interfaces state what is true and never fill an unfinished marketplace with decorative or fabricated content.",
+    "northStar": "Live Supply, Honest Mechanism",
+    "overview": "Tender is a construction marketplace, and a marketplace earns trust by showing what is actually open right now and by being explicit about the mechanism that closes a tender. The interface leads with live work — open tenders, offer counts, closing countdowns, category volumes — and states the rule that decides the winner rather than implying negotiation.\n\nThe system is built on the Tipalti EU foundations: near-black ink and paper carry the page, a single brand gold marks the one thing to do next, and a hairline grid motif signs every banded surface. Depth is soft and cool, never glassy. Numbers are typeset as quantities, not as decoration.\n\nEvery figure the interface states is counted from the same rows the rest of the product acts on. Where the platform does not measure something yet, the surface says so or leaves the space empty; it never fills a section with invented supply.",
     "keyCharacteristics": [
-      "One stable, top-anchored task frame across pending, error, and success states.",
-      "Georgian and English receive equal hierarchy, target size, and copy density.",
-      "Flat white surfaces, near-black actions, crisp neutral rules, and rare semantic color.",
-      "Direct-on-page forms instead of floating cards or marketing side panels."
+      "Gold is the single pop, used for the primary action, the active tab and the live countdown — never as a background for body text.",
+      "A 1200px content column with 40px gutters governs every band, marketing and workspace alike.",
+      "Cards are the unit of structure: hairline border, soft cool shadow, 20-28px radius, and a raise on hover only where the card is a destination.",
+      "The grid motif is always masked with a fade, so it reads as a watermark rather than graph paper.",
+      "Privacy and selection rules are visible in the UI, not buried in copy."
     ],
     "rules": [
       {
-        "name": "The Scarce Signal Rule",
-        "body": "Emerald means verified or safely active; red means repair; blue means focus. Never use those colors as decoration.",
+        "name": "The No-White-On-Gold Rule",
+        "body": "Text on brand gold is always ink. White on gold fails contrast and is never used, including on hover and active states.",
         "section": "colors"
       },
       {
-        "name": "The Paper-and-Ink Rule",
-        "body": "White and near-black must still describe the page when every semantic color is removed.",
+        "name": "The Single-Pop Rule",
+        "body": "One gold element owns each decision. If two gold elements compete inside a card, one of them is wrong.",
         "section": "colors"
+      },
+      {
+        "name": "The Scarce-Signal Rule",
+        "body": "Green means verified or open, red means repair. Neither is decoration, and neither carries meaning by colour alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular-Number Rule",
+        "body": "Any number a user compares — budget, offer amount, rating, count, coordinate — is set with font-variant-numeric: tabular-nums.",
+        "section": "typography"
       },
       {
         "name": "The Equal-Script Rule",
-        "body": "Georgian may wrap earlier, but it is never reduced to a smaller role or lighter emphasis than English.",
+        "body": "Georgian may wrap earlier, but it is never given a smaller role or a lighter weight than English. Display sizes are optically matched, never demoted.",
         "section": "typography"
       },
       {
-        "name": "The Tight-Heading Rule",
-        "body": "Display headings use compact tracking; body copy never inherits display compression.",
-        "section": "typography"
-      },
-      {
-        "name": "The Stable Anchor Rule",
-        "body": "State changes replace content inside the same frame. Pending, invalid, expired, reused, success, and access-denied states do not recenter or jump vertically.",
+        "name": "The One-Column Rule",
+        "body": "A collapsed layout reorders by decision priority, not by source order. On tender detail the unlock card moves above the description.",
         "section": "layout"
       },
       {
-        "name": "The Flat-by-Default Rule",
-        "body": "A border or tonal shift must solve separation before elevation is considered.",
+        "name": "The Raise-Means-Reachable Rule",
+        "body": "A hover raise promises a destination. A card that does not navigate does not raise.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Quiet-Basemap Rule",
+        "body": "The basemap is context, not content. It is desaturated so the pin and the area circle stay the loudest marks.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Coarse-Circle Rule",
+        "body": "A map shown before entitlement draws an area, never a point, and that area is sized from the real coordinate coarsening.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Map-Is-Enhancement Rule",
+        "body": "A map never becomes the only way to complete a task; the coordinate fields stay visible and functional beside it.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do keep primary identity tasks inside the stable 460px measure.",
-      "Do use sentence-case labels and plain, specific repair copy.",
-      "Do preserve the action label during pending states and protect against duplicate submission.",
-      "Do reserve emerald for verified trust, red for repair, and blue for focus.",
-      "Do test Georgian and English at desktop and mobile widths."
+      "Do show real supply: real open tenders, real counts, real reviews.",
+      "Do keep every number tabular and every number labelled.",
+      "Do reserve gold for the single next action on the surface.",
+      "Do state the selection rule wherever offers are shown.",
+      "Do test Georgian and English at 1280px, 1024px and 390px."
     ],
     "donts": [
-      "Don't wrap primary forms in floating cards or add a split-screen marketing panel.",
-      "Don't use gradients, glass effects, decorative shadows, or fabricated illustrations.",
-      "Don't introduce fake tenders, bids, ratings, revenue, or statistics to fill empty workspaces.",
-      "Don't expose capability, restriction, verification, or actor identity as editable controls.",
-      "Don't use semantic color as decoration or communicate status by color alone."
+      "Don't put white text on gold, anywhere, in any state.",
+      "Don't invent tenders, offers, ratings, revenue or statistics to fill a section. An empty section says it is empty; a placeholder says it is a placeholder.",
+      "Don't reveal client identity, exact location, attachments or conditions before an entitlement — the projection is enforced on the server, never by hiding markup on the client.",
+      "Don't use the grid motif unmasked, or at a density that competes with content.",
+      "Don't communicate status by colour alone."
     ]
   }
 }

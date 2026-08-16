@@ -219,14 +219,6 @@ export function TenderDetailContent({
           value={location?.addressLine ?? fallback}
         />
         <DetailRow
-          label={messages.tenders.latitude}
-          value={location?.exact.latitude ?? fallback}
-        />
-        <DetailRow
-          label={messages.tenders.longitude}
-          value={location?.exact.longitude ?? fallback}
-        />
-        <DetailRow
           label={messages.tenders.publishedAt}
           value={formatTenderDate(tender.publishedAt, locale) ?? fallback}
         />
@@ -347,10 +339,15 @@ export async function TenderDetail({
   const attachments = await resolveOwnerAttachments(id, actor);
 
   return (
-    <IdentityShell title={owned.value.title}>
-      <Link className="back-link" href={`/${locale}/client/tenders`}>
-        {messages.tenders.backToList}
-      </Link>
+    <IdentityShell
+      eyebrow={
+        <Link className="back-link" href={`/${locale}/client/tenders`}>
+          {messages.tenders.backToList}
+        </Link>
+      }
+      title={owned.value.title}
+      width="wide"
+    >
       {owned.value.status === "DRAFT" ? (
         <div className="tender-draft-actions">
           <Link

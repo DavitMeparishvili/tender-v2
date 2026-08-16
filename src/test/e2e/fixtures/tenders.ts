@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import type { APIRequestContext, Page } from "@playwright/test";
 import type { Locale } from "../../../modules/localization/config";
+import type { Messages } from "../../../modules/localization/get-messages";
 import { formatGeorgiaDateTimeLocal } from "../../../modules/tenders/ui/georgia-date-time";
 
 // Sign-in comes from `signInSeededAccount` in `./accounts.ts` — this module
@@ -104,7 +105,29 @@ export async function fillScopeStep(page: Page, locale: Locale): Promise<void> {
     .selectOption("GEL");
 
   const deadline = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-  await page
-    .getByLabel(messages.tenders.deadline, { exact: true })
-    .fill(formatGeorgiaDateTimeLocal(deadline));
+  await fillWizardDeadline(page, messages, deadline);
+}
+
+// The deadline field is a calendar popover paired with a native time input
+// rather than a single fillable datetime-local control, so picking a value
+// means opening the popover, paging to the target month if it isn't the one
+// already showing, clicking the day, then filling the time separately.
+async function fillWizardDeadline(
+  page: Page,
+  messages: Messages,
+  deadline: Date,
+): Promise<void> {
+  const [datePart, timePart] = formatGeorgiaDateTimeLocal(deadline).split("T");
+  await page.getByLabel(messages.tenders.deadline, { exact: true }).click();
+  const targetDay = page.locator(
+    `.date-calendar-day[data-key="${datePart}"]:not([data-outside])`,
+  );
+  const nextMonth = page.getByRole("button", {
+    name: messages.tenders.datePickerNextMonth,
+  });
+  for (let attempt = 0; attempt < 6 && (await targetDay.count()) === 0; attempt += 1) {
+    await nextMonth.click();
+  }
+  await targetDay.click();
+  await page.getByLabel(messages.tenders.datePickerTime).fill(timePart ?? "");
 }

@@ -27,7 +27,7 @@ export default async function Page({
   }
   const agreements = await listAgreements(access.value, "PROVIDER");
   return (
-    <IdentityShell title={messages.agreements.title}>
+    <IdentityShell title={messages.agreements.title} width="wide">
       <AgreementList
         agreements={agreements}
         locale={locale}

@@ -64,7 +64,7 @@ export function AgreementList({
         <h2>{group.label}</h2>
         <ul className="tender-list">
           {group.agreements.map((agreement) => (
-            <li key={agreement.id}>
+            <li data-agreement-status={agreement.status} key={agreement.id}>
               <div className="tender-list-heading">
                 <h3>
                   <Link href={`/${locale}/agreements/${agreement.id}`}>

@@ -60,25 +60,12 @@ for (const locale of ["ka", "en"] as const) {
     // outside the map.
     await map.click({ position: { x: 100, y: 100 } });
 
-    // Clicking the map is the same act as ticking "Choose on map": both the
-    // checkbox and the coordinate fields it feeds must reflect the pick.
+    // Clicking the map is the same act as ticking "Choose on map"; the pick
+    // itself is proven later by the exact pin on the published detail page
+    // (the wizard shows no raw coordinate fields for it to feed).
     await expect(
       page.getByLabel(messages.tenders.chooseOnMap, { exact: true }),
     ).toBeChecked();
-    const latitude = Number(
-      await page
-        .getByLabel(messages.tenders.latitude, { exact: true })
-        .inputValue(),
-    );
-    const longitude = Number(
-      await page
-        .getByLabel(messages.tenders.longitude, { exact: true })
-        .inputValue(),
-    );
-    expect(latitude).toBeGreaterThan(-90);
-    expect(latitude).toBeLessThan(90);
-    expect(longitude).toBeGreaterThan(-180);
-    expect(longitude).toBeLessThan(180);
 
     await page
       .getByLabel(messages.tenders.uploadAttachment, { exact: true })

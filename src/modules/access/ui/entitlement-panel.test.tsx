@@ -18,8 +18,10 @@ describe("EntitlementPanel", () => {
   it("states the three prices exactly as the source documents fix them", () => {
     const markup = renderToStaticMarkup(
       <EntitlementPanel
+        canPurchase
         copy={entitlementPanelCopy(messages)}
         disclosure="MASKED"
+        loginHref="/en/login"
         tenderId="tender-1"
       />,
     );
@@ -32,8 +34,10 @@ describe("EntitlementPanel", () => {
   it("tells the provider payments are simulated", () => {
     const markup = renderToStaticMarkup(
       <EntitlementPanel
+        canPurchase
         copy={entitlementPanelCopy(messages)}
         disclosure="MASKED"
+        loginHref="/en/login"
         tenderId="tender-1"
       />,
     );
@@ -44,13 +48,31 @@ describe("EntitlementPanel", () => {
   it("renders no purchase control once the provider is entitled", () => {
     const markup = renderToStaticMarkup(
       <EntitlementPanel
+        canPurchase
         copy={entitlementPanelCopy(messages)}
         disclosure="FULL"
+        loginHref="/en/login"
         tenderId="tender-1"
       />,
     );
 
     expect(markup).not.toContain(messages.entitlements.unlockSingle);
     expect(markup).toContain(messages.entitlements.unlocked);
+  });
+
+  it("prompts sign-in instead of a purchase control for a non-provider viewer", () => {
+    const markup = renderToStaticMarkup(
+      <EntitlementPanel
+        canPurchase={false}
+        copy={entitlementPanelCopy(messages)}
+        disclosure="MASKED"
+        loginHref="/en/login"
+        tenderId="tender-1"
+      />,
+    );
+
+    expect(markup).not.toContain(messages.entitlements.unlockSingle);
+    expect(markup).toContain(messages.entitlements.signInTitle);
+    expect(markup).toContain('href="/en/login"');
   });
 });

@@ -52,22 +52,39 @@ export default async function ClientTenderDetailPage({
   ]);
   const bids = bidsResult?.ok ? bidsResult.value : [];
 
+  const showOutcome =
+    agreement.ok ||
+    owned.value.status === "CLOSED" ||
+    owned.value.status === "EXPIRED";
   const comparison =
     bidsResult === null ? undefined : (
       <>
-        {agreement.ok ? (
-          <Link
-            className="button button-secondary"
-            href={`/${locale}/agreements/${agreement.value.id}`}
+        {showOutcome ? (
+          <section
+            className="bid-outcome"
+            aria-label={
+              owned.value.status === "CLOSED"
+                ? messages.bidding.outcomeWinnerTitle
+                : owned.value.status === "EXPIRED"
+                  ? messages.bidding.outcomeExpiredTitle
+                  : messages.workspace.agreements
+            }
           >
-            {messages.workspace.agreements}
-          </Link>
-        ) : null}
-        {owned.value.status === "CLOSED" ? (
-          <h2>{messages.bidding.outcomeWinnerTitle}</h2>
-        ) : null}
-        {owned.value.status === "EXPIRED" ? (
-          <h2>{messages.bidding.outcomeExpiredTitle}</h2>
+            {owned.value.status === "CLOSED" ? (
+              <h2>{messages.bidding.outcomeWinnerTitle}</h2>
+            ) : null}
+            {owned.value.status === "EXPIRED" ? (
+              <h2>{messages.bidding.outcomeExpiredTitle}</h2>
+            ) : null}
+            {agreement.ok ? (
+              <Link
+                className="button button-secondary"
+                href={`/${locale}/agreements/${agreement.value.id}`}
+              >
+                {messages.workspace.agreements}
+              </Link>
+            ) : null}
+          </section>
         ) : null}
         <BidComparison
           bids={bids}

@@ -1,8 +1,13 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { listBidSummaries } from "@/src/modules/bidding/application/list-bid-summaries";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
-import { IdentityShell } from "@/src/modules/identity/ui/identity-shell";
+import {
+  getMarketplaceOverview,
+  listRecentPublishedReviews,
+} from "@/src/modules/shell/application/marketplace-overview";
+import { LandingPage } from "@/src/modules/shell/ui/landing-page";
+import { searchPublishedTenders } from "@/src/modules/tenders/application/search-published-tenders";
 
 export default async function LocaleHome({
   params,
@@ -17,20 +22,27 @@ export default async function LocaleHome({
 
   const messages = getMessages(locale);
 
+  const [overview, search, reviews] = await Promise.all([
+    getMarketplaceOverview(),
+    searchPublishedTenders({}),
+    listRecentPublishedReviews(3),
+  ]);
+
+  const tenders = search.ok ? search.value : [];
+
+  const summaries = await listBidSummaries(
+    tenders.slice(0, 3).map((tender) => ({
+      id: tender.id,
+      currency: tender.currency,
+      deadline: new Date(tender.deadline),
+    })),
+  );
+
   return (
-    <IdentityShell
-      title={messages.auth.homeTitle}
-      subtitle={messages.auth.homeSubtitle}
-    >
-      <div className="action-stack">
-        <Link className="button button-primary" href={`/${locale}/register`}>
-          {messages.auth.register}
-        </Link>
-        <Link className="button button-secondary" href={`/${locale}/login`}>
-          {messages.auth.signIn}
-        </Link>
-      </div>
-      <p className="supporting-note">{messages.auth.verificationRequired}</p>
-    </IdentityShell>
+    <LandingPage
+      data={{ overview, tenders, summaries, reviews }}
+      locale={locale}
+      messages={messages}
+    />
   );
 }
