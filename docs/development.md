@@ -116,6 +116,26 @@ pnpm verify:phase-1
 
 The gate first preserves the complete Phase 0 production-build and production-server suite. It then reapplies committed test migrations, reruns identity/profile integration tests, rebuilds, reseeds, and executes every `@phase-1` browser journey on desktop and mobile Chromium. Tagged verification-email journeys use the development-only in-memory mailbox; the production-server CI smoke test separately proves `/api/test/mailbox` returns only `404 NOT_FOUND`.
 
+## Phase 2 and Phase 3 fixtures and gates
+
+`pnpm seed:phase-2` seeds three deterministic tenders (a published listing, an incomplete draft, and a cancelled tender) owned by the Phase 1 seeded client. It requires the Phase 1 seed to have already run — it looks the client account up rather than creating it.
+
+`pnpm seed:phase-3` requires both the Phase 1 and the Phase 2 seed to have run first. It looks up the Phase 1 client and provider accounts, creates two additional seeded provider accounts (`phase3.provider.b@tender.test`, `phase3.provider.c@tender.test`) through Better Auth and the onboarding use case, reusing `PHASE_1_SEED_PASSWORD` for their passwords, then publishes one tender and has all three providers buy access and bid on it before moving its deadline into the past — the only fixture-only write in the script, applied after every bid was submitted through the real application use cases.
+
+Every environment, including local development, must supply `SELECTION_WORKER_SECRET` (at least 32 characters): it is the shared secret `POST /api/tenders/selection/run` compares in constant time before running the deadline selector. Generate one for the current PowerShell session:
+
+```powershell
+$bytes = [byte[]]::new(24)
+$rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($bytes)
+$rng.Dispose()
+$env:SELECTION_WORKER_SECRET = [Convert]::ToBase64String($bytes)
+```
+
+Phase 3's non-negotiable behaviour for future contributors: a tender's winner is produced only by `POST /api/tenders/selection/run`, and only at or after that tender's deadline. No customer-facing or administrator route may select, replace, or override a winner. Re-running the worker against an already-settled tender returns the existing result and performs no new writes.
+
+`pnpm verify:phase-3` reapplies the complete Phase 2 gate, then reapplies committed test migrations, runs the `access`, `bidding`, `agreements`, and `notifications` integration suites, rebuilds, reseeds through `pnpm seed:phase-3`, and executes every `@phase-3` browser journey on desktop and mobile Chromium.
+
 ## Reset and shutdown
 
 The test database uses container `tmpfs`. To reset only test state without touching development data, recreate that service and reapply committed migrations:

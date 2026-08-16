@@ -130,8 +130,14 @@ export function DiscoveryDetailContent({
         <LocationMap
           coordinates={
             disclosure === "FULL"
-              ? { latitude: tender.exactLatitude, longitude: tender.exactLongitude }
-              : { latitude: tender.publicLatitude, longitude: tender.publicLongitude }
+              ? {
+                  latitude: tender.exactLatitude,
+                  longitude: tender.exactLongitude,
+                }
+              : {
+                  latitude: tender.publicLatitude,
+                  longitude: tender.publicLongitude,
+                }
           }
           precision={disclosure === "FULL" ? "PRECISE" : "APPROXIMATE"}
           copy={locationMapCopy(messages)}

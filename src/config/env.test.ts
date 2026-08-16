@@ -57,6 +57,8 @@ describe("getServerEnv", () => {
   it("rejects a missing selection worker secret", () => {
     const withoutSecret: NodeJS.ProcessEnv = { ...testEnvironment };
     delete withoutSecret.SELECTION_WORKER_SECRET;
-    expect(() => getServerEnv(withoutSecret)).toThrow(/SELECTION_WORKER_SECRET/);
+    expect(() => getServerEnv(withoutSecret)).toThrow(
+      /SELECTION_WORKER_SECRET/,
+    );
   });
 });
