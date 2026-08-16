@@ -15,6 +15,7 @@ const testEnvironment = {
   STORAGE_BUCKET_TEST: "tender-test",
   STORAGE_ACCESS_KEY_ID: "tender_local",
   STORAGE_SECRET_ACCESS_KEY: "tender_local_only",
+  SELECTION_WORKER_SECRET: "0123456789012345678901234567890123",
 } satisfies NodeJS.ProcessEnv;
 
 describe("getServerEnv", () => {
@@ -51,5 +52,11 @@ describe("getServerEnv", () => {
       getServerEnv({ ...testEnvironment, STORAGE_FORCE_PATH_STYLE: "false" })
         .STORAGE_FORCE_PATH_STYLE,
     ).toBe(false);
+  });
+
+  it("rejects a missing selection worker secret", () => {
+    const withoutSecret: NodeJS.ProcessEnv = { ...testEnvironment };
+    delete withoutSecret.SELECTION_WORKER_SECRET;
+    expect(() => getServerEnv(withoutSecret)).toThrow(/SELECTION_WORKER_SECRET/);
   });
 });
