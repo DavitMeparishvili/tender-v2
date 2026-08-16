@@ -124,6 +124,18 @@ export function WorkspaceView({
       </section>
       <div className="workspace-actions">
         <Link
+          className="button button-secondary"
+          href={`/${locale}/${isClient ? "client" : "provider"}/agreements`}
+        >
+          Agreements
+        </Link>
+        <Link
+          className="button button-secondary"
+          href={`/${locale}/notifications`}
+        >
+          Inbox
+        </Link>
+        <Link
           className="button button-primary"
           href={"/" + locale + "/profile"}
         >
