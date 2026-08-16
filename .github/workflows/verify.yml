@@ -27,6 +27,7 @@ jobs:
       STORAGE_SECRET_ACCESS_KEY: tender_local_only
       STORAGE_FORCE_PATH_STYLE: "true"
       SELECTION_WORKER_SECRET: ci-only-selection-worker-secret-0123456789
+      AGREEMENT_WORKER_SECRET: ci-only-agreement-worker-secret-0123456789
     services:
       postgres:
         image: postgres:17
@@ -118,6 +119,110 @@ jobs:
           path: playwright-report/
           if-no-files-found: ignore
 
+  phase-4:
+    name: Phase 4 functional MVP
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: true
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/tender_ci_test
+      DATABASE_URL_TEST: postgresql://postgres:postgres@127.0.0.1:5432/tender_ci_test
+      AUTH_SECRET: ci-only-auth-secret-0123456789012345
+      APP_URL: http://127.0.0.1:3000
+      NODE_ENV: development
+      STORAGE_ENDPOINT: http://127.0.0.1:9000
+      STORAGE_REGION: us-east-1
+      STORAGE_BUCKET: tender-ci-dev
+      STORAGE_BUCKET_TEST: tender-ci-test
+      STORAGE_ACCESS_KEY_ID: tender_local
+      STORAGE_SECRET_ACCESS_KEY: tender_local_only
+      STORAGE_FORCE_PATH_STYLE: "true"
+      SELECTION_WORKER_SECRET: ci-only-selection-worker-secret-0123456789
+      AGREEMENT_WORKER_SECRET: ci-only-agreement-worker-secret-0123456789
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: tender_ci_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d tender_ci_test"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Start MinIO
+        shell: bash
+        run: |
+          docker run --detach --name minio \
+            --publish 9000:9000 \
+            --env MINIO_ROOT_USER=tender_local \
+            --env MINIO_ROOT_PASSWORD=tender_local_only \
+            --health-cmd "mc ready local" \
+            --health-interval 2s \
+            --health-timeout 3s \
+            --health-retries 20 \
+            minio/minio:RELEASE.2025-09-07T16-13-09Z server /data
+          for _ in $(seq 1 30); do
+            if [ "$(docker inspect --format '{{.State.Health.Status}}' minio)" = "healthy" ]; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "MinIO did not become healthy in time." >&2
+          docker logs minio >&2
+          exit 1
+
+      - name: Create MinIO buckets
+        shell: bash
+        run: |
+          docker run --rm --network host \
+            --entrypoint sh minio/mc:RELEASE.2025-08-13T08-35-41Z -c \
+            "mc alias set ci http://127.0.0.1:9000 tender_local tender_local_only && mc mb --ignore-existing ci/${STORAGE_BUCKET} ci/${STORAGE_BUCKET_TEST}"
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm db:generate
+
+      - name: Migrate test database
+        run: pnpm db:migrate:test
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Generate Phase 1 seed password
+        shell: bash
+        run: echo "PHASE_1_SEED_PASSWORD=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
+
+      - name: Run Phase 4 gate
+        run: pnpm verify:mvp
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          if-no-files-found: ignore
+
   phase-2:
     name: Phase 2 tenders
     runs-on: ubuntu-latest
@@ -137,6 +242,7 @@ jobs:
       STORAGE_SECRET_ACCESS_KEY: tender_local_only
       STORAGE_FORCE_PATH_STYLE: "true"
       SELECTION_WORKER_SECRET: ci-only-selection-worker-secret-0123456789
+      AGREEMENT_WORKER_SECRET: ci-only-agreement-worker-secret-0123456789
     services:
       postgres:
         image: postgres:17
@@ -247,6 +353,7 @@ jobs:
       STORAGE_SECRET_ACCESS_KEY: tender_local_only
       STORAGE_FORCE_PATH_STYLE: "true"
       SELECTION_WORKER_SECRET: ci-only-selection-worker-secret-0123456789
+      AGREEMENT_WORKER_SECRET: ci-only-agreement-worker-secret-0123456789
     services:
       postgres:
         image: postgres:17

@@ -59,6 +59,7 @@ const accountSpecs = [
     phone: "+995555010005",
   },
 ] as const;
+const PHASE_4_TENDER_TITLE = "Phase 3 tender whose deadline has passed";
 
 function requiredPassword(): string {
   const password = process.env.PHASE_1_SEED_PASSWORD;
@@ -85,6 +86,17 @@ async function main(): Promise<void> {
   const password = requiredPassword();
 
   try {
+    // Agreement snapshots deliberately retain their participants, so a prior
+    // Phase 4 browser run prevents the Phase 1 fixture accounts from being
+    // recreated. These are only the Phase 3/4 deterministic fixtures (never
+    // arbitrary agreements); reviews must be removed first because their FK
+    // preserves the original agreement record in normal operation.
+    await database.review.deleteMany({
+      where: { agreement: { tenderTitle: PHASE_4_TENDER_TITLE } },
+    });
+    await database.agreement.deleteMany({
+      where: { tenderTitle: PHASE_4_TENDER_TITLE },
+    });
     await database.user.deleteMany({
       where: { email: { in: accountSpecs.map(({ email }) => email) } },
     });

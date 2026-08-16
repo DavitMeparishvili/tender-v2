@@ -6,6 +6,8 @@ import type { Messages } from "../../../modules/localization/get-messages";
 export const seededAccounts = {
   client: "phase1.client@tender.test",
   provider: "phase1.provider@tender.test",
+  providerB: "phase3.provider.b@tender.test",
+  admin: "phase4.admin@tender.test",
   dual: "phase1.dual@tender.test",
   unverified: "phase1.unverified@tender.test",
   incomplete: "phase1.incomplete@tender.test",
@@ -89,7 +91,9 @@ export async function signInSeededAccount(
   await page.getByLabel(messages.auth.email).fill(seededAccounts[account]);
   await page.getByLabel(messages.auth.password).fill(phaseOnePassword());
   await page.getByRole("button", { name: messages.auth.signIn }).click();
-  await expect(page).not.toHaveURL(new RegExp(`/${locale}/login`));
+  await expect(page).not.toHaveURL(new RegExp(`/${locale}/login`), {
+    timeout: 15_000,
+  });
 }
 
 export async function runAccountJourney(

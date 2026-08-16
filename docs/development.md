@@ -136,6 +136,32 @@ Phase 3's non-negotiable behaviour for future contributors: a tender's winner is
 
 `pnpm verify:phase-3` reapplies the complete Phase 2 gate, then reapplies committed test migrations, runs the `access`, `bidding`, `agreements`, and `notifications` integration suites, rebuilds, reseeds through `pnpm seed:phase-3`, and executes every `@phase-3` browser journey on desktop and mobile Chromium.
 
+## Phase 4 agreements, reviews, and MVP gate
+
+Phase 4 is cumulative. Run `pnpm seed:phase-1`, `pnpm seed:phase-2`, `pnpm seed:phase-3`, then `pnpm seed:phase-4` in that order. The final seed runs the real deadline selector for the fixed due tender when necessary, leaves its winning agreement in `PENDING_CONFIRMATION`, and creates the fixture-only moderation account. It never prints the shared password or worker secrets.
+
+Agreement expiry uses a second worker secret. Generate it with the same 24-byte PowerShell pattern used for the selection secret:
+
+```powershell
+$bytes = [byte[]]::new(24)
+$rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($bytes)
+$rng.Dispose()
+$env:AGREEMENT_WORKER_SECRET = [Convert]::ToBase64String($bytes)
+```
+
+`POST /api/agreements/expiry/run` accepts only that shared secret and cancels pending agreements at or after their exact 48-hour confirmation deadline. Confirmation never selects a fallback bidder: a declined, expired, or cancelled agreement is terminal. The platform records neutral lifecycle status and reviews; it does not adjudicate disputes, determine fault, hold payment, or award compensation.
+
+Inbox records are created in the same transaction as lifecycle and review notifications. They are available in Phase 4 for in-product reading; production email delivery remains a Phase 5 concern.
+
+Each completed-agreement party may publish one review only. The reviewed party is always derived from the agreement counterpart, never accepted from the browser. Public lists and aggregates include only published, non-redacted reviews; administrative redaction preserves the original review and its audit history while removing it from those public projections.
+
+```powershell
+pnpm verify:mvp
+```
+
+`verify:mvp` adds the agreement, notification, review, and profile integration suites plus Phase 4 deterministic seeding and the full `@phase-4` desktop/mobile Playwright journey on top of `verify:phase-3`.
+
 ## Reset and shutdown
 
 The test database uses container `tmpfs`. To reset only test state without touching development data, recreate that service and reapply committed migrations:

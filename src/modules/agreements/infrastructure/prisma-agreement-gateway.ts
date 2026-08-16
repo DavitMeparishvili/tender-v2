@@ -342,12 +342,12 @@ export class PrismaAgreementGateway
           { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
         );
       } catch (error) {
-        if (
-          !(error instanceof Prisma.PrismaClientKnownRequestError) ||
-          error.code !== "P2034" ||
-          attempt === 2
-        )
-          throw error;
+        const isSerializationConflict =
+          error instanceof Prisma.PrismaClientKnownRequestError &&
+          (error.code === "P2034" ||
+            (error.code === "P2010" &&
+              JSON.stringify(error.meta).includes("40001")));
+        if (!isSerializationConflict || attempt === 2) throw error;
       }
     throw new Error("unreachable");
   }

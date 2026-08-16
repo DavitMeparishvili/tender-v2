@@ -48,6 +48,7 @@ export default defineConfig({
       DATABASE_URL_TEST: serverEnv.DATABASE_URL_TEST,
       NODE_ENV: startsProductionServer ? "production" : serverEnv.NODE_ENV,
       SELECTION_WORKER_SECRET: serverEnv.SELECTION_WORKER_SECRET,
+      AGREEMENT_WORKER_SECRET: serverEnv.AGREEMENT_WORKER_SECRET,
     },
     url: `${baseURL}/api/health/live`,
     reuseExistingServer: false,

@@ -24,10 +24,12 @@
     "seed:phase-1": "tsx scripts/seed-phase-01.ts",
     "seed:phase-2": "tsx scripts/seed-phase-02.ts",
     "seed:phase-3": "tsx scripts/seed-phase-03.ts",
-    "verify:phase-0": "pnpm format:check && pnpm lint && pnpm verify:boundaries && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm build && pnpm test:e2e --grep-invert \"@phase-1|@phase-2|@phase-3\"",
+    "seed:phase-4": "tsx scripts/seed-phase-04.ts",
+    "verify:phase-0": "pnpm format:check && pnpm lint && pnpm verify:boundaries && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm build && pnpm test:e2e --grep-invert \"@phase-1|@phase-2|@phase-3|@phase-4\"",
     "verify:phase-1": "pnpm verify:phase-0 && pnpm db:migrate:test && pnpm test:integration -- identity profiles && pnpm build && pnpm seed:phase-1 && pnpm test:e2e --grep @phase-1",
     "verify:phase-2": "pnpm verify:phase-1 && pnpm db:migrate:test && pnpm test:integration -- tenders && pnpm build && pnpm seed:phase-2 && pnpm test:e2e --grep @phase-2",
-    "verify:phase-3": "pnpm verify:phase-2 && pnpm db:migrate:test && pnpm test:integration -- access bidding agreements notifications && pnpm build && pnpm seed:phase-3 && pnpm test:e2e --grep @phase-3"
+    "verify:phase-3": "pnpm verify:phase-2 && pnpm db:migrate:test && pnpm test:integration -- access bidding agreements notifications && pnpm build && pnpm seed:phase-3 && pnpm test:e2e --grep @phase-3",
+    "verify:mvp": "pnpm verify:phase-3 && pnpm db:migrate:test && pnpm test:integration -- agreements notifications reviews profiles && pnpm build && pnpm seed:phase-4 && pnpm test:e2e --grep @phase-4"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1110.0",

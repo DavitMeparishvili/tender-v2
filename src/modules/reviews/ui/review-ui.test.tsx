@@ -9,8 +9,10 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
 describe("review UI", () => {
   it("renders four labeled score controls, derived overall, and publication notice", () => {
     const copy = getMessages("en").reviews;
-    const html = renderToStaticMarkup(<ReviewForm agreementId="agreement" copy={copy} />);
-    expect((html.match(/<select/g) ?? [])).toHaveLength(4);
+    const html = renderToStaticMarkup(
+      <ReviewForm agreementId="agreement" copy={copy} />,
+    );
+    expect(html.match(/<select/g) ?? []).toHaveLength(4);
     expect(html).toContain(copy.quality);
     expect(html).toContain(copy.deadline);
     expect(html).toContain(copy.communication);
@@ -25,7 +27,14 @@ describe("review UI", () => {
     const html = renderToStaticMarkup(
       <ReviewSummary
         copy={copy}
-        aggregate={{ reviewCount: 0, overall: null, quality: null, deadline: null, communication: null, agreedPrice: null }}
+        aggregate={{
+          reviewCount: 0,
+          overall: null,
+          quality: null,
+          deadline: null,
+          communication: null,
+          agreedPrice: null,
+        }}
       />,
     );
     expect(html).toContain(copy.empty);
