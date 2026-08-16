@@ -37,6 +37,11 @@ model User {
   tenders         Tender[]
   entitlements    AccessEntitlement[]
   bids            Bid[]
+  agreementsAsClient   Agreement[]         @relation("AgreementClient")
+  agreementsAsProvider Agreement[]         @relation("AgreementProvider")
+  inboxNotifications   InboxNotification[]
+  reviewsWritten       Review[]            @relation("ReviewAuthor")
+  reviewsReceived      Review[]            @relation("ReviewSubject")
 
   @@unique([email])
   @@map("user")
@@ -185,6 +190,23 @@ enum SelectionOutcome {
 
 enum AgreementStatus {
   PENDING_CONFIRMATION
+  AGREED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum AgreementCancellationReasonCode {
+  PARTY_DECLINED
+  SCHEDULE_CHANGED
+  SCOPE_CANNOT_PROCEED
+  OTHER
+  CONFIRMATION_EXPIRED
+}
+
+enum ReviewStatus {
+  PUBLISHED
+  REDACTED
 }
 
 // How the client located the job. It is persisted because it is not derivable
@@ -338,12 +360,14 @@ model TenderSelection {
 }
 
 model Agreement {
-  id               String          @id
-  tenderId         String          @unique
+  id               String                           @id
+  tenderId         String                           @unique
   clientId         String
+  client           User                             @relation("AgreementClient", fields: [clientId], references: [id], onDelete: Restrict)
   providerId       String
-  bidId            String          @unique
-  status           AgreementStatus @default(PENDING_CONFIRMATION)
+  provider         User                             @relation("AgreementProvider", fields: [providerId], references: [id], onDelete: Restrict)
+  bidId            String                           @unique
+  status           AgreementStatus                  @default(PENDING_CONFIRMATION)
   amountMinorUnits Int
   currency         String
   tenderTitle      String
@@ -351,8 +375,62 @@ model Agreement {
   // present the same text both parties confirm.
   snapshot         Json
   confirmDeadline  DateTime
-  createdAt        DateTime        @default(now())
+  clientConfirmedAt       DateTime?
+  providerConfirmedAt     DateTime?
+  clientStartedAt         DateTime?
+  providerStartedAt       DateTime?
+  clientCompletedAt       DateTime?
+  providerCompletedAt     DateTime?
+  cancelledAt             DateTime?
+  cancelledById           String?
+  cancellationReasonCode  AgreementCancellationReasonCode?
+  cancellationExplanation String?
+  completedAt             DateTime?
+  createdAt        DateTime                         @default(now())
+  updatedAt        DateTime                         @default(now()) @updatedAt
+  reviews          Review[]
 
-  @@index([clientId, status])
-  @@index([providerId, status])
+  @@index([clientId, status, updatedAt])
+  @@index([providerId, status, updatedAt])
+  @@index([status, confirmDeadline])
+}
+
+model InboxNotification {
+  id            String   @id
+  recipientId   String
+  recipient     User     @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  topic         String
+  aggregateType String
+  aggregateId   String
+  messageKey    String
+  variables     Json
+  readAt        DateTime?
+  createdAt     DateTime @default(now())
+
+  @@index([recipientId, createdAt(sort: Desc)])
+  @@index([recipientId, readAt, createdAt(sort: Desc)])
+}
+
+model Review {
+  id              String       @id
+  agreementId     String
+  agreement       Agreement    @relation(fields: [agreementId], references: [id], onDelete: Restrict)
+  reviewerId      String
+  reviewer        User         @relation("ReviewAuthor", fields: [reviewerId], references: [id], onDelete: Restrict)
+  reviewedId      String
+  reviewed        User         @relation("ReviewSubject", fields: [reviewedId], references: [id], onDelete: Restrict)
+  quality         Int
+  deadline        Int
+  communication   Int
+  agreedPrice     Int
+  comment         String
+  status          ReviewStatus @default(PUBLISHED)
+  redactedAt      DateTime?
+  redactedById    String?
+  redactionReason String?
+  createdAt       DateTime     @default(now())
+
+  @@unique([agreementId, reviewerId])
+  @@index([reviewedId, status, createdAt(sort: Desc)])
+  @@index([status, createdAt(sort: Desc)])
 }
