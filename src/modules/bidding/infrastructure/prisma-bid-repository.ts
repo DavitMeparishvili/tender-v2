@@ -2,6 +2,8 @@ import { Prisma } from "../../../generated/prisma/client";
 import type { Bid as BidRow } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
 import type { Result } from "../../shared";
+import type { BidSummaryRepository } from "../application/get-bid-summary";
+import type { ListTenderBidsRepository } from "../application/list-tender-bids";
 import type { BidPresenceRepository } from "../application/tender-has-active-bids";
 import type { ReviseBidRepository } from "../application/revise-bid";
 import type {
@@ -9,7 +11,7 @@ import type {
   SubmitBidRepository,
 } from "../application/submit-bid";
 import type { WithdrawBidRepository } from "../application/withdraw-bid";
-import type { Bid, BidCurrency } from "../domain/bid";
+import type { Bid, BidCurrency, RankableBid } from "../domain/bid";
 
 function toBid(row: BidRow): Bid | null {
   // The same never-throw convention the tenders repository uses: a row whose
@@ -51,7 +53,9 @@ export class PrismaBidRepository
     SubmitBidRepository,
     ReviseBidRepository,
     WithdrawBidRepository,
-    BidPresenceRepository
+    BidPresenceRepository,
+    BidSummaryRepository,
+    ListTenderBidsRepository
 {
   async insertBid(
     bid: Readonly<{
@@ -201,6 +205,52 @@ export class PrismaBidRepository
     return database.bid.count({
       where: { tenderId, status: { not: "WITHDRAWN" } },
     });
+  }
+
+  async listBids(tenderId: string): Promise<readonly Bid[]> {
+    const rows = await database.bid.findMany({
+      where: { tenderId },
+      orderBy: [
+        { amountMinorUnits: "asc" },
+        { qualifyingSubmittedAt: "asc" },
+        { id: "asc" },
+      ],
+    });
+    return rows.map(toBid).filter((bid): bid is Bid => bid !== null);
+  }
+
+  async listRankableBids(tenderId: string): Promise<readonly RankableBid[]> {
+    const rows = await database.bid.findMany({
+      where: { tenderId },
+      select: {
+        id: true,
+        amountMinorUnits: true,
+        currency: true,
+        status: true,
+        qualifyingSubmittedAt: true,
+      },
+      orderBy: [
+        { amountMinorUnits: "asc" },
+        { qualifyingSubmittedAt: "asc" },
+        { id: "asc" },
+      ],
+    });
+    return rows
+      .filter((row) => row.currency === "GEL" || row.currency === "USD")
+      .map((row) => ({
+        id: row.id,
+        amountMinorUnits: row.amountMinorUnits,
+        currency: row.currency as BidCurrency,
+        status: row.status,
+        qualifyingSubmittedAt: row.qualifyingSubmittedAt,
+      }));
+  }
+
+  async findOwnBid(tenderId: string, providerId: string): Promise<Bid | null> {
+    const row = await database.bid.findUnique({
+      where: { tenderId_providerId: { tenderId, providerId } },
+    });
+    return row === null ? null : toBid(row);
   }
 }
 

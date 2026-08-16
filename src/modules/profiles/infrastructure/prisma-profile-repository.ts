@@ -9,6 +9,7 @@ import type {
   OnboardingRepository,
   SafeProfileView,
 } from "../application/complete-onboarding";
+import type { ProviderDisplayNameRepository } from "../application/get-provider-display-names";
 import type {
   OwnProfileRepository,
   ProfileActor,
@@ -67,7 +68,10 @@ const profileInclude = {
 } as const;
 
 export class PrismaProfileRepository
-  implements OnboardingRepository, OwnProfileRepository
+  implements
+    OnboardingRepository,
+    OwnProfileRepository,
+    ProviderDisplayNameRepository
 {
   async getOwn(
     actor: ProfileActor,
@@ -233,6 +237,19 @@ export class PrismaProfileRepository
       }
       throw error;
     }
+  }
+
+  async findDisplayNames(
+    userIds: readonly string[],
+  ): Promise<ReadonlyMap<string, string>> {
+    const rows = await database.userProfile.findMany({
+      where: { userId: { in: [...userIds] } },
+      // Only the public display name leaves this module. Selecting the whole
+      // profile here would put phone numbers one careless spread away from a
+      // competitor-visible response.
+      select: { userId: true, displayName: true },
+    });
+    return new Map(rows.map((row) => [row.userId, row.displayName]));
   }
 }
 
