@@ -35,6 +35,8 @@ model User {
   profile         UserProfile?
   providerProfile ProviderProfile?
   tenders         Tender[]
+  entitlements    AccessEntitlement[]
+  bids            Bid[]
 
   @@unique([email])
   @@map("user")
@@ -148,7 +150,41 @@ model AuditEvent {
 enum TenderStatus {
   DRAFT
   PUBLISHED
+  // Selection ran and produced a winner.
+  CLOSED
+  // The deadline passed with no eligible bid.
+  EXPIRED
   CANCELLED
+}
+
+enum EntitlementKind {
+  SINGLE_TENDER
+  MONTHLY_PROVIDER
+  ANNUAL_PROVIDER
+  ADMIN_OVERRIDE
+}
+
+enum PaymentEventStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum BidStatus {
+  SUBMITTED
+  WINNER
+  LOST
+  WITHDRAWN
+}
+
+enum SelectionOutcome {
+  WINNER_SELECTED
+  EXPIRED_NO_BIDS
+}
+
+enum AgreementStatus {
+  PENDING_CONFIRMATION
 }
 
 // How the client located the job. It is persisted because it is not derivable
@@ -194,6 +230,7 @@ model Tender {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
   attachments      TenderAttachment[]
+  bids             Bid[]
 
   @@index([ownerId, status])
   @@index([status, specialty, city, deadline])
@@ -223,4 +260,99 @@ model OutboxMessage {
   createdAt   DateTime  @default(now())
 
   @@index([processedAt, availableAt])
+}
+
+model AccessEntitlement {
+  id            String          @id
+  providerId    String
+  provider      User            @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  kind          EntitlementKind
+  // Null for subscriptions. No relation is declared to Tender: an entitlement
+  // is a purchase record and must survive the tender it was bought for.
+  tenderId      String?
+  grantedAt     DateTime
+  expiresAt     DateTime?
+  sourceEventId String?         @unique
+  createdAt     DateTime        @default(now())
+
+  @@index([providerId, kind, expiresAt])
+  @@index([providerId, tenderId])
+}
+
+model PaymentEvent {
+  // The idempotency key. A real Phase 5 webhook carries the provider's event
+  // id here; the mock adapter derives a deterministic one from the checkout.
+  externalEventId  String             @id
+  checkoutId       String             @unique
+  providerId       String
+  product          String
+  tenderId         String?
+  amountMinorUnits Int
+  currency         String
+  status           PaymentEventStatus @default(PENDING)
+  rawPayload       Json
+  receivedAt       DateTime           @default(now())
+  appliedAt        DateTime?
+
+  @@index([providerId, receivedAt])
+}
+
+model Bid {
+  id                   String    @id
+  tenderId             String
+  tender               Tender    @relation(fields: [tenderId], references: [id], onDelete: Cascade)
+  providerId           String
+  provider             User      @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  amountMinorUnits     Int
+  currency             String
+  status               BidStatus @default(SUBMITTED)
+  proposedStartDate    DateTime?
+  durationDays         Int?
+  includedCosts        String?
+  exclusions           String?
+  conditions           String
+  // Reset on every revision, so a revised bid loses its original queue
+  // position for tie-breaking (program design §4.3).
+  qualifyingSubmittedAt DateTime
+  withdrawnAt          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  // One active bid per provider per tender. A withdrawal keeps the row, so
+  // this also prevents a withdrawn bidder from opening a second record.
+  @@unique([tenderId, providerId])
+  // Serves the ranking read directly: amount, then queue position, then id.
+  @@index([tenderId, status, amountMinorUnits, qualifyingSubmittedAt, id])
+}
+
+model TenderSelection {
+  id           String           @id
+  // The hard idempotency guarantee: a second selection for the same tender
+  // cannot insert, no matter how many workers race.
+  tenderId     String           @unique
+  outcome      SelectionOutcome
+  winningBidId String?          @unique
+  agreementId  String?          @unique
+  ranAt        DateTime
+  createdAt    DateTime         @default(now())
+}
+
+model Agreement {
+  id               String          @id
+  tenderId         String          @unique
+  clientId         String
+  providerId       String
+  bidId            String          @unique
+  status           AgreementStatus @default(PENDING_CONFIRMATION)
+  amountMinorUnits Int
+  currency         String
+  tenderTitle      String
+  // The immutable snapshot of the winning offer's terms. Phase 4 reads it to
+  // present the same text both parties confirm.
+  snapshot         Json
+  confirmDeadline  DateTime
+  createdAt        DateTime        @default(now())
+
+  @@index([clientId, status])
+  @@index([providerId, status])
 }

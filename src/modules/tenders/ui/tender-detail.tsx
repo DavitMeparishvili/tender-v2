@@ -126,6 +126,8 @@ export function TenderDetailContent({
   const statusLabels: Readonly<Record<TenderStatus, string>> = {
     DRAFT: messages.tenders.statusDraft,
     PUBLISHED: messages.tenders.statusPublished,
+    CLOSED: messages.tenders.statusClosed,
+    EXPIRED: messages.tenders.statusExpired,
     CANCELLED: messages.tenders.statusCancelled,
   };
   const location = tender.location;

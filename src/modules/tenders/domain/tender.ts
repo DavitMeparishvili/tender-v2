@@ -1,6 +1,13 @@
 import type { Coordinates } from "./coordinates";
 
-export type TenderStatus = "DRAFT" | "PUBLISHED" | "CANCELLED";
+export type TenderStatus =
+  | "DRAFT"
+  | "PUBLISHED"
+  // Selection ran and produced a winner.
+  | "CLOSED"
+  // The deadline passed with no eligible bid.
+  | "EXPIRED"
+  | "CANCELLED";
 export type TenderSpecialty = "CONSTRUCTION_REPAIR";
 export type TenderCurrency = "GEL" | "USD";
 

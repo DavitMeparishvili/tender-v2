@@ -172,6 +172,8 @@
     "statusDraft": "Draft",
     "statusPublished": "Published",
     "statusCancelled": "Cancelled",
+    "statusClosed": "Closed",
+    "statusExpired": "Expired",
     "providerListTitle": "Discover tenders",
     "providerListEmpty": "No published tenders match your filters yet.",
     "providerBackToList": "Back to tender discovery",

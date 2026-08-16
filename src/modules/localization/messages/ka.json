@@ -172,6 +172,8 @@
     "statusDraft": "მონახაზი",
     "statusPublished": "გამოქვეყნებული",
     "statusCancelled": "გაუქმებული",
+    "statusClosed": "დახურული",
+    "statusExpired": "ვადაგასული",
     "providerListTitle": "ტენდერების მოძიება",
     "providerListEmpty": "თქვენს ფილტრებს ჯერ არცერთი გამოქვეყნებული ტენდერი არ შეესაბამება.",
     "providerBackToList": "ტენდერების მოძიებაზე დაბრუნება",
