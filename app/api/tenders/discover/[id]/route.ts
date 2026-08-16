@@ -1,4 +1,4 @@
-import { getPublishedTender } from "../../../../../src/modules/tenders/application/get-published-tender";
+import { getTenderForProvider } from "../../../../../src/modules/tenders/application/get-tender-for-provider";
 import { createDiscoveredTenderHandlers } from "../../../../../src/modules/tenders/http/discovery-handlers";
 
 const requireProvider = async (headers: Headers) => {
@@ -9,5 +9,5 @@ const requireProvider = async (headers: Headers) => {
 
 export const { GET } = createDiscoveredTenderHandlers({
   requireProvider,
-  getDetail: getPublishedTender,
+  getForProvider: getTenderForProvider,
 });

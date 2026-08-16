@@ -19,7 +19,8 @@ export type TenderErrorCode =
   | "UNSUPPORTED_FILE_TYPE"
   | "FILE_TOO_LARGE"
   | "ADDRESS_NOT_FOUND"
-  | "COORDINATES_NOT_FOUND";
+  | "COORDINATES_NOT_FOUND"
+  | "NOT_ENTITLED";
 
 // Every dotted leaf path of the message catalogs, derived from the catalog
 // type itself. `MESSAGE_KEYS` below is typed against this, so a `messageKey`
@@ -67,6 +68,9 @@ const TENDER_STATUS_BY_ERROR: Readonly<
   LOCATION_REQUIRED: 400,
   DEADLINE_REQUIRED: 400,
   DEADLINE_NOT_FUTURE: 400,
+  // The provider can resolve this by buying access, which is materially
+  // different from a 403 they can never resolve.
+  NOT_ENTITLED: 402,
 };
 
 // The catalogs are camelCase and are not derived from these SCREAMING_SNAKE
@@ -104,6 +108,7 @@ export const TENDER_ERROR_MESSAGE_KEYS: Readonly<
   LOCATION_REQUIRED: "tenders.errors.locationRequired",
   DEADLINE_REQUIRED: "tenders.errors.deadlineRequired",
   DEADLINE_NOT_FUTURE: "tenders.errors.deadlineNotFuture",
+  NOT_ENTITLED: "entitlements.errors.notEntitled",
 };
 
 function isAuthError(error: TenderErrorCode): error is AuthError {

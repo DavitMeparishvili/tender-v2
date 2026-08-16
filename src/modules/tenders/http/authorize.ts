@@ -25,15 +25,14 @@ export type RequireProvider = (
   headers: Headers,
 ) => Promise<Result<TenderActor, AuthError>>;
 
-// The PROVIDER-facing analogue of `authorizeCustomer` above: discovery
-// handlers need to gate on the PROVIDER capability, but the discovery
-// application functions (`searchPublishedTenders`/`getPublishedTender`) take
-// no actor at all, so this combinator's only job is the capability check
-// itself — it discards the resolved actor rather than threading it through.
+// The PROVIDER-facing analogue of `authorizeCustomer` above. It now returns
+// the resolved actor: `getTenderForProvider` needs the caller's identity to
+// check entitlement, whereas the discovery search list only ever needed the
+// capability check itself.
 export async function authorizeProvider(
   requireProvider: RequireProvider,
   headers: Headers,
-): Promise<Response | undefined> {
+): Promise<TenderActor | Response> {
   const access = await requireProvider(headers);
-  return access.ok ? undefined : mapTenderError(access.error);
+  return access.ok ? access.value : mapTenderError(access.error);
 }

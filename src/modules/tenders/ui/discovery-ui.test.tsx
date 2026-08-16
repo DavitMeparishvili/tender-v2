@@ -22,6 +22,7 @@ const publicTender: PublicTenderDetail = {
   title: "Repaint two bedrooms",
   shortDescription: "Prepare and repaint two bedrooms.",
   specialty: "CONSTRUCTION_REPAIR",
+  status: "PUBLISHED",
   budgetMinorUnits: 123_456,
   currency: "GEL",
   city: "Tbilisi",

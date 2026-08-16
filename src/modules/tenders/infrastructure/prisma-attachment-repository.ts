@@ -5,6 +5,7 @@ import type { TenderActor } from "../application/create-tender-draft";
 import type { GetAttachmentDownloadRepository } from "../application/get-attachment-download";
 import type {
   ListAttachmentsError,
+  ListPublishedAttachmentsRepository,
   ListTenderAttachmentsRepository,
 } from "../application/list-tender-attachments";
 import type {
@@ -16,6 +17,7 @@ export interface AttachmentRepository
   extends
     UploadAttachmentRepository,
     ListTenderAttachmentsRepository,
+    ListPublishedAttachmentsRepository,
     GetAttachmentDownloadRepository {}
 
 function toAttachmentRecord(row: TenderAttachment): AttachmentRecord {
@@ -132,6 +134,36 @@ export class PrismaAttachmentRepository implements AttachmentRepository {
       return { ok: false, error: "NOT_OWNER" };
     }
     return { ok: true, value: { objectKey: row.objectKey } };
+  }
+
+  async findPublishedAttachment(
+    tenderId: string,
+    attachmentId: string,
+  ): Promise<Result<Readonly<{ objectKey: string }>, "NOT_FOUND">> {
+    const attachment = await database.tenderAttachment.findFirst({
+      where: {
+        id: attachmentId,
+        tenderId,
+        tender: { status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+      },
+      select: { objectKey: true },
+    });
+    return attachment === null
+      ? { ok: false, error: "NOT_FOUND" }
+      : { ok: true, value: attachment };
+  }
+
+  async listForPublishedTender(
+    tenderId: string,
+  ): Promise<readonly AttachmentRecord[]> {
+    const rows = await database.tenderAttachment.findMany({
+      where: {
+        tenderId,
+        tender: { status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+      },
+      orderBy: { createdAt: "asc" },
+    });
+    return rows.map(toAttachmentRecord);
   }
 }
 

@@ -1,4 +1,5 @@
-import type { Result } from "@/src/modules/shared";
+import type { Clock, Result } from "@/src/modules/shared";
+import type { EntitlementCheck } from "../ports/entitlement-check";
 import type { ObjectStorage } from "../ports/object-storage";
 import type { TenderActor } from "./create-tender-draft";
 
@@ -16,8 +17,6 @@ export const DOWNLOAD_URL_TTL_SECONDS = 60;
 export const RENDERED_LINK_DOWNLOAD_URL_TTL_SECONDS = 15 * 60;
 
 export interface GetAttachmentDownloadRepository {
-  // There is no provider entitlement mechanism until Phase 3, so this must
-  // require `ownerId === actor.id` unconditionally, with no provider path.
   findOwnedAttachment(
     tenderId: string,
     attachmentId: string,
@@ -25,6 +24,12 @@ export interface GetAttachmentDownloadRepository {
   ): Promise<
     Result<Readonly<{ objectKey: string }>, "NOT_FOUND" | "NOT_OWNER">
   >;
+  // Ownership is not consulted here: this is the provider path, and the
+  // caller has already proven entitlement through `EntitlementCheck`.
+  findPublishedAttachment(
+    tenderId: string,
+    attachmentId: string,
+  ): Promise<Result<Readonly<{ objectKey: string }>, "NOT_FOUND">>;
 }
 
 export function createGetAttachmentDownload(dependencies: {
@@ -65,5 +70,63 @@ export async function getAttachmentDownload(
   return createGetAttachmentDownload({
     repository: prismaAttachmentRepository,
     storage: s3ObjectStorage,
+  })(tenderId, attachmentId, actor, ttlSeconds);
+}
+
+export function createGetEntitledAttachmentDownload(dependencies: {
+  repository: GetAttachmentDownloadRepository;
+  storage: ObjectStorage;
+  clock: Clock;
+  isEntitled: EntitlementCheck;
+}) {
+  return async function getEntitledAttachmentDownload(
+    tenderId: string,
+    attachmentId: string,
+    actor: TenderActor,
+    ttlSeconds: number = DOWNLOAD_URL_TTL_SECONDS,
+  ): Promise<Result<string, "NOT_FOUND" | "NOT_ENTITLED">> {
+    // Entitlement is checked BEFORE the attachment is looked up, so a
+    // non-entitled provider cannot distinguish "no such attachment" from
+    // "this tender has that attachment" by the error it receives.
+    const entitled = await dependencies.isEntitled(
+      actor.id,
+      tenderId,
+      dependencies.clock.now(),
+    );
+    if (!entitled) return { ok: false, error: "NOT_ENTITLED" };
+
+    const attachment = await dependencies.repository.findPublishedAttachment(
+      tenderId,
+      attachmentId,
+    );
+    if (!attachment.ok) return attachment;
+    const url = await dependencies.storage.getSignedDownloadUrl(
+      attachment.value.objectKey,
+      ttlSeconds,
+    );
+    return { ok: true, value: url };
+  };
+}
+
+export async function getEntitledAttachmentDownload(
+  tenderId: string,
+  attachmentId: string,
+  actor: TenderActor,
+  ttlSeconds: number = DOWNLOAD_URL_TTL_SECONDS,
+): Promise<Result<string, "NOT_FOUND" | "NOT_ENTITLED">> {
+  const [
+    { prismaAttachmentRepository },
+    { s3ObjectStorage },
+    { hasTenderEntitlement },
+  ] = await Promise.all([
+    import("../infrastructure/prisma-attachment-repository"),
+    import("../infrastructure/s3-object-storage"),
+    import("../../access/application/has-tender-entitlement"),
+  ]);
+  return createGetEntitledAttachmentDownload({
+    repository: prismaAttachmentRepository,
+    storage: s3ObjectStorage,
+    clock: { now: () => new Date() },
+    isEntitled: hasTenderEntitlement,
   })(tenderId, attachmentId, actor, ttlSeconds);
 }

@@ -15,6 +15,10 @@ function harness() {
         ok: true as const,
         value: { objectKey: "tenders/tender-1/attachment-1" },
       }),
+      findPublishedAttachment: async () => ({
+        ok: true as const,
+        value: { objectKey: "tenders/tender-1/attachment-1" },
+      }),
     },
     storage: { getSignedDownloadUrl, putObject: vi.fn() },
   });

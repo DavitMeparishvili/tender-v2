@@ -13,6 +13,7 @@ import type {
 } from "../application/create-tender-draft";
 import type { GetOwnedTenderRepository } from "../application/get-owned-tender";
 import type { GetPublishedTenderRepository } from "../application/get-published-tender";
+import type { GetSettleableTenderRepository } from "../application/get-tender-for-provider";
 import type { ListOwnedTendersRepository } from "../application/list-owned-tenders";
 import type { PublishTenderRepository } from "../application/publish-tender";
 import {
@@ -44,7 +45,8 @@ export interface TenderRepository
     PublishTenderRepository,
     CancelTenderRepository,
     SearchPublishedTendersRepository,
-    GetPublishedTenderRepository {}
+    GetPublishedTenderRepository,
+    GetSettleableTenderRepository {}
 
 function isRepresentableCurrency(
   value: string | null,
@@ -140,7 +142,8 @@ function toTenderRecord(row: Tender): TenderRecord | null {
     return null;
   }
   if (
-    draft.status !== "PUBLISHED" ||
+    draft.status === "DRAFT" ||
+    draft.status === "CANCELLED" ||
     draft.shortDescription === null ||
     draft.fullDescription === null ||
     draft.scopeOfWork === null ||
@@ -507,6 +510,21 @@ export class PrismaTenderRepository implements TenderRepository {
       return { ok: false, error: "TENDER_NOT_FOUND" };
     }
     return { ok: true, value: record };
+  }
+
+  async getSettleable(
+    id: string,
+  ): Promise<Result<TenderRecord, "TENDER_NOT_FOUND">> {
+    // No deadline predicate and no PUBLISHED-only filter: this is the read
+    // that lets a bidder open the tender they competed on after selection.
+    const row = await database.tender.findFirst({
+      where: { id, status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+    });
+    if (row === null) return { ok: false, error: "TENDER_NOT_FOUND" };
+    const record = toTenderRecord(row);
+    return record === null
+      ? { ok: false, error: "TENDER_NOT_FOUND" }
+      : { ok: true, value: record };
   }
 }
 

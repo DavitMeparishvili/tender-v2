@@ -8,6 +8,12 @@ export type TenderStatus =
   // The deadline passed with no eligible bid.
   | "EXPIRED"
   | "CANCELLED";
+
+// The statuses for which every publication-required field is guaranteed
+// non-null. A settled tender is still fully readable — its winner and its
+// losers both need to see the record they competed on.
+export type PublishedTenderStatus = "PUBLISHED" | "CLOSED" | "EXPIRED";
+
 export type TenderSpecialty = "CONSTRUCTION_REPAIR";
 export type TenderCurrency = "GEL" | "USD";
 
@@ -54,10 +60,10 @@ export type TenderDraft = Readonly<{
 
 // A published projection: every field publication requires is non-null. A
 // cancelled draft that was never published cannot satisfy `publishedAt: Date`,
-// so `TenderRecord` deliberately narrows `status` to `"PUBLISHED"` only.
+// so `TenderRecord` deliberately narrows `status` to a `PublishedTenderStatus`.
 export type TenderRecord = TenderDraft &
   Readonly<{
-    status: "PUBLISHED";
+    status: PublishedTenderStatus;
     shortDescription: string;
     fullDescription: string;
     scopeOfWork: string;
