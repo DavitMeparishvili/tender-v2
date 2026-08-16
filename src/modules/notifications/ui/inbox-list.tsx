@@ -1,49 +1,130 @@
 "use client";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import type { Locale } from "../../localization/config";
+import type { Messages } from "../../localization/get-messages";
+import { formatTenderDate } from "../../tenders/ui/tender-format";
 import type { InboxItem } from "../infrastructure/prisma-inbox-repository";
+
+const knownMessages = {
+  "notifications.agreementPartyConfirmed": "agreementPartyConfirmed",
+  "notifications.agreementAgreed": "agreementAgreed",
+  "notifications.agreementDeclined": "agreementDeclined",
+  "notifications.agreementExpired": "agreementExpired",
+  "notifications.workStartAcknowledged": "workStartAcknowledged",
+  "notifications.workStarted": "workStarted",
+  "notifications.completionConfirmed": "completionConfirmed",
+  "notifications.agreementCompleted": "agreementCompleted",
+  "notifications.agreementCancelled": "agreementCancelled",
+  "notifications.tenderWinnerSelected": "tenderWinnerSelected",
+  "notifications.bidWon": "bidWon",
+  "notifications.bidLost": "bidLost",
+  "notifications.tenderExpiredNoBids": "tenderExpiredNoBids",
+  "notifications.reviewPublished": "reviewPublished",
+  "notifications.reviewRedacted": "reviewRedacted",
+} as const;
+
+function interpolate(template: string, variables: InboxItem["variables"]) {
+  return template.replace(/\{([\w]+)\}/gu, (_, name: string) => {
+    const value = variables[name];
+    return value === null || value === undefined ? "" : String(value);
+  });
+}
+
+function notificationText(item: InboxItem, messages: Messages) {
+  const key = knownMessages[item.messageKey as keyof typeof knownMessages];
+  return key
+    ? interpolate(messages.notifications[key], item.variables)
+    : messages.notifications.generic;
+}
+
 export function InboxList({
   items,
   locale,
-}: {
+  messages,
+  userId,
+}: Readonly<{
   items: readonly InboxItem[];
-  locale?: string;
-}) {
+  locale: Locale;
+  messages: Messages;
+  userId: string;
+}>) {
   const router = useRouter();
+  const [markingId, setMarkingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   async function markRead(id: string) {
-    await fetch(`/api/notifications/${id}`, {
-      method: "PATCH",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ read: true }),
-    });
-    router.refresh();
+    setMarkingId(id);
+    setError(null);
+    try {
+      const response = await fetch(`/api/notifications/${id}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ read: true }),
+      });
+      if (!response.ok) {
+        setError(messages.errors.generic);
+        return;
+      }
+      router.refresh();
+    } catch {
+      setError(messages.errors.generic);
+    } finally {
+      setMarkingId(null);
+    }
   }
-  if (!items.length)
-    return <p className="tender-empty">No notifications yet.</p>;
+
+  if (items.length === 0) {
+    return <p className="tender-empty">{messages.notifications.empty}</p>;
+  }
+
   return (
-    <ul className="tender-list">
-      {items.map((item) => {
-        const href =
-          item.aggregateType === "Agreement"
-            ? `/${locale ?? "en"}/agreements/${item.aggregateId}`
-            : null;
-        return (
-          <li key={item.id}>
-            <p>{item.messageKey}</p>
-            {href ? <Link href={href}>Open agreement</Link> : null}
-            <time dateTime={item.createdAt.toISOString()}>
-              {item.createdAt.toLocaleString()}
-            </time>
-            {item.readAt === null ? (
-              <button type="button" onClick={() => void markRead(item.id)}>
-                Mark read
-              </button>
-            ) : (
-              <span>Read</span>
-            )}
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      {error ? <p role="alert">{error}</p> : null}
+      <ul className="tender-list">
+        {items.map((item) => {
+          const href =
+            item.aggregateType === "Agreement"
+              ? `/${locale}/agreements/${item.aggregateId}`
+              : item.aggregateType === "Review"
+                ? `/${locale}/profiles/${userId}`
+                : null;
+          const date = formatTenderDate(item.createdAt, locale);
+          const isMarking = markingId === item.id;
+          return (
+            <li key={item.id}>
+              <p>{notificationText(item, messages)}</p>
+              <div className="inbox-item-meta">
+                {item.readAt === null ? (
+                  <strong>{messages.notifications.unread}</strong>
+                ) : (
+                  <span>{messages.notifications.read}</span>
+                )}
+                {date ? (
+                  <time dateTime={item.createdAt.toISOString()}>{date}</time>
+                ) : null}
+              </div>
+              {href ? (
+                <Link href={href}>{messages.notifications.open}</Link>
+              ) : null}
+              {item.readAt === null ? (
+                <button
+                  className="button button-secondary"
+                  type="button"
+                  disabled={isMarking}
+                  onClick={() => void markRead(item.id)}
+                >
+                  {isMarking
+                    ? messages.notifications.markingRead
+                    : messages.notifications.markRead}
+                </button>
+              ) : null}
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 }

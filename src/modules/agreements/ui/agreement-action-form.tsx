@@ -1,26 +1,35 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import type { Messages } from "../../localization/get-messages";
+
 type Action =
   "CONFIRM" | "ACKNOWLEDGE_START" | "CONFIRM_COMPLETION" | "DECLINE" | "CANCEL";
+
 export function AgreementActionForm({
   agreementId,
   action,
+  copy,
   label,
-}: {
+}: Readonly<{
   agreementId: string;
   action: Action;
+  copy: Messages["agreements"];
   label: string;
-}) {
+}>) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const needsReason = action === "DECLINE" || action === "CANCEL";
+
   async function submit(form: FormData) {
     setPending(true);
     setError(null);
+    setSuccess(false);
     const explanation = String(form.get("explanation") ?? "");
-    const body =
+    const command =
       action === "DECLINE"
         ? { action, explanation }
         : action === "CANCEL"
@@ -34,19 +43,28 @@ export function AgreementActionForm({
       const response = await fetch(`/api/agreements/${agreementId}`, {
         method: "PATCH",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify(command),
       });
       if (!response.ok) {
-        setError("Unable to record this action.");
-        setPending(false);
+        const body = (await response.json().catch(() => null)) as {
+          code?: keyof typeof copy.errors;
+        } | null;
+        setError(
+          body?.code && body.code in copy.errors
+            ? copy.errors[body.code]
+            : copy.errors.generic,
+        );
         return;
       }
+      setSuccess(true);
       router.refresh();
     } catch {
-      setError("Unable to record this action.");
+      setError(copy.errors.generic);
+    } finally {
       setPending(false);
     }
   }
+
   return (
     <form
       onSubmit={(event) => {
@@ -56,24 +74,28 @@ export function AgreementActionForm({
     >
       {needsReason ? (
         <>
+          <p>{copy.disclaimer}</p>
           <p>
-            The platform records this reason and does not determine fault or
-            resolve payment or legal disputes.
+            {action === "DECLINE"
+              ? copy.declineConsequence
+              : copy.cancelConsequence}
           </p>
           {action === "CANCEL" ? (
             <label>
-              Reason code
+              {copy.reasonCode}
               <select name="reasonCode" defaultValue="OTHER">
-                <option value="SCHEDULE_CHANGED">Schedule changed</option>
-                <option value="SCOPE_CANNOT_PROCEED">
-                  Scope cannot proceed
+                <option value="SCHEDULE_CHANGED">
+                  {copy.reasonScheduleChanged}
                 </option>
-                <option value="OTHER">Other</option>
+                <option value="SCOPE_CANNOT_PROCEED">
+                  {copy.reasonScopeCannotProceed}
+                </option>
+                <option value="OTHER">{copy.reasonOther}</option>
               </select>
             </label>
           ) : null}
           <label>
-            Explanation
+            {copy.explanation}
             <textarea
               name="explanation"
               required
@@ -89,8 +111,9 @@ export function AgreementActionForm({
         disabled={pending}
       >
         {label}
-        {pending ? "…" : ""}
+        {pending ? ` (${copy.submitting})` : ""}
       </button>
+      {success ? <p role="status">{copy.success}</p> : null}
       {error ? <p role="alert">{error}</p> : null}
     </form>
   );

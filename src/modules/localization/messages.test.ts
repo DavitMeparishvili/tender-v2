@@ -16,11 +16,13 @@ describe("identity message catalogs", () => {
   it("has matching required groups and non-empty leaves", () => {
     expect(Object.keys(en).sort()).toEqual([
       "access",
+      "agreements",
       "auth",
       "bidding",
       "common",
       "entitlements",
       "errors",
+      "notifications",
       "onboarding",
       "profile",
       "tenders",

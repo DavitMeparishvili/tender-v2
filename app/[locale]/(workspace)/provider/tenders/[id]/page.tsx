@@ -9,6 +9,7 @@ import {
   getBidSummary,
   getOwnBid,
 } from "@/src/modules/bidding/application/get-bid-summary";
+import { getAgreementForTender } from "@/src/modules/agreements/application/get-agreement";
 import { bidFormCopy } from "@/src/modules/bidding/ui/bid-copy";
 import { BidForm } from "@/src/modules/bidding/ui/bid-form";
 import { BidSummaryView } from "@/src/modules/bidding/ui/bid-summary-view";
@@ -79,12 +80,13 @@ export default async function ProviderTenderDetailPage({
   const view = await getTenderForProvider(id, actor);
   if (!view.ok) notFound();
 
-  const [summary, ownBid, attachments] = await Promise.all([
+  const [summary, ownBid, attachments, agreement] = await Promise.all([
     getBidSummary(id),
     getOwnBid(id, actor),
     view.value.disclosure === "FULL"
       ? resolveEntitledAttachments(id, actor)
       : Promise.resolve(undefined),
+    getAgreementForTender(id, actor),
   ]);
 
   const bid = ownBid.ok ? ownBid.value : null;
@@ -106,6 +108,14 @@ export default async function ProviderTenderDetailPage({
         disclosure={view.value.disclosure}
         tenderId={id}
       />
+      {agreement.ok ? (
+        <Link
+          className="button button-secondary"
+          href={`/${locale}/agreements/${agreement.value.id}`}
+        >
+          {messages.workspace.agreements}
+        </Link>
+      ) : null}
       {summary.ok ? (
         <BidSummaryView
           locale={locale}

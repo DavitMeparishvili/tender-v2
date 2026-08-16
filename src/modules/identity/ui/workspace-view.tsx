@@ -127,13 +127,13 @@ export function WorkspaceView({
           className="button button-secondary"
           href={`/${locale}/${isClient ? "client" : "provider"}/agreements`}
         >
-          Agreements
+          {messages.workspace.agreements}
         </Link>
         <Link
           className="button button-secondary"
           href={`/${locale}/notifications`}
         >
-          Inbox
+          {messages.workspace.inbox}
         </Link>
         <Link
           className="button button-primary"

@@ -1,5 +1,7 @@
 import { headers } from "next/headers";
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { getAgreementForTender } from "@/src/modules/agreements/application/get-agreement";
 import { listTenderBids } from "@/src/modules/bidding/application/list-tender-bids";
 import {
   BidComparison,
@@ -42,15 +44,25 @@ export default async function ClientTenderDetailPage({
 
   // No offers can exist against a DRAFT tender, so the comparison slot is
   // only ever built once the tender has been published.
-  const bidsResult =
+  const [bidsResult, agreement] = await Promise.all([
     owned.value.status === "DRAFT"
-      ? null
-      : await listTenderBids(id, routeAccess.actor);
+      ? Promise.resolve(null)
+      : listTenderBids(id, routeAccess.actor),
+    getAgreementForTender(id, routeAccess.actor),
+  ]);
   const bids = bidsResult?.ok ? bidsResult.value : [];
 
   const comparison =
     bidsResult === null ? undefined : (
       <>
+        {agreement.ok ? (
+          <Link
+            className="button button-secondary"
+            href={`/${locale}/agreements/${agreement.value.id}`}
+          >
+            {messages.workspace.agreements}
+          </Link>
+        ) : null}
         {owned.value.status === "CLOSED" ? (
           <h2>{messages.bidding.outcomeWinnerTitle}</h2>
         ) : null}

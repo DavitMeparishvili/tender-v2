@@ -4,14 +4,39 @@ import { getAgreement } from "@/src/modules/agreements/application/get-agreement
 import { AgreementDetail } from "@/src/modules/agreements/ui/agreement-detail";
 import { requireAnyCommercialCapability } from "@/src/modules/identity/application/require-capability";
 import { IdentityShell } from "@/src/modules/identity/ui/identity-shell";
+import { WorkspaceDenied } from "@/src/modules/identity/ui/workspace-view";
 import { isLocale } from "@/src/modules/localization/config";
+import { getMessages } from "@/src/modules/localization/get-messages";
 
-export default async function AgreementPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
-  const [{ locale, id }, requestHeaders] = await Promise.all([params, headers()]);
+export default async function AgreementPage({
+  params,
+}: Readonly<{ params: Promise<{ locale: string; id: string }> }>) {
+  const [{ locale, id }, requestHeaders] = await Promise.all([
+    params,
+    headers(),
+  ]);
   if (!isLocale(locale)) notFound();
+  const messages = getMessages(locale);
   const access = await requireAnyCommercialCapability(requestHeaders);
-  if (!access.ok) { if (access.error === "UNAUTHENTICATED") redirect(`/${locale}/login`); notFound(); }
+  if (!access.ok) {
+    if (access.error === "UNAUTHENTICATED") redirect(`/${locale}/login`);
+    return (
+      <WorkspaceDenied
+        error={access.error}
+        locale={locale}
+        messages={messages}
+      />
+    );
+  }
   const agreement = await getAgreement(id, access.value);
   if (!agreement.ok) notFound();
-  return <IdentityShell title="Agreement"><AgreementDetail agreement={agreement.value} /></IdentityShell>;
+  return (
+    <IdentityShell title={messages.agreements.detailTitle}>
+      <AgreementDetail
+        agreement={agreement.value}
+        locale={locale}
+        messages={messages}
+      />
+    </IdentityShell>
+  );
 }
