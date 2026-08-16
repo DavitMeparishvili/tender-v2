@@ -29,6 +29,7 @@ describe("phase 3 agreement migration compatibility", () => {
         ownerId: clientId,
         status: "CLOSED",
         specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
         title: "Phase 3 snapshot tender",
       },
     });

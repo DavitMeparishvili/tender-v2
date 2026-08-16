@@ -2,10 +2,26 @@ import { z } from "zod";
 import type { Result } from "../../shared";
 import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import type { TenderDraft } from "../domain/tender";
+import {
+  isServiceForSpecialty,
+  isTenderServiceCode,
+  isTenderSpecialty,
+  type TenderServiceCode,
+  type TenderSpecialty,
+} from "../domain/service-taxonomy";
 import type { TenderActor } from "./create-tender-draft";
+
+const tenderSpecialtySchema = z.custom<TenderSpecialty>(
+  (value) => typeof value === "string" && isTenderSpecialty(value),
+);
+const tenderServiceCodeSchema = z.custom<TenderServiceCode>(
+  (value) => typeof value === "string" && isTenderServiceCode(value),
+);
 
 export const updateTenderDraftCommandSchema = z
   .object({
+    specialty: tenderSpecialtySchema.optional(),
+    serviceCode: tenderServiceCodeSchema.optional(),
     title: z.string().trim().min(5).max(160).optional(),
     shortDescription: z.string().trim().min(10).max(240).optional(),
     fullDescription: z.string().trim().min(20).max(5_000).optional(),
@@ -29,7 +45,19 @@ export const updateTenderDraftCommandSchema = z
     conditions: z.string().trim().max(2_000).nullable().optional(),
   })
   .strict()
-  .refine((command) => Object.keys(command).length > 0);
+  .refine((command) => Object.keys(command).length > 0)
+  .refine(
+    (command) =>
+      (command.specialty === undefined) === (command.serviceCode === undefined),
+    { path: ["serviceCode"] },
+  )
+  .refine(
+    (command) =>
+      command.specialty === undefined ||
+      command.serviceCode === undefined ||
+      isServiceForSpecialty(command.serviceCode, command.specialty),
+    { path: ["serviceCode"] },
+  );
 
 export type UpdateTenderDraftCommand = z.output<
   typeof updateTenderDraftCommandSchema

@@ -64,6 +64,7 @@ async function main(): Promise<void> {
     const publishedDraft = await createTenderDraft(
       {
         specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
         title: "Renovate two-bedroom apartment interior",
       },
       actor,
@@ -124,6 +125,7 @@ async function main(): Promise<void> {
     const draft = await createTenderDraft(
       {
         specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
         title: "Kitchen remodel needs a contractor",
       },
       actor,
@@ -136,6 +138,7 @@ async function main(): Promise<void> {
     const cancellable = await createTenderDraft(
       {
         specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
         title: "Roof repair after storm damage",
       },
       actor,

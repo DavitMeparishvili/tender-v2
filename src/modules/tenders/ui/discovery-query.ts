@@ -1,9 +1,17 @@
 import type { SearchPublishedTendersQuery } from "../application/search-published-tenders";
 import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
+import {
+  isServiceForSpecialty,
+  isTenderServiceCode,
+  isTenderSpecialty,
+  type TenderServiceCode,
+  type TenderSpecialty,
+} from "../domain/service-taxonomy";
 import { parseGeorgiaDateTimeLocal } from "./georgia-date-time";
 
 export const discoveryFilterKeys = [
   "specialty",
+  "serviceCode",
   "city",
   "minBudget",
   "maxBudget",
@@ -69,6 +77,7 @@ export function parseDiscoverySearchParams(
   searchParams: DiscoverySearchParams,
 ): QueryParseResult {
   const specialtyParam = readSingle(searchParams, "specialty");
+  const serviceCodeParam = readSingle(searchParams, "serviceCode");
   const cityParam = readSingle(searchParams, "city");
   const minBudgetParam = readSingle(searchParams, "minBudget");
   const maxBudgetParam = readSingle(searchParams, "maxBudget");
@@ -76,6 +85,7 @@ export function parseDiscoverySearchParams(
   const deadlineParam = readSingle(searchParams, "deadlineBefore");
 
   if (!specialtyParam.ok) return { ok: false, fields: ["specialty"] };
+  if (!serviceCodeParam.ok) return { ok: false, fields: ["serviceCode"] };
   if (!cityParam.ok) return { ok: false, fields: ["city"] };
   if (!minBudgetParam.ok) return { ok: false, fields: ["minBudget"] };
   if (!maxBudgetParam.ok) return { ok: false, fields: ["maxBudget"] };
@@ -89,12 +99,21 @@ export function parseDiscoverySearchParams(
   const currency = currencyValue as DiscoveryCurrency | undefined;
 
   const specialtyValue = specialtyParam.value?.trim();
-  if (specialtyValue && specialtyValue !== "CONSTRUCTION_REPAIR") {
+  if (specialtyValue && !isTenderSpecialty(specialtyValue)) {
     return { ok: false, fields: ["specialty"] };
   }
-  const specialty = specialtyValue
-    ? ("CONSTRUCTION_REPAIR" as const)
-    : undefined;
+  const specialty = specialtyValue as TenderSpecialty | undefined;
+  const serviceCodeValue = serviceCodeParam.value?.trim();
+  if (serviceCodeValue && !isTenderServiceCode(serviceCodeValue)) {
+    return { ok: false, fields: ["serviceCode"] };
+  }
+  const serviceCode = serviceCodeValue as TenderServiceCode | undefined;
+  if (
+    serviceCode !== undefined &&
+    (specialty === undefined || !isServiceForSpecialty(serviceCode, specialty))
+  ) {
+    return { ok: false, fields: ["serviceCode"] };
+  }
 
   const city = cityParam.value?.trim();
   const minBudget = minBudgetParam.value?.trim();
@@ -141,6 +160,7 @@ export function parseDiscoverySearchParams(
     ok: true,
     value: {
       ...(specialty ? { specialty } : {}),
+      ...(serviceCode ? { serviceCode } : {}),
       ...(city ? { city } : {}),
       ...(currency ? { currency } : {}),
       ...(minBudgetMinorUnits !== undefined && minBudgetMinorUnits !== null

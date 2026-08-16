@@ -1,8 +1,17 @@
 "use client";
 
-import { useTransition, type FormEvent } from "react";
+import { useState, useTransition, type FormEvent } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Field } from "../../identity/ui/field";
+import {
+  TENDER_SPECIALTIES,
+  isServiceForSpecialty,
+  isTenderServiceCode,
+  isTenderSpecialty,
+  servicesForSpecialty,
+  type TenderServiceCode,
+  type TenderSpecialty,
+} from "../domain/service-taxonomy";
 import {
   ErrorSummary,
   SubmitButton,
@@ -26,7 +35,12 @@ export type DiscoveryFilterCopy = Readonly<{
   pending: string;
   specialty: string;
   allSpecialties: string;
-  constructionRepair: string;
+  service: string;
+  allServices: string;
+  selectCategory: string;
+  serviceHint: string;
+  specialtyLabels: Readonly<Record<TenderSpecialty, string>>;
+  serviceLabels: Readonly<Record<TenderServiceCode, string>>;
   city: string;
   budgetRange: string;
   minimumBudget: string;
@@ -64,6 +78,8 @@ export function discoveryFilterIssues(
   const issues: FormIssue[] = [];
   if (invalidFields.has("specialty"))
     issues.push({ field: "specialty", message: copy.invalidInput });
+  if (invalidFields.has("serviceCode"))
+    issues.push({ field: "serviceCode", message: copy.invalidInput });
   if (invalidFields.has("city"))
     issues.push({ field: "city", message: copy.invalidInput });
   if (invalidFields.has("minBudget"))
@@ -84,6 +100,20 @@ export function DiscoveryFilters({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const initialSpecialtyValue = searchParams.get("specialty") ?? "";
+  const initialServiceValue = searchParams.get("serviceCode") ?? "";
+  const [specialty, setSpecialty] = useState<TenderSpecialty | undefined>(
+    isTenderSpecialty(initialSpecialtyValue)
+      ? initialSpecialtyValue
+      : undefined,
+  );
+  const [serviceCode, setServiceCode] = useState<TenderServiceCode | undefined>(
+    isTenderServiceCode(initialServiceValue) &&
+      isTenderSpecialty(initialSpecialtyValue) &&
+      isServiceForSpecialty(initialServiceValue, initialSpecialtyValue)
+      ? initialServiceValue
+      : undefined,
+  );
   const queryKey = searchParams.toString();
   const currentValues = Object.fromEntries(
     discoveryFilterKeys.map((key) => {
@@ -106,6 +136,7 @@ export function DiscoveryFilters({
     const formData = new FormData(event.currentTarget);
     const values: DiscoveryFilterValues = {
       specialty: formValue(formData, "specialty"),
+      serviceCode: formValue(formData, "serviceCode"),
       city: formValue(formData, "city"),
       minBudget: formValue(formData, "minBudget"),
       maxBudget: formValue(formData, "maxBudget"),
@@ -131,10 +162,57 @@ export function DiscoveryFilters({
       >
         <select
           name="specialty"
-          defaultValue={searchParams.get("specialty") ?? ""}
+          value={specialty ?? ""}
+          onChange={(event) => {
+            const nextSpecialty = isTenderSpecialty(event.target.value)
+              ? event.target.value
+              : undefined;
+            setSpecialty(nextSpecialty);
+            setServiceCode((current) =>
+              current !== undefined &&
+              nextSpecialty !== undefined &&
+              isServiceForSpecialty(current, nextSpecialty)
+                ? current
+                : undefined,
+            );
+          }}
         >
           <option value="">{copy.allSpecialties}</option>
-          <option value="CONSTRUCTION_REPAIR">{copy.constructionRepair}</option>
+          {TENDER_SPECIALTIES.map((value) => (
+            <option key={value} value={value}>
+              {copy.specialtyLabels[value]}
+            </option>
+          ))}
+        </select>
+      </Field>
+      <Field
+        id="serviceCode"
+        label={copy.service}
+        description={copy.serviceHint}
+        error={invalidFields.has("serviceCode") ? copy.invalidInput : undefined}
+      >
+        <select
+          name="serviceCode"
+          disabled={specialty === undefined}
+          value={serviceCode ?? ""}
+          onChange={(event) =>
+            setServiceCode(
+              isTenderServiceCode(event.target.value)
+                ? event.target.value
+                : undefined,
+            )
+          }
+        >
+          <option value="">
+            {specialty === undefined ? copy.selectCategory : copy.allServices}
+          </option>
+          {specialty === undefined
+            ? null
+            : servicesForSpecialty(specialty).map(({ code }) => (
+                <option key={code} value={code}>
+                  {copy.serviceLabels[code]}
+                </option>
+              ))}
         </select>
       </Field>
       <Field

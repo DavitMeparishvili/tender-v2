@@ -42,6 +42,7 @@ async function completedAgreement(
       ownerId: clientId,
       status: "CLOSED",
       specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "GENERAL_CONSTRUCTION",
       title: "Reviewable kitchen renovation",
     },
   });

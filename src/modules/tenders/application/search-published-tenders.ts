@@ -4,10 +4,25 @@ import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import { distanceKilometers } from "../domain/coordinates";
 import { toPublicSummary, type PublicTenderSummary } from "../domain/masking";
 import type { TenderRecord } from "../domain/tender";
+import {
+  isServiceForSpecialty,
+  isTenderServiceCode,
+  isTenderSpecialty,
+  type TenderServiceCode,
+  type TenderSpecialty,
+} from "../domain/service-taxonomy";
+
+const tenderSpecialtySchema = z.custom<TenderSpecialty>(
+  (value) => typeof value === "string" && isTenderSpecialty(value),
+);
+const tenderServiceCodeSchema = z.custom<TenderServiceCode>(
+  (value) => typeof value === "string" && isTenderServiceCode(value),
+);
 
 export const searchPublishedTendersQuerySchema = z
   .object({
-    specialty: z.literal("CONSTRUCTION_REPAIR").optional(),
+    specialty: tenderSpecialtySchema.optional(),
+    serviceCode: tenderServiceCodeSchema.optional(),
     city: z.string().trim().min(1).max(120).optional(),
     district: z.string().trim().min(1).max(120).optional(),
     // A budget bound is only comparable within one currency, since amounts are
@@ -32,6 +47,16 @@ export const searchPublishedTendersQuerySchema = z
     nearRadiusKilometers: z.coerce.number().positive().max(500).optional(),
   })
   .strict()
+  .refine(
+    (query) =>
+      query.serviceCode === undefined ||
+      (query.specialty !== undefined &&
+        isServiceForSpecialty(query.serviceCode, query.specialty)),
+    {
+      path: ["serviceCode"],
+      message: "A service must belong to the selected category.",
+    },
+  )
   // The currency-scoping rule belongs to the contract, not to one caller: the
   // API route feeds this schema raw query parameters, so a bound accepted here
   // without a currency would compare a GEL amount against a USD threshold on

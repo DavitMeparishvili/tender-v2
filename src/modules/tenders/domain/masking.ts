@@ -2,6 +2,7 @@ import type {
   PublishedTenderStatus,
   TenderCurrency,
   TenderRecord,
+  TenderServiceCode,
   TenderSpecialty,
 } from "./tender";
 
@@ -10,6 +11,7 @@ export type PublicTenderSummary = Readonly<{
   title: string;
   shortDescription: string;
   specialty: TenderSpecialty;
+  serviceCode: TenderServiceCode;
   status: PublishedTenderStatus;
   budgetMinorUnits: number;
   currency: TenderCurrency;
@@ -37,6 +39,7 @@ export function toPublicSummary(tender: TenderRecord): PublicTenderSummary {
     title: tender.title,
     shortDescription: tender.shortDescription,
     specialty: tender.specialty,
+    serviceCode: tender.serviceCode,
     status: tender.status,
     budgetMinorUnits: tender.budgetMinorUnits,
     currency: tender.currency,

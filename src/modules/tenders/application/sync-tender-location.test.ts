@@ -14,6 +14,7 @@ const baseDraft: TenderDraft = {
   ownerId: actor.id,
   status: "DRAFT",
   specialty: "CONSTRUCTION_REPAIR",
+  serviceCode: "GENERAL_CONSTRUCTION",
   title: "Repaint two rooms",
   shortDescription: null,
   fullDescription: null,

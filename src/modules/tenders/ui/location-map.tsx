@@ -5,7 +5,10 @@ import type { Circle, Map as LeafletMap, Marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Coordinates } from "../domain/coordinates";
 import { coarseningUncertaintyMeters } from "../domain/coarsening-uncertainty";
-import { resolveMapView, type MapPrecision } from "./location-map-view";
+import {
+  resolveInteractiveMapView,
+  type MapPrecision,
+} from "./location-map-view";
 
 // Kept as one constant because the public OpenStreetMap tile servers carry a
 // usage policy that forbids production-scale traffic. Moving to a self-hosted
@@ -26,6 +29,7 @@ export type LocationMapCopy = Readonly<{
 
 export type LocationMapProps = Readonly<{
   coordinates: Coordinates | null;
+  focusCoordinates?: Coordinates | null;
   precision: MapPrecision;
   copy: LocationMapCopy;
   onPick?: (coordinates: Coordinates) => void;
@@ -44,6 +48,7 @@ function accessibleName(
 
 export function LocationMap({
   coordinates,
+  focusCoordinates = null,
   precision,
   copy,
   onPick,
@@ -63,6 +68,8 @@ export function LocationMap({
   const interactive = onPick !== undefined;
   const latitude = coordinates?.latitude ?? null;
   const longitude = coordinates?.longitude ?? null;
+  const focusLatitude = focusCoordinates?.latitude ?? null;
+  const focusLongitude = focusCoordinates?.longitude ?? null;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -123,7 +130,11 @@ export function LocationMap({
 
     const placed =
       latitude !== null && longitude !== null ? { latitude, longitude } : null;
-    const view = resolveMapView(placed, precision);
+    const focus =
+      focusLatitude !== null && focusLongitude !== null
+        ? { latitude: focusLatitude, longitude: focusLongitude }
+        : null;
+    const view = resolveInteractiveMapView(placed, focus, precision);
     map.setView([view.center.latitude, view.center.longitude], view.zoom);
 
     void import("leaflet").then((leaflet) => {
@@ -168,7 +179,15 @@ export function LocationMap({
         });
       }
     });
-  }, [map, latitude, longitude, precision, interactive]);
+  }, [
+    map,
+    latitude,
+    longitude,
+    focusLatitude,
+    focusLongitude,
+    precision,
+    interactive,
+  ]);
 
   return (
     <div

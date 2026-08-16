@@ -13,6 +13,7 @@ export function tenderToWizardForm(
 
   return {
     specialty: tender.specialty,
+    serviceCode: tender.serviceCode,
     title: tender.title,
     shortDescription: tender.shortDescription ?? "",
     fullDescription: tender.fullDescription ?? "",
@@ -33,6 +34,7 @@ export function tenderToWizardForm(
     // guessing opened every resumed draft in PIN mode and made step 3 replace
     // the client's street address with a reverse-geocoded label.
     locationMode: location?.mode ?? "ADDRESS",
+    placeId: location?.placeId ? String(location.placeId) : "",
     city: location?.city ?? "",
     district: location?.district ?? "",
     addressLine: location?.addressLine ?? "",

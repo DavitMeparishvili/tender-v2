@@ -21,6 +21,81 @@ enum ProviderSpecialtyCode {
   MATERIAL_SUPPLIER
 }
 
+enum TenderServiceCode {
+  GENERAL_CONSTRUCTION
+  RENOVATION_REMODELING
+  ARCHITECTURE_DESIGN
+  DEMOLITION_DISMANTLING
+  EARTHWORKS_EXCAVATION
+  FOUNDATION_WORK
+  CONCRETE_REINFORCED_CONCRETE
+  MASONRY_BLOCK_BRICK
+  ROOFING
+  FACADE_INSULATION
+  WATERPROOFING
+  CARPENTRY_JOINERY
+  METALWORK_WELDING
+  ELECTRICAL_INSTALLATION
+  PLUMBING
+  HEATING_COOLING_VENTILATION
+  DRYWALL_PLASTERING
+  PAINTING_DECORATING
+  TILING_STONEWORK
+  FLOORING
+  WINDOWS_DOORS
+  LOW_VOLTAGE_SECURITY
+  LANDSCAPING_EXTERNAL_WORKS
+  OTHER_CONSTRUCTION_REPAIR
+  CONSTRUCTION_MATERIAL_DELIVERY
+  GENERAL_CARGO_TRANSPORT
+  WASTE_DEBRIS_REMOVAL
+  SOIL_INERT_MATERIAL_TRANSPORT
+  FURNITURE_APPLIANCE_MOVING
+  HEAVY_OVERSIZED_HAULAGE
+  SPECIAL_PURPOSE_TRANSPORT
+  OTHER_TRANSPORT
+  EXCAVATOR
+  MINI_EXCAVATOR
+  BULLDOZER
+  MOBILE_CRANE
+  CONCRETE_PUMP
+  DUMP_TRUCK
+  WHEEL_LOADER
+  FORKLIFT
+  GRADER
+  ROAD_ROLLER_COMPACTOR
+  MANIPULATOR_CRANE_TRUCK
+  AERIAL_WORK_PLATFORM
+  DRILLING_RIG
+  GENERATOR_COMPRESSOR
+  SCAFFOLDING_FORMWORK
+  OTHER_CONSTRUCTION_EQUIPMENT
+  GENERAL_DAY_LABOR
+  LOADERS_MATERIAL_HANDLERS
+  DEMOLITION_CREW
+  EARTHWORK_CREW
+  CONCRETE_CREW_HELPERS
+  SITE_CLEANUP
+  WAREHOUSE_LABOR
+  OTHER_LABOR
+  CEMENT_DRY_MIXES
+  REINFORCEMENT_STEEL
+  READY_MIX_CONCRETE
+  BLOCKS_BRICKS
+  METAL_PROFILES
+  TIMBER_WOOD
+  DRYWALL_PLASTER_MATERIALS
+  PAINT_COATINGS
+  PLUMBING_MATERIALS
+  ELECTRICAL_MATERIALS
+  ROOFING_MATERIALS
+  FINISHING_TILES_STONE
+  INSULATION_MATERIALS
+  SAND_GRAVEL_INERT
+  WINDOWS_DOORS_MATERIALS
+  OTHER_CONSTRUCTION_MATERIALS
+}
+
 model User {
   id              String           @id
   name            String
@@ -219,12 +294,38 @@ enum TenderLocationMode {
   PIN
 }
 
+enum GeorgianPlaceKind {
+  CAPITAL
+  REGIONAL_CENTER
+  MUNICIPAL_CENTER
+  SETTLEMENT
+}
+
+model GeorgianPlace {
+  // Stable GeoNames identifier. Keeping the upstream id makes future catalog
+  // refreshes deterministic instead of matching mutable display names.
+  id           Int               @id
+  nameEn       String
+  nameKa       String
+  kind         GeorgianPlaceKind
+  featureCode  String
+  latitude     Float
+  longitude    Float
+  population   Int               @default(0)
+  admin1Code   String?
+  isActive     Boolean           @default(true)
+  tenders      Tender[]
+
+  @@index([isActive, kind, population(sort: Desc), nameEn])
+}
+
 model Tender {
   id               String        @id
   ownerId          String
   owner            User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   status           TenderStatus  @default(DRAFT)
   specialty        ProviderSpecialtyCode
+  serviceCode      TenderServiceCode
   title            String
   shortDescription String?
   fullDescription  String?
@@ -238,6 +339,8 @@ model Tender {
   materialNotes    String?
   countryCode      String?
   locationMode     TenderLocationMode?
+  georgianPlaceId  Int?
+  georgianPlace    GeorgianPlace? @relation(fields: [georgianPlaceId], references: [id], onDelete: SetNull)
   city             String?
   district         String?
   addressLine      String?
@@ -255,7 +358,8 @@ model Tender {
   bids             Bid[]
 
   @@index([ownerId, status])
-  @@index([status, specialty, city, deadline])
+  @@index([georgianPlaceId])
+  @@index([status, specialty, serviceCode, city, deadline])
 }
 
 model TenderAttachment {

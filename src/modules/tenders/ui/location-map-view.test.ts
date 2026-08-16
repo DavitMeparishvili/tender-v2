@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { GEORGIA_OVERVIEW, resolveMapView } from "./location-map-view";
+import {
+  GEORGIA_OVERVIEW,
+  resolveInteractiveMapView,
+  resolveMapView,
+} from "./location-map-view";
 
 describe("resolveMapView", () => {
   it("frames a placed pin at street level", () => {
@@ -32,6 +36,31 @@ describe("resolveMapView", () => {
         "PRECISE",
       ),
     ).toEqual(GEORGIA_OVERVIEW);
+  });
+});
+
+describe("resolveInteractiveMapView", () => {
+  it("zooms near a selected catalog place before an exact pin exists", () => {
+    expect(
+      resolveInteractiveMapView(
+        null,
+        { latitude: 42.2679, longitude: 42.6946 },
+        "PRECISE",
+      ),
+    ).toEqual({
+      center: { latitude: 42.2679, longitude: 42.6946 },
+      zoom: 12,
+    });
+  });
+
+  it("keeps an exact pin authoritative after the user places one", () => {
+    expect(
+      resolveInteractiveMapView(
+        { latitude: 42.28, longitude: 42.7 },
+        { latitude: 42.2679, longitude: 42.6946 },
+        "PRECISE",
+      ).zoom,
+    ).toBe(15);
   });
 });
 

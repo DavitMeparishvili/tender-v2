@@ -22,6 +22,7 @@ const publicTender: PublicTenderDetail = {
   title: "Repaint two bedrooms",
   shortDescription: "Prepare and repaint two bedrooms.",
   specialty: "CONSTRUCTION_REPAIR",
+  serviceCode: "PAINTING_DECORATING",
   status: "PUBLISHED",
   budgetMinorUnits: 123_456,
   currency: "GEL",
@@ -108,6 +109,7 @@ describe("provider discovery query", () => {
   it("parses the supported URL filters into the application query", () => {
     const parsed = parseDiscoverySearchParams({
       specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "PAINTING_DECORATING",
       city: " Tbilisi ",
       minBudget: "100.25",
       maxBudget: "2000",
@@ -119,6 +121,7 @@ describe("provider discovery query", () => {
     if (!parsed.ok) return;
     expect(parsed.value).toMatchObject({
       specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "PAINTING_DECORATING",
       city: "Tbilisi",
       currency: "GEL",
       minBudgetMinorUnits: 10_025,
@@ -132,6 +135,10 @@ describe("provider discovery query", () => {
   it.each([
     [{ city: ["Tbilisi", "Batumi"] }, ["city"]],
     [{ specialty: "PLUMBING" }, ["specialty"]],
+    [
+      { specialty: "TRANSPORT", serviceCode: "PAINTING_DECORATING" },
+      ["serviceCode"],
+    ],
     // A currency accompanies every budget case so the assertion isolates the
     // budget fault rather than also tripping the currency requirement.
     [{ minBudget: "1.234", currency: "GEL" }, ["minBudget"]],
@@ -196,6 +203,7 @@ describe("provider discovery query", () => {
       new URLSearchParams("page=2&city=Old&minBudget=9"),
       {
         specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "PAINTING_DECORATING",
         city: " Tbilisi & Vake ",
         minBudget: "100.25",
         maxBudget: "500",
@@ -205,7 +213,7 @@ describe("provider discovery query", () => {
     );
 
     expect(href).toBe(
-      "/en/provider/tenders?page=2&specialty=CONSTRUCTION_REPAIR&city=Tbilisi+%26+Vake&minBudget=100.25&maxBudget=500&currency=GEL&deadlineBefore=2026-09-01",
+      "/en/provider/tenders?page=2&specialty=CONSTRUCTION_REPAIR&serviceCode=PAINTING_DECORATING&city=Tbilisi+%26+Vake&minBudget=100.25&maxBudget=500&currency=GEL&deadlineBefore=2026-09-01",
     );
     expect(
       serializeDiscoveryFilters(
@@ -213,6 +221,7 @@ describe("provider discovery query", () => {
         new URLSearchParams("city=Old"),
         {
           specialty: "",
+          serviceCode: "",
           city: "",
           minBudget: "",
           maxBudget: "",

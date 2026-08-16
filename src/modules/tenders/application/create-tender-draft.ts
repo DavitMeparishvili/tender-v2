@@ -1,13 +1,33 @@
 import { z } from "zod";
 import type { Clock, IdGenerator, Result } from "../../shared";
 import type { TenderDraft } from "../domain/tender";
+import {
+  isServiceForSpecialty,
+  isTenderServiceCode,
+  isTenderSpecialty,
+  type TenderServiceCode,
+  type TenderSpecialty,
+} from "../domain/service-taxonomy";
+
+const tenderSpecialtySchema = z.custom<TenderSpecialty>(
+  (value) => typeof value === "string" && isTenderSpecialty(value),
+);
+const tenderServiceCodeSchema = z.custom<TenderServiceCode>(
+  (value) => typeof value === "string" && isTenderServiceCode(value),
+);
 
 export const createTenderDraftCommandSchema = z
   .object({
-    specialty: z.literal("CONSTRUCTION_REPAIR"),
+    specialty: tenderSpecialtySchema,
+    serviceCode: tenderServiceCodeSchema,
     title: z.string().trim().min(5).max(160),
   })
-  .strict();
+  .strict()
+  .refine(
+    ({ specialty, serviceCode }) =>
+      isServiceForSpecialty(serviceCode, specialty),
+    { path: ["serviceCode"] },
+  );
 
 export type CreateTenderDraftCommand = z.output<
   typeof createTenderDraftCommandSchema

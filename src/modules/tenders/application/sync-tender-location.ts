@@ -8,12 +8,14 @@ import type { TenderMutationError } from "./update-tender-draft";
 
 const addressInputSchema = z.object({
   mode: z.literal("ADDRESS"),
+  placeId: z.number().int().positive().optional(),
   city: z.string().trim().min(2).max(120),
   district: z.string().trim().min(1).max(120).nullable().optional(),
   addressLine: z.string().trim().min(3).max(240),
 });
 const pinInputSchema = z.object({
   mode: z.literal("PIN"),
+  placeId: z.number().int().positive().optional(),
   city: z.string().trim().min(2).max(120),
   district: z.string().trim().min(1).max(120).nullable().optional(),
   latitude: z.number().min(-90).max(90),
@@ -53,13 +55,20 @@ export function createSyncTenderLocation(dependencies: {
       parsed.data.mode === "ADDRESS"
         ? await dependencies.geocoder.geocode({
             countryCode: "GE",
+            ...(parsed.data.placeId ? { placeId: parsed.data.placeId } : {}),
             city: parsed.data.city,
             addressLine: parsed.data.addressLine,
           })
-        : await dependencies.geocoder.reverseGeocode({
-            latitude: parsed.data.latitude,
-            longitude: parsed.data.longitude,
-          });
+        : await dependencies.geocoder.reverseGeocode(
+            {
+              latitude: parsed.data.latitude,
+              longitude: parsed.data.longitude,
+            },
+            {
+              ...(parsed.data.placeId ? { placeId: parsed.data.placeId } : {}),
+              city: parsed.data.city,
+            },
+          );
     if (!resolved.ok) return resolved;
 
     const exact =
@@ -77,7 +86,8 @@ export function createSyncTenderLocation(dependencies: {
       // instead of overwriting the address with a reverse-geocoded label (or
       // the pin with a city centroid).
       mode: parsed.data.mode,
-      city: parsed.data.city,
+      placeId: resolved.value.placeId ?? parsed.data.placeId ?? null,
+      city: resolved.value.city ?? parsed.data.city,
       district: parsed.data.district ?? null,
       addressLine:
         parsed.data.mode === "ADDRESS"
@@ -96,14 +106,13 @@ export async function syncTenderLocation(
   input: unknown,
   actor: TenderActor,
 ): Promise<Result<TenderDraft, SyncLocationError | "INVALID_INPUT">> {
-  const [{ prismaTenderRepository }, { gazetteerGeocoder }] = await Promise.all(
-    [
+  const [{ prismaTenderRepository }, { prismaGeorgianPlaceCatalog }] =
+    await Promise.all([
       import("../infrastructure/prisma-tender-repository"),
-      import("../infrastructure/gazetteer-geocoder"),
-    ],
-  );
+      import("../infrastructure/prisma-georgian-place-catalog"),
+    ]);
   return createSyncTenderLocation({
     repository: prismaTenderRepository,
-    geocoder: gazetteerGeocoder,
+    geocoder: prismaGeorgianPlaceCatalog,
   })(id, input, actor);
 }

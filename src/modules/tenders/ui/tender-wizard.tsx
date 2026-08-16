@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ChangeEvent,
@@ -19,15 +20,27 @@ import { Field } from "../../identity/ui/field";
 import { IdentityShell } from "../../identity/ui/identity-shell";
 import type { CreateTenderDraftCommand } from "../application/create-tender-draft";
 import type { SyncTenderLocationCommand } from "../application/sync-tender-location";
+import type { GeorgianPlaceOption } from "../application/list-georgian-places";
 import type { UpdateTenderDraftCommand } from "../application/update-tender-draft";
 import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import type { Coordinates } from "../domain/coordinates";
+import {
+  isServiceForSpecialty,
+  type TenderServiceCode,
+  type TenderSpecialty,
+} from "../domain/service-taxonomy";
 import { LocationMap } from "./location-map";
 import { locationMapCopy } from "./tender-action-copy";
 import {
   parseDateInputValue,
   parseGeorgiaDateTimeLocal,
 } from "./georgia-date-time";
+import {
+  localizedServices,
+  localizedSpecialties,
+  serviceLabel,
+  specialtyLabel,
+} from "./tender-taxonomy";
 
 const MAX_ATTACHMENTS = 10;
 const MAX_PRISMA_INT = BigInt(MAX_BUDGET_MINOR_UNITS);
@@ -41,7 +54,8 @@ function stepHeadingId(step: WizardStep) {
 }
 
 export type TenderWizardFormState = Readonly<{
-  specialty?: "CONSTRUCTION_REPAIR";
+  specialty?: TenderSpecialty | undefined;
+  serviceCode?: TenderServiceCode | undefined;
   title?: string;
   shortDescription?: string;
   fullDescription?: string;
@@ -55,6 +69,7 @@ export type TenderWizardFormState = Readonly<{
   materialNotes?: string;
   conditions?: string;
   locationMode?: LocationMode;
+  placeId?: string;
   city?: string;
   district?: string;
   addressLine?: string;
@@ -109,7 +124,8 @@ const defaultApi: TenderWizardApi = {
 };
 
 const initialFormState: TenderWizardFormState = {
-  specialty: "CONSTRUCTION_REPAIR",
+  specialty: undefined,
+  serviceCode: undefined,
   title: "",
   shortDescription: "",
   fullDescription: "",
@@ -123,6 +139,7 @@ const initialFormState: TenderWizardFormState = {
   materialNotes: "",
   conditions: "",
   locationMode: "ADDRESS",
+  placeId: "",
   city: "",
   district: "",
   addressLine: "",
@@ -191,6 +208,22 @@ export function validateWizardStep(
   const issues: FormIssue[] = [];
 
   if (step === 0) {
+    if (form.specialty === undefined) {
+      issues.push({
+        field: "specialty",
+        message: messages.errors.required,
+      });
+    }
+    if (
+      form.serviceCode === undefined ||
+      form.specialty === undefined ||
+      !isServiceForSpecialty(form.serviceCode, form.specialty)
+    ) {
+      issues.push({
+        field: "serviceCode",
+        message: messages.errors.required,
+      });
+    }
     const title = trimmed(form.title);
     if (title === "") {
       issues.push({ field: "title", message: messages.errors.required });
@@ -497,6 +530,9 @@ export function toLocationCommand(
   form: TenderWizardFormState,
 ): SyncTenderLocationCommand {
   const shared = {
+    ...(Number.isInteger(Number(form.placeId)) && Number(form.placeId) > 0
+      ? { placeId: Number(form.placeId) }
+      : {}),
     city: trimmed(form.city),
     district: trimmed(form.district) || null,
   };
@@ -577,12 +613,14 @@ export function TenderWizard({
   locale,
   messages,
   api,
+  places = [],
   initialForm,
   initialTenderId,
 }: Readonly<{
   locale: Locale;
   messages: Messages;
   api?: Partial<TenderWizardApi>;
+  places?: readonly GeorgianPlaceOption[];
   initialForm?: TenderWizardFormState;
   initialTenderId?: string;
 }>) {
@@ -603,6 +641,11 @@ export function TenderWizard({
   const currencyTouched = useRef(initialForm?.currency !== undefined);
   const allowNavigation = useRef(false);
   const hasUnsavedWork = wizardHasUnsavedWork(tenderId, modified);
+  const placesById = useMemo(
+    () => new Map(places.map((place) => [String(place.id), place])),
+    [places],
+  );
+  const selectedPlace = placesById.get(form.placeId ?? "") ?? null;
 
   useEffect(() => {
     const request = focusRequest.current;
@@ -683,6 +726,48 @@ export function TenderWizard({
     setModified(true);
   }
 
+  function selectPlace(placeId: string) {
+    const place = placesById.get(placeId);
+    if (!place) return;
+    setForm((current) => ({
+      ...current,
+      placeId,
+      city: place.nameEn,
+      // A point from the previous place must never look valid after the
+      // catalog selection moves the map to a different part of Georgia.
+      latitude: "",
+      longitude: "",
+    }));
+    setIssues((current) =>
+      current.filter(
+        (issue) =>
+          issue.field !== "city" &&
+          issue.field !== "latitude" &&
+          issue.field !== "longitude",
+      ),
+    );
+    setModified(true);
+  }
+
+  function updateSpecialty(specialty: TenderSpecialty | undefined) {
+    setForm((current) => ({
+      ...current,
+      specialty,
+      serviceCode:
+        specialty !== undefined &&
+        current.serviceCode !== undefined &&
+        isServiceForSpecialty(current.serviceCode, specialty)
+          ? current.serviceCode
+          : undefined,
+    }));
+    setIssues((current) =>
+      current.filter(
+        (issue) => issue.field !== "specialty" && issue.field !== "serviceCode",
+      ),
+    );
+    setModified(true);
+  }
+
   // Choosing a point on the map is the same act as ticking "choose on map" and
   // typing the numbers, so it switches the form to PIN mode rather than leaving
   // a placed pin that the address branch would silently ignore on submit.
@@ -725,14 +810,20 @@ export function TenderWizard({
       showIssues(nextIssues);
       return;
     }
+    if (form.specialty === undefined || form.serviceCode === undefined) return;
 
     setPending(true);
     setIssues([]);
     try {
       const response = tenderId
-        ? await tenderApi.updateDraft(tenderId, { title: trimmed(form.title) })
+        ? await tenderApi.updateDraft(tenderId, {
+            specialty: form.specialty,
+            serviceCode: form.serviceCode,
+            title: trimmed(form.title),
+          })
         : await tenderApi.createDraft({
-            specialty: "CONSTRUCTION_REPAIR",
+            specialty: form.specialty,
+            serviceCode: form.serviceCode,
             title: trimmed(form.title),
           });
       const result = await parseResponse(response);
@@ -925,13 +1016,56 @@ export function TenderWizard({
             id="specialty"
             label={messages.tenders.filterSpecialty}
             description={messages.tenders.specialtyConstructionRepairHint}
+            error={issueFor(issues, "specialty")}
           >
-            <input
+            <select
               name="specialty"
-              type="text"
-              value={messages.tenders.specialtyConstructionRepair}
-              readOnly
-            />
+              required
+              value={form.specialty ?? ""}
+              onChange={(event) =>
+                updateSpecialty(
+                  event.target.value === ""
+                    ? undefined
+                    : (event.target.value as TenderSpecialty),
+                )
+              }
+            >
+              <option value="">{messages.tenders.serviceSelectCategory}</option>
+              {localizedSpecialties(messages).map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field
+            id="serviceCode"
+            label={messages.tenders.filterService}
+            description={messages.tenders.serviceHint}
+            error={issueFor(issues, "serviceCode")}
+          >
+            <select
+              name="serviceCode"
+              required
+              disabled={form.specialty === undefined}
+              value={form.serviceCode ?? ""}
+              onChange={(event) =>
+                updateField("serviceCode", event.target.value)
+              }
+            >
+              <option value="">
+                {form.specialty === undefined
+                  ? messages.tenders.serviceSelectCategory
+                  : messages.tenders.serviceSelectSpecific}
+              </option>
+              {form.specialty === undefined
+                ? null
+                : localizedServices(form.specialty, messages).map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+            </select>
           </Field>
           <Field
             id="title"
@@ -1131,18 +1265,23 @@ export function TenderWizard({
           <Field
             id="city"
             label={messages.tenders.city}
+            description={messages.tenders.placeHint}
             error={issueFor(issues, "city")}
           >
-            <input
-              name="city"
-              type="text"
+            <select
+              name="placeId"
               autoComplete="address-level2"
-              minLength={2}
-              maxLength={120}
               required
-              value={form.city}
-              onChange={(event) => updateField("city", event.target.value)}
-            />
+              value={form.placeId}
+              onChange={(event) => selectPlace(event.target.value)}
+            >
+              <option value="">{messages.tenders.placePlaceholder}</option>
+              {places.map((place) => (
+                <option value={place.id} key={place.id}>
+                  {place.label} · {place.regionLabel} ({place.secondaryLabel})
+                </option>
+              ))}
+            </select>
           </Field>
           <Field
             id="district"
@@ -1180,6 +1319,14 @@ export function TenderWizard({
             </p>
             <LocationMap
               coordinates={pinCoordinates(form)}
+              focusCoordinates={
+                selectedPlace
+                  ? {
+                      latitude: selectedPlace.latitude,
+                      longitude: selectedPlace.longitude,
+                    }
+                  : null
+              }
               precision="PRECISE"
               copy={locationMapCopy(messages)}
               onPick={selectPin}
@@ -1308,7 +1455,13 @@ export function TenderWizard({
             {[
               [
                 messages.tenders.filterSpecialty,
-                messages.tenders.specialtyConstructionRepair,
+                form.specialty ? specialtyLabel(form.specialty, messages) : "",
+              ],
+              [
+                messages.tenders.filterService,
+                form.serviceCode
+                  ? serviceLabel(form.serviceCode, messages)
+                  : "",
               ],
               [messages.tenders.title, form.title],
               [messages.tenders.shortDescription, form.shortDescription],
@@ -1324,7 +1477,7 @@ export function TenderWizard({
               [messages.tenders.equipmentNotes, form.equipmentNotes],
               [messages.tenders.materialNotes, form.materialNotes],
               [messages.tenders.conditions, form.conditions],
-              [messages.tenders.city, form.city],
+              [messages.tenders.city, selectedPlace?.label ?? form.city],
               [messages.tenders.district, form.district],
               [
                 form.locationMode === "PIN"

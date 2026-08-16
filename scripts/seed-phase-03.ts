@@ -135,7 +135,11 @@ async function main(): Promise<void> {
 
     async function publishTenderNamed(title: string): Promise<string> {
       const draft = await createTenderDraft(
-        { specialty: "CONSTRUCTION_REPAIR", title },
+        {
+          specialty: "CONSTRUCTION_REPAIR",
+          serviceCode: "GENERAL_CONSTRUCTION",
+          title,
+        },
         actor,
       );
       if (!draft.ok) throw new Error(`Failed to draft "${title}"`);

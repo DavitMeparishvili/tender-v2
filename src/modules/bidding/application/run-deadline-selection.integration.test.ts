@@ -30,6 +30,7 @@ async function seedDueTender(ownerId: string): Promise<string> {
       ownerId,
       status: "PUBLISHED",
       specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "GENERAL_CONSTRUCTION",
       title: "Repaint two rooms",
       shortDescription: "Interior repaint",
       fullDescription: "Sand, prime, and repaint two bedrooms.",

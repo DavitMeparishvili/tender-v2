@@ -2,6 +2,10 @@ import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { database } from "../../../infrastructure/db/client";
 import { PrismaTenderRepository } from "../infrastructure/prisma-tender-repository";
+import type {
+  TenderServiceCode,
+  TenderSpecialty,
+} from "../domain/service-taxonomy";
 import { publishTender } from "./publish-tender";
 import {
   MAX_PUBLISHED_TENDER_RESULTS,
@@ -32,9 +36,19 @@ async function seedPublishedTender(
   ownerId: string,
   city: string,
   title: string,
+  classification: Readonly<{
+    specialty: TenderSpecialty;
+    serviceCode: TenderServiceCode;
+  }> = {
+    specialty: "CONSTRUCTION_REPAIR",
+    serviceCode: "GENERAL_CONSTRUCTION",
+  },
 ): Promise<string> {
   const created = await tenders.createDraft(
-    { specialty: "CONSTRUCTION_REPAIR", title },
+    {
+      ...classification,
+      title,
+    },
     { id: ownerId },
     { tenderId: randomUUID() },
     new Date(),
@@ -91,6 +105,7 @@ async function seedManyPublishedTenders(
       ownerId,
       status: "PUBLISHED" as const,
       specialty: "CONSTRUCTION_REPAIR" as const,
+      serviceCode: "GENERAL_CONSTRUCTION" as const,
       title: `Bounded discovery tender ${index}`,
       shortDescription: "Interior repaint, two bedrooms",
       fullDescription: "Sand, prime, and repaint two bedrooms and a hallway.",
@@ -159,6 +174,46 @@ describe("searchPublishedTenders", () => {
   it("rejects a query with an unrecognized specialty", async () => {
     const result = await searchPublishedTenders({ specialty: "PLUMBING" });
     expect(result).toEqual({ ok: false, error: "INVALID_INPUT" });
+  });
+
+  it("filters first by service category and then by the precise service", async () => {
+    const ownerId = await seedOwner();
+    const city = `Taxonomy City ${randomUUID()}`;
+    await seedPublishedTender(ownerId, city, "Painting tender", {
+      specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "PAINTING_DECORATING",
+    });
+    await seedPublishedTender(ownerId, city, "Plumbing tender", {
+      specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "PLUMBING",
+    });
+    await seedPublishedTender(ownerId, city, "Cargo tender", {
+      specialty: "TRANSPORT",
+      serviceCode: "GENERAL_CARGO_TRANSPORT",
+    });
+
+    const category = await searchPublishedTenders({
+      city,
+      specialty: "CONSTRUCTION_REPAIR",
+    });
+    const precise = await searchPublishedTenders({
+      city,
+      specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "PAINTING_DECORATING",
+    });
+    const mismatch = await searchPublishedTenders({
+      city,
+      specialty: "TRANSPORT",
+      serviceCode: "PAINTING_DECORATING",
+    });
+
+    expect(
+      category.ok && category.value.map(({ title }) => title).sort(),
+    ).toEqual(["Painting tender", "Plumbing tender"]);
+    expect(precise.ok && precise.value.map(({ title }) => title)).toEqual([
+      "Painting tender",
+    ]);
+    expect(mismatch).toEqual({ ok: false, error: "INVALID_INPUT" });
   });
 
   it("keeps a budget range inside one currency instead of comparing minor units across them", async () => {

@@ -18,18 +18,38 @@ const messages = getMessages("en");
 describe("validateWizardStep", () => {
   it("blocks the basics step without a title", () => {
     expect(validateWizardStep(0, { title: "" }, messages)).toEqual([
+      { field: "specialty", message: messages.errors.required },
+      { field: "serviceCode", message: messages.errors.required },
       { field: "title", message: messages.errors.required },
     ]);
   });
 
   it("allows the basics step once a title is present", () => {
     expect(
-      validateWizardStep(0, { title: "Repaint two bedrooms" }, messages),
+      validateWizardStep(
+        0,
+        {
+          specialty: "CONSTRUCTION_REPAIR",
+          serviceCode: "PAINTING_DECORATING",
+          title: "Repaint two bedrooms",
+        },
+        messages,
+      ),
     ).toEqual([]);
   });
 
   it("mirrors the server minimum lengths for basics and scope", () => {
-    expect(validateWizardStep(0, { title: "Four" }, messages)).toEqual([
+    expect(
+      validateWizardStep(
+        0,
+        {
+          specialty: "CONSTRUCTION_REPAIR",
+          serviceCode: "PAINTING_DECORATING",
+          title: "Four",
+        },
+        messages,
+      ),
+    ).toEqual([
       { field: "title", message: messages.tenders.errors.invalidInput },
     ]);
 
@@ -189,6 +209,7 @@ describe("toLocationCommand", () => {
     ownerId: "owner-1",
     status: "DRAFT",
     specialty: "CONSTRUCTION_REPAIR",
+    serviceCode: "GENERAL_CONSTRUCTION",
     title: "Repaint two bedrooms",
     shortDescription: null,
     fullDescription: null,
@@ -203,6 +224,7 @@ describe("toLocationCommand", () => {
     location: {
       countryCode: "GE",
       mode: "ADDRESS",
+      placeId: 611717,
       city: "Tbilisi",
       district: null,
       addressLine: "12 Rustaveli Avenue",
@@ -224,6 +246,7 @@ describe("toLocationCommand", () => {
   it("round-trips a resumed address draft without losing the street address", () => {
     expect(toLocationCommand(tenderToWizardForm(resumedDraft))).toEqual({
       mode: "ADDRESS",
+      placeId: 611717,
       city: "Tbilisi",
       district: null,
       addressLine: "12 Rustaveli Avenue",
@@ -236,6 +259,7 @@ describe("toLocationCommand", () => {
       location: {
         countryCode: "GE",
         mode: "PIN",
+        placeId: 611717,
         city: "Tbilisi",
         district: "Vake",
         addressLine: "Near Tbilisi, Georgia",
@@ -246,6 +270,7 @@ describe("toLocationCommand", () => {
 
     expect(toLocationCommand(tenderToWizardForm(pinned))).toEqual({
       mode: "PIN",
+      placeId: 611717,
       city: "Tbilisi",
       district: "Vake",
       latitude: 41.7333,

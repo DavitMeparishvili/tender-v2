@@ -33,7 +33,11 @@ describe("tender handlers", () => {
       listOwned: async () => [],
     });
     const response = await handlers.POST(
-      jsonRequest({ specialty: "CONSTRUCTION_REPAIR", title: "x" }),
+      jsonRequest({
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "x",
+      }),
     );
     expect(response.status).toBe(401);
   });
@@ -47,6 +51,7 @@ describe("tender handlers", () => {
     const response = await handlers.POST(
       jsonRequest({
         specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
         title: "Repaint two rooms",
       }),
     );

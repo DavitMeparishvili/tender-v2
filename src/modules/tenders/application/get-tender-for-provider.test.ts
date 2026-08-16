@@ -8,6 +8,7 @@ const record = {
   ownerId: "client-1",
   status: "PUBLISHED",
   specialty: "CONSTRUCTION_REPAIR",
+  serviceCode: "GENERAL_CONSTRUCTION",
   title: "Repaint two rooms",
   shortDescription: "Interior repaint",
   fullDescription: "Sand, prime, and repaint two bedrooms.",

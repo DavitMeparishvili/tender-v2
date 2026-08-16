@@ -29,7 +29,11 @@ describe("tender draft application entry points", () => {
     const ownerId = await createOwner();
 
     const created = await createTenderDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Repaint two rooms",
+      },
       { id: ownerId },
     );
     expect(created.ok).toBe(true);
@@ -67,7 +71,11 @@ describe("tender draft application entry points", () => {
     const ownerId = await createOwner();
 
     const result = await createTenderDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Hi" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Hi",
+      },
       { id: ownerId },
     );
 
@@ -79,7 +87,11 @@ describe("tender draft application entry points", () => {
     const otherId = await createOwner();
 
     const created = await createTenderDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Repaint two rooms",
+      },
       { id: ownerId },
     );
     expect(created.ok).toBe(true);
@@ -97,7 +109,11 @@ describe("tender draft application entry points", () => {
   it("clears a persisted desired start date through the application entry point", async () => {
     const ownerId = await createOwner();
     const created = await createTenderDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Replace kitchen tiles" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Replace kitchen tiles",
+      },
       { id: ownerId },
     );
     expect(created.ok).toBe(true);
@@ -143,7 +159,11 @@ describe("tender draft application entry points", () => {
     async (mode, command, addressLine) => {
       const ownerId = await createOwner();
       const created = await createTenderDraft(
-        { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+        {
+          specialty: "CONSTRUCTION_REPAIR",
+          serviceCode: "GENERAL_CONSTRUCTION",
+          title: "Repaint two rooms",
+        },
         { id: ownerId },
       );
       expect(created.ok).toBe(true);

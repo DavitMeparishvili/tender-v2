@@ -25,6 +25,7 @@ const tender: TenderDraft = {
   ownerId: "owner-1",
   status: "PUBLISHED",
   specialty: "CONSTRUCTION_REPAIR",
+  serviceCode: "GENERAL_CONSTRUCTION",
   title: "Repaint two bedrooms",
   shortDescription: "Prepare and repaint two bedrooms.",
   fullDescription:

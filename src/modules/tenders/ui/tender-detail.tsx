@@ -25,6 +25,7 @@ import {
   formatTenderMoney,
   tenderStatusLabel,
 } from "./tender-format";
+import { serviceLabel, specialtyLabel } from "./tender-taxonomy";
 
 // The signed URL is resolved on the server for each attachment, so this view
 // carries a ready-to-use link and never exposes the underlying object key.
@@ -152,7 +153,11 @@ export function TenderDetailContent({
       <dl className="tender-detail">
         <DetailRow
           label={messages.tenders.filterSpecialty}
-          value={messages.tenders.specialtyConstructionRepair}
+          value={specialtyLabel(tender.specialty, messages)}
+        />
+        <DetailRow
+          label={messages.tenders.filterService}
+          value={serviceLabel(tender.serviceCode, messages)}
         />
         <DetailRow label={messages.tenders.title} value={tender.title} />
         <DetailRow

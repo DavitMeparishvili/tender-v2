@@ -1,4 +1,7 @@
 import type { Coordinates } from "./coordinates";
+import type { TenderServiceCode, TenderSpecialty } from "./service-taxonomy";
+
+export type { TenderServiceCode, TenderSpecialty } from "./service-taxonomy";
 
 export type TenderStatus =
   | "DRAFT"
@@ -14,7 +17,6 @@ export type TenderStatus =
 // losers both need to see the record they competed on.
 export type PublishedTenderStatus = "PUBLISHED" | "CLOSED" | "EXPIRED";
 
-export type TenderSpecialty = "CONSTRUCTION_REPAIR";
 export type TenderCurrency = "GEL" | "USD";
 
 // How the client located the job: by typing a street address, or by placing a
@@ -26,6 +28,7 @@ export type TenderLocationMode = "ADDRESS" | "PIN";
 export type TenderLocation = Readonly<{
   countryCode: "GE";
   mode: TenderLocationMode;
+  placeId?: number | null;
   city: string;
   district: string | null;
   addressLine: string;
@@ -38,6 +41,7 @@ export type TenderDraft = Readonly<{
   ownerId: string;
   status: TenderStatus;
   specialty: TenderSpecialty;
+  serviceCode: TenderServiceCode;
   title: string;
   shortDescription: string | null;
   fullDescription: string | null;

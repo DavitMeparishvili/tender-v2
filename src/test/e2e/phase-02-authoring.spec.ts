@@ -22,6 +22,12 @@ for (const locale of ["ka", "en"] as const) {
     await page.goto(`/${locale}/client/tenders/new`);
 
     await page
+      .getByLabel(messages.tenders.filterSpecialty)
+      .selectOption("CONSTRUCTION_REPAIR");
+    await page
+      .getByLabel(messages.tenders.filterService)
+      .selectOption("PAINTING_DECORATING");
+    await page
       .getByLabel(messages.tenders.title, { exact: true })
       .fill("Repaint two bedrooms");
     await page.getByRole("button", { name: messages.common.continue }).click();
@@ -31,14 +37,13 @@ for (const locale of ["ka", "en"] as const) {
 
     await page
       .getByLabel(messages.tenders.city, { exact: true })
-      .fill("Tbilisi");
+      .selectOption("611717");
 
-    // Pick the location by clicking the map rather than typing coordinates.
-    // The wizard's map opens on the Georgia overview — centred exactly on
-    // Tbilisi at zoom 7 (src/modules/tenders/ui/location-map-view.ts) — so a
-    // click near its centre always resolves within the gazetteer's 150 km
-    // reverse-geocoding radius. Leaflet fetches basemap tiles from
-    // tile.openstreetmap.org, which a network-restricted CI runner cannot
+    // The selected catalog place moves the map near Tbilisi without drawing a
+    // misleading exact pin. Pick the precise location on the map rather than
+    // typing coordinates.
+    // Leaflet fetches basemap tiles from tile.openstreetmap.org, which a
+    // network-restricted CI runner cannot
     // reach, so this waits for Leaflet's own container class rather than
     // `networkidle` (which would never resolve here) or the tile imagery
     // itself.
@@ -112,6 +117,12 @@ for (const locale of ["ka", "en"] as const) {
   }) => {
     await signInSeededAccount(page, "client", locale);
     await page.goto(`/${locale}/client/tenders/new`);
+    await page
+      .getByLabel(messages.tenders.filterSpecialty)
+      .selectOption("CONSTRUCTION_REPAIR");
+    await page
+      .getByLabel(messages.tenders.filterService)
+      .selectOption("OTHER_CONSTRUCTION_REPAIR");
     await page
       .getByLabel(messages.tenders.title, { exact: true })
       .fill("Small repair job");

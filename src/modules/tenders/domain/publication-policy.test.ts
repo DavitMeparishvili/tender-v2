@@ -11,6 +11,7 @@ const complete: TenderDraft = {
   ownerId: "user-1",
   status: "DRAFT",
   specialty: "CONSTRUCTION_REPAIR",
+  serviceCode: "GENERAL_CONSTRUCTION",
   title: "Renovate a two-bedroom apartment",
   shortDescription: "Full interior renovation",
   fullDescription: "Strip and rebuild kitchen and bathroom finishes.",

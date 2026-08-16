@@ -8,6 +8,7 @@ import {
   type DiscoverySearchParams,
 } from "./discovery-query";
 import { formatTenderDate, formatTenderMoney } from "./tender-format";
+import { serviceLabel } from "./tender-taxonomy";
 
 type DiscoveryResult =
   | Readonly<{ ok: true; value: readonly PublicTenderSummary[] }>
@@ -56,6 +57,10 @@ export function DiscoveryListContent({
             </div>
             <p className="discovery-summary">{tender.shortDescription}</p>
             <dl className="tender-list-facts discovery-list-facts">
+              <div>
+                <dt>{messages.tenders.filterService}</dt>
+                <dd>{serviceLabel(tender.serviceCode, messages)}</dd>
+              </div>
               <div>
                 <dt>{messages.tenders.budget}</dt>
                 <dd>

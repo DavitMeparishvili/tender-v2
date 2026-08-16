@@ -45,7 +45,18 @@ export default async function ProviderTenderListPage({
     pending: messages.common.working,
     specialty: messages.tenders.filterSpecialty,
     allSpecialties: messages.tenders.filterAllSpecialties,
-    constructionRepair: messages.tenders.specialtyConstructionRepair,
+    service: messages.tenders.filterService,
+    allServices: messages.tenders.filterAllServices,
+    selectCategory: messages.tenders.serviceSelectCategory,
+    serviceHint: messages.tenders.filterServiceHint,
+    specialtyLabels: {
+      CONSTRUCTION_REPAIR: messages.tenders.specialtyConstructionRepair,
+      TRANSPORT: messages.tenders.specialtyTransport,
+      EQUIPMENT: messages.tenders.specialtyEquipment,
+      DAILY_LABOR: messages.tenders.specialtyDailyLabor,
+      MATERIAL_SUPPLIER: messages.tenders.specialtyMaterialSupplier,
+    },
+    serviceLabels: messages.tenders.serviceLabels,
     city: messages.tenders.filterCity,
     budgetRange: messages.tenders.filterBudget,
     minimumBudget: messages.tenders.filterMinBudget,
@@ -64,7 +75,7 @@ export default async function ProviderTenderListPage({
 
   return (
     <IdentityShell title={messages.tenders.providerListTitle}>
-      <DiscoveryFilters copy={filterCopy} />
+      <DiscoveryFilters key={JSON.stringify(filters)} copy={filterCopy} />
       <DiscoveryList
         locale={locale}
         messages={messages}

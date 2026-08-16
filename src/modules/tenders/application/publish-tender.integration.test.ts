@@ -27,7 +27,11 @@ async function seedOwner(): Promise<string> {
 // same four seeding calls in each test.
 async function seedCompleteDraftId(ownerId: string): Promise<string> {
   const created = await tenders.createDraft(
-    { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+    {
+      specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "GENERAL_CONSTRUCTION",
+      title: "Repaint two rooms",
+    },
     { id: ownerId },
     { tenderId: randomUUID() },
     new Date(),
@@ -79,7 +83,11 @@ describe("publishTender", () => {
   it("rejects publication while required fields are missing", async () => {
     const ownerId = await seedOwner();
     const created = await tenders.createDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Repaint two rooms",
+      },
       { id: ownerId },
       { tenderId: randomUUID() },
       new Date(),

@@ -5,6 +5,7 @@ import type { TenderAttachmentView } from "./tender-detail";
 import { LocationMap } from "./location-map";
 import { locationMapCopy } from "./tender-action-copy";
 import { formatTenderDate, formatTenderMoney } from "./tender-format";
+import { serviceLabel, specialtyLabel } from "./tender-taxonomy";
 
 function DetailRow({
   label,
@@ -48,7 +49,11 @@ export function DiscoveryDetailContent({
         <DetailRow label={messages.tenders.reference} value={tender.id} />
         <DetailRow
           label={messages.tenders.filterSpecialty}
-          value={messages.tenders.specialtyConstructionRepair}
+          value={specialtyLabel(tender.specialty, messages)}
+        />
+        <DetailRow
+          label={messages.tenders.filterService}
+          value={serviceLabel(tender.serviceCode, messages)}
         />
         <DetailRow label={messages.tenders.title} value={tender.title} />
         <DetailRow

@@ -31,7 +31,11 @@ describe("PrismaTenderRepository", () => {
     const now = new Date();
 
     const created = await repository.createDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Repaint two rooms",
+      },
       { id: ownerId },
       { tenderId: randomUUID() },
       now,
@@ -62,7 +66,11 @@ describe("PrismaTenderRepository", () => {
     const now = new Date();
 
     const created = await repository.createDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Repaint two rooms",
+      },
       { id: ownerId },
       { tenderId: randomUUID() },
       now,
@@ -98,7 +106,11 @@ describe("PrismaTenderRepository", () => {
     const now = new Date();
 
     const created = await repository.createDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Repaint two rooms",
+      },
       { id: ownerId },
       { tenderId: randomUUID() },
       now,
@@ -148,7 +160,11 @@ describe("PrismaTenderRepository", () => {
     const now = new Date();
 
     const created = await repository.createDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Repaint two rooms",
+      },
       { id: ownerId },
       { tenderId: randomUUID() },
       now,
@@ -177,7 +193,11 @@ describe("PrismaTenderRepository", () => {
   it("persists an explicit null desired start date", async () => {
     const ownerId = await createOwner();
     const created = await repository.createDraft(
-      { specialty: "CONSTRUCTION_REPAIR", title: "Replace kitchen tiles" },
+      {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title: "Replace kitchen tiles",
+      },
       { id: ownerId },
       { tenderId: randomUUID() },
       new Date(),

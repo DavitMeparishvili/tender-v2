@@ -71,7 +71,11 @@ export async function publishTenderAsClient(
     await signInSeededAccount(page, "client", locale);
 
     const created = await page.request.post("/api/tenders", {
-      data: { specialty: "CONSTRUCTION_REPAIR", title },
+      data: {
+        specialty: "CONSTRUCTION_REPAIR",
+        serviceCode: "GENERAL_CONSTRUCTION",
+        title,
+      },
     });
     if (!created.ok()) {
       throw new Error(`Could not create "${title}": ${created.status()}`);

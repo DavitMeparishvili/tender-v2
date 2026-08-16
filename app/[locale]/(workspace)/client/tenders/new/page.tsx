@@ -4,6 +4,7 @@ import { requireCapability } from "@/src/modules/identity/application/require-ca
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { getOwnedTender } from "@/src/modules/tenders/application/get-owned-tender";
+import { listGeorgianPlaces } from "@/src/modules/tenders/application/list-georgian-places";
 import { listTenderAttachments } from "@/src/modules/tenders/application/list-tender-attachments";
 import { TenderWizard } from "@/src/modules/tenders/ui/tender-wizard";
 import { tenderToWizardForm } from "@/src/modules/tenders/ui/tender-wizard-initial";
@@ -23,16 +24,25 @@ export default async function NewTenderPage({
   if (!isLocale(locale)) notFound();
   const access = await requireCapability(requestHeaders, "CUSTOMER");
   if (!access.ok) redirect("/" + locale + "/login");
+  const placesPromise = listGeorgianPlaces(locale);
 
   const tenderId =
     typeof query.tenderId === "string" ? query.tenderId.trim() : undefined;
   if (!tenderId) {
-    return <TenderWizard locale={locale} messages={getMessages(locale)} />;
+    const places = await placesPromise;
+    return (
+      <TenderWizard
+        locale={locale}
+        messages={getMessages(locale)}
+        places={places}
+      />
+    );
   }
 
-  const [owned, attachments] = await Promise.all([
+  const [owned, attachments, places] = await Promise.all([
     getOwnedTender(tenderId, access.value),
     listTenderAttachments(tenderId, access.value),
+    placesPromise,
   ]);
   if (!owned.ok || !attachments.ok) notFound();
   if (owned.value.status !== "DRAFT") {
@@ -43,6 +53,7 @@ export default async function NewTenderPage({
     <TenderWizard
       locale={locale}
       messages={getMessages(locale)}
+      places={places}
       initialTenderId={tenderId}
       initialForm={tenderToWizardForm(
         owned.value,

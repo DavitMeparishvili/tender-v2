@@ -22,7 +22,11 @@ async function seedOwnedDraft(): Promise<{
     },
   });
   const created = await tenders.createDraft(
-    { specialty: "CONSTRUCTION_REPAIR", title: "Repaint two rooms" },
+    {
+      specialty: "CONSTRUCTION_REPAIR",
+      serviceCode: "GENERAL_CONSTRUCTION",
+      title: "Repaint two rooms",
+    },
     { id: ownerId },
     { tenderId: randomUUID() },
     new Date(),

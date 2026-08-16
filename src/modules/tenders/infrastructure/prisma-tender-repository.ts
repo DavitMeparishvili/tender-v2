@@ -32,6 +32,10 @@ import type {
   UpdateTenderDraftRepository,
 } from "../application/update-tender-draft";
 import { coarsenCoordinates } from "../domain/coordinates";
+import {
+  isTenderServiceCode,
+  isTenderSpecialty,
+} from "../domain/service-taxonomy";
 import type {
   TenderCurrency,
   TenderDraft,
@@ -83,6 +87,7 @@ function toTenderLocation(row: Tender): TenderLocation | null {
     // reading if one ever did: it keeps a stored `addressLine` on screen and
     // resubmittable, whereas assuming PIN would discard it.
     mode: row.locationMode ?? "ADDRESS",
+    placeId: row.georgianPlaceId,
     city: row.city,
     district: row.district,
     addressLine: row.addressLine,
@@ -91,17 +96,16 @@ function toTenderLocation(row: Tender): TenderLocation | null {
   };
 }
 
-// `Tender.specialty` is the five-value `ProviderSpecialtyCode` enum shared with
-// provider profiles, and `Tender.currency` is a plain, unconstrained string
-// column — both wider than what `TenderDraft` can represent. This module only
-// ever writes `CONSTRUCTION_REPAIR` specialties and `GEL`/`USD` currencies, so a
-// row that fails either check has drifted outside what this module can safely
-// model. Such a row is dropped (mapped to `null`) rather than coerced to a
-// default: money is stored in integer minor units, so silently coercing an
-// unrecognized currency to e.g. "GEL" would misreport an amount, which is
-// worse than treating the tender as absent.
+// Specialty is shared with provider profiles while serviceCode is the tender's
+// precise classification. Keep runtime guards at this persistence boundary so
+// generated database values cannot silently escape the application taxonomy.
+// Currency remains a plain string column, so it receives the same treatment:
+// an unrepresentable row is treated as absent rather than misreported.
 function toTenderDraft(row: Tender): TenderDraft | null {
-  if (row.specialty !== "CONSTRUCTION_REPAIR") {
+  if (
+    !isTenderSpecialty(row.specialty) ||
+    !isTenderServiceCode(row.serviceCode)
+  ) {
     return null;
   }
   if (!isRepresentableCurrency(row.currency)) {
@@ -113,6 +117,7 @@ function toTenderDraft(row: Tender): TenderDraft | null {
     ownerId: row.ownerId,
     status: row.status,
     specialty: row.specialty,
+    serviceCode: row.serviceCode,
     title: row.title,
     shortDescription: row.shortDescription,
     fullDescription: row.fullDescription,
@@ -195,6 +200,9 @@ function publishedFilterWhere(
         : { lt: filter.deadlineBefore }),
     },
     ...(filter.specialty === undefined ? {} : { specialty: filter.specialty }),
+    ...(filter.serviceCode === undefined
+      ? {}
+      : { serviceCode: filter.serviceCode }),
     // City and district reach this query as free text a provider typed, so
     // they match case-insensitively; an exact match would silently return
     // nothing for "batumi".
@@ -239,6 +247,7 @@ export class PrismaTenderRepository implements TenderRepository {
         ownerId: actor.id,
         status: "DRAFT",
         specialty: command.specialty,
+        serviceCode: command.serviceCode,
         title: command.title,
         createdAt: now,
         updatedAt: now,
@@ -289,6 +298,12 @@ export class PrismaTenderRepository implements TenderRepository {
     actor: TenderActor,
   ): Promise<Result<TenderDraft, TenderMutationError>> {
     const data = {
+      ...(command.specialty === undefined
+        ? {}
+        : { specialty: command.specialty }),
+      ...(command.serviceCode === undefined
+        ? {}
+        : { serviceCode: command.serviceCode }),
       ...(command.title === undefined ? {} : { title: command.title }),
       ...(command.shortDescription === undefined
         ? {}
@@ -364,6 +379,7 @@ export class PrismaTenderRepository implements TenderRepository {
       data: {
         countryCode: location.countryCode,
         locationMode: location.mode,
+        georgianPlaceId: location.placeId ?? null,
         city: location.city,
         district: location.district,
         addressLine: location.addressLine,
