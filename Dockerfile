@@ -15,6 +15,21 @@ FROM dependencies AS builder
 
 COPY . .
 RUN DATABASE_URL=postgresql://build:build@localhost:5432/build pnpm prisma generate
+# Next evaluates server route modules while collecting build output. These are
+# intentionally non-secret placeholders for that build step; deployment values
+# are supplied to the runner container at runtime.
+ENV NODE_ENV=production \
+    DATABASE_URL=postgresql://build:build@localhost:5432/build \
+    AUTH_SECRET=build-only-auth-secret-0123456789012345 \
+    APP_URL=http://build.local \
+    STORAGE_ENDPOINT=http://storage.build.local \
+    STORAGE_REGION=us-east-1 \
+    STORAGE_BUCKET=build-only \
+    STORAGE_ACCESS_KEY_ID=build-only-access-key \
+    STORAGE_SECRET_ACCESS_KEY=build-only-secret-key \
+    STORAGE_FORCE_PATH_STYLE=true \
+    SELECTION_WORKER_SECRET=build-only-selection-secret-012345678901 \
+    AGREEMENT_WORKER_SECRET=build-only-agreement-secret-012345678901
 RUN pnpm build
 
 FROM base AS runner
