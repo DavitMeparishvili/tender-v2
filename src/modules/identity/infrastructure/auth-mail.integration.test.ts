@@ -4,6 +4,7 @@ import { getTestMailbox } from "../../notifications/adapters/test-mailbox";
 import { auth } from "./auth";
 
 const email = "mail-callbacks@example.test";
+const appUrl = process.env.APP_URL ?? "http://localhost:3000";
 
 beforeEach(async () => {
   await database.user.deleteMany({ where: { email } });
@@ -26,9 +27,7 @@ describe("Better Auth mail callbacks", () => {
     const message = getTestMailbox("test").latestFor(email, "VERIFY_EMAIL");
 
     expect(message).toMatchObject({ to: email, locale: "ka" });
-    expect(message?.variables.verificationUrl).toMatch(
-      /^http:\/\/localhost:3000\//,
-    );
+    expect(message?.variables.verificationUrl?.startsWith(appUrl)).toBe(true);
   });
 
   it("uses the persisted preferred locale for password recovery", async () => {
@@ -68,6 +67,6 @@ describe("Better Auth mail callbacks", () => {
     const message = getTestMailbox("test").latestFor(email, "RESET_PASSWORD");
 
     expect(message).toMatchObject({ to: email, locale: "en" });
-    expect(message?.variables.resetUrl).toMatch(/^http:\/\/localhost:3000\//);
+    expect(message?.variables.resetUrl?.startsWith(appUrl)).toBe(true);
   });
 });
