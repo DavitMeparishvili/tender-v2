@@ -78,7 +78,7 @@ On the Droplet:
 mkdir -p /opt/tender-market
 git clone https://github.com/DavitMeparishvili/tender-v2.git /opt/tender-market
 cd /opt/tender-market
-cp deploy/.env.droplet.full-stack.example deploy/.env.droplet
+cp deploy/.env.droplet.example deploy/.env.droplet
 chmod 600 deploy/.env.droplet
 ```
 
