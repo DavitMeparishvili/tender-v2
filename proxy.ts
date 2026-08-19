@@ -13,7 +13,8 @@ export function proxy(request: NextRequest) {
   // Only the provider dashboard and its other sections (e.g. agreements)
   // require a session; bidding itself is enforced separately, per actor,
   // by the bid API routes.
-  const isPublicTenderDiscovery = workspace === "provider" && section === "tenders";
+  const isPublicTenderDiscovery =
+    workspace === "provider" && section === "tenders";
   if (
     locale !== undefined &&
     isLocale(locale) &&

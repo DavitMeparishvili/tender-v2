@@ -125,7 +125,11 @@ async function fillWizardDeadline(
   const nextMonth = page.getByRole("button", {
     name: messages.tenders.datePickerNextMonth,
   });
-  for (let attempt = 0; attempt < 6 && (await targetDay.count()) === 0; attempt += 1) {
+  for (
+    let attempt = 0;
+    attempt < 6 && (await targetDay.count()) === 0;
+    attempt += 1
+  ) {
     await nextMonth.click();
   }
   await targetDay.click();

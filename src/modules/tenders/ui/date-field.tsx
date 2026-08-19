@@ -47,7 +47,10 @@ function daysInMonth(year: number, month: number) {
 
 function shiftMonth(cursor: MonthCursor, delta: number): MonthCursor {
   const total = cursor.year * 12 + (cursor.month - 1) + delta;
-  return { year: Math.floor(total / 12), month: (((total % 12) + 12) % 12) + 1 };
+  return {
+    year: Math.floor(total / 12),
+    month: (((total % 12) + 12) % 12) + 1,
+  };
 }
 
 // Monday-first index (0 = Monday … 6 = Sunday) matches Georgian and European
@@ -59,7 +62,11 @@ function mondayFirstWeekday(year: number, month: number, day: number) {
 
 function todayParts() {
   const now = new Date();
-  return { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
+  return {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate(),
+  };
 }
 
 function parseDateKey(value: string): MonthCursor & { day: number } {
@@ -75,7 +82,10 @@ function parseDateKey(value: string): MonthCursor & { day: number } {
   };
 }
 
-function buildCalendarGrid(cursor: MonthCursor, todayKey: string): CalendarDay[] {
+function buildCalendarGrid(
+  cursor: MonthCursor,
+  todayKey: string,
+): CalendarDay[] {
   const firstWeekday = mondayFirstWeekday(cursor.year, cursor.month, 1);
   const totalDays = daysInMonth(cursor.year, cursor.month);
   const previous = shiftMonth(cursor, -1);
@@ -130,7 +140,9 @@ function intlLocale(locale: Locale) {
 function formatDisplayDate(value: string, locale: Locale) {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!match) return "";
-  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+  const date = new Date(
+    Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])),
+  );
   return new Intl.DateTimeFormat(intlLocale(locale), {
     day: "numeric",
     month: "long",
@@ -173,7 +185,11 @@ function ChevronIcon({ direction }: Readonly<{ direction: "left" | "right" }>) {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true" className="date-field-chevron">
       <path
-        d={direction === "left" ? "M12 4.5 6.5 10l5.5 5.5" : "M8 4.5 13.5 10 8 15.5"}
+        d={
+          direction === "left"
+            ? "M12 4.5 6.5 10l5.5 5.5"
+            : "M8 4.5 13.5 10 8 15.5"
+        }
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -182,11 +198,19 @@ function ChevronIcon({ direction }: Readonly<{ direction: "left" | "right" }>) {
   );
 }
 
-function useCalendarPopover(selectedValue: string, onSelect: (key: string) => void) {
+function useCalendarPopover(
+  selectedValue: string,
+  onSelect: (key: string) => void,
+) {
   const [open, setOpen] = useState(false);
   const seed = selectedValue ? parseDateKey(selectedValue) : todayParts();
-  const [cursor, setCursor] = useState<MonthCursor>({ year: seed.year, month: seed.month });
-  const [focusedKey, setFocusedKey] = useState(dateKey(seed.year, seed.month, seed.day));
+  const [cursor, setCursor] = useState<MonthCursor>({
+    year: seed.year,
+    month: seed.month,
+  });
+  const [focusedKey, setFocusedKey] = useState(
+    dateKey(seed.year, seed.month, seed.day),
+  );
   const containerRef = useRef<HTMLDivElement | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
   const focusPending = useRef(false);
@@ -229,9 +253,18 @@ function useCalendarPopover(selectedValue: string, onSelect: (key: string) => vo
 
   function moveFocus(delta: number) {
     const parts = parseDateKey(focusedKey);
-    const anchor = new Date(Date.UTC(parts.year, parts.month - 1, parts.day + delta));
-    const nextKey = dateKey(anchor.getUTCFullYear(), anchor.getUTCMonth() + 1, anchor.getUTCDate());
-    setCursor({ year: anchor.getUTCFullYear(), month: anchor.getUTCMonth() + 1 });
+    const anchor = new Date(
+      Date.UTC(parts.year, parts.month - 1, parts.day + delta),
+    );
+    const nextKey = dateKey(
+      anchor.getUTCFullYear(),
+      anchor.getUTCMonth() + 1,
+      anchor.getUTCDate(),
+    );
+    setCursor({
+      year: anchor.getUTCFullYear(),
+      month: anchor.getUTCMonth() + 1,
+    });
     setFocusedKey(nextKey);
     focusPending.current = true;
   }
@@ -304,7 +337,10 @@ function CalendarPopover({
   onClear: () => void;
   showClear: boolean;
 }>) {
-  const cells = useMemo(() => buildCalendarGrid(cursor, todayKey), [cursor, todayKey]);
+  const cells = useMemo(
+    () => buildCalendarGrid(cursor, todayKey),
+    [cursor, todayKey],
+  );
   const labels = useMemo(() => weekdayLabels(locale), [locale]);
 
   return (
@@ -356,7 +392,8 @@ function CalendarPopover({
             aria-current={cell.isToday ? "date" : undefined}
             onFocus={() => onFocusedKeyChange(cell.key)}
             onClick={() => {
-              if (!cell.inCurrentMonth) onCursorChange({ year: cell.year, month: cell.month });
+              if (!cell.inCurrentMonth)
+                onCursorChange({ year: cell.year, month: cell.month });
               onSelect(cell.key);
             }}
           >
@@ -377,7 +414,11 @@ function CalendarPopover({
           {copy.today}
         </button>
         {showClear ? (
-          <button type="button" className="date-calendar-clear" onClick={onClear}>
+          <button
+            type="button"
+            className="date-calendar-clear"
+            onClick={onClear}
+          >
             {copy.clear}
           </button>
         ) : null}
@@ -437,7 +478,9 @@ export function DateField({
         aria-describedby={describedProps["aria-describedby"]}
         onClick={() => (open ? closePopover(false) : openPopover())}
       >
-        <span>{value ? formatDisplayDate(value, locale) : copy.chooseDate}</span>
+        <span>
+          {value ? formatDisplayDate(value, locale) : copy.chooseDate}
+        </span>
         <CalendarIcon />
       </button>
       <input type="hidden" name={name} value={value} readOnly />
@@ -536,7 +579,9 @@ export function DateTimeField({
           aria-describedby={describedProps["aria-describedby"]}
           onClick={() => (open ? closePopover(false) : openPopover())}
         >
-          <span>{dateValue ? formatDisplayDate(dateValue, locale) : copy.chooseDate}</span>
+          <span>
+            {dateValue ? formatDisplayDate(dateValue, locale) : copy.chooseDate}
+          </span>
           <CalendarIcon />
         </button>
         <input
