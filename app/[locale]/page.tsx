@@ -9,6 +9,10 @@ import {
 import { LandingPage } from "@/src/modules/shell/ui/landing-page";
 import { searchPublishedTenders } from "@/src/modules/tenders/application/search-published-tenders";
 
+// This page reads the live marketplace database. It must be rendered when a
+// request arrives, not while the Docker image is being built.
+export const dynamic = "force-dynamic";
+
 export default async function LocaleHome({
   params,
 }: Readonly<{

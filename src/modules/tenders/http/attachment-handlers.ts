@@ -16,7 +16,7 @@ type DownloadRouteContext = Readonly<{
 // `objectKey` is an internal storage address and must never reach a
 // client-facing response, so the view is built as an explicit allowlist
 // rather than by omitting fields from the record.
-function toAttachmentView(
+export function toAttachmentView(
   record: AttachmentRecord,
 ): Omit<AttachmentRecord, "objectKey"> {
   return {

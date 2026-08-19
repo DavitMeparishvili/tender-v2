@@ -1,0 +1,13 @@
+.git
+.next
+node_modules
+coverage
+playwright-report
+test-results
+.env
+.env.*
+!.env.example
+!.env.test.example
+!.env.production.example
+deploy/.env.droplet
+deploy/secrets

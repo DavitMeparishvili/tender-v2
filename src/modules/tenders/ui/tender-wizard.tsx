@@ -113,12 +113,43 @@ const defaultApi: TenderWizardApi = {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(command),
     }),
-  uploadAttachment: (tenderId, file) => {
-    const body = new FormData();
-    body.set("file", file);
-    return fetch(`/api/tenders/${tenderId}/attachments`, {
+  uploadAttachment: async (tenderId, file) => {
+    const prepared = await fetch(
+      `/api/tenders/${tenderId}/attachments/upload-url`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          originalFileName: file.name,
+          sizeBytes: file.size,
+          contentType: file.type,
+        }),
+      },
+    );
+    if (!prepared.ok) return prepared;
+    const upload = (await prepared.json()) as {
+      uploadId: string;
+      uploadUrl: string;
+      contentType: string;
+    };
+    const stored = await fetch(upload.uploadUrl, {
+      method: "PUT",
+      headers: { "content-type": upload.contentType },
+      body: file,
+    });
+    if (!stored.ok) {
+      return Response.json(
+        { code: "INVALID_INPUT", messageKey: "tenders.errors.invalidInput" },
+        { status: 502 },
+      );
+    }
+    return fetch(`/api/tenders/${tenderId}/attachments/complete`, {
       method: "POST",
-      body,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        uploadId: upload.uploadId,
+        originalFileName: file.name,
+      }),
     });
   },
   publishTender: (tenderId) =>
@@ -996,7 +1027,8 @@ export function TenderWizard({
   const attachmentNames = form.attachmentNames ?? [];
   // The map is the only way to set a pin, so both coordinate issues collapse
   // onto one message anchored at the map rather than two invisible fields.
-  const pinIssue = issueFor(issues, "latitude") ?? issueFor(issues, "longitude");
+  const pinIssue =
+    issueFor(issues, "latitude") ?? issueFor(issues, "longitude");
 
   return (
     <IdentityShell title={messages.tenders.newTender} width="form">

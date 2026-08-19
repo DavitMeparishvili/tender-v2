@@ -1,0 +1,101 @@
+name: tender-demo
+
+services:
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    env_file:
+      - ${DROPLET_ENV_FILE:-deploy/.env.droplet}
+    environment:
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    command:
+      - postgres
+      - -c
+      - ssl=on
+      - -c
+      - ssl_cert_file=/run/postgres-tls/server.crt
+      - -c
+      - ssl_key_file=/run/postgres-tls/server.key
+      - -c
+      - password_encryption=scram-sha-256
+      - -c
+      - max_connections=100
+    ports:
+      - "5432:5432"
+    volumes:
+      - tender_postgres_data:/var/lib/postgresql/data
+      - ./deploy/secrets/postgres:/run/postgres-tls:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - backend
+
+  minio:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    restart: unless-stopped
+    env_file:
+      - ${DROPLET_ENV_FILE:-deploy/.env.droplet}
+    environment:
+      MINIO_API_CORS_ALLOW_ORIGIN: ${APP_ORIGIN}
+    command: server /data --console-address ":9001"
+    volumes:
+      - tender_minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - backend
+
+  minio-init:
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    profiles: ["setup"]
+    env_file:
+      - ${DROPLET_ENV_FILE:-deploy/.env.droplet}
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: /bin/sh
+    command:
+      - -ec
+      - |
+        mc alias set local http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD"
+        mc mb --ignore-existing "local/$$MINIO_BUCKET"
+        mc anonymous set none "local/$$MINIO_BUCKET"
+        mc admin user add local "$$MINIO_APP_ACCESS_KEY" "$$MINIO_APP_SECRET_KEY" || true
+        mc admin policy attach local readwrite --user "$$MINIO_APP_ACCESS_KEY"
+    networks:
+      - backend
+
+  caddy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    env_file:
+      - ${DROPLET_ENV_FILE:-deploy/.env.droplet}
+    depends_on:
+      minio:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - tender_caddy_data:/data
+      - tender_caddy_config:/config
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  tender_postgres_data:
+  tender_minio_data:
+  tender_caddy_data:
+  tender_caddy_config:

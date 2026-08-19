@@ -1,6 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { database } from "../../../infrastructure/db/client";
+import {
+  finalizeTenderAttachmentUpload,
+  prepareTenderAttachmentUpload,
+} from "../application/direct-upload-tender-attachment";
 import { getAttachmentDownload } from "../application/get-attachment-download";
 import { uploadTenderAttachment } from "../application/upload-tender-attachment";
 import { MAX_ATTACHMENT_BYTES } from "../domain/constraints";
@@ -40,6 +44,45 @@ afterAll(async () => {
 });
 
 describe("tender attachment uploads", () => {
+  it("uploads directly through a signed URL and finalizes the stored object", async () => {
+    const { ownerId, tenderId } = await seedOwnedDraft();
+    const actor = { id: ownerId };
+    const body = new TextEncoder().encode("%PDF-1.7\n%%EOF");
+    const prepared = await prepareTenderAttachmentUpload(
+      tenderId,
+      {
+        originalFileName: "direct-plan.pdf",
+        sizeBytes: body.byteLength,
+        contentType: "application/pdf",
+      },
+      actor,
+    );
+    if (!prepared.ok) throw new Error(`prepare failed: ${prepared.error}`);
+
+    const stored = await fetch(prepared.value.uploadUrl, {
+      method: "PUT",
+      headers: { "content-type": prepared.value.contentType },
+      body,
+    });
+    expect(stored.status).toBe(200);
+
+    const finalized = await finalizeTenderAttachmentUpload(
+      tenderId,
+      {
+        uploadId: prepared.value.uploadId,
+        originalFileName: "direct-plan.pdf",
+      },
+      actor,
+    );
+    expect(finalized.ok).toBe(true);
+    if (!finalized.ok) return;
+    expect(finalized.value).toMatchObject({
+      originalFileName: "direct-plan.pdf",
+      mimeType: "application/pdf",
+      sizeBytes: body.byteLength,
+    });
+  });
+
   it("rejects a file whose bytes do not match any allowed signature", async () => {
     const { ownerId, tenderId } = await seedOwnedDraft();
     const result = await uploadTenderAttachment(

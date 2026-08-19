@@ -69,6 +69,7 @@ it("bounds database connection and query waits", async () => {
   expect(testState.adapterConfigs).toEqual([
     {
       connectionString: "postgresql://user:password@localhost:5432/tender_dev",
+      max: 10,
       connectionTimeoutMillis: 2_000,
       query_timeout: 3_000,
       statement_timeout: 3_000,

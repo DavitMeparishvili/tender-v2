@@ -7,6 +7,10 @@ const serverEnvSchema = z.object({
   AUTH_SECRET: z.string().min(32),
   APP_URL: z.string().url(),
   STORAGE_ENDPOINT: z.string().url(),
+  // Server-side S3 calls can use Docker's private network, while presigned
+  // browser URLs need the public HTTPS hostname. If omitted, the existing
+  // single-endpoint deployment remains supported.
+  STORAGE_PUBLIC_ENDPOINT: z.string().url().optional(),
   STORAGE_REGION: z.string().min(1),
   STORAGE_BUCKET: z.string().min(1),
   // Consumed only by `src/test/integration/setup.ts`, exactly like
