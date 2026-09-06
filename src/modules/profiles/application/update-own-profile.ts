@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SUPPORTED_LOCALES } from "../../localization/config";
 import type { Result } from "../../shared";
 import type { SafeProfileView } from "./complete-onboarding";
 
@@ -13,7 +14,7 @@ export const updateOwnProfileCommandSchema = z
     phoneE164: normalizedPhoneSchema.optional(),
     city: z.string().trim().min(2).max(120).optional(),
     activityDescription: z.string().trim().min(2).max(2_000).optional(),
-    preferredLocale: z.enum(["ka", "en"]).optional(),
+    preferredLocale: z.enum(SUPPORTED_LOCALES).optional(),
     preferredCurrency: z.enum(["GEL", "USD"]).optional(),
     profilePhotoObjectKey: z
       .string()

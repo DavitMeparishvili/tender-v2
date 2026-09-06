@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SUPPORTED_LOCALES, type Locale } from "../../localization/config";
 import type { Clock, IdGenerator, Result } from "../../shared";
 import type {
   Capability,
@@ -19,7 +20,7 @@ export const completeOnboardingCommandSchema = z
     countryCode: z.literal("GE"),
     city: z.string().trim().min(2).max(120),
     activityDescription: z.string().trim().min(2).max(2_000),
-    preferredLocale: z.enum(["ka", "en"]),
+    preferredLocale: z.enum(SUPPORTED_LOCALES),
     preferredCurrency: z.enum(["GEL", "USD"]),
   })
   .strict();
@@ -41,7 +42,7 @@ export type SafeProfileView = Readonly<{
   countryCode: "GE";
   city: string;
   activityDescription: string;
-  preferredLocale: "ka" | "en";
+  preferredLocale: Locale;
   preferredCurrency: "GEL" | "USD";
   profilePhotoObjectKey: string | null;
   onboardingComplete: boolean;

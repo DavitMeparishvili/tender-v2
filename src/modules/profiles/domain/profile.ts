@@ -1,6 +1,8 @@
+import type { Locale } from "../../localization/config";
+
 export type AccountKind = "PERSON" | "COMPANY";
 export type CountryCode = "GE";
-export type PreferredLocale = "ka" | "en";
+export type PreferredLocale = Locale;
 export type PreferredCurrency = "GEL" | "USD";
 
 export type MarketplaceProfile = Readonly<{

@@ -1,4 +1,4 @@
-export const SUPPORTED_LOCALES = ["ka", "en"] as const;
+export const SUPPORTED_LOCALES = ["ka", "en", "ru"] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 

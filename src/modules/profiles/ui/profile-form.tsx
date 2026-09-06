@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import type { Locale } from "../../localization/config";
+import { isLocale, type Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import {
   ErrorSummary,
@@ -22,12 +22,13 @@ export function serializeProfileUpdate(
   form: FormData,
   currentPhotoObjectKey: string | null,
 ): UpdateOwnProfileCommand {
+  const preferredLocale = value(form, "preferredLocale");
   return {
     displayName: value(form, "displayName").trim(),
     phoneE164: value(form, "phoneE164").replace(/[\s()-]/g, ""),
     city: value(form, "city").trim(),
     activityDescription: value(form, "activityDescription").trim(),
-    preferredLocale: value(form, "preferredLocale") === "en" ? "en" : "ka",
+    preferredLocale: isLocale(preferredLocale) ? preferredLocale : "ka",
     preferredCurrency:
       value(form, "preferredCurrency") === "USD" ? "USD" : "GEL",
     profilePhotoObjectKey:
@@ -199,6 +200,7 @@ export function ProfileForm({ locale, profile, messages }: ProfileFormProps) {
         <select name="preferredLocale" defaultValue={current.preferredLocale}>
           <option value="ka">{messages.common.georgian}</option>
           <option value="en">{messages.common.english}</option>
+          <option value="ru">{messages.common.russian}</option>
         </select>
       </Field>
       <Field id="preferredCurrency" label={messages.onboarding.currency}>

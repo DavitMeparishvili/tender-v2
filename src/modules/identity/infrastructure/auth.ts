@@ -3,6 +3,7 @@ import { betterAuth } from "better-auth";
 import { z } from "zod";
 import { getServerEnv, type ServerEnv } from "../../../config/env";
 import { database } from "../../../infrastructure/db/client";
+import { isLocale, type Locale } from "../../localization/config";
 import { LogMailSender } from "../../notifications/adapters/log-mail-sender";
 import { getTestMailbox } from "../../notifications/adapters/test-mailbox";
 import type { MailSender } from "../../notifications/ports/mail-sender";
@@ -20,12 +21,14 @@ type AuthDependencies = Readonly<{
   env?: ServerEnv;
 }>;
 
-async function preferredLocaleFor(userId: string): Promise<"ka" | "en"> {
+async function preferredLocaleFor(userId: string): Promise<Locale> {
   const profile = await database.userProfile.findUnique({
     where: { userId },
     select: { preferredLocale: true },
   });
-  return profile?.preferredLocale === "en" ? "en" : "ka";
+  return profile !== null && isLocale(profile.preferredLocale)
+    ? profile.preferredLocale
+    : "ka";
 }
 
 function anchorToAppUrl(generatedUrl: string, appUrl: string): string {

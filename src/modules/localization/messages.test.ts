@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import en from "./messages/en.json";
 import ka from "./messages/ka.json";
+import ru from "./messages/ru.json";
 
 function leaves(value: unknown, prefix = ""): Array<[string, string]> {
   if (typeof value === "string") {
@@ -36,6 +37,7 @@ describe("identity message catalogs", () => {
       "workspace",
     ]);
     expect(Object.keys(ka).sort()).toEqual(Object.keys(en).sort());
+    expect(Object.keys(ru).sort()).toEqual(Object.keys(en).sort());
     expect(
       leaves(ka)
         .map(([key]) => key)
@@ -46,7 +48,16 @@ describe("identity message catalogs", () => {
         .sort(),
     );
     expect(
-      [...leaves(ka), ...leaves(en)].every(
+      leaves(ru)
+        .map(([key]) => key)
+        .sort(),
+    ).toEqual(
+      leaves(en)
+        .map(([key]) => key)
+        .sort(),
+    );
+    expect(
+      [...leaves(ka), ...leaves(en), ...leaves(ru)].every(
         ([, value]) => value.trim().length > 0,
       ),
     ).toBe(true);

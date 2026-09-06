@@ -1,4 +1,5 @@
 import { database } from "../../../infrastructure/db/client";
+import { isLocale, type Locale } from "../../localization/config";
 import type { Capability, ProviderSpecialty } from "../domain/capability";
 import { auth } from "../infrastructure/auth";
 
@@ -9,7 +10,7 @@ export type CurrentUser = Readonly<{
   displayName: string;
   capabilities: readonly Capability[];
   providerSpecialties: readonly ProviderSpecialty[];
-  preferredLocale: "ka" | "en";
+  preferredLocale: Locale;
   preferredCurrency: "GEL" | "USD";
   onboardingComplete: boolean;
   disabledAt: Date | null;
@@ -22,8 +23,8 @@ const capabilityOrder: Readonly<Record<Capability, number>> = {
   ADMIN: 2,
 };
 
-function normalizeLocale(value: string | undefined): "ka" | "en" {
-  return value === "en" ? "en" : "ka";
+function normalizeLocale(value: string | undefined): Locale {
+  return value !== undefined && isLocale(value) ? value : "ka";
 }
 
 function normalizeCurrency(value: string | undefined): "GEL" | "USD" {

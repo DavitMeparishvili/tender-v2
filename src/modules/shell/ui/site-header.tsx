@@ -1,11 +1,42 @@
 import Link from "next/link";
-import type { Locale } from "../../localization/config";
+import { SUPPORTED_LOCALES, type Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import { LocaleLink } from "../../identity/ui/locale-link";
 import { AccountMenu } from "./account-menu";
 import { MobileTabBar } from "./mobile-tab-bar";
 import { NavTabs } from "./nav-tabs";
 import { buildShellNav, type ShellViewer } from "./nav-model";
+
+function LocaleSwitcher({
+  locale,
+  messages,
+  compact = false,
+}: Readonly<{
+  locale: Locale;
+  messages: Messages;
+  compact?: boolean;
+}>) {
+  const labels: Readonly<Record<Locale, string>> = {
+    ka: messages.common.georgian,
+    en: messages.common.english,
+    ru: messages.common.russian,
+  };
+
+  return (
+    <nav className="locale-switcher" aria-label={messages.common.language}>
+      {SUPPORTED_LOCALES.map((targetLocale) => (
+        <LocaleLink
+          key={targetLocale}
+          currentLocale={locale}
+          dirtyWarning={messages.errors.dirtyLocale}
+          label={labels[targetLocale]}
+          {...(compact ? { shortLabel: targetLocale.toUpperCase() } : {})}
+          targetLocale={targetLocale}
+        />
+      ))}
+    </nav>
+  );
+}
 
 /**
  * Every page renders inside this shell, so no surface is reachable only by
@@ -22,7 +53,6 @@ export function SiteHeader({
   messages: Messages;
   viewer: ShellViewer | null;
 }>) {
-  const otherLocale: Locale = locale === "ka" ? "en" : "ka";
   const nav = buildShellNav(locale, messages, viewer);
 
   return (
@@ -37,16 +67,7 @@ export function SiteHeader({
             </summary>
             <p>{messages.common.helpBody}</p>
           </details>
-          <LocaleLink
-            currentLocale={locale}
-            dirtyWarning={messages.errors.dirtyLocale}
-            label={
-              otherLocale === "ka"
-                ? messages.common.georgian
-                : messages.common.english
-            }
-            targetLocale={otherLocale}
-          />
+          <LocaleSwitcher locale={locale} messages={messages} />
         </div>
       </div>
 
@@ -62,17 +83,7 @@ export function SiteHeader({
           <NavTabs items={nav.items} label={messages.nav.primary} />
           <span className="nav-spacer" />
           <div className="mobile-locale">
-            <LocaleLink
-              currentLocale={locale}
-              dirtyWarning={messages.errors.dirtyLocale}
-              label={
-                otherLocale === "ka"
-                  ? messages.common.georgian
-                  : messages.common.english
-              }
-              shortLabel={otherLocale.toUpperCase()}
-              targetLocale={otherLocale}
-            />
+            <LocaleSwitcher compact locale={locale} messages={messages} />
           </div>
           <div className="header-actions">
             {viewer === null && nav.secondary !== null ? (

@@ -4,6 +4,7 @@ import type { TenderCurrency, TenderStatus } from "../domain/tender";
 const intlLocales: Readonly<Record<Locale, string>> = {
   en: "en",
   ka: "ka",
+  ru: "ru",
 };
 
 export function formatTenderDate(value: Date | string | null, locale: Locale) {

@@ -1,5 +1,6 @@
 import { Prisma } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
+import { isLocale } from "../../localization/config";
 import type { Result } from "../../shared";
 import type {
   CompleteOnboardingCommand,
@@ -46,7 +47,9 @@ function toSafeProfile(profile: PersistedProfile): SafeProfileView {
     countryCode: "GE",
     city: profile.city,
     activityDescription: profile.activityDescription,
-    preferredLocale: profile.preferredLocale === "en" ? "en" : "ka",
+    preferredLocale: isLocale(profile.preferredLocale)
+      ? profile.preferredLocale
+      : "ka",
     preferredCurrency: profile.preferredCurrency === "USD" ? "USD" : "GEL",
     profilePhotoObjectKey: profile.profilePhotoObjectKey,
     onboardingComplete: profile.onboardingCompleteAt !== null,

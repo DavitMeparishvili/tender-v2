@@ -1,9 +1,11 @@
+import type { Locale } from "../../localization/config";
+
 export type MailTemplate = "VERIFY_EMAIL" | "RESET_PASSWORD";
 
 export type MailMessage = Readonly<{
   to: string;
   template: MailTemplate;
-  locale: "ka" | "en";
+  locale: Locale;
   variables: Readonly<Record<string, string>>;
 }>;
 

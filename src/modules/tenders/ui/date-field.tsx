@@ -134,7 +134,7 @@ function buildCalendarGrid(
 }
 
 function intlLocale(locale: Locale) {
-  return locale === "ka" ? "ka-GE" : "en-GB";
+  return locale === "ka" ? "ka-GE" : locale === "ru" ? "ru-RU" : "en-GB";
 }
 
 function formatDisplayDate(value: string, locale: Locale) {
