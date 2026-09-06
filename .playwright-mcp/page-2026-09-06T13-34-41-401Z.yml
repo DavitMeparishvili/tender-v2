@@ -1,0 +1,95 @@
+- generic [active] [ref=f9e1]:
+  - link "Skip to main content" [ref=f9e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f9e3]:
+    - generic [ref=f9e4]:
+      - link "Tender" [ref=f9e5] [cursor=pointer]:
+        - /url: /en
+      - link "Post a tender" [ref=f9e7] [cursor=pointer]:
+        - /url: /en/register/client
+  - navigation "Primary" [ref=f9e8]:
+    - link "Home" [ref=f9e9] [cursor=pointer]:
+      - /url: /en
+    - link "Tenders" [ref=f9e12] [cursor=pointer]:
+      - /url: /en/provider/tenders
+    - link "Post" [ref=f9e15] [cursor=pointer]:
+      - /url: /en/register/client
+      - generic [aria-hidden] [ref=f9e16]: +
+    - link "Log in" [ref=f9e18] [cursor=pointer]:
+      - /url: /en/login
+    - link "Join" [ref=f9e21] [cursor=pointer]:
+      - /url: /en/register
+  - main [ref=f9e24]:
+    - region [ref=f9e25]:
+      - generic [ref=f9e27]:
+        - generic [ref=f9e28]:
+          - heading "Welcome back" [level=1] [ref=f9e30]
+          - paragraph [ref=f9e31]: Sign in to continue to your verified workspace.
+        - generic [ref=f9e32]:
+          - generic [ref=f9e33]:
+            - generic [ref=f9e34]: Email address
+            - textbox "Email address" [ref=f9e36]
+          - generic [ref=f9e37]:
+            - generic [ref=f9e38]: Password
+            - textbox "Password" [ref=f9e40]
+          - link "Forgot password?" [ref=f9e42] [cursor=pointer]:
+            - /url: /en/forgot-password
+          - button "Sign in" [ref=f9e43] [cursor=pointer]
+          - paragraph [ref=f9e45]:
+            - text: New to Tender?
+            - link "Create account" [ref=f9e46] [cursor=pointer]:
+              - /url: /en/register
+  - contentinfo [ref=f9e47]:
+    - generic [ref=f9e48]:
+      - generic [ref=f9e49]:
+        - generic [ref=f9e50]:
+          - link "Tender" [ref=f9e51] [cursor=pointer]:
+            - /url: /en
+          - paragraph [ref=f9e52]: Construction procurement and service tenders. Structured requirements, comparable offers, recorded agreements.
+        - generic [ref=f9e53]:
+          - heading "Clients" [level=2] [ref=f9e54]
+          - list [ref=f9e55]:
+            - listitem [ref=f9e56]:
+              - link "Post a tender" [ref=f9e57] [cursor=pointer]:
+                - /url: /en/client/tenders/new
+            - listitem [ref=f9e58]:
+              - link "How selection works" [ref=f9e59] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=f9e60]:
+              - link "Agreements" [ref=f9e61] [cursor=pointer]:
+                - /url: /en/client/agreements
+            - listitem [ref=f9e62]:
+              - link "Reviews" [ref=f9e63] [cursor=pointer]:
+                - /url: /en#reviews
+        - generic [ref=f9e64]:
+          - heading "Providers" [level=2] [ref=f9e65]
+          - list [ref=f9e66]:
+            - listitem [ref=f9e67]:
+              - link "Discover tenders" [ref=f9e68] [cursor=pointer]:
+                - /url: /en/provider/tenders
+            - listitem [ref=f9e69]:
+              - link "Access plans" [ref=f9e70] [cursor=pointer]:
+                - /url: /en#access
+            - listitem [ref=f9e71]:
+              - link "Verification" [ref=f9e72] [cursor=pointer]:
+                - /url: /en/register/provider
+            - listitem [ref=f9e73]:
+              - link "Categories" [ref=f9e74] [cursor=pointer]:
+                - /url: /en#categories
+        - generic [ref=f9e75]:
+          - heading "Company" [level=2] [ref=f9e76]
+          - list [ref=f9e77]:
+            - listitem [ref=f9e78]:
+              - link "About" [ref=f9e79] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=f9e80]:
+              - link "Trust and safety" [ref=f9e81] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=f9e82]:
+              - link "Support" [ref=f9e83] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=f9e84]:
+              - link "Terms" [ref=f9e85] [cursor=pointer]:
+                - /url: /en#trust
+      - paragraph [ref=f9e86]: © 2026 Tender. Placeholder name — logo and brand to be defined.
+  - button "Open Next.js Dev Tools" [ref=f9e92] [cursor=pointer]

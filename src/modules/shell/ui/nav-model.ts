@@ -104,7 +104,7 @@ export function buildShellNav(
   }
 
   // Publishing a tender needs the client capability. A provider who does not
-  // have it gets no gold call to action rather than one that duplicates a nav
+  // have it gets no emerald call to action rather than one that duplicates a nav
   // tab or leads to a workspace the server would deny.
   const primary: ShellAction | null =
     viewer === null
@@ -123,24 +123,24 @@ export function buildShellNav(
     {
       key: "discover",
       href: at("/provider/tenders"),
-      label: messages.nav.discover,
+      label: messages.nav.mobileDiscover,
     },
     // The centre action mirrors the header: no publish capability, no tab.
     ...(primary === null
       ? []
-      : [{ key: "post", href: primary.href, label: messages.nav.post }]),
+      : [{ key: "post", href: primary.href, label: messages.nav.mobilePost }]),
     viewer === null
       ? { key: "logIn", href: at("/login"), label: messages.nav.logIn }
       : {
           key: "agreements",
           href: at(isClient ? "/client/agreements" : "/provider/agreements"),
-          label: messages.nav.agreements,
+          label: messages.nav.mobileAgreements,
         },
     viewer === null
       ? {
           key: "register",
           href: at("/register"),
-          label: messages.auth.register,
+          label: messages.nav.mobileRegister,
         }
       : { key: "profile", href: at("/profile"), label: messages.nav.profile },
   ];

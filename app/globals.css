@@ -16,17 +16,17 @@
 :root {
   color-scheme: light;
 
-  /* ---- Brand gold ramp ---- */
-  --tip-gold-50: #fff8e6;
-  --tip-gold-100: #ffefbf;
-  --tip-gold-200: #ffe08a;
-  --tip-gold-300: #ffd24d;
-  --tip-gold-400: #ffc526;
-  --tip-gold-500: #ffb600;
-  --tip-gold-600: #e0a000;
-  --tip-gold-700: #b98300;
-  --tip-gold-800: #8a6200;
-  --tip-gold-soft: #fff3d1;
+  /* ---- Brand emerald ramp ---- */
+  --tip-emerald-50: #ecfdf5;
+  --tip-emerald-100: #d1fae5;
+  --tip-emerald-200: #a7f3d0;
+  --tip-emerald-300: #6ee7b7;
+  --tip-emerald-400: #34d399;
+  --tip-emerald-500: #059669;
+  --tip-emerald-600: #047857;
+  --tip-emerald-700: #065f46;
+  --tip-emerald-800: #064e3b;
+  --tip-emerald-soft: #d1fae5;
 
   /* ---- Core ---- */
   --tip-white: #ffffff;
@@ -74,14 +74,14 @@
   --fg-on-inverse: #f2f2f3;
   --fg-on-brand: var(--tip-ink);
 
-  --brand: var(--tip-gold-500);
-  --brand-hover: var(--tip-gold-600);
-  --brand-active: var(--tip-gold-700);
+  --brand: var(--tip-emerald-500);
+  --brand-hover: var(--tip-emerald-600);
+  --brand-active: var(--tip-emerald-700);
   --link: var(--tip-blue-700);
 
   --border: var(--tip-grey-200);
   --border-strong: var(--tip-grey-300);
-  --focus-ring: color-mix(in srgb, var(--tip-gold-500) 55%, transparent);
+  --focus-ring: color-mix(in srgb, var(--tip-emerald-500) 55%, transparent);
 
   /* ---- Type ---- */
   --font-sans:
@@ -130,7 +130,7 @@
   --trust-soft: var(--tip-green-soft);
   --error: var(--tip-red-dk);
   --error-soft: var(--tip-red-soft);
-  --focus: var(--tip-gold-700);
+  --focus: var(--tip-emerald-700);
 }
 
 /* =============================================================
@@ -180,12 +180,12 @@ img {
 }
 
 ::selection {
-  background: var(--tip-gold-200);
+  background: var(--tip-emerald-200);
   color: var(--fg-1);
 }
 
 :focus-visible {
-  outline: 2px solid var(--tip-gold-700);
+  outline: 2px solid var(--tip-emerald-700);
   outline-offset: 2px;
   border-radius: var(--radius-xs);
 }
@@ -516,9 +516,9 @@ html[lang="ka"] .status-page h1 {
   color: var(--tip-green-dk);
 }
 
-.tag-gold {
-  background: var(--tip-gold-soft);
-  color: var(--tip-gold-800);
+.tag-emerald {
+  background: var(--tip-emerald-soft);
+  color: var(--tip-emerald-800);
 }
 
 .tag-red {
@@ -655,7 +655,7 @@ html[lang="ka"] .status-page h1 {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: var(--tip-gold-700);
+  color: var(--tip-emerald-700);
   font-size: 12.5px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -1190,7 +1190,7 @@ html[lang="ka"] .status-page h1 {
 
 .offer-row-lowest {
   border: 1.5px solid var(--brand);
-  background: var(--tip-gold-50);
+  background: var(--tip-emerald-50);
 }
 
 .offer-avatar {
@@ -1259,7 +1259,7 @@ html[lang="ka"] .status-page h1 {
   block-size: 9px;
   border-radius: 50%;
   background: var(--brand);
-  box-shadow: 0 0 0 5px rgb(255 182 0 / 25%);
+  box-shadow: 0 0 0 5px rgb(5 150 105 / 25%);
 }
 
 .hero-toast-title {
@@ -1301,7 +1301,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .tender-card:hover {
-  border-color: var(--tip-gold-300);
+  border-color: var(--tip-emerald-300);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1327,7 +1327,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .tender-card-title a:hover {
-  color: var(--tip-gold-700);
+  color: var(--tip-emerald-700);
 }
 
 .tender-card-meta {
@@ -1375,7 +1375,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .category-tile:hover {
-  border-color: var(--tip-gold-300);
+  border-color: var(--tip-emerald-300);
   box-shadow: var(--shadow-md);
 }
 
@@ -1387,7 +1387,7 @@ html[lang="ka"] .status-page h1 {
   inline-size: 42px;
   block-size: 42px;
   border-radius: 11px;
-  background: var(--tip-gold-soft);
+  background: var(--tip-emerald-soft);
 }
 
 .category-name {
@@ -1843,7 +1843,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .segmented > label:has(input:focus-visible) {
-  outline: 2px solid var(--tip-gold-700);
+  outline: 2px solid var(--tip-emerald-700);
   outline-offset: 2px;
 }
 
@@ -1938,8 +1938,8 @@ html[lang="ka"] .status-page h1 {
 }
 
 .sort-pill[aria-current="true"] {
-  background: var(--tip-gold-soft);
-  color: var(--tip-gold-800);
+  background: var(--tip-emerald-soft);
+  color: var(--tip-emerald-800);
   font-weight: 700;
 }
 
@@ -1964,7 +1964,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .result-card:hover {
-  border-color: var(--tip-gold-300);
+  border-color: var(--tip-emerald-300);
   box-shadow: var(--shadow-md);
 }
 
@@ -2002,7 +2002,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .result-card-title a:hover {
-  color: var(--tip-gold-700);
+  color: var(--tip-emerald-700);
 }
 
 .result-card-desc {
@@ -2149,7 +2149,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 /* The rail's own action is the page's commit, so it takes ink rather than
-   competing with the gold "Post a tender" in the header. */
+   competing with the emerald "Post a tender" in the header. */
 .filter-rail .submit-button {
   background: var(--tip-ink);
   color: #fff;
@@ -2489,7 +2489,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .mini-card:hover {
-  border-color: var(--tip-gold-300);
+  border-color: var(--tip-emerald-300);
   box-shadow: var(--shadow-md);
 }
 
@@ -2533,8 +2533,8 @@ html[lang="ka"] .status-page h1 {
   align-items: center;
   gap: 10px;
   padding: 16px 20px;
-  border-block-end: 1px solid var(--tip-gold-200);
-  background: var(--tip-gold-soft);
+  border-block-end: 1px solid var(--tip-emerald-200);
+  background: var(--tip-emerald-soft);
   color: var(--fg-1);
   font-size: 17px;
   font-weight: 800;
@@ -3448,7 +3448,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .intent-option:hover {
-  border-color: var(--tip-gold-300);
+  border-color: var(--tip-emerald-300);
   box-shadow: var(--shadow-md);
 }
 
@@ -3763,7 +3763,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .workspace-tile:hover {
-  border-color: var(--tip-gold-300);
+  border-color: var(--tip-emerald-300);
   box-shadow: var(--shadow-md);
 }
 
@@ -3828,7 +3828,7 @@ html[lang="ka"] .status-page h1 {
 .workspace-empty-link {
   display: inline-block;
   margin-block-start: 0.625rem;
-  color: var(--tip-gold-800);
+  color: var(--tip-emerald-800);
   font-weight: 600;
 }
 
@@ -3882,7 +3882,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .tender-list > li:hover {
-  border-color: var(--tip-gold-300);
+  border-color: var(--tip-emerald-300);
   box-shadow: var(--shadow-md);
 }
 
@@ -3917,7 +3917,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .tender-list-heading a:hover {
-  color: var(--tip-gold-700);
+  color: var(--tip-emerald-700);
 }
 
 .tender-status {
@@ -3938,8 +3938,8 @@ html[lang="ka"] .status-page h1 {
 }
 
 [data-tender-status="DRAFT"] .tender-status {
-  background: var(--tip-gold-soft);
-  color: var(--tip-gold-800);
+  background: var(--tip-emerald-soft);
+  color: var(--tip-emerald-800);
 }
 
 [data-tender-status="CANCELLED"] .tender-status,
@@ -4029,8 +4029,8 @@ html[lang="ka"] .status-page h1 {
 }
 
 .tender-detail-status[data-agreement-status="PENDING_CONFIRMATION"] {
-  background: var(--tip-gold-soft);
-  color: var(--tip-gold-800);
+  background: var(--tip-emerald-soft);
+  color: var(--tip-emerald-800);
 }
 
 .tender-detail-status[data-agreement-status="PENDING_CONFIRMATION"] > span {
@@ -4303,7 +4303,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .lifecycle-party.is-current {
-  background: var(--tip-gold-50);
+  background: var(--tip-emerald-50);
 }
 
 .lifecycle-party-label {
@@ -4583,7 +4583,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .date-calendar-day[data-today="true"] {
-  box-shadow: inset 0 0 0 1px var(--tip-gold-500);
+  box-shadow: inset 0 0 0 1px var(--tip-emerald-500);
 }
 
 .date-calendar-day[data-selected="true"] {
@@ -4745,7 +4745,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .attachment-gallery a:hover .attachment-name {
-  color: var(--tip-gold-700);
+  color: var(--tip-emerald-700);
 }
 
 .attachment-gallery img {
@@ -4833,10 +4833,10 @@ html[lang="ka"] .status-page h1 {
   font-size: 13px;
 }
 
-/* The lowest valid offer wins automatically; giving that row the single gold
+/* The lowest valid offer wins automatically; giving that row the single emerald
    highlight makes the mechanism visible instead of buried in a status word. */
 .bid-comparison tbody tr[data-status="WINNER"] {
-  background: var(--tip-gold-soft);
+  background: var(--tip-emerald-soft);
 }
 
 /* Agreements, reviews, inbox ---------------------------------------------- */
@@ -4913,8 +4913,8 @@ html[lang="ka"] .status-page h1 {
 }
 
 [data-agreement-status="PENDING_CONFIRMATION"] .tender-status {
-  background: var(--tip-gold-soft);
-  color: var(--tip-gold-800);
+  background: var(--tip-emerald-soft);
+  color: var(--tip-emerald-800);
 }
 
 [data-agreement-status="AGREED"] .tender-status,
@@ -5213,6 +5213,11 @@ html[lang="ka"] .status-page h1 {
     display: none;
   }
 
+  .header-actions .pill-brand {
+    padding-inline: 14px;
+    font-size: 14px;
+  }
+
   .shell-strip {
     display: none;
   }
@@ -5501,6 +5506,7 @@ html[lang="ka"] .status-page h1 {
   .tab-item {
     display: flex;
     flex: 1;
+    min-inline-size: 0;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -5511,6 +5517,14 @@ html[lang="ka"] .status-page h1 {
     font-size: 10.5px;
     font-weight: 600;
     text-decoration: none;
+  }
+
+  .tab-item > span:last-child {
+    max-inline-size: 100%;
+    overflow: hidden;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .tab-item img {

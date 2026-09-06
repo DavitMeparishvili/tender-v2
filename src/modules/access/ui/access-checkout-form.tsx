@@ -53,7 +53,7 @@ export function AccessCheckoutForm({
   copy: AccessCheckoutCopy;
   product: AccessProductCode;
   tenderId: string;
-  /** `primary` is the gold action; `option` is an outlined subscription row. */
+  /** `primary` is the emerald action; `option` is an outlined subscription row. */
   variant?: "primary" | "option";
 }>) {
   const router = useRouter();

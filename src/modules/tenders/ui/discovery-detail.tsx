@@ -67,7 +67,7 @@ export function DiscoveryDetailContent({
               {specialtyLabel(tender.specialty, messages)}
             </span>
             {isOpen ? (
-              <span className="tag tag-gold">
+              <span className="tag tag-emerald">
                 {messages.detail.openForOffers}
               </span>
             ) : (

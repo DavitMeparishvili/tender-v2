@@ -1,0 +1,288 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e4]:
+    - generic [ref=e5]: Construction tenders across Georgia
+    - group [ref=e6]:
+      - generic "Get help with your account" [ref=e7] [cursor=pointer]: Help
+    - link "ქართული" [ref=e8] [cursor=pointer]:
+      - /url: /ka
+  - banner [ref=e9]:
+    - generic [ref=e10]:
+      - link "Tender" [ref=e11] [cursor=pointer]:
+        - /url: /en
+      - navigation "Primary" [ref=e12]:
+        - link "Discover tenders" [ref=e13] [cursor=pointer]:
+          - /url: /en/provider/tenders
+        - link "How it works" [ref=e14] [cursor=pointer]:
+          - /url: /en#how-it-works
+      - generic [ref=e15]:
+        - link "Log in" [ref=e16] [cursor=pointer]:
+          - /url: /en/login
+        - link "Post a tender" [ref=e17] [cursor=pointer]:
+          - /url: /en/register/client
+  - main [ref=e18]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - paragraph [ref=e22]: Construction procurement
+        - heading "Publish the work. Compare real offers." [level=1] [ref=e23]
+        - paragraph [ref=e24]: One structured place for construction and repair work in Georgia. You publish the requirement, verified providers submit comparable offers, and the tender closes on your deadline at the lowest price.
+        - generic [ref=e25]:
+          - generic [ref=e27]: Search open tenders
+          - searchbox "Search open tenders" [ref=e28]
+          - combobox "Service category" [ref=e30] [cursor=pointer]:
+            - option "All categories" [selected]
+            - option "Construction & repair"
+            - option "Transport & delivery"
+            - option "Equipment & machinery"
+            - option "Labor & site support"
+            - option "Materials & supply"
+          - button "Search" [ref=e31] [cursor=pointer]
+        - generic [ref=e32]:
+          - generic [ref=e33]: "Popular:"
+          - link "Construction & repair" [ref=e34] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=CONSTRUCTION_REPAIR
+          - link "Transport & delivery" [ref=e35] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=TRANSPORT
+          - link "Equipment & machinery" [ref=e36] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=EQUIPMENT
+          - link "Labor & site support" [ref=e37] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=DAILY_LABOR
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - definition [ref=e40]: "1"
+            - term [ref=e41]: Open tenders
+          - generic [ref=e42]:
+            - definition [ref=e43]: "4"
+            - term [ref=e44]: Verified providers
+          - generic [ref=e45]:
+            - definition [ref=e46]: "3"
+            - term [ref=e47]: Offers received
+          - generic [ref=e48]:
+            - definition [ref=e49]: "0"
+            - term [ref=e50]: Completed engagements
+      - generic [ref=e51]:
+        - article [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]: Tender · Open
+            - generic [ref=e55]: Closes in 29d 23h
+          - heading [level=2] [ref=e57]:
+            - link "Renovate two-bedroom apartment interior" [ref=e58] [cursor=pointer]:
+              - /url: /en/provider/tenders/c2991bed-663c-4ce4-91b9-3add478ddedf
+          - paragraph [ref=e59]: Tbilisi · Construction & repair · General construction / turnkey project
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: Client budget
+              - generic [ref=e63]: GEL 4,500.00
+            - generic [ref=e64]:
+              - generic [ref=e65]: Offers
+              - generic [ref=e66]: "0"
+            - generic [ref=e67]:
+              - generic [ref=e68]: Lowest offer
+              - generic [ref=e69]: No offers yet
+          - paragraph [ref=e70]: At the deadline the lowest valid offer is selected automatically and the agreement is recorded.
+        - generic [ref=e75]:
+          - generic [ref=e76]: "3"
+          - generic [ref=e77]: Offers received
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - paragraph [ref=e82]: Live now
+          - heading "Tenders open for offers" [level=2] [ref=e83]
+        - link "Browse all tenders (1)" [ref=e84] [cursor=pointer]:
+          - /url: /en/provider/tenders
+      - list [ref=e85]:
+        - listitem [ref=e86]:
+          - article [ref=e87]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: Construction & repair
+              - generic [ref=e90]: Closes in 29d 23h
+            - heading [level=3] [ref=e92]:
+              - link "Renovate two-bedroom apartment interior" [ref=e93] [cursor=pointer]:
+                - /url: /en/provider/tenders/c2991bed-663c-4ce4-91b9-3add478ddedf
+            - paragraph [ref=e94]: Tbilisi · General construction / turnkey project
+            - generic [ref=e95]:
+              - generic [ref=e96]:
+                - generic [ref=e97]: Budget
+                - generic [ref=e98]: GEL 4,500.00
+              - generic [ref=e99]:
+                - generic [ref=e100]: Offers
+                - generic [ref=e101]: "0"
+              - generic [ref=e102]:
+                - generic [ref=e103]: Lowest offer
+                - generic [ref=e104]: —
+            - paragraph [ref=e105]: Client and full spec unlock with provider access
+    - generic [ref=e108]:
+      - paragraph [ref=e109]: Categories
+      - heading "Work tendered across the trades" [level=2] [ref=e110]
+      - list [ref=e111]:
+        - listitem [ref=e112]:
+          - link "Construction & repair 1 open tenders" [ref=e113] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=CONSTRUCTION_REPAIR
+            - generic [ref=e116]:
+              - generic [ref=e117]: Construction & repair
+              - generic [ref=e118]: 1 open tenders
+        - listitem [ref=e119]:
+          - link "Transport & delivery 0 open tenders" [ref=e120] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=TRANSPORT
+            - generic [ref=e123]:
+              - generic [ref=e124]: Transport & delivery
+              - generic [ref=e125]: 0 open tenders
+        - listitem [ref=e126]:
+          - link "Equipment & machinery 0 open tenders" [ref=e127] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=EQUIPMENT
+            - generic [ref=e130]:
+              - generic [ref=e131]: Equipment & machinery
+              - generic [ref=e132]: 0 open tenders
+        - listitem [ref=e133]:
+          - link "Labor & site support 0 open tenders" [ref=e134] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=DAILY_LABOR
+            - generic [ref=e137]:
+              - generic [ref=e138]: Labor & site support
+              - generic [ref=e139]: 0 open tenders
+        - listitem [ref=e140]:
+          - link "Materials & supply 0 open tenders" [ref=e141] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=MATERIAL_SUPPLIER
+            - generic [ref=e144]:
+              - generic [ref=e145]: Materials & supply
+              - generic [ref=e146]: 0 open tenders
+        - listitem [ref=e147]:
+          - link "All categories 5 categories listed" [ref=e148] [cursor=pointer]:
+            - /url: /en/provider/tenders
+            - generic [aria-hidden] [ref=e149]: →
+            - generic [ref=e150]:
+              - generic [ref=e151]: All categories
+              - generic [ref=e152]: 5 categories listed
+    - generic [ref=e154]:
+      - paragraph [ref=e155]: How it works
+      - heading "Two sides, one process" [level=2] [ref=e156]
+      - paragraph [ref=e157]: Every tender follows the same recorded path from published requirement to reviewed completion.
+      - generic [ref=e158]:
+        - generic [ref=e159]:
+          - heading "For clients" [level=3] [ref=e160]
+          - list [ref=e164]:
+            - listitem [ref=e165]:
+              - generic [ref=e166]:
+                - generic [ref=e167]: Describe the work in a structured form
+                - generic [ref=e168]: Category, scope, materials, site conditions, schedule and deadline — so offers stay comparable.
+            - listitem [ref=e169]:
+              - generic [ref=e170]:
+                - generic [ref=e171]: Receive offers while your identity stays private
+                - generic [ref=e172]: Only providers with paid access see your full requirement and contact details.
+            - listitem [ref=e173]:
+              - generic [ref=e174]:
+                - generic [ref=e175]: The deadline closes the tender
+                - generic [ref=e176]: The lowest valid offer is selected automatically and the agreement is recorded on the platform.
+            - listitem [ref=e177]:
+              - generic [ref=e178]:
+                - generic [ref=e179]: Confirm completion, then review
+                - generic [ref=e180]: Reviews are bound to the finished job, so ratings reflect real work only.
+          - link "Post a tender" [ref=e181] [cursor=pointer]:
+            - /url: /en/register/client
+        - generic [ref=e182]:
+          - heading "For providers" [level=3] [ref=e183]
+          - list [ref=e187]:
+            - listitem [ref=e188]:
+              - generic [ref=e189]:
+                - generic [ref=e190]: Pick your categories and region
+                - generic [ref=e191]: Relevant tenders reach you as they open, filtered to the work you actually do.
+            - listitem [ref=e192]:
+              - generic [ref=e193]:
+                - generic [ref=e194]: Unlock access to bid
+                - generic [ref=e195]: Paid access opens the full specification, attachments and client contact.
+            - listitem [ref=e196]:
+              - generic [ref=e197]:
+                - generic [ref=e198]: Submit a priced offer
+                - generic [ref=e199]: You see the current lowest price, so you know exactly where your bid stands.
+            - listitem [ref=e200]:
+              - generic [ref=e201]:
+                - generic [ref=e202]: Win, deliver, build a record
+                - generic [ref=e203]: Verified completions and job-bound reviews compound into a reputation that wins the next tender.
+          - link "Find work" [ref=e204] [cursor=pointer]:
+            - /url: /en/register/provider
+    - generic [ref=e207]:
+      - generic [ref=e208]:
+        - paragraph [ref=e209]: Trust
+        - heading "Price transparency, kept honest" [level=2] [ref=e210]
+        - paragraph [ref=e211]: Every mechanism on the platform exists to make offers comparable and reputation earned. Administrators manage accounts, content and payments — they never choose a winner or arbitrate a dispute between users.
+      - list [ref=e212]:
+        - listitem [ref=e213]:
+          - heading "Structured requirements" [level=3] [ref=e215]
+          - paragraph [ref=e216]: Construction-specific fields instead of free text, so two offers can be compared line by line.
+        - listitem [ref=e217]:
+          - heading "Privacy before paid access" [level=3] [ref=e219]
+          - paragraph [ref=e220]: Client identity and documents stay hidden until a provider unlocks the tender.
+        - listitem [ref=e221]:
+          - heading "Deadline-based selection" [level=3] [ref=e223]
+          - paragraph [ref=e224]: When the clock runs out the lowest valid offer wins automatically. No quiet renegotiation.
+        - listitem [ref=e225]:
+          - heading "Job-bound reviews" [level=3] [ref=e227]
+          - paragraph [ref=e228]: Only a verified completed engagement can produce a review, on either side.
+    - generic [ref=e230]:
+      - generic [ref=e231]:
+        - heading "From completed engagements" [level=2] [ref=e232]
+        - generic [ref=e233]: Every review here is bound to a verified completed engagement.
+      - paragraph [ref=e235]: No reviews have been published yet. The first one arrives when an engagement is completed and confirmed by both sides.
+    - generic [ref=e237]:
+      - generic [ref=e238]:
+        - heading "Publish your first tender free" [level=2] [ref=e239]
+        - paragraph [ref=e240]: Clients publish at no cost. Providers pay only for access to the tenders they want to win.
+      - generic [ref=e241]:
+        - link "Post a tender" [ref=e242] [cursor=pointer]:
+          - /url: /en/register/client
+        - link "Browse as provider" [ref=e243] [cursor=pointer]:
+          - /url: /en/register/provider
+  - contentinfo [ref=e244]:
+    - generic [ref=e245]:
+      - generic [ref=e246]:
+        - generic [ref=e247]:
+          - link "Tender" [ref=e248] [cursor=pointer]:
+            - /url: /en
+          - paragraph [ref=e249]: Construction procurement and service tenders. Structured requirements, comparable offers, recorded agreements.
+        - generic [ref=e250]:
+          - heading "Clients" [level=2] [ref=e251]
+          - list [ref=e252]:
+            - listitem [ref=e253]:
+              - link "Post a tender" [ref=e254] [cursor=pointer]:
+                - /url: /en/client/tenders/new
+            - listitem [ref=e255]:
+              - link "How selection works" [ref=e256] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=e257]:
+              - link "Agreements" [ref=e258] [cursor=pointer]:
+                - /url: /en/client/agreements
+            - listitem [ref=e259]:
+              - link "Reviews" [ref=e260] [cursor=pointer]:
+                - /url: /en#reviews
+        - generic [ref=e261]:
+          - heading "Providers" [level=2] [ref=e262]
+          - list [ref=e263]:
+            - listitem [ref=e264]:
+              - link "Discover tenders" [ref=e265] [cursor=pointer]:
+                - /url: /en/provider/tenders
+            - listitem [ref=e266]:
+              - link "Access plans" [ref=e267] [cursor=pointer]:
+                - /url: /en#access
+            - listitem [ref=e268]:
+              - link "Verification" [ref=e269] [cursor=pointer]:
+                - /url: /en/register/provider
+            - listitem [ref=e270]:
+              - link "Categories" [ref=e271] [cursor=pointer]:
+                - /url: /en#categories
+        - generic [ref=e272]:
+          - heading "Company" [level=2] [ref=e273]
+          - list [ref=e274]:
+            - listitem [ref=e275]:
+              - link "About" [ref=e276] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=e277]:
+              - link "Trust and safety" [ref=e278] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=e279]:
+              - link "Support" [ref=e280] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=e281]:
+              - link "Terms" [ref=e282] [cursor=pointer]:
+                - /url: /en#trust
+      - paragraph [ref=e283]: © 2026 Tender. Placeholder name — logo and brand to be defined.
+  - alert [ref=e284]

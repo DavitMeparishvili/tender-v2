@@ -1,0 +1,120 @@
+- generic [active] [ref=f26e1]:
+  - link "Skip to main content" [ref=f26e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=f26e4]:
+    - text: Construction tenders across Georgia
+    - group [ref=f26e5]:
+      - generic "Get help with your account" [ref=f26e6]: Help
+    - link "ქართული" [ref=f26e7] [cursor=pointer]:
+      - /url: /ka/client
+  - banner [ref=f26e8]:
+    - generic [ref=f26e9]:
+      - link "Tender" [ref=f26e10] [cursor=pointer]:
+        - /url: /en
+      - navigation "Primary" [ref=f26e11]:
+        - link "Discover tenders" [ref=f26e12] [cursor=pointer]:
+          - /url: /en/provider/tenders
+        - link "My tenders" [ref=f26e13] [cursor=pointer]:
+          - /url: /en/client/tenders
+        - link "Agreements" [ref=f26e14] [cursor=pointer]:
+          - /url: /en/client/agreements
+        - link "Inbox" [ref=f26e15] [cursor=pointer]:
+          - /url: /en/notifications
+      - generic [ref=f26e16]:
+        - link "Seeded Client" [ref=f26e17] [cursor=pointer]:
+          - /url: /en/profile
+        - link "Post a tender" [ref=f26e18] [cursor=pointer]:
+          - /url: /en/client/tenders/new
+  - navigation "Primary" [ref=f26e19]:
+    - link "Home" [ref=f26e20] [cursor=pointer]:
+      - /url: /en
+    - link "Discover tenders" [ref=f26e22] [cursor=pointer]:
+      - /url: /en/provider/tenders
+    - link "Post" [ref=f26e24] [cursor=pointer]:
+      - /url: /en/client/tenders/new
+      - text: +Post
+    - link "Agreements" [ref=f26e25] [cursor=pointer]:
+      - /url: /en/client/agreements
+    - link "Profile" [ref=f26e27] [cursor=pointer]:
+      - /url: /en/profile
+  - main [ref=f26e29]:
+    - region [ref=f26e30]:
+      - generic [ref=f26e32]:
+        - generic [ref=f26e33]: Verified account
+        - generic [ref=f26e34]:
+          - generic [ref=f26e35]:
+            - heading "Client workspace" [level=1] [ref=f26e36]
+            - button "Sign out" [ref=f26e38]
+          - paragraph [ref=f26e39]: Welcome, Seeded Client
+        - list [ref=f26e40]:
+          - listitem [ref=f26e41]:
+            - link "My tendersOpen your tender list to review existing tenders or publish a new one." [ref=f26e42] [cursor=pointer]:
+              - /url: /en/client/tenders
+          - listitem [ref=f26e45]:
+            - link "AgreementsConfirm, start and complete the engagements your won tenders produced." [ref=f26e46] [cursor=pointer]:
+              - /url: /en/client/agreements
+          - listitem [ref=f26e49]:
+            - link "InboxEvery platform event that concerns you, newest first." [ref=f26e50] [cursor=pointer]:
+              - /url: /en/notifications
+          - listitem [ref=f26e53]:
+            - link "Edit profileKeep your public marketplace details accurate." [ref=f26e54] [cursor=pointer]:
+              - /url: /en/profile
+        - generic [ref=f26e58]:
+          - term [ref=f26e59]: Current capability
+          - definition [ref=f26e60]: Client
+        - paragraph [ref=f26e61]:
+          - link "Account security" [ref=f26e62] [cursor=pointer]:
+            - /url: /en/forgot-password
+  - contentinfo [ref=f26e63]:
+    - generic [ref=f26e64]:
+      - generic [ref=f26e65]:
+        - generic [ref=f26e66]:
+          - link "Tender" [ref=f26e67] [cursor=pointer]:
+            - /url: /en
+          - paragraph [ref=f26e68]: Construction procurement and service tenders. Structured requirements, comparable offers, recorded agreements.
+        - generic [ref=f26e69]:
+          - heading "Clients" [level=2] [ref=f26e70]
+          - list [ref=f26e71]:
+            - listitem [ref=f26e72]:
+              - link "Post a tender" [ref=f26e73] [cursor=pointer]:
+                - /url: /en/client/tenders/new
+            - listitem [ref=f26e74]:
+              - link "How selection works" [ref=f26e75] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=f26e76]:
+              - link "Agreements" [ref=f26e77] [cursor=pointer]:
+                - /url: /en/client/agreements
+            - listitem [ref=f26e78]:
+              - link "Reviews" [ref=f26e79] [cursor=pointer]:
+                - /url: /en#reviews
+        - generic [ref=f26e80]:
+          - heading "Providers" [level=2] [ref=f26e81]
+          - list [ref=f26e82]:
+            - listitem [ref=f26e83]:
+              - link "Discover tenders" [ref=f26e84] [cursor=pointer]:
+                - /url: /en/provider/tenders
+            - listitem [ref=f26e85]:
+              - link "Access plans" [ref=f26e86] [cursor=pointer]:
+                - /url: /en#access
+            - listitem [ref=f26e87]:
+              - link "Verification" [ref=f26e88] [cursor=pointer]:
+                - /url: /en/register/provider
+            - listitem [ref=f26e89]:
+              - link "Categories" [ref=f26e90] [cursor=pointer]:
+                - /url: /en#categories
+        - generic [ref=f26e91]:
+          - heading "Company" [level=2] [ref=f26e92]
+          - list [ref=f26e93]:
+            - listitem [ref=f26e94]:
+              - link "About" [ref=f26e95] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=f26e96]:
+              - link "Trust and safety" [ref=f26e97] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=f26e98]:
+              - link "Support" [ref=f26e99] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=f26e100]:
+              - link "Terms" [ref=f26e101] [cursor=pointer]:
+                - /url: /en#trust
+      - paragraph [ref=f26e102]: © 2026 Tender. Placeholder name — logo and brand to be defined.

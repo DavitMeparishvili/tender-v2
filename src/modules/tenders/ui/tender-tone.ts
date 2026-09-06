@@ -11,7 +11,7 @@ const specialtyTones: Readonly<Record<TenderSpecialty, string>> = {
   TRANSPORT: "tag-green",
   EQUIPMENT: "tag-grey",
   DAILY_LABOR: "tag-violet",
-  MATERIAL_SUPPLIER: "tag-gold",
+  MATERIAL_SUPPLIER: "tag-emerald",
 };
 
 export function specialtyTone(specialty: TenderSpecialty): string {
@@ -19,7 +19,7 @@ export function specialtyTone(specialty: TenderSpecialty): string {
 }
 
 const statusTones: Readonly<Record<TenderStatus, string>> = {
-  DRAFT: "tag-gold",
+  DRAFT: "tag-emerald",
   PUBLISHED: "tag-green",
   CLOSED: "tag-grey",
   EXPIRED: "tag-red",

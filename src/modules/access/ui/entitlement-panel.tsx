@@ -61,7 +61,7 @@ export function entitlementPanelCopy(messages: Messages): EntitlementPanelCopy {
 
 /**
  * The gate is the decision this page exists to support, so it gets the only
- * gold-bordered surface in the system. What it does NOT do is hide anything:
+ * emerald-bordered surface in the system. What it does NOT do is hide anything:
  * the masked projection is produced on the server, and this card only offers
  * the purchase that changes it.
  */

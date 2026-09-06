@@ -1,0 +1,275 @@
+- generic [active] [ref=f3e1]:
+  - link "Skip to main content" [ref=f3e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - link "Tender" [ref=f3e5] [cursor=pointer]:
+        - /url: /en
+      - link "Post a tender" [ref=f3e7] [cursor=pointer]:
+        - /url: /en/register/client
+  - navigation "Primary" [ref=f3e8]:
+    - link "Home" [ref=f3e9] [cursor=pointer]:
+      - /url: /en
+    - link "Discover tenders" [ref=f3e12] [cursor=pointer]:
+      - /url: /en/provider/tenders
+    - link "Post" [ref=f3e15] [cursor=pointer]:
+      - /url: /en/register/client
+      - generic [aria-hidden] [ref=f3e16]: +
+    - link "Log in" [ref=f3e18] [cursor=pointer]:
+      - /url: /en/login
+    - link "Create account" [ref=f3e21] [cursor=pointer]:
+      - /url: /en/register
+  - main [ref=f3e24]:
+    - generic [ref=f3e27]:
+      - paragraph [ref=f3e28]: Construction procurement
+      - heading "Publish the work. Compare real offers." [level=1] [ref=f3e29]
+      - paragraph [ref=f3e30]: One structured place for construction and repair work in Georgia. You publish the requirement, verified providers submit comparable offers, and the tender closes on your deadline at the lowest price.
+      - generic [ref=f3e31]:
+        - generic [ref=f3e33]: Search open tenders
+        - searchbox "Search open tenders" [ref=f3e34]
+        - button "Search" [ref=f3e35] [cursor=pointer]
+      - generic [ref=f3e36]:
+        - generic [ref=f3e37]: "Popular:"
+        - link "Construction & repair" [ref=f3e38] [cursor=pointer]:
+          - /url: /en/provider/tenders?specialty=CONSTRUCTION_REPAIR
+        - link "Transport & delivery" [ref=f3e39] [cursor=pointer]:
+          - /url: /en/provider/tenders?specialty=TRANSPORT
+        - link "Equipment & machinery" [ref=f3e40] [cursor=pointer]:
+          - /url: /en/provider/tenders?specialty=EQUIPMENT
+        - link "Labor & site support" [ref=f3e41] [cursor=pointer]:
+          - /url: /en/provider/tenders?specialty=DAILY_LABOR
+      - generic [ref=f3e42]:
+        - generic [ref=f3e43]:
+          - definition [ref=f3e44]: "2"
+          - term [ref=f3e45]: Open tenders
+        - generic [ref=f3e46]:
+          - definition [ref=f3e47]: "1"
+          - term [ref=f3e48]: Verified providers
+        - generic [ref=f3e49]:
+          - definition [ref=f3e50]: "0"
+          - term [ref=f3e51]: Offers received
+        - generic [ref=f3e52]:
+          - definition [ref=f3e53]: "0"
+          - term [ref=f3e54]: Completed engagements
+    - generic [ref=f3e56]:
+      - generic [ref=f3e57]:
+        - generic [ref=f3e58]:
+          - paragraph [ref=f3e59]: Live now
+          - heading "Tenders open for offers" [level=2] [ref=f3e60]
+        - link "Browse all tenders (2)" [ref=f3e61] [cursor=pointer]:
+          - /url: /en/provider/tenders
+      - list [ref=f3e62]:
+        - listitem [ref=f3e63]:
+          - article [ref=f3e64]:
+            - generic [ref=f3e65]:
+              - generic [ref=f3e66]: Construction & repair
+              - time [ref=f3e69]: Sep 14, 2026, 12:00 PM
+            - heading [level=3] [ref=f3e70]:
+              - link "Gori house facade insulation (draft)" [ref=f3e71] [cursor=pointer]:
+                - /url: /en/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310
+            - paragraph [ref=f3e72]: Tbilisi · General construction / turnkey project
+            - generic [ref=f3e73]:
+              - generic [ref=f3e74]:
+                - generic [ref=f3e75]: Budget
+                - generic [ref=f3e76]: GEL 23,000.00
+              - generic [ref=f3e77]:
+                - generic [ref=f3e78]: Offers
+                - generic [ref=f3e79]: "0"
+              - generic [ref=f3e80]:
+                - generic [ref=f3e81]: Lowest offer
+                - generic [ref=f3e82]: —
+            - paragraph [ref=f3e83]: Client and full spec unlock with provider access
+        - listitem [ref=f3e85]:
+          - article [ref=f3e86]:
+            - generic [ref=f3e87]:
+              - generic [ref=f3e88]: Construction & repair
+              - time [ref=f3e91]: Sep 29, 2026, 4:32 PM
+            - heading [level=3] [ref=f3e92]:
+              - link "Kutaisi warehouse roof replacement" [ref=f3e93] [cursor=pointer]:
+                - /url: /en/provider/tenders/2f68b85e-c5a5-422b-b2ef-1c4e7f377084
+            - paragraph [ref=f3e94]: Kutaisi · General construction / turnkey project
+            - generic [ref=f3e95]:
+              - generic [ref=f3e96]:
+                - generic [ref=f3e97]: Budget
+                - generic [ref=f3e98]: GEL 125,000.00
+              - generic [ref=f3e99]:
+                - generic [ref=f3e100]: Offers
+                - generic [ref=f3e101]: "0"
+              - generic [ref=f3e102]:
+                - generic [ref=f3e103]: Lowest offer
+                - generic [ref=f3e104]: —
+            - paragraph [ref=f3e105]: Client and full spec unlock with provider access
+    - generic [ref=f3e108]:
+      - paragraph [ref=f3e109]: Categories
+      - heading "Work tendered across the trades" [level=2] [ref=f3e110]
+      - list [ref=f3e111]:
+        - listitem [ref=f3e112]:
+          - link "Construction & repair 2 open tenders" [ref=f3e113] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=CONSTRUCTION_REPAIR
+            - generic [ref=f3e116]:
+              - generic [ref=f3e117]: Construction & repair
+              - generic [ref=f3e118]: 2 open tenders
+        - listitem [ref=f3e119]:
+          - link "Transport & delivery 0 open tenders" [ref=f3e120] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=TRANSPORT
+            - generic [ref=f3e123]:
+              - generic [ref=f3e124]: Transport & delivery
+              - generic [ref=f3e125]: 0 open tenders
+        - listitem [ref=f3e126]:
+          - link "Equipment & machinery 0 open tenders" [ref=f3e127] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=EQUIPMENT
+            - generic [ref=f3e130]:
+              - generic [ref=f3e131]: Equipment & machinery
+              - generic [ref=f3e132]: 0 open tenders
+        - listitem [ref=f3e133]:
+          - link "Labor & site support 0 open tenders" [ref=f3e134] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=DAILY_LABOR
+            - generic [ref=f3e137]:
+              - generic [ref=f3e138]: Labor & site support
+              - generic [ref=f3e139]: 0 open tenders
+        - listitem [ref=f3e140]:
+          - link "Materials & supply 0 open tenders" [ref=f3e141] [cursor=pointer]:
+            - /url: /en/provider/tenders?specialty=MATERIAL_SUPPLIER
+            - generic [ref=f3e144]:
+              - generic [ref=f3e145]: Materials & supply
+              - generic [ref=f3e146]: 0 open tenders
+        - listitem [ref=f3e147]:
+          - link "All categories 5 categories listed" [ref=f3e148] [cursor=pointer]:
+            - /url: /en/provider/tenders
+            - generic [aria-hidden] [ref=f3e149]: →
+            - generic [ref=f3e150]:
+              - generic [ref=f3e151]: All categories
+              - generic [ref=f3e152]: 5 categories listed
+    - generic [ref=f3e154]:
+      - paragraph [ref=f3e155]: How it works
+      - heading "Two sides, one process" [level=2] [ref=f3e156]
+      - paragraph [ref=f3e157]: Every tender follows the same recorded path from published requirement to reviewed completion.
+      - generic [ref=f3e158]:
+        - generic [ref=f3e159]:
+          - heading "For clients" [level=3] [ref=f3e160]
+          - list [ref=f3e164]:
+            - listitem [ref=f3e165]:
+              - generic [ref=f3e166]:
+                - generic [ref=f3e167]: Describe the work in a structured form
+                - generic [ref=f3e168]: Category, scope, materials, site conditions, schedule and deadline — so offers stay comparable.
+            - listitem [ref=f3e169]:
+              - generic [ref=f3e170]:
+                - generic [ref=f3e171]: Receive offers while your identity stays private
+                - generic [ref=f3e172]: Only providers with paid access see your full requirement and contact details.
+            - listitem [ref=f3e173]:
+              - generic [ref=f3e174]:
+                - generic [ref=f3e175]: The deadline closes the tender
+                - generic [ref=f3e176]: The lowest valid offer is selected automatically and the agreement is recorded on the platform.
+            - listitem [ref=f3e177]:
+              - generic [ref=f3e178]:
+                - generic [ref=f3e179]: Confirm completion, then review
+                - generic [ref=f3e180]: Reviews are bound to the finished job, so ratings reflect real work only.
+          - link "Post a tender" [ref=f3e181] [cursor=pointer]:
+            - /url: /en/register/client
+        - generic [ref=f3e182]:
+          - heading "For providers" [level=3] [ref=f3e183]
+          - list [ref=f3e187]:
+            - listitem [ref=f3e188]:
+              - generic [ref=f3e189]:
+                - generic [ref=f3e190]: Pick your categories and region
+                - generic [ref=f3e191]: Relevant tenders reach you as they open, filtered to the work you actually do.
+            - listitem [ref=f3e192]:
+              - generic [ref=f3e193]:
+                - generic [ref=f3e194]: Unlock access to bid
+                - generic [ref=f3e195]: Paid access opens the full specification, attachments and client contact.
+            - listitem [ref=f3e196]:
+              - generic [ref=f3e197]:
+                - generic [ref=f3e198]: Submit a priced offer
+                - generic [ref=f3e199]: You see the current lowest price, so you know exactly where your bid stands.
+            - listitem [ref=f3e200]:
+              - generic [ref=f3e201]:
+                - generic [ref=f3e202]: Win, deliver, build a record
+                - generic [ref=f3e203]: Verified completions and job-bound reviews compound into a reputation that wins the next tender.
+          - link "Find work" [ref=f3e204] [cursor=pointer]:
+            - /url: /en/register/provider
+    - generic [ref=f3e207]:
+      - generic [ref=f3e208]:
+        - paragraph [ref=f3e209]: Trust
+        - heading "Price transparency, kept honest" [level=2] [ref=f3e210]
+        - paragraph [ref=f3e211]: Every mechanism on the platform exists to make offers comparable and reputation earned. Administrators manage accounts, content and payments — they never choose a winner or arbitrate a dispute between users.
+      - list [ref=f3e212]:
+        - listitem [ref=f3e213]:
+          - heading "Structured requirements" [level=3] [ref=f3e215]
+          - paragraph [ref=f3e216]: Construction-specific fields instead of free text, so two offers can be compared line by line.
+        - listitem [ref=f3e217]:
+          - heading "Privacy before paid access" [level=3] [ref=f3e219]
+          - paragraph [ref=f3e220]: Client identity and documents stay hidden until a provider unlocks the tender.
+        - listitem [ref=f3e221]:
+          - heading "Deadline-based selection" [level=3] [ref=f3e223]
+          - paragraph [ref=f3e224]: When the clock runs out the lowest valid offer wins automatically. No quiet renegotiation.
+        - listitem [ref=f3e225]:
+          - heading "Job-bound reviews" [level=3] [ref=f3e227]
+          - paragraph [ref=f3e228]: Only a verified completed engagement can produce a review, on either side.
+    - generic [ref=f3e230]:
+      - generic [ref=f3e231]:
+        - heading "From completed engagements" [level=2] [ref=f3e232]
+        - generic [ref=f3e233]: Every review here is bound to a verified completed engagement.
+      - paragraph [ref=f3e235]: No reviews have been published yet. The first one arrives when an engagement is completed and confirmed by both sides.
+    - generic [ref=f3e237]:
+      - generic [ref=f3e238]:
+        - heading "Publish your first tender free" [level=2] [ref=f3e239]
+        - paragraph [ref=f3e240]: Clients publish at no cost. Providers pay only for access to the tenders they want to win.
+      - generic [ref=f3e241]:
+        - link "Post a tender" [ref=f3e242] [cursor=pointer]:
+          - /url: /en/register/client
+        - link "Browse as provider" [ref=f3e243] [cursor=pointer]:
+          - /url: /en/register/provider
+  - contentinfo [ref=f3e244]:
+    - generic [ref=f3e245]:
+      - generic [ref=f3e246]:
+        - generic [ref=f3e247]:
+          - link "Tender" [ref=f3e248] [cursor=pointer]:
+            - /url: /en
+          - paragraph [ref=f3e249]: Construction procurement and service tenders. Structured requirements, comparable offers, recorded agreements.
+        - generic [ref=f3e250]:
+          - heading "Clients" [level=2] [ref=f3e251]
+          - list [ref=f3e252]:
+            - listitem [ref=f3e253]:
+              - link "Post a tender" [ref=f3e254] [cursor=pointer]:
+                - /url: /en/client/tenders/new
+            - listitem [ref=f3e255]:
+              - link "How selection works" [ref=f3e256] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=f3e257]:
+              - link "Agreements" [ref=f3e258] [cursor=pointer]:
+                - /url: /en/client/agreements
+            - listitem [ref=f3e259]:
+              - link "Reviews" [ref=f3e260] [cursor=pointer]:
+                - /url: /en#reviews
+        - generic [ref=f3e261]:
+          - heading "Providers" [level=2] [ref=f3e262]
+          - list [ref=f3e263]:
+            - listitem [ref=f3e264]:
+              - link "Discover tenders" [ref=f3e265] [cursor=pointer]:
+                - /url: /en/provider/tenders
+            - listitem [ref=f3e266]:
+              - link "Access plans" [ref=f3e267] [cursor=pointer]:
+                - /url: /en#access
+            - listitem [ref=f3e268]:
+              - link "Verification" [ref=f3e269] [cursor=pointer]:
+                - /url: /en/register/provider
+            - listitem [ref=f3e270]:
+              - link "Categories" [ref=f3e271] [cursor=pointer]:
+                - /url: /en#categories
+        - generic [ref=f3e272]:
+          - heading "Company" [level=2] [ref=f3e273]
+          - list [ref=f3e274]:
+            - listitem [ref=f3e275]:
+              - link "About" [ref=f3e276] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=f3e277]:
+              - link "Trust and safety" [ref=f3e278] [cursor=pointer]:
+                - /url: /en#trust
+            - listitem [ref=f3e279]:
+              - link "Support" [ref=f3e280] [cursor=pointer]:
+                - /url: /en#how-it-works
+            - listitem [ref=f3e281]:
+              - link "Terms" [ref=f3e282] [cursor=pointer]:
+                - /url: /en#trust
+      - paragraph [ref=f3e283]: © 2026 Tender. Placeholder name — logo and brand to be defined.
+  - button "Open Next.js Dev Tools" [ref=f3e289] [cursor=pointer]

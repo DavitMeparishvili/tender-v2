@@ -101,7 +101,7 @@ export function InboxList({
               <div className="inbox-item-meta">
                 {/* Unread is a labelled tag, never weight or colour alone. */}
                 {item.readAt === null ? (
-                  <span className="tag tag-gold">
+                  <span className="tag tag-emerald">
                     {messages.notifications.unread}
                   </span>
                 ) : (

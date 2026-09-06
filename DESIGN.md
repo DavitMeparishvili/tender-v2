@@ -1,18 +1,18 @@
 ---
 name: Tender
-description: A live construction marketplace in ink, paper and a single gold — structured requirements, comparable offers, recorded agreements.
+description: A live construction marketplace in ink, paper and a single emerald — structured requirements, comparable offers, recorded agreements.
 colors:
-  brand: "#FFB600"
-  brand-hover: "#E0A000"
-  brand-active: "#B98300"
-  gold-50: "#FFF8E6"
-  gold-100: "#FFEFBF"
-  gold-200: "#FFE08A"
-  gold-300: "#FFD24D"
-  gold-400: "#FFC526"
-  gold-700: "#B98300"
-  gold-800: "#8A6200"
-  gold-soft: "#FFF3D1"
+  brand: "#059669"
+  brand-hover: "#047857"
+  brand-active: "#065F46"
+  emerald-50: "#ECFDF5"
+  emerald-100: "#D1FAE5"
+  emerald-200: "#A7F3D0"
+  emerald-300: "#6EE7B7"
+  emerald-400: "#34D399"
+  emerald-700: "#065F46"
+  emerald-800: "#064E3B"
+  emerald-soft: "#D1FAE5"
   ink: "#16181C"
   black: "#000000"
   page: "#FFFFFF"
@@ -276,13 +276,13 @@ counts, closing countdowns, category volumes — and states the rule that decide
 the winner rather than implying negotiation.
 
 The system is built on the Tipalti EU foundations: near-black ink and paper
-carry the page, a single brand gold marks the one thing to do next, and a
+carry the page, a single brand emerald marks the one thing to do next, and a
 hairline grid motif signs every banded surface. Depth is soft and cool, never
 glassy. Numbers are typeset as quantities, not as decoration.
 
 **Key Characteristics:**
 
-- Gold is the single pop, used for the primary action, the active tab and the
+- Emerald is the single pop, used for the primary action, the active tab and the
   live countdown — never as a background for body text.
 - A 1200px content column with 40px gutters governs every band, marketing and
   workspace alike.
@@ -296,7 +296,7 @@ glassy. Numbers are typeset as quantities, not as decoration.
 
 ### Primary
 
-- **Brand Gold (#FFB600):** the single accent. Primary actions, the active nav
+- **Brand Emerald (#059669):** the single accent. Primary actions, the active nav
   underline, countdowns, histogram fills, the lowest-offer highlight.
 - **Tender Ink (#16181C):** headings, high-confidence text, the utility strip,
   the footer, and dark lanes.
@@ -316,10 +316,10 @@ The grey ramp is a true neutral from paper (#F8F8F9) to near-ink (#2B2D33).
 
 ### Named Rules
 
-**The No-White-On-Gold Rule.** Text on brand gold is always ink. White on gold
+**The No-White-On-Emerald Rule.** Text on brand emerald is always ink. White on emerald
 fails contrast and is never used, including on hover and active states.
 
-**The Single-Pop Rule.** One gold element owns each decision. If two gold
+**The Single-Pop Rule.** One emerald element owns each decision. If two emerald
 elements compete inside a card, one of them is wrong.
 
 **The Scarce-Signal Rule.** Green means verified or open, red means repair.
@@ -344,7 +344,7 @@ branch.
 - **Body** (400, 16px, 1.65): descriptions and scope copy.
 - **Small** (500–600, 13.5–14.5px): card metadata and figure values.
 - **Figure label** (500, 11.5px): the label above every number.
-- **Overline** (700, 12px, 0.14em, uppercase, gold): section eyebrows.
+- **Overline** (700, 12px, 0.14em, uppercase, emerald): section eyebrows.
 
 Half-step sizes (11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5px) are part of the
 ramp and come from the bound design system, not from drift.
@@ -370,7 +370,7 @@ Every band centres a 1200px column with 40px gutters, narrowing to 24px below
 Below 1024px each two-column layout collapses to one. On tender detail the
 unlock card moves **above** the description, because the unlock is the decision
 the page exists to support. Below 640px a five-item bottom tab bar appears and
-the header nav tabs hide; the tab bar's centre "Post" action is a 40px gold
+the header nav tabs hide; the tab bar's centre "Post" action is a 40px emerald
 circle offset 8px upward.
 
 **The One-Column Rule.** A collapsed layout reorders by decision priority, not
@@ -380,7 +380,7 @@ by source order.
 
 Shadows are soft and cool-tinted (`rgb(11 27 59 / …)`), five steps from `xs` to
 `xl`. A card at rest uses `xs` or `sm`; a card that is a destination raises to
-`md` or `lg` on hover and takes a `gold-300` border. The hero preview card and
+`md` or `lg` on hover and takes an `emerald-300` border. The hero preview card and
 the mobile filter sheet are the only surfaces at `xl`.
 
 **The Raise-Means-Reachable Rule.** A hover raise promises a destination. A
@@ -391,24 +391,24 @@ card that does not navigate does not raise.
 Radii run 4 / 6 / 10 / 14 / 20 / 28 and the pill. Controls and inputs use 10px;
 result and category cards use 14–20px; feature cards and the unlock gate use
 28px; every button and chip is a pill. Icon chips are 42px squares at 11px
-radius on a gold-soft ground.
+radius on an emerald-soft ground.
 
 ## Components
 
 ### Buttons
 
 - **Shape:** pill, minimum 44px target, 11px/18px padding.
-- **Brand:** gold ground, ink text, `xs` shadow; hover `#E0A000`, active
-  `#B98300`. No scale change on press.
+- **Brand:** emerald ground, ink text, `xs` shadow; hover `#047857`, active
+  `#065F46`. No scale change on press.
 - **Outline:** paper ground, `grey-300` border, ink text; hover border to ink.
-- **Ink:** used where gold would compete with a gold element already present.
+- **Ink:** used where emerald would compete with an emerald element already present.
 - **Pending:** the action label stays visible with lower-emphasis status copy
   appended; the control never collapses to a spinner.
 
 ### Inputs / Fields
 
 Paper ground, `grey-300` border, 10px radius, 44px minimum height. Focus takes
-a gold border plus the 4px soft focus ring. Error takes a red border with
+an emerald border plus the 4px soft focus ring. Error takes a red border with
 specific repair copy below, and the form-level summary links back to each
 field. Disabled controls take the grey-50 ground — used for "Specific service"
 before a category is chosen.
@@ -418,7 +418,7 @@ before a category is chosen.
 A 34px ink utility strip carries the market statement, help and the locale
 switch. Below it a 68px white nav (sticky, 86% white with a 10px blur) carries
 the wordmark, the destination tabs and the primary action. The active tab takes
-a 2px gold bottom border and 700 weight. Destinations are built from the
+a 2px emerald bottom border and 700 weight. Destinations are built from the
 viewer's capabilities in one place, so a route the server would deny is never
 offered as navigation.
 
@@ -432,8 +432,8 @@ values must still read as fields; an empty value renders "Not provided" in
 
 ### The Unlock Gate
 
-The unlock card is the only surface with a 1.5px gold border. It carries a
-gold-soft header with a lock icon, the verbatim access copy, one gold primary
+The unlock card is the only surface with a 1.5px emerald border. It carries an
+emerald-soft header with a lock icon, the verbatim access copy, one emerald primary
 action, a labelled divider, and the two subscription options as outlined rows.
 The simulated-payment note is always present and never softened.
 
@@ -447,7 +447,7 @@ its closed presentation and stops the timer.
 ### Reviews
 
 A review is presented only against a verified completed engagement. The
-summary is a 52px score, a gold star string, a five-row histogram with 7px
+summary is a 52px score, an emerald star string, a five-row histogram with 7px
 tracks, and the four per-criteria scores. Star strings always carry a text
 equivalent ("4.8 out of 5, 61 reviews").
 
@@ -458,7 +458,7 @@ the detail card. Raster basemap tiles are muted (lightly desaturated, not
 greyscale) so their natural greens, blues and road tones stay legible while the
 marks on top still read as the loudest thing on the card. A precise location
 is an ink circular pin with a white ring; an
-approximate location is a gold area circle and never a pin. Attribution is
+approximate location is an emerald area circle and never a pin. Attribution is
 always visible.
 
 **The Quiet-Basemap Rule.** The basemap is context, not content.
@@ -482,13 +482,13 @@ and it is decorative and `aria-hidden`.
 
 - **Do** show real supply: real open tenders, real counts, real reviews.
 - **Do** keep every number tabular and every number labelled.
-- **Do** reserve gold for the single next action on the surface.
+- **Do** reserve emerald for the single next action on the surface.
 - **Do** state the selection rule wherever offers are shown.
 - **Do** test Georgian and English at 1280px, 1024px and 390px.
 
 ### Don't:
 
-- **Don't** put white text on gold, anywhere, in any state.
+- **Don't** put white text on emerald, anywhere, in any state.
 - **Don't** invent tenders, offers, ratings, revenue or statistics to fill a
   section. An empty section says it is empty; a placeholder says it is a
   placeholder.

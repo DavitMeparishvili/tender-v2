@@ -155,7 +155,9 @@ export function LandingPage({
               ) : (
                 <>
                   <div className="hero-preview-head">
-                    <span className="tag tag-gold">{copy.previewStatus}</span>
+                    <span className="tag tag-emerald">
+                      {copy.previewStatus}
+                    </span>
                     <DeadlineCountdown
                       closedLabel={messages.discovery.closed}
                       deadline={preview.deadline}

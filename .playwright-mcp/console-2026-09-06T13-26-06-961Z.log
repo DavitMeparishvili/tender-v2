@@ -1,0 +1,21 @@
+[     617ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/favicon.ico:0
+[   47579ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rX (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:36672)
+    at rZ (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:37705)
+    at http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:131614
+    at sg (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:136776)
+    at sp (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:128114)
+    at http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:122943
+    at sn (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:123044)
+    at sQ (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:149432)
+    at MessagePort.M (http://localhost:3000/_next/static/chunks/8842-fc6a10765807f1bc.js:2:91290)
+[   48907ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rX (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:36672)
+    at rZ (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:37705)
+    at http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:131614
+    at sg (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:136776)
+    at sp (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:128114)
+    at http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:122943
+    at sn (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:123044)
+    at sQ (http://localhost:3000/_next/static/chunks/7e5b376a-28d9942012c35364.js:1:149432)
+    at MessagePort.M (http://localhost:3000/_next/static/chunks/8842-fc6a10765807f1bc.js:2:91290)

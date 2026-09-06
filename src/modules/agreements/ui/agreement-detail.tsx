@@ -59,7 +59,7 @@ function PartyRow({
       <span className="lifecycle-party-label">
         {label}
         {isViewer ? (
-          <span className="tag tag-gold lifecycle-you">
+          <span className="tag tag-emerald lifecycle-you">
             {messages.agreements.you}
           </span>
         ) : null}

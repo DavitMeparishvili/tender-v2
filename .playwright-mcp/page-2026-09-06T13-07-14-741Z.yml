@@ -1,0 +1,275 @@
+- generic [active] [ref=f2e1]:
+  - link "მთავარ შინაარსზე გადასვლა" [ref=f2e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f2e3]:
+    - generic [ref=f2e4]:
+      - link "Tender" [ref=f2e5] [cursor=pointer]:
+        - /url: /ka
+      - link "ტენდერის გამოქვეყნება" [ref=f2e7] [cursor=pointer]:
+        - /url: /ka/register/client
+  - navigation "მთავარი" [ref=f2e8]:
+    - link "მთავარი" [ref=f2e9] [cursor=pointer]:
+      - /url: /ka
+    - link "ტენდერების მოძიება" [ref=f2e12] [cursor=pointer]:
+      - /url: /ka/provider/tenders
+    - link "გამოქვეყნება" [ref=f2e15] [cursor=pointer]:
+      - /url: /ka/register/client
+      - generic [aria-hidden] [ref=f2e16]: +
+    - link "შესვლა" [ref=f2e18] [cursor=pointer]:
+      - /url: /ka/login
+    - link "ანგარიშის შექმნა" [ref=f2e21] [cursor=pointer]:
+      - /url: /ka/register
+  - main [ref=f2e24]:
+    - generic [ref=f2e27]:
+      - paragraph [ref=f2e28]: სამშენებლო შესყიდვები
+      - heading "გამოაქვეყნეთ სამუშაო. შეადარეთ რეალური შეთავაზებები." [level=1] [ref=f2e29]
+      - paragraph [ref=f2e30]: ერთი სტრუქტურირებული სივრცე სამშენებლო და სარემონტო სამუშაოებისთვის საქართველოში. თქვენ აქვეყნებთ მოთხოვნას, დადასტურებული შემსრულებლები აგზავნიან შესადარებელ შეთავაზებებს, ტენდერი კი თქვენს ვადაზე იხურება ყველაზე დაბალ ფასზე.
+      - generic [ref=f2e31]:
+        - generic [ref=f2e33]: ღია ტენდერების ძებნა
+        - searchbox "ღია ტენდერების ძებნა" [ref=f2e34]
+        - button "ძებნა" [ref=f2e35] [cursor=pointer]
+      - generic [ref=f2e36]:
+        - generic [ref=f2e37]: "პოპულარული:"
+        - link "მშენებლობა და რემონტი" [ref=f2e38] [cursor=pointer]:
+          - /url: /ka/provider/tenders?specialty=CONSTRUCTION_REPAIR
+        - link "ტრანსპორტი და გადაზიდვა" [ref=f2e39] [cursor=pointer]:
+          - /url: /ka/provider/tenders?specialty=TRANSPORT
+        - link "სპეციალური ტექნიკა" [ref=f2e40] [cursor=pointer]:
+          - /url: /ka/provider/tenders?specialty=EQUIPMENT
+        - link "მუშახელი და დამხმარე სამუშაოები" [ref=f2e41] [cursor=pointer]:
+          - /url: /ka/provider/tenders?specialty=DAILY_LABOR
+      - generic [ref=f2e42]:
+        - generic [ref=f2e43]:
+          - definition [ref=f2e44]: "2"
+          - term [ref=f2e45]: ღია ტენდერი
+        - generic [ref=f2e46]:
+          - definition [ref=f2e47]: "1"
+          - term [ref=f2e48]: დადასტურებული შემსრულებელი
+        - generic [ref=f2e49]:
+          - definition [ref=f2e50]: "0"
+          - term [ref=f2e51]: მიღებული შეთავაზება
+        - generic [ref=f2e52]:
+          - definition [ref=f2e53]: "0"
+          - term [ref=f2e54]: დასრულებული თანამშრომლობა
+    - generic [ref=f2e56]:
+      - generic [ref=f2e57]:
+        - generic [ref=f2e58]:
+          - paragraph [ref=f2e59]: ახლა აქტიური
+          - heading "ტენდერები, რომლებიც შეთავაზებებს იღებს" [level=2] [ref=f2e60]
+        - link "ყველა ტენდერის ნახვა (2)" [ref=f2e61] [cursor=pointer]:
+          - /url: /ka/provider/tenders
+      - list [ref=f2e62]:
+        - listitem [ref=f2e63]:
+          - article [ref=f2e64]:
+            - generic [ref=f2e65]:
+              - generic [ref=f2e66]: მშენებლობა და რემონტი
+              - time [ref=f2e69]: 14 სექ. 2026, 12:00
+            - heading [level=3] [ref=f2e70]:
+              - link "Gori house facade insulation (draft)" [ref=f2e71] [cursor=pointer]:
+                - /url: /ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310
+            - paragraph [ref=f2e72]: Tbilisi · სრული სამშენებლო სამუშაოები / პროექტი გასაღების ჩაბარებით
+            - generic [ref=f2e73]:
+              - generic [ref=f2e74]:
+                - generic [ref=f2e75]: ბიუჯეტი
+                - generic [ref=f2e76]: 23 000,00 ₾
+              - generic [ref=f2e77]:
+                - generic [ref=f2e78]: შეთავაზებები
+                - generic [ref=f2e79]: "0"
+              - generic [ref=f2e80]:
+                - generic [ref=f2e81]: ყველაზე დაბალი შეთავაზება
+                - generic [ref=f2e82]: —
+            - paragraph [ref=f2e83]: დამკვეთი და სრული სპეციფიკაცია იხსნება შემსრულებლის წვდომით
+        - listitem [ref=f2e85]:
+          - article [ref=f2e86]:
+            - generic [ref=f2e87]:
+              - generic [ref=f2e88]: მშენებლობა და რემონტი
+              - time [ref=f2e91]: 29 სექ. 2026, 16:32
+            - heading [level=3] [ref=f2e92]:
+              - link "Kutaisi warehouse roof replacement" [ref=f2e93] [cursor=pointer]:
+                - /url: /ka/provider/tenders/2f68b85e-c5a5-422b-b2ef-1c4e7f377084
+            - paragraph [ref=f2e94]: Kutaisi · სრული სამშენებლო სამუშაოები / პროექტი გასაღების ჩაბარებით
+            - generic [ref=f2e95]:
+              - generic [ref=f2e96]:
+                - generic [ref=f2e97]: ბიუჯეტი
+                - generic [ref=f2e98]: 125 000,00 ₾
+              - generic [ref=f2e99]:
+                - generic [ref=f2e100]: შეთავაზებები
+                - generic [ref=f2e101]: "0"
+              - generic [ref=f2e102]:
+                - generic [ref=f2e103]: ყველაზე დაბალი შეთავაზება
+                - generic [ref=f2e104]: —
+            - paragraph [ref=f2e105]: დამკვეთი და სრული სპეციფიკაცია იხსნება შემსრულებლის წვდომით
+    - generic [ref=f2e108]:
+      - paragraph [ref=f2e109]: კატეგორიები
+      - heading "სამუშაოები ყველა მიმართულებით" [level=2] [ref=f2e110]
+      - list [ref=f2e111]:
+        - listitem [ref=f2e112]:
+          - link "მშენებლობა და რემონტი 2 ღია ტენდერი" [ref=f2e113] [cursor=pointer]:
+            - /url: /ka/provider/tenders?specialty=CONSTRUCTION_REPAIR
+            - generic [ref=f2e116]:
+              - generic [ref=f2e117]: მშენებლობა და რემონტი
+              - generic [ref=f2e118]: 2 ღია ტენდერი
+        - listitem [ref=f2e119]:
+          - link "ტრანსპორტი და გადაზიდვა 0 ღია ტენდერი" [ref=f2e120] [cursor=pointer]:
+            - /url: /ka/provider/tenders?specialty=TRANSPORT
+            - generic [ref=f2e123]:
+              - generic [ref=f2e124]: ტრანსპორტი და გადაზიდვა
+              - generic [ref=f2e125]: 0 ღია ტენდერი
+        - listitem [ref=f2e126]:
+          - link "სპეციალური ტექნიკა 0 ღია ტენდერი" [ref=f2e127] [cursor=pointer]:
+            - /url: /ka/provider/tenders?specialty=EQUIPMENT
+            - generic [ref=f2e130]:
+              - generic [ref=f2e131]: სპეციალური ტექნიკა
+              - generic [ref=f2e132]: 0 ღია ტენდერი
+        - listitem [ref=f2e133]:
+          - link "მუშახელი და დამხმარე სამუშაოები 0 ღია ტენდერი" [ref=f2e134] [cursor=pointer]:
+            - /url: /ka/provider/tenders?specialty=DAILY_LABOR
+            - generic [ref=f2e137]:
+              - generic [ref=f2e138]: მუშახელი და დამხმარე სამუშაოები
+              - generic [ref=f2e139]: 0 ღია ტენდერი
+        - listitem [ref=f2e140]:
+          - link "სამშენებლო მასალები და მომარაგება 0 ღია ტენდერი" [ref=f2e141] [cursor=pointer]:
+            - /url: /ka/provider/tenders?specialty=MATERIAL_SUPPLIER
+            - generic [ref=f2e144]:
+              - generic [ref=f2e145]: სამშენებლო მასალები და მომარაგება
+              - generic [ref=f2e146]: 0 ღია ტენდერი
+        - listitem [ref=f2e147]:
+          - link "ყველა კატეგორია 5 კატეგორია" [ref=f2e148] [cursor=pointer]:
+            - /url: /ka/provider/tenders
+            - generic [aria-hidden] [ref=f2e149]: →
+            - generic [ref=f2e150]:
+              - generic [ref=f2e151]: ყველა კატეგორია
+              - generic [ref=f2e152]: 5 კატეგორია
+    - generic [ref=f2e154]:
+      - paragraph [ref=f2e155]: როგორ მუშაობს
+      - heading "ორი მხარე, ერთი პროცესი" [level=2] [ref=f2e156]
+      - paragraph [ref=f2e157]: ყველა ტენდერი ერთსა და იმავე აღრიცხულ გზას გადის გამოქვეყნებული მოთხოვნიდან შეფასებულ დასრულებამდე.
+      - generic [ref=f2e158]:
+        - generic [ref=f2e159]:
+          - heading "დამკვეთებისთვის" [level=3] [ref=f2e160]
+          - list [ref=f2e164]:
+            - listitem [ref=f2e165]:
+              - generic [ref=f2e166]:
+                - generic [ref=f2e167]: აღწერეთ სამუშაო სტრუქტურირებულ ფორმაში
+                - generic [ref=f2e168]: კატეგორია, მოცულობა, მასალები, ობიექტის პირობები, გრაფიკი და ვადა — რომ შეთავაზებები შესადარებელი დარჩეს.
+            - listitem [ref=f2e169]:
+              - generic [ref=f2e170]:
+                - generic [ref=f2e171]: მიიღეთ შეთავაზებები ვინაობის გამხელის გარეშე
+                - generic [ref=f2e172]: თქვენს სრულ მოთხოვნასა და საკონტაქტო მონაცემებს მხოლოდ ფასიანი წვდომის მქონე შემსრულებლები ხედავენ.
+            - listitem [ref=f2e173]:
+              - generic [ref=f2e174]:
+                - generic [ref=f2e175]: ვადა ხურავს ტენდერს
+                - generic [ref=f2e176]: ყველაზე დაბალი ვალიდური შეთავაზება ავტომატურად შეირჩევა და შეთანხმება ფიქსირდება პლატფორმაზე.
+            - listitem [ref=f2e177]:
+              - generic [ref=f2e178]:
+                - generic [ref=f2e179]: დაადასტურეთ დასრულება, შემდეგ შეაფასეთ
+                - generic [ref=f2e180]: მიმოხილვები მიბმულია დასრულებულ სამუშაოზე, ამიტომ შეფასება მხოლოდ რეალურ სამუშაოს ასახავს.
+          - link "ტენდერის გამოქვეყნება" [ref=f2e181] [cursor=pointer]:
+            - /url: /ka/register/client
+        - generic [ref=f2e182]:
+          - heading "შემსრულებლებისთვის" [level=3] [ref=f2e183]
+          - list [ref=f2e187]:
+            - listitem [ref=f2e188]:
+              - generic [ref=f2e189]:
+                - generic [ref=f2e190]: აირჩიეთ კატეგორიები და რეგიონი
+                - generic [ref=f2e191]: შესაბამისი ტენდერები გამოქვეყნებისთანავე გიჩვენდებათ, გაფილტრული იმ სამუშაოზე, რომელსაც ნამდვილად ასრულებთ.
+            - listitem [ref=f2e192]:
+              - generic [ref=f2e193]:
+                - generic [ref=f2e194]: გახსენით წვდომა შეთავაზებისთვის
+                - generic [ref=f2e195]: ფასიანი წვდომა ხსნის სრულ სპეციფიკაციას, დანართებსა და დამკვეთის კონტაქტს.
+            - listitem [ref=f2e196]:
+              - generic [ref=f2e197]:
+                - generic [ref=f2e198]: გამოაგზავნეთ ფასიანი შეთავაზება
+                - generic [ref=f2e199]: ხედავთ მიმდინარე ყველაზე დაბალ ფასს და ზუსტად იცით, სად დგახართ.
+            - listitem [ref=f2e200]:
+              - generic [ref=f2e201]:
+                - generic [ref=f2e202]: მოიგეთ, შეასრულეთ, დააგროვეთ რეპუტაცია
+                - generic [ref=f2e203]: დადასტურებული დასრულებები და სამუშაოზე მიბმული მიმოხილვები აგროვებს რეპუტაციას, რომელიც შემდეგ ტენდერს მოიგებს.
+          - link "სამუშაოს მოძებნა" [ref=f2e204] [cursor=pointer]:
+            - /url: /ka/register/provider
+    - generic [ref=f2e207]:
+      - generic [ref=f2e208]:
+        - paragraph [ref=f2e209]: ნდობა
+        - heading "ფასის გამჭვირვალობა, პატიოსნად დაცული" [level=2] [ref=f2e210]
+        - paragraph [ref=f2e211]: პლატფორმის ყველა მექანიზმი არსებობს იმისთვის, რომ შეთავაზებები შესადარებელი იყოს და რეპუტაცია დამსახურებული. ადმინისტრატორები მართავენ ანგარიშებს, კონტენტსა და გადახდებს — ისინი არასდროს ირჩევენ გამარჯვებულს და არ არბიტრაჟობენ მომხმარებელთა დავას.
+      - list [ref=f2e212]:
+        - listitem [ref=f2e213]:
+          - heading "სტრუქტურირებული მოთხოვნები" [level=3] [ref=f2e215]
+          - paragraph [ref=f2e216]: თავისუფალი ტექსტის ნაცვლად სამშენებლო სპეციფიკური ველები, რომ ორი შეთავაზება სტრიქონობრივად შედარდეს.
+        - listitem [ref=f2e217]:
+          - heading "კონფიდენციალობა ფასიან წვდომამდე" [level=3] [ref=f2e219]
+          - paragraph [ref=f2e220]: დამკვეთის ვინაობა და დოკუმენტები დაფარულია, სანამ შემსრულებელი ტენდერს არ განბლოკავს.
+        - listitem [ref=f2e221]:
+          - heading "ვადაზე დაფუძნებული შერჩევა" [level=3] [ref=f2e223]
+          - paragraph [ref=f2e224]: ვადის ამოწურვისას ავტომატურად იმარჯვებს ყველაზე დაბალი ვალიდური შეთავაზება. ჩუმი გადამოლაპარაკების გარეშე.
+        - listitem [ref=f2e225]:
+          - heading "სამუშაოზე მიბმული მიმოხილვები" [level=3] [ref=f2e227]
+          - paragraph [ref=f2e228]: მიმოხილვა მხოლოდ დადასტურებული, დასრულებული თანამშრომლობიდან ჩნდება — ორივე მხარისთვის.
+    - generic [ref=f2e230]:
+      - generic [ref=f2e231]:
+        - heading "დასრულებული თანამშრომლობებიდან" [level=2] [ref=f2e232]
+        - generic [ref=f2e233]: აქ მოცემული ყოველი მიმოხილვა მიბმულია დადასტურებულ, დასრულებულ თანამშრომლობაზე.
+      - paragraph [ref=f2e235]: მიმოხილვები ჯერ არ გამოქვეყნებულა. პირველი მაშინ გამოჩნდება, როცა თანამშრომლობა დასრულდება და ორივე მხარე დაადასტურებს.
+    - generic [ref=f2e237]:
+      - generic [ref=f2e238]:
+        - heading "გამოაქვეყნეთ პირველი ტენდერი უფასოდ" [level=2] [ref=f2e239]
+        - paragraph [ref=f2e240]: დამკვეთები აქვეყნებენ უფასოდ. შემსრულებლები იხდიან მხოლოდ იმ ტენდერებზე წვდომისთვის, რომელთა მოგებაც სურთ.
+      - generic [ref=f2e241]:
+        - link "ტენდერის გამოქვეყნება" [ref=f2e242] [cursor=pointer]:
+          - /url: /ka/register/client
+        - link "დათვალიერება შემსრულებლად" [ref=f2e243] [cursor=pointer]:
+          - /url: /ka/register/provider
+  - contentinfo [ref=f2e244]:
+    - generic [ref=f2e245]:
+      - generic [ref=f2e246]:
+        - generic [ref=f2e247]:
+          - link "Tender" [ref=f2e248] [cursor=pointer]:
+            - /url: /ka
+          - paragraph [ref=f2e249]: სამშენებლო შესყიდვები და მომსახურების ტენდერები. სტრუქტურირებული მოთხოვნები, შესადარებელი შეთავაზებები, აღრიცხული შეთანხმებები.
+        - generic [ref=f2e250]:
+          - heading "დამკვეთებს" [level=2] [ref=f2e251]
+          - list [ref=f2e252]:
+            - listitem [ref=f2e253]:
+              - link "ტენდერის გამოქვეყნება" [ref=f2e254] [cursor=pointer]:
+                - /url: /ka/client/tenders/new
+            - listitem [ref=f2e255]:
+              - link "როგორ ხდება შერჩევა" [ref=f2e256] [cursor=pointer]:
+                - /url: /ka#how-it-works
+            - listitem [ref=f2e257]:
+              - link "შეთანხმებები" [ref=f2e258] [cursor=pointer]:
+                - /url: /ka/client/agreements
+            - listitem [ref=f2e259]:
+              - link "მიმოხილვები" [ref=f2e260] [cursor=pointer]:
+                - /url: /ka#reviews
+        - generic [ref=f2e261]:
+          - heading "შემსრულებლებს" [level=2] [ref=f2e262]
+          - list [ref=f2e263]:
+            - listitem [ref=f2e264]:
+              - link "ტენდერების მოძიება" [ref=f2e265] [cursor=pointer]:
+                - /url: /ka/provider/tenders
+            - listitem [ref=f2e266]:
+              - link "წვდომის გეგმები" [ref=f2e267] [cursor=pointer]:
+                - /url: /ka#access
+            - listitem [ref=f2e268]:
+              - link "დადასტურება" [ref=f2e269] [cursor=pointer]:
+                - /url: /ka/register/provider
+            - listitem [ref=f2e270]:
+              - link "კატეგორიები" [ref=f2e271] [cursor=pointer]:
+                - /url: /ka#categories
+        - generic [ref=f2e272]:
+          - heading "კომპანია" [level=2] [ref=f2e273]
+          - list [ref=f2e274]:
+            - listitem [ref=f2e275]:
+              - link "ჩვენ შესახებ" [ref=f2e276] [cursor=pointer]:
+                - /url: /ka#trust
+            - listitem [ref=f2e277]:
+              - link "ნდობა და უსაფრთხოება" [ref=f2e278] [cursor=pointer]:
+                - /url: /ka#trust
+            - listitem [ref=f2e279]:
+              - link "მხარდაჭერა" [ref=f2e280] [cursor=pointer]:
+                - /url: /ka#how-it-works
+            - listitem [ref=f2e281]:
+              - link "პირობები" [ref=f2e282] [cursor=pointer]:
+                - /url: /ka#trust
+      - paragraph [ref=f2e283]: © 2026 Tender. სახელი დროებითია — ლოგო და ბრენდი განსასაზღვრია.
+  - button "Open Next.js Dev Tools" [ref=f2e289] [cursor=pointer]
