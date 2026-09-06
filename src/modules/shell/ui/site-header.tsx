@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import { LocaleLink } from "../../identity/ui/locale-link";
+import { AccountMenu } from "./account-menu";
 import { MobileTabBar } from "./mobile-tab-bar";
 import { NavTabs } from "./nav-tabs";
 import { buildShellNav, type ShellViewer } from "./nav-model";
@@ -61,16 +62,28 @@ export function SiteHeader({
           <NavTabs items={nav.items} label={messages.nav.primary} />
           <span className="nav-spacer" />
           <div className="header-actions">
-            {nav.secondary === null ? null : (
+            {viewer === null && nav.secondary !== null ? (
               <Link className="header-link" href={nav.secondary.href}>
                 {nav.secondary.label}
               </Link>
-            )}
+            ) : null}
             {nav.primary === null ? null : (
               <Link className="pill pill-brand" href={nav.primary.href}>
                 {nav.primary.label}
               </Link>
             )}
+            {viewer !== null && nav.secondary !== null ? (
+              <AccountMenu
+                displayName={viewer.displayName}
+                locale={locale}
+                primary={nav.primary}
+                profileHref={nav.secondary.href}
+                profileLabel={messages.nav.profile}
+                signOutLabel={messages.common.signOut}
+                statusLabel={messages.common.verified}
+                workingLabel={messages.common.working}
+              />
+            ) : null}
           </div>
         </div>
       </header>

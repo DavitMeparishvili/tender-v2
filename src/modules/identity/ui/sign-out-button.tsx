@@ -1,18 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import type { Locale } from "../../localization/config";
 
 type SignOutButtonProps = Readonly<{
   locale: Locale;
   label: string;
   pendingLabel: string;
+  icon?: ReactNode;
 }>;
 
 export function SignOutButton({
   locale,
   label,
   pendingLabel,
+  icon,
 }: SignOutButtonProps) {
   const [pending, setPending] = useState(false);
 
@@ -31,6 +34,7 @@ export function SignOutButton({
       disabled={pending}
       onClick={signOut}
     >
+      {icon}
       {label}
       {pending ? " · " + pendingLabel : ""}
     </button>

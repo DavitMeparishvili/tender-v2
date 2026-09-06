@@ -865,6 +865,227 @@ html[lang="ka"] .status-page h1 {
   color: var(--brand-active);
 }
 
+.account-menu {
+  position: relative;
+}
+
+.account-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  inline-size: 64px;
+  min-block-size: 44px;
+  padding: 3px 5px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--fg-1);
+  cursor: pointer;
+  list-style: none;
+  transition:
+    background-color 150ms var(--ease),
+    color 150ms var(--ease);
+}
+
+.account-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.account-menu-trigger-avatar,
+.account-menu-avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--tip-emerald-100);
+  color: var(--brand-active);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.account-menu-trigger-avatar {
+  inline-size: 38px;
+  block-size: 38px;
+  font-size: 13px;
+}
+
+.account-menu-chevron {
+  inline-size: 14px;
+  block-size: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 150ms var(--ease);
+}
+
+.account-menu > summary:hover,
+.account-menu[open] > summary {
+  background: var(--tip-grey-50);
+  color: var(--brand-active);
+}
+
+.account-menu[open] .account-menu-chevron {
+  transform: rotate(180deg);
+}
+
+.account-menu-panel {
+  position: absolute;
+  inset-block-start: calc(100% + 10px);
+  inset-inline-end: 0;
+  z-index: 50;
+  display: grid;
+  inline-size: 260px;
+  padding: 10px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  box-shadow:
+    0 18px 42px rgb(11 27 59 / 12%),
+    0 3px 10px rgb(11 27 59 / 7%);
+}
+
+.account-menu:not([open]) .account-menu-panel {
+  display: none;
+}
+
+.account-menu-identity {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 14px;
+  border-block-end: 1px solid var(--border);
+}
+
+.account-menu-avatar {
+  inline-size: 48px;
+  block-size: 48px;
+  font-size: 15px;
+}
+
+.account-menu-identity-copy {
+  display: grid;
+  min-inline-size: 0;
+  gap: 4px;
+}
+
+.account-menu-identity-copy strong {
+  overflow: hidden;
+  color: var(--fg-1);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-menu-identity-copy > span {
+  overflow: hidden;
+  color: var(--fg-3);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-menu-actions {
+  display: grid;
+  gap: 2px;
+  padding-block-start: 6px;
+}
+
+.account-menu-link,
+.account-menu-primary,
+.account-menu-panel .button-secondary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  inline-size: 100%;
+  min-block-size: 48px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--fg-1);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: start;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.account-menu-primary {
+  display: none;
+}
+
+.account-menu-icon,
+.account-menu-current {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.account-menu-icon {
+  inline-size: 22px;
+  block-size: 22px;
+}
+
+.account-menu-icon svg,
+.account-menu-current svg {
+  inline-size: 100%;
+  block-size: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.account-menu-current {
+  inline-size: 18px;
+  block-size: 18px;
+  margin-inline-start: auto;
+}
+
+.account-menu-link:hover,
+.account-menu-primary:hover,
+.account-menu-panel .button-secondary:hover {
+  background: var(--tip-grey-50);
+  color: var(--fg-1);
+}
+
+.account-menu-link[aria-current="page"] {
+  background: var(--tip-emerald-50);
+  color: var(--brand-active);
+}
+
+.account-menu-link[aria-current="page"]:hover {
+  background: var(--tip-emerald-100);
+}
+
+.account-menu-panel .button-secondary {
+  min-block-size: 53px;
+  margin-block-start: 4px;
+  border-block-start: 1px solid var(--border);
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  color: var(--tip-red-dark);
+  cursor: pointer;
+}
+
+.account-menu-panel .button-secondary:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .nav-toggle {
   display: none;
 }
@@ -5085,6 +5306,22 @@ html[lang="ka"] .status-page h1 {
   }
 }
 
+/* Longer localized labels need the primary action to tuck into the account
+   menu before the phone tab bar takes over. Destinations stay visible. */
+@media (width <= 1080px) {
+  .site-header .band-inner {
+    gap: 20px;
+  }
+
+  .header-actions > .pill {
+    display: none;
+  }
+
+  .account-menu-primary {
+    display: flex;
+  }
+}
+
 @media (width <= 1024px) {
   .discovery-layout,
   .detail-layout,
@@ -5206,16 +5443,19 @@ html[lang="ka"] .status-page h1 {
     gap: 12px;
   }
 
-  /* Keep the primary publishing action visible without letting the longer
-     Georgian label force the header wider than a phone viewport. Sign-in
-     remains available from the mobile tab bar. */
-  .header-actions .header-link {
+  /* Phone destinations already live in the fixed bottom bar. Keep only the
+     compact account control in the header so session actions stay reachable. */
+  .header-actions > .header-link,
+  .header-actions > .pill {
     display: none;
   }
 
-  .header-actions .pill-brand {
-    padding-inline: 14px;
-    font-size: 14px;
+  .header-actions {
+    gap: 0;
+  }
+
+  .account-menu-primary {
+    display: none;
   }
 
   .shell-strip {
