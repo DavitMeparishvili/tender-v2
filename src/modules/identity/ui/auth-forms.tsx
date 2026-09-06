@@ -4,6 +4,14 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
+import {
+  ADDRESS_MAX_LENGTH,
+  ADDRESS_MIN_LENGTH,
+  CITY_OR_TOWN_MAX_LENGTH,
+  CITY_OR_TOWN_MIN_LENGTH,
+  ID_NUMBER_PATTERN,
+  normalizeRegistrationAddress,
+} from "../domain/registration-details";
 import { AuthState } from "./auth-state";
 import {
   ErrorSummary,
@@ -31,14 +39,48 @@ function validEmail(value: string): boolean {
 export function parseRegistration(
   source: FormSource,
   messages: Messages,
-): ParseResult<Readonly<{ name: string; email: string; password: string }>> {
+): ParseResult<
+  Readonly<{
+    name: string;
+    idNumber: string;
+    cityOrTown: string;
+    address: string;
+    email: string;
+    password: string;
+  }>
+> {
   const name = read(source, "name").trim();
+  const idNumber = read(source, "idNumber").trim();
+  const cityOrTown = read(source, "cityOrTown").trim();
+  const address = normalizeRegistrationAddress(read(source, "address"));
   const email = read(source, "email").trim().toLowerCase();
   const password = read(source, "password");
+  const confirmation = read(source, "confirmPassword");
   const issues: FormIssue[] = [];
 
   if (name.length < 2 || name.length > 120) {
     issues.push({ field: "name", message: messages.errors.nameLength });
+  }
+  if (!ID_NUMBER_PATTERN.test(idNumber)) {
+    issues.push({
+      field: "idNumber",
+      message: messages.errors.invalidIdNumber,
+    });
+  }
+  if (
+    cityOrTown.length < CITY_OR_TOWN_MIN_LENGTH ||
+    cityOrTown.length > CITY_OR_TOWN_MAX_LENGTH
+  ) {
+    issues.push({
+      field: "cityOrTown",
+      message: messages.errors.cityOrTownLength,
+    });
+  }
+  if (
+    address.length < ADDRESS_MIN_LENGTH ||
+    address.length > ADDRESS_MAX_LENGTH
+  ) {
+    issues.push({ field: "address", message: messages.errors.addressLength });
   }
   if (!validEmail(email)) {
     issues.push({ field: "email", message: messages.errors.invalidEmail });
@@ -48,10 +90,18 @@ export function parseRegistration(
       field: "password",
       message: messages.errors.passwordLength,
     });
+  } else if (password !== confirmation) {
+    issues.push({
+      field: "confirmPassword",
+      message: messages.errors.passwordMismatch,
+    });
   }
   return issues.length > 0
     ? { ok: false, issues }
-    : { ok: true, value: { name, email, password } };
+    : {
+        ok: true,
+        value: { name, idNumber, cityOrTown, address, email, password },
+      };
 }
 
 export function parseLogin(
@@ -184,35 +234,109 @@ export function RegistrationForm({
         summaryOne={messages.errors.summaryOne}
         summaryMany={messages.errors.summaryMany}
       />
-      <Field
-        id="name"
-        label={messages.auth.name}
-        description={messages.auth.nameDescription}
-        error={issueFor(issues, "name")}
-      >
-        <input name="name" type="text" autoComplete="name" />
-      </Field>
-      <Field
-        id="email"
-        label={messages.auth.email}
-        description={messages.auth.emailDescription}
-        error={issueFor(issues, "email")}
-      >
-        <input
-          name="email"
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-        />
-      </Field>
-      <Field
-        id="password"
-        label={messages.auth.password}
-        description={messages.auth.passwordDescription}
-        error={issueFor(issues, "password")}
-      >
-        <input name="password" type="password" autoComplete="new-password" />
-      </Field>
+      <div className="registration-fields">
+        <Field
+          id="name"
+          label={messages.auth.name}
+          description={messages.auth.nameDescription}
+          error={issueFor(issues, "name")}
+        >
+          <input
+            name="name"
+            type="text"
+            autoComplete="name"
+            maxLength={120}
+            required
+          />
+        </Field>
+        <Field
+          id="idNumber"
+          label={messages.auth.idNumber}
+          description={messages.auth.idNumberDescription}
+          error={issueFor(issues, "idNumber")}
+        >
+          <input
+            name="idNumber"
+            type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            maxLength={11}
+            pattern="[0-9]*"
+            required
+          />
+        </Field>
+        <Field
+          id="cityOrTown"
+          label={messages.auth.cityOrTown}
+          description={messages.auth.cityOrTownDescription}
+          error={issueFor(issues, "cityOrTown")}
+        >
+          <input
+            name="cityOrTown"
+            type="text"
+            autoComplete="address-level2"
+            maxLength={CITY_OR_TOWN_MAX_LENGTH}
+            required
+          />
+        </Field>
+        <Field
+          id="address"
+          label={messages.auth.address}
+          description={messages.auth.addressDescription}
+          error={issueFor(issues, "address")}
+        >
+          <input
+            name="address"
+            type="text"
+            autoComplete="street-address"
+            maxLength={ADDRESS_MAX_LENGTH}
+            required
+          />
+        </Field>
+        <div className="registration-field-wide">
+          <Field
+            id="email"
+            label={messages.auth.email}
+            description={messages.auth.emailDescription}
+            error={issueFor(issues, "email")}
+          >
+            <input
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              required
+            />
+          </Field>
+        </div>
+        <Field
+          id="password"
+          label={messages.auth.password}
+          description={messages.auth.passwordDescription}
+          error={issueFor(issues, "password")}
+        >
+          <input
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            minLength={8}
+            required
+          />
+        </Field>
+        <Field
+          id="confirmPassword"
+          label={messages.auth.confirmPassword}
+          error={issueFor(issues, "confirmPassword")}
+        >
+          <input
+            name="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            minLength={8}
+            required
+          />
+        </Field>
+      </div>
       <SubmitButton
         label={messages.auth.createAccount}
         pendingLabel={messages.auth.creatingAccount}

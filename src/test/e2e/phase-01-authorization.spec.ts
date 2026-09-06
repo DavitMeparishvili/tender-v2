@@ -28,8 +28,14 @@ test("@phase-1 unverified account is denied", async ({ page }) => {
   const email = `phase1-unverified-${crypto.randomUUID()}@example.test`;
   await page.goto("/en/register/client");
   await page.getByLabel(messages.auth.name).fill("Unverified Client");
+  await page.getByLabel(messages.auth.idNumber).fill("01010101010");
+  await page.getByLabel(messages.auth.cityOrTown).fill("Tbilisi");
+  await page.getByLabel(messages.auth.address).fill("12 Rustaveli Avenue");
   await page.getByLabel(messages.auth.email).fill(email);
-  await page.getByLabel(messages.auth.password).fill(phaseOnePassword());
+  await page
+    .getByLabel(messages.auth.password, { exact: true })
+    .fill(phaseOnePassword());
+  await page.getByLabel(messages.auth.confirmPassword).fill(phaseOnePassword());
   await page.getByRole("button", { name: messages.auth.createAccount }).click();
   await expect(
     page.getByRole("heading", { name: messages.auth.verificationSentTitle }),

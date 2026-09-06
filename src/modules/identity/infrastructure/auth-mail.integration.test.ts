@@ -16,18 +16,33 @@ afterEach(async () => {
 
 describe("Better Auth mail callbacks", () => {
   it("captures an APP_URL verification link with the fallback locale", async () => {
-    await auth.api.signUpEmail({
+    const signUp = await auth.api.signUpEmail({
       body: {
         email,
         name: "Mail Test",
+        idNumber: " 01010101010 ",
+        cityOrTown: " Tbilisi ",
+        address: " 12   Rustaveli Avenue, Tbilisi ",
         password: "correct-horse-battery-staple",
       },
     });
 
     const message = getTestMailbox("test").latestFor(email, "VERIFY_EMAIL");
+    const registrationDetails = await database.user.findUniqueOrThrow({
+      where: { id: signUp.user.id },
+      select: { idNumber: true, cityOrTown: true, address: true },
+    });
 
     expect(message).toMatchObject({ to: email, locale: "ka" });
     expect(message?.variables.verificationUrl?.startsWith(appUrl)).toBe(true);
+    expect(registrationDetails).toEqual({
+      idNumber: "01010101010",
+      cityOrTown: "Tbilisi",
+      address: "12 Rustaveli Avenue, Tbilisi",
+    });
+    expect(signUp.user).not.toHaveProperty("idNumber");
+    expect(signUp.user).not.toHaveProperty("cityOrTown");
+    expect(signUp.user).not.toHaveProperty("address");
   });
 
   it("uses the persisted preferred locale for password recovery", async () => {
@@ -35,6 +50,9 @@ describe("Better Auth mail callbacks", () => {
       body: {
         email,
         name: "Mail Test",
+        idNumber: "01010101010",
+        cityOrTown: "Tbilisi",
+        address: "12 Rustaveli Avenue, Tbilisi",
         password: "correct-horse-battery-staple",
       },
     });

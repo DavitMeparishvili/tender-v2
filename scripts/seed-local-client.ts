@@ -52,6 +52,9 @@ async function main(): Promise<void> {
         body: {
           email: LOCAL_CLIENT_EMAIL,
           name: "Local Client",
+          idNumber: "01010101010",
+          cityOrTown: "Tbilisi",
+          address: "12 Rustaveli Avenue, Tbilisi",
           password,
         },
       });

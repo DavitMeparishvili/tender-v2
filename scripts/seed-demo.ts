@@ -101,7 +101,14 @@ async function main(): Promise<void> {
     const userIds = new Map<string, string>();
     for (const spec of demoAccounts) {
       await auth.api.signUpEmail({
-        body: { email: spec.email, name: spec.name, password },
+        body: {
+          email: spec.email,
+          name: spec.name,
+          idNumber: "01010101010",
+          cityOrTown: "Tbilisi",
+          address: "12 Rustaveli Avenue, Tbilisi",
+          password,
+        },
       });
       const user = await database.user.update({
         where: { email: spec.email },

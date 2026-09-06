@@ -843,6 +843,10 @@ html[lang="ka"] .status-page h1 {
   flex: 1;
 }
 
+.mobile-locale {
+  display: none;
+}
+
 .header-actions {
   display: flex;
   flex: none;
@@ -3693,6 +3697,16 @@ html[lang="ka"] .status-page h1 {
   gap: 1.25rem;
 }
 
+.registration-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1rem;
+}
+
+.registration-field-wide {
+  grid-column: 1 / -1;
+}
+
 .form-link-row {
   display: flex;
   justify-content: flex-end;
@@ -3796,6 +3810,16 @@ html[lang="ka"] .status-page h1 {
 .field-control > input:-webkit-autofill {
   -webkit-text-fill-color: var(--fg-1);
   box-shadow: 0 0 0 1000px var(--bg-surface) inset;
+}
+
+@media (max-width: 639px) {
+  .registration-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .registration-field-wide {
+    grid-column: auto;
+  }
 }
 
 .error-summary {
@@ -5460,6 +5484,43 @@ html[lang="ka"] .status-page h1 {
 
   .shell-strip {
     display: none;
+  }
+
+  .mobile-locale {
+    display: block;
+    flex: none;
+  }
+
+  .mobile-locale .locale-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 44px;
+    block-size: 44px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    color: var(--fg-1);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: var(--shadow-xs);
+    transition:
+      border-color 150ms var(--ease),
+      background-color 150ms var(--ease),
+      color 150ms var(--ease);
+  }
+
+  .mobile-locale .locale-link:hover {
+    border-color: var(--brand);
+    background: var(--tip-emerald-50);
+    color: var(--brand-active);
+  }
+
+  .mobile-locale .locale-link:active {
+    background: var(--tip-emerald-100);
   }
 
   .hero h1 {

@@ -103,7 +103,14 @@ async function main(): Promise<void> {
 
     for (const spec of accountSpecs) {
       await auth.api.signUpEmail({
-        body: { email: spec.email, name: spec.name, password },
+        body: {
+          email: spec.email,
+          name: spec.name,
+          idNumber: "01010101010",
+          cityOrTown: "Tbilisi",
+          address: "12 Rustaveli Avenue, Tbilisi",
+          password,
+        },
       });
       const user = spec.verified
         ? await database.user.update({

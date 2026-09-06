@@ -35,6 +35,7 @@ export default async function ClientRegistrationPage({
     <IdentityShell
       title={title}
       subtitle={subtitle}
+      width={user === null ? "form" : "task"}
       progress={{
         current: step,
         labels: [

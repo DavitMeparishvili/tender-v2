@@ -16,7 +16,14 @@ afterEach(async () => {
 
 it("loads the authenticated marketplace identity from a Better Auth session", async () => {
   const signUp = await auth.api.signUpEmail({
-    body: { email, name: "Test Client", password },
+    body: {
+      email,
+      name: "Test Client",
+      idNumber: "01010101010",
+      cityOrTown: "Tbilisi",
+      address: "12 Rustaveli Avenue, Tbilisi",
+      password,
+    },
   });
 
   await database.user.update({

@@ -1,10 +1,19 @@
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import { betterAuth } from "better-auth";
+import { z } from "zod";
 import { getServerEnv, type ServerEnv } from "../../../config/env";
 import { database } from "../../../infrastructure/db/client";
 import { LogMailSender } from "../../notifications/adapters/log-mail-sender";
 import { getTestMailbox } from "../../notifications/adapters/test-mailbox";
 import type { MailSender } from "../../notifications/ports/mail-sender";
+import {
+  ADDRESS_MAX_LENGTH,
+  ADDRESS_MIN_LENGTH,
+  CITY_OR_TOWN_MAX_LENGTH,
+  CITY_OR_TOWN_MIN_LENGTH,
+  ID_NUMBER_PATTERN,
+  normalizeRegistrationAddress,
+} from "../domain/registration-details";
 
 type AuthDependencies = Readonly<{
   mailSender: MailSender;
@@ -37,6 +46,41 @@ export function createAuth({
     secret: env.AUTH_SECRET,
     database: prismaAdapter(database, { provider: "postgresql" }),
     trustedOrigins: [env.APP_URL],
+    user: {
+      additionalFields: {
+        idNumber: {
+          type: "string",
+          required: true,
+          returned: false,
+          validator: {
+            input: z.string().trim().regex(ID_NUMBER_PATTERN),
+          },
+        },
+        address: {
+          type: "string",
+          required: true,
+          returned: false,
+          validator: {
+            input: z
+              .string()
+              .transform(normalizeRegistrationAddress)
+              .pipe(z.string().min(ADDRESS_MIN_LENGTH).max(ADDRESS_MAX_LENGTH)),
+          },
+        },
+        cityOrTown: {
+          type: "string",
+          required: true,
+          returned: false,
+          validator: {
+            input: z
+              .string()
+              .trim()
+              .min(CITY_OR_TOWN_MIN_LENGTH)
+              .max(CITY_OR_TOWN_MAX_LENGTH),
+          },
+        },
+      },
+    },
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: true,

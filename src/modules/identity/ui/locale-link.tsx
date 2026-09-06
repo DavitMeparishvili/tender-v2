@@ -8,6 +8,7 @@ type LocaleLinkProps = Readonly<{
   currentLocale: Locale;
   targetLocale: Locale;
   label: string;
+  shortLabel?: string;
   dirtyWarning: string;
 }>;
 
@@ -21,14 +22,16 @@ export function LocaleLink({
   currentLocale,
   targetLocale,
   label,
+  shortLabel,
   dirtyWarning,
 }: LocaleLinkProps) {
   const pathname = usePathname() ?? `/${currentLocale}`;
+  const visibleLabel = shortLabel ?? label;
 
   if (targetLocale === currentLocale) {
     return (
       <span className="locale-link is-current" aria-current="page">
-        {label}
+        {visibleLabel}
       </span>
     );
   }
@@ -36,6 +39,7 @@ export function LocaleLink({
   return (
     <Link
       className="locale-link"
+      aria-label={shortLabel === undefined ? undefined : label}
       href={localizedPath(pathname, targetLocale)}
       hrefLang={targetLocale}
       lang={targetLocale}
@@ -46,7 +50,7 @@ export function LocaleLink({
         }
       }}
     >
-      {label}
+      {visibleLabel}
     </Link>
   );
 }

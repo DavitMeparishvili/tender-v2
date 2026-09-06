@@ -37,6 +37,7 @@ export default async function ProviderRegistrationPage({
     <IdentityShell
       title={title}
       subtitle={subtitle}
+      width={user === null ? "form" : "task"}
       progress={{
         current: step,
         labels: [

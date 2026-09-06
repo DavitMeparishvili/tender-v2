@@ -145,6 +145,9 @@ async function main(): Promise<void> {
       body: {
         email: ADMIN_EMAIL,
         name: "Phase 4 Moderator",
+        idNumber: "01010101010",
+        cityOrTown: "Tbilisi",
+        address: "12 Rustaveli Avenue, Tbilisi",
         password: requiredPassword(),
       },
     });

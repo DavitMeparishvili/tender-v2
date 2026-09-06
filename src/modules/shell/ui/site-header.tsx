@@ -61,6 +61,19 @@ export function SiteHeader({
           </Link>
           <NavTabs items={nav.items} label={messages.nav.primary} />
           <span className="nav-spacer" />
+          <div className="mobile-locale">
+            <LocaleLink
+              currentLocale={locale}
+              dirtyWarning={messages.errors.dirtyLocale}
+              label={
+                otherLocale === "ka"
+                  ? messages.common.georgian
+                  : messages.common.english
+              }
+              shortLabel={otherLocale.toUpperCase()}
+              targetLocale={otherLocale}
+            />
+          </div>
           <div className="header-actions">
             {viewer === null && nav.secondary !== null ? (
               <Link className="header-link" href={nav.secondary.href}>
