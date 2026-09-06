@@ -7,46 +7,11 @@
    the handoff values; do not invent new ones.
    ============================================================= */
 
-/* ---------- Brand type: Inter Tight Tipalti ----------
-   Only the five weights the designs actually use are shipped.
-   Georgian glyphs are absent from this cut, so Noto Sans Georgian
-   sits next in the stack and the browser falls back per glyph —
-   one font-family declaration serves both locales. */
-@font-face {
-  font-family: "Inter Tight Tipalti";
-  src: url("/fonts/InterTightTipalti-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Inter Tight Tipalti";
-  src: url("/fonts/InterTightTipalti-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Inter Tight Tipalti";
-  src: url("/fonts/InterTightTipalti-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Inter Tight Tipalti";
-  src: url("/fonts/InterTightTipalti-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Inter Tight Tipalti";
-  src: url("/fonts/InterTightTipalti-ExtraBold.ttf") format("truetype");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
+/* ---------- Brand type ----------
+   Manrope supplies Latin glyphs and Noto Sans Georgian supplies Georgian
+   glyphs. Both families ship only the 400–800 weights used by the interface,
+   so mixed-language content retains a consistent hierarchy without loading
+   unused font assets. */
 
 :root {
   color-scheme: light;
@@ -120,8 +85,8 @@
 
   /* ---- Type ---- */
   --font-sans:
-    "Inter Tight Tipalti", "Noto Sans Georgian", "Inter Tight", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    "Manrope", "Noto Sans Georgian", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* ---- Radii ---- */
@@ -5239,6 +5204,13 @@ html[lang="ka"] .status-page h1 {
   .site-header .band-inner {
     block-size: 56px;
     gap: 12px;
+  }
+
+  /* Keep the primary publishing action visible without letting the longer
+     Georgian label force the header wider than a phone viewport. Sign-in
+     remains available from the mobile tab bar. */
+  .header-actions .header-link {
+    display: none;
   }
 
   .shell-strip {

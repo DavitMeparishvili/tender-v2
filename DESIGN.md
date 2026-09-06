@@ -43,57 +43,57 @@ colors:
   red-soft: "#F6E7E5"
 typography:
   display:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "56px"
     fontWeight: 800
     lineHeight: 1.03
     letterSpacing: "-0.03em"
   h1:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "42px"
     fontWeight: 800
     lineHeight: 1.05
     letterSpacing: "-0.03em"
   h2:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "36px"
     fontWeight: 700
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   h3:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "22px"
     fontWeight: 700
     lineHeight: 1.25
     letterSpacing: "-0.02em"
   h4:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "20px"
     fontWeight: 700
     lineHeight: 1.3
     letterSpacing: "-0.01em"
   lead:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.5
   body:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.6
   small:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "14px"
     fontWeight: 500
     lineHeight: 1.55
   caption:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "12px"
     fontWeight: 500
     lineHeight: 1.4
   overline:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "12px"
     fontWeight: 700
     lineHeight: 1.3
@@ -104,89 +104,89 @@ typography:
     fontWeight: 500
     lineHeight: 1.5
   score:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "52px"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.03em"
   display-ka:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "44px"
     fontWeight: 800
     lineHeight: 1.06
     letterSpacing: "-0.015em"
   display-md:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "46px"
     fontWeight: 800
     lineHeight: 1.05
     letterSpacing: "-0.03em"
   page-title:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "40px"
     fontWeight: 800
     lineHeight: 1.06
     letterSpacing: "-0.03em"
   title-lg:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "34px"
     fontWeight: 800
     lineHeight: 1.1
     letterSpacing: "-0.025em"
   stat-lg:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "30px"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.02em"
   title-md:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "28px"
     fontWeight: 800
     lineHeight: 1.1
     letterSpacing: "-0.015em"
   title-sm:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "27px"
     fontWeight: 700
     lineHeight: 1.18
     letterSpacing: "-0.015em"
   stat:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "26px"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.02em"
   headline-sm:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "24px"
     fontWeight: 800
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   headline-xs:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "23px"
     fontWeight: 800
     lineHeight: 1.15
     letterSpacing: "-0.01em"
   wordmark:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "19px"
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "-0.02em"
   figure-lg:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "18px"
     fontWeight: 800
     lineHeight: 1.2
   action:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "15px"
     fontWeight: 600
     lineHeight: 1.4
   label-xs:
-    fontFamily: "Inter Tight Tipalti, Noto Sans Georgian, Inter Tight, sans-serif"
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "10.5px"
     fontWeight: 700
     lineHeight: 1.3
@@ -327,13 +327,13 @@ Neither is decoration, and neither carries meaning by colour alone.
 
 ## Typography
 
-**Display and Body Font:** Inter Tight Tipalti, with Noto Sans Georgian as the
-per-glyph fallback.
+**Display and Body Font:** Manrope for Latin text, with Noto Sans Georgian as
+the per-glyph fallback for Georgian text.
 
-**Character:** Inter Tight Tipalti is a compact grotesque that holds tight
-tracking at large sizes; Georgian glyphs fall through to Noto Sans Georgian
-inside the same declaration, so one font stack serves both locales without a
-language branch.
+**Character:** Manrope gives Latin content a clear, modern construction-marketplace
+voice. Georgian glyphs fall through to Noto Sans Georgian inside the same
+declaration, so mixed-language content retains its hierarchy without a language
+branch.
 
 ### Hierarchy
 

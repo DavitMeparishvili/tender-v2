@@ -5,6 +5,11 @@ import "@fontsource/noto-sans-georgian/georgian-400.css";
 import "@fontsource/noto-sans-georgian/georgian-500.css";
 import "@fontsource/noto-sans-georgian/georgian-600.css";
 import "@fontsource/noto-sans-georgian/georgian-700.css";
+import "@fontsource/manrope/latin-400.css";
+import "@fontsource/manrope/latin-500.css";
+import "@fontsource/manrope/latin-600.css";
+import "@fontsource/manrope/latin-700.css";
+import "@fontsource/manrope/latin-800.css";
 import "../globals.css";
 import { SUPPORTED_LOCALES, isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
@@ -17,7 +22,7 @@ THESIS: A marketplace earns trust by showing live supply and the exact mechanism
 OWN-WORLD: Near-black ink and paper carry the page, gold is the single pop and never carries white text, a 1px hairline grid motif marks every hero and banded surface, and soft cool shadows lift cards without turning them into glass.
 STORY: Land on live tenders, filter discovery down to the work you actually do, meet the paid unlock gate on one tender, then judge a provider by job-bound reviews.
 FIRST VIEWPORT: A 34px ink utility strip and a 68px white nav with a gold active underline sit above a 1200px content column; the landing opens on a 56px headline, a pill search bar and a live tender card, and every workspace page opens on the same banded column.
-FORM: Tipalti EU design system — Inter Tight Tipalti, gold #FFB600, 4px spacing grid, radii 4→28 and the pill, shadows xs→xl.
+FORM: Tipalti EU design system — Manrope for Latin and Noto Sans Georgian for Georgian, gold #FFB600, 4px spacing grid, radii 4→28 and the pill, shadows xs→xl.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->`;
 
@@ -75,22 +80,6 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <head>
-        <link
-          as="font"
-          crossOrigin="anonymous"
-          href="/fonts/InterTightTipalti-Regular.ttf"
-          rel="preload"
-          type="font/ttf"
-        />
-        <link
-          as="font"
-          crossOrigin="anonymous"
-          href="/fonts/InterTightTipalti-Bold.ttf"
-          rel="preload"
-          type="font/ttf"
-        />
-      </head>
       <body>
         <template
           data-direction-contract=""

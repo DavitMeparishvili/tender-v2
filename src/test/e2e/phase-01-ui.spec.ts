@@ -28,7 +28,7 @@ test("@phase-1-ui Georgian provider registration fits mobile", async ({
   ).toBeVisible();
   await expect(page.locator("body")).toHaveCSS(
     "font-family",
-    /Noto Sans Georgian/,
+    /Manrope.*Noto Sans Georgian/,
   );
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - window.innerWidth,
