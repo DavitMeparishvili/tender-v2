@@ -141,7 +141,7 @@ const defaultApi: TenderWizardApi = {
     };
     const stored = await fetch(upload.uploadUrl, {
       method: "PUT",
-      headers: { "content-type": upload.contentType },
+      headers: { "content-type": upload.contentType, "if-none-match": "*" },
       body: file,
     });
     if (!stored.ok) {
@@ -590,6 +590,9 @@ export function toLocationCommand(
         mode: "PIN",
         latitude: Number(form.latitude),
         longitude: Number(form.longitude),
+        ...(trimmed(form.addressLine)
+          ? { addressLine: trimmed(form.addressLine) }
+          : {}),
       }
     : {
         ...shared,

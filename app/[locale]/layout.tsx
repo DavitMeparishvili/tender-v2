@@ -5,34 +5,26 @@ import "@fontsource/noto-sans-georgian/georgian-400.css";
 import "@fontsource/noto-sans-georgian/georgian-500.css";
 import "@fontsource/noto-sans-georgian/georgian-600.css";
 import "@fontsource/noto-sans-georgian/georgian-700.css";
-import "@fontsource/manrope/latin-400.css";
-import "@fontsource/manrope/latin-500.css";
-import "@fontsource/manrope/latin-600.css";
-import "@fontsource/manrope/latin-700.css";
-import "@fontsource/manrope/latin-800.css";
-import "@fontsource/inter/latin-400.css";
-import "@fontsource/inter/latin-500.css";
-import "@fontsource/inter/latin-600.css";
-import "@fontsource/inter/latin-700.css";
-import "@fontsource/inter/latin-800.css";
-import "@fontsource/inter/cyrillic-400.css";
-import "@fontsource/inter/cyrillic-500.css";
-import "@fontsource/inter/cyrillic-600.css";
-import "@fontsource/inter/cyrillic-700.css";
-import "@fontsource/inter/cyrillic-800.css";
+// Unicode ranges let the browser request only the scripts present on the page,
+// including Latin Extended for currency symbols. Fontsource self-hosts the files.
+import "@fontsource/noto-sans/400.css";
+import "@fontsource/noto-sans/500.css";
+import "@fontsource/noto-sans/600.css";
+import "@fontsource/noto-sans/700.css";
 import "../globals.css";
 import { SUPPORTED_LOCALES, isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { SiteFooter } from "@/src/modules/shell/ui/site-footer";
 import { SiteHeader } from "@/src/modules/shell/ui/site-header";
 import type { ShellViewer } from "@/src/modules/shell/ui/nav-model";
+import { MobileContentInsets } from "@/src/modules/shell/ui/mobile-content-insets";
 
 const directionContract = `<!--
 THESIS: A marketplace earns trust by showing live supply and the exact mechanism that closes a tender, so the interface leads with open work, real figures and the deadline that decides the winner.
-OWN-WORLD: Near-black ink and paper carry the page, emerald is the single pop and always carries contrast-safe ink text, a 1px hairline grid motif marks every hero and banded surface, and soft cool shadows lift cards without turning them into glass.
+OWN-WORLD: Near-black ink and paper carry the page, emerald is the single pop and carries contrast-safe white action labels, a faint hairline grid motif marks supporting bands, and soft cool shadows lift cards without turning them into glass.
 STORY: Land on live tenders, filter discovery down to the work you actually do, meet the paid unlock gate on one tender, then judge a provider by job-bound reviews.
-FIRST VIEWPORT: A 34px ink utility strip and a 68px white nav with an emerald active underline sit above a 1200px content column; the landing opens on a 56px headline, a pill search bar and a live tender card, and every workspace page opens on the same banded column.
-FORM: Tipalti EU design system — Manrope for Latin and Noto Sans Georgian for Georgian, emerald #059669, 4px spacing grid, radii 4→28 and the pill, shadows xs→xl.
+FIRST VIEWPORT: A 34px ink utility strip and a 68px white nav with an emerald active underline sit above a 1200px content column; the landing opens on a 44px headline, a pill search bar and a live tender card, and every workspace page opens on the same banded column.
+FORM: Tipalti EU design system — Noto Sans for Latin/Cyrillic and Noto Sans Georgian for Georgian, emerald #047857, 4px spacing grid, radii 4→28 and the pill, shadows xs→xl.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->`;
 
@@ -103,6 +95,7 @@ export default async function LocaleLayout({
           {children}
         </main>
         <SiteFooter locale={locale} messages={messages} />
+        <MobileContentInsets />
       </body>
     </html>
   );

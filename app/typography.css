@@ -1,0 +1,60 @@
+/* Shared roles. Components inherit the locale stack, including mixed-script
+   user content. Only genuine 400, 500, 600 and 700 faces are requested. */
+:root {
+  --font-georgian: "Noto Sans Georgian", "Noto Sans", "Segoe UI", sans-serif;
+  --font-international:
+    "Noto Sans", "Noto Sans Georgian", "Segoe UI", sans-serif;
+  --font-sans: var(--font-georgian);
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --text-hero: 2.75rem;
+  --leading-hero: 1.2;
+  --text-title: 2rem;
+  --text-section: 1.5rem;
+  --text-card: 1.25rem;
+  --text-body-size: 1rem;
+  --text-control: 0.9375rem;
+  --text-label: 0.875rem;
+  --text-caption: 0.8125rem;
+  --type-hero: var(--weight-bold) var(--text-hero) / var(--leading-hero)
+    var(--font-sans);
+  --type-title: var(--weight-bold) var(--text-title) / 1.25 var(--font-sans);
+  --type-section: var(--weight-semibold) var(--text-section) / 1.35
+    var(--font-sans);
+  --type-card: var(--weight-semibold) var(--text-card) / 1.4 var(--font-sans);
+  --type-body: var(--weight-regular) var(--text-body-size) / 1.625
+    var(--font-sans);
+  --type-control: var(--weight-semibold) var(--text-control) / 1.4
+    var(--font-sans);
+  --type-label: var(--weight-medium) var(--text-label) / 1.5 var(--font-sans);
+  --type-caption: var(--weight-regular) var(--text-caption) / 1.5
+    var(--font-sans);
+  --type-input: var(--weight-regular) var(--text-body-size) / 1.5
+    var(--font-sans);
+  --mobile-nav-height: 0px;
+  --mobile-actions-height: 0px;
+}
+
+html:lang(en),
+html:lang(ru) {
+  --font-sans: var(--font-international);
+}
+
+@media (width <= 760px) {
+  :root {
+    --text-hero: 2rem;
+    --leading-hero: 1.21875;
+    --text-title: 1.75rem;
+    --text-section: 1.375rem;
+    --text-card: 1.125rem;
+  }
+}
+
+@media (width <= 640px) {
+  :root {
+    /* Conservative space before the observer measures translated controls. */
+    --mobile-nav-height: calc(7rem + env(safe-area-inset-bottom, 0px));
+  }
+}

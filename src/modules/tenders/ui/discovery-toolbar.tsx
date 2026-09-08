@@ -109,6 +109,10 @@ export function ActiveFilterChips({
           className="chip"
           href={discoveryHref(pathname, searchParams, {
             [filter.key]: null,
+            ...(filter.key === "specialty" ? { serviceCode: null } : {}),
+            ...(filter.key === "currency"
+              ? { minBudget: null, maxBudget: null }
+              : {}),
             page: null,
           })}
           key={filter.key}

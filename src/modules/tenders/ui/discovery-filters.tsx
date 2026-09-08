@@ -1,8 +1,18 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useTransition,
+  type FormEvent,
+} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Field } from "../../identity/ui/field";
+import type { GeorgianPlaceOption } from "../application/list-georgian-places";
+import { GeorgianPlaceSelect } from "./georgian-place-select";
+import { TenderIcon } from "./tender-icon";
 import {
   TENDER_SPECIALTIES,
   isServiceForSpecialty,
@@ -25,7 +35,6 @@ import {
   type DiscoveryFilterValues,
 } from "./discovery-query";
 
-const QUICK_CITIES = ["Tbilisi", "Batumi", "Kutaisi", "Rustavi"] as const;
 const QUICK_DEADLINE_DAYS = [7, 30, 90] as const;
 
 export type DiscoveryFilterCopy = Readonly<{
@@ -40,6 +49,7 @@ export type DiscoveryFilterCopy = Readonly<{
   specialtyLabels: Readonly<Record<TenderSpecialty, string>>;
   serviceLabels: Readonly<Record<TenderServiceCode, string>>;
   city: string;
+  allPlaces: string;
   budgetRange: string;
   minimumBudget: string;
   maximumBudget: string;
@@ -131,14 +141,22 @@ function isoDateInDays(days: number): string {
 
 export function DiscoveryFilters({
   copy,
-}: Readonly<{ copy: DiscoveryFilterCopy }>) {
+  places,
+}: Readonly<{
+  copy: DiscoveryFilterCopy;
+  places: readonly GeorgianPlaceOption[];
+}>) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isPending, setPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [sheetOpen, setSheetOpen] = useState(false);
   const panelId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [submittedFields, setSubmittedFields] = useState<
+    readonly DiscoveryFilterKey[] | null
+  >(null);
 
   const initialSpecialtyValue = searchParams.get("specialty") ?? "";
   const initialServiceValue = searchParams.get("serviceCode") ?? "";
@@ -174,7 +192,9 @@ export function DiscoveryFilters({
     }),
   );
   const parsed = parseDiscoverySearchParams(currentValues);
-  const invalidFields = new Set(parsed.ok ? [] : parsed.fields);
+  const invalidFields = new Set(
+    submittedFields ?? (parsed.ok ? [] : parsed.fields),
+  );
   const minBudgetError = invalidFields.has("minBudget")
     ? copy.invalidBudgetRange
     : undefined;
@@ -187,15 +207,72 @@ export function DiscoveryFilters({
   // returns to the control that opened it.
   useEffect(() => {
     if (!sheetOpen) return;
+    const form = formRef.current;
+    if (!form) return;
+    const trigger = triggerRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    // Keep background content out of keyboard and assistive-technology navigation.
+    const background: { element: HTMLElement; inert: boolean }[] = [];
+    let branch: HTMLElement = form;
+    while (branch.parentElement) {
+      for (const sibling of branch.parentElement.children) {
+        if (
+          sibling instanceof HTMLElement &&
+          sibling !== branch &&
+          !sibling.matches(".filter-scrim")
+        ) {
+          background.push({ element: sibling, inert: sibling.inert });
+          sibling.inert = true;
+        }
+      }
+      branch = branch.parentElement;
+      if (branch === document.body) break;
+    }
+    form.querySelector<HTMLButtonElement>(".filter-sheet-close")?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        event.preventDefault();
         setSheetOpen(false);
-        triggerRef.current?.focus();
+      }
+      if (event.key === "Tab") {
+        const controls = [
+          ...form.querySelectorAll<HTMLElement>(
+            'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), [tabindex="0"]',
+          ),
+        ].filter((control) => control.getClientRects().length > 0);
+        const first = controls[0];
+        const last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
       }
     };
+    const media = window.matchMedia("(width <= 1024px)");
+    const onResize = () => {
+      if (!media.matches) setSheetOpen(false);
+    };
+    media.addEventListener("change", onResize);
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      media.removeEventListener("change", onResize);
+      document.body.style.overflow = previousOverflow;
+      background.forEach(({ element, inert }) => {
+        element.inert = inert;
+      });
+      trigger?.focus();
+    };
   }, [sheetOpen]);
+
+  useEffect(() => {
+    if (submittedFields?.length)
+      document.getElementById("filter-errors")?.focus();
+  }, [submittedFields]);
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -214,9 +291,16 @@ export function DiscoveryFilters({
     const preserved = new URLSearchParams(searchParams.toString());
     preserved.delete("page");
     const href = serializeDiscoveryFilters(pathname, preserved, values);
-    setPending(true);
+    const validation = parseDiscoverySearchParams(
+      Object.fromEntries(new URL(href, window.location.origin).searchParams),
+    );
+    if (!validation.ok) {
+      setSubmittedFields(validation.fields);
+      return;
+    }
+    setSubmittedFields(null);
     setSheetOpen(false);
-    router.push(href);
+    startTransition(() => router.push(href));
   }
 
   const activeCount = discoveryFilterKeys.filter((key) =>
@@ -250,6 +334,9 @@ export function DiscoveryFilters({
 
       <form
         aria-label={copy.title}
+        aria-modal={sheetOpen ? true : undefined}
+        role={sheetOpen ? "dialog" : undefined}
+        ref={formRef}
         className="filter-rail"
         data-sheet-open={sheetOpen ? "true" : "false"}
         id={panelId}
@@ -261,6 +348,14 @@ export function DiscoveryFilters({
         <div className="filter-rail-head">
           <span>{copy.title}</span>
           <a href={pathname}>{copy.clearAll}</a>
+          <button
+            className="filter-sheet-close"
+            aria-label={copy.closeFilters}
+            onClick={() => setSheetOpen(false)}
+            type="button"
+          >
+            <TenderIcon name="close" size={20} />
+          </button>
         </div>
 
         <div className="filter-group">
@@ -305,7 +400,7 @@ export function DiscoveryFilters({
           <Field
             id="serviceCode"
             label={copy.service}
-            description={copy.serviceHint}
+            description={specialty === undefined ? copy.serviceHint : undefined}
             error={
               invalidFields.has("serviceCode") ? copy.invalidInput : undefined
             }
@@ -344,27 +439,16 @@ export function DiscoveryFilters({
             label={copy.city}
             error={invalidFields.has("city") ? copy.invalidInput : undefined}
           >
-            <input
+            <GeorgianPlaceSelect
               name="city"
-              type="text"
+              places={places}
+              placeholder={copy.allPlaces}
+              valueKey="nameEn"
+              fallbackLabel={city}
               value={city}
               onChange={(event) => setCity(event.target.value)}
-              maxLength={120}
-              autoComplete="address-level2"
             />
           </Field>
-          <div aria-label={copy.quickCity} className="chip-row" role="group">
-            {QUICK_CITIES.map((value) => (
-              <button
-                className="chip chip-quiet"
-                key={value}
-                onClick={() => setCity(value)}
-                type="button"
-              >
-                {value}
-              </button>
-            ))}
-          </div>
         </div>
 
         <div className="filter-group">
@@ -406,8 +490,7 @@ export function DiscoveryFilters({
 
           <fieldset className="discovery-budget-group">
             <legend>{copy.currency}</legend>
-            <p className="field-description">{copy.currencyHint}</p>
-            <div className="segmented">
+            <div className="segmented filter-currency">
               {[
                 { value: "GEL", label: "GEL" },
                 { value: "USD", label: "USD" },
@@ -415,6 +498,12 @@ export function DiscoveryFilters({
               ].map((option) => (
                 <label key={option.label}>
                   <input
+                    id={option.value === "GEL" ? "currency" : undefined}
+                    aria-describedby={
+                      invalidFields.has("currency")
+                        ? "currency-error"
+                        : undefined
+                    }
                     checked={currency === option.value}
                     name="currency"
                     onChange={() => setCurrency(option.value)}
@@ -425,8 +514,11 @@ export function DiscoveryFilters({
                 </label>
               ))}
             </div>
+            <p className="field-description">{copy.currencyHint}</p>
             {invalidFields.has("currency") ? (
-              <p className="field-error">{copy.currencyRequired}</p>
+              <p className="field-error" id="currency-error">
+                {copy.currencyRequired}
+              </p>
             ) : null}
           </fieldset>
         </div>

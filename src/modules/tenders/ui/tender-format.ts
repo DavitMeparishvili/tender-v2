@@ -7,6 +7,18 @@ const intlLocales: Readonly<Record<Locale, string>> = {
   ru: "ru",
 };
 
+export function tenderNumberFormat(
+  locale: Locale,
+  options: Intl.NumberFormatOptions = {},
+) {
+  // Georgian uses comma decimals and spaces with grouping from five digits.
+  // Some browser builds omit ka ICU data; ru supplies the same separators.
+  return new Intl.NumberFormat(locale === "ka" ? "ru-RU" : locale, {
+    ...options,
+    ...(locale === "ka" ? { useGrouping: "min2" } : {}),
+  });
+}
+
 export function formatTenderDate(value: Date | string | null, locale: Locale) {
   if (value === null) return null;
 
@@ -44,7 +56,7 @@ export function formatAttachmentSize(
   units: Readonly<{ bytes: string; kilobytes: string; megabytes: string }>,
 ) {
   const format = (value: number, maximumFractionDigits: number) =>
-    new Intl.NumberFormat(intlLocales[locale], {
+    tenderNumberFormat(locale, {
       maximumFractionDigits,
     }).format(value);
 

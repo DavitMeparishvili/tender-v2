@@ -5,6 +5,10 @@ import {
   type Messages,
 } from "@/src/modules/localization/get-messages";
 import { getMarketplaceOverview } from "@/src/modules/shell/application/marketplace-overview";
+import {
+  listGeorgianPlaces,
+  type GeorgianPlaceOption,
+} from "@/src/modules/tenders/application/list-georgian-places";
 import { BrandIcon } from "@/src/modules/shell/ui/brand-icon";
 import {
   DiscoveryFilters,
@@ -43,7 +47,8 @@ function filterCopyFor(messages: Messages): DiscoveryFilterCopy {
       MATERIAL_SUPPLIER: messages.tenders.specialtyMaterialSupplier,
     },
     serviceLabels: messages.tenders.serviceLabels,
-    city: messages.tenders.filterCity,
+    city: messages.tenders.city,
+    allPlaces: messages.tenders.filterAllPlaces,
     budgetRange: messages.tenders.filterBudget,
     minimumBudget: messages.tenders.filterMinBudget,
     maximumBudget: messages.tenders.filterMaxBudget,
@@ -76,6 +81,7 @@ function filterCopyFor(messages: Messages): DiscoveryFilterCopy {
 function activeFiltersFor(
   searchParams: DiscoverySearchParams,
   messages: Messages,
+  places: readonly GeorgianPlaceOption[],
 ): readonly ActiveFilter[] {
   const read = (key: string) => {
     const value = searchParams[key];
@@ -100,9 +106,15 @@ function activeFiltersFor(
     });
   }
   const city = read("city");
-  if (city !== undefined) filters.push({ key: "city", label: city });
+  if (city !== undefined)
+    filters.push({
+      key: "city",
+      label: places.find((place) => place.nameEn === city)?.label ?? city,
+    });
 
   const currency = read("currency");
+  if (currency === "GEL" || currency === "USD")
+    filters.push({ key: "currency", label: currency });
   const minBudget = read("minBudget");
   const maxBudget = read("maxBudget");
   if (minBudget !== undefined) {
@@ -144,7 +156,10 @@ export default async function ProviderTenderListPage({
     if (typeof value === "string") query.set(key, value);
   }
 
-  const overview = await getMarketplaceOverview();
+  const [overview, places] = await Promise.all([
+    getMarketplaceOverview(),
+    listGeorgianPlaces(locale),
+  ]);
 
   return (
     <>
@@ -187,11 +202,12 @@ export default async function ProviderTenderListPage({
         <div className="band-inner discovery-layout">
           <DiscoveryFilters
             copy={filterCopyFor(messages)}
+            places={places}
             key={query.toString()}
           />
           <div>
             <ActiveFilterChips
-              filters={activeFiltersFor(filters, messages)}
+              filters={activeFiltersFor(filters, messages, places)}
               messages={messages}
               pathname={pathname}
               searchParams={query}

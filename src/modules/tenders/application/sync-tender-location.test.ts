@@ -69,6 +69,35 @@ const stubGeocoder: Geocoder = {
 };
 
 describe("createSyncTenderLocation", () => {
+  it("preserves an entered address while adjusting its exact pin", async () => {
+    const repository = new CapturingRepository();
+    const sync = createSyncTenderLocation({
+      repository,
+      geocoder: stubGeocoder,
+    });
+    expect(
+      (
+        await sync(
+          baseDraft.id,
+          {
+            mode: "PIN",
+            city: "Tbilisi",
+            addressLine: "Chavchavadze Avenue 37",
+            latitude: 41.711529,
+            longitude: 44.757378,
+          },
+          actor,
+        )
+      ).ok,
+    ).toBe(true);
+    expect(repository.capturedLocation?.addressLine).toBe(
+      "Chavchavadze Avenue 37",
+    );
+    expect(repository.capturedLocation?.public).toEqual({
+      latitude: 41.71,
+      longitude: 44.76,
+    });
+  });
   it("persists the submitted PIN coordinates as `exact`, not the geocoder's resolved value", async () => {
     const repository = new CapturingRepository();
     const syncTenderLocation = createSyncTenderLocation({

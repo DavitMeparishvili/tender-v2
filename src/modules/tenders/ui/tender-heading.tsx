@@ -4,6 +4,9 @@ import type { Messages } from "../../localization/get-messages";
 import type { TenderCurrency } from "../domain/tender";
 import { TenderIcon, type TenderIconName } from "./tender-icon";
 import { tenderPageCopy } from "./tender-page-copy";
+import { georgianDateLabel } from "./georgian-calendar-labels";
+import { formatGeorgiaDateTimeLocal } from "./georgia-date-time";
+import { tenderNumberFormat } from "./tender-format";
 export function tenderDate(
   value: Date | string | null,
   locale: Locale,
@@ -11,6 +14,10 @@ export function tenderDate(
 ) {
   if (!value) return "—";
   const date = new Date(value);
+  if (locale === "ka") {
+    const local = formatGeorgiaDateTimeLocal(date);
+    return `${georgianDateLabel(local)}${time ? ` · ${local.slice(11, 16)}` : ""}`;
+  }
   const day = new Intl.DateTimeFormat(locale, {
     month: "short",
     day: "numeric",
@@ -28,7 +35,7 @@ export function tenderMoney(
 ) {
   return value === null || currency === null
     ? "—"
-    : `${currency} ${new Intl.NumberFormat(locale, { maximumFractionDigits: value % 100 ? 2 : 0 }).format(value / 100)}`;
+    : `${currency} ${tenderNumberFormat(locale, { maximumFractionDigits: value % 100 ? 2 : 0 }).format(value / 100)}`;
 }
 export function TenderFact({
   icon,

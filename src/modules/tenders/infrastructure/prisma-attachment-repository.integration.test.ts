@@ -61,10 +61,22 @@ describe("tender attachment uploads", () => {
 
     const stored = await fetch(prepared.value.uploadUrl, {
       method: "PUT",
-      headers: { "content-type": prepared.value.contentType },
+      headers: {
+        "content-type": prepared.value.contentType,
+        "if-none-match": "*",
+      },
       body,
     });
     expect(stored.status).toBe(200);
+    const replay = await fetch(prepared.value.uploadUrl, {
+      method: "PUT",
+      headers: {
+        "content-type": prepared.value.contentType,
+        "if-none-match": "*",
+      },
+      body,
+    });
+    expect(replay.status).toBe(412);
 
     const finalized = await finalizeTenderAttachmentUpload(
       tenderId,

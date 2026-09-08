@@ -7,11 +7,15 @@ export function AttachmentDownloadButton({
   fileName,
   label,
   errorLabel,
+  resolveUrl,
+  showLabel = false,
 }: {
   url: string;
   fileName: string;
   label: string;
   errorLabel: string;
+  resolveUrl?: () => Promise<string>;
+  showLabel?: boolean;
 }) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
@@ -20,7 +24,7 @@ export function AttachmentDownloadButton({
     setPending(true);
     setError(false);
     try {
-      const response = await fetch(url);
+      const response = await fetch(resolveUrl ? await resolveUrl() : url);
       if (!response.ok) throw new Error("Download failed");
       // Browsers ignore `download` on cross-origin signed URLs. A local blob
       // makes PDF and CAD downloads behave consistently without a public cache.
@@ -42,12 +46,12 @@ export function AttachmentDownloadButton({
     <div>
       <button
         type="button"
-        className="tender-button icon-only small"
+        className={`tender-button ${showLabel ? "" : "icon-only"} small`}
         disabled={pending}
         aria-label={`${label} ${fileName}`}
         onClick={download}
       >
-        <TenderIcon name="download" size={18} />
+        {showLabel ? label : <TenderIcon name="download" size={18} />}
       </button>
       {error ? (
         <span className="tender-download-error" role="alert">

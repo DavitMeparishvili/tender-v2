@@ -1,0 +1,888 @@
+/* The approved authoring references extend the existing tender detail system. */
+.tender-authoring {
+  padding-bottom: 0;
+}
+.tender-authoring > .tender-container {
+  max-width: 1180px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.authoring-back {
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+.authoring-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.authoring-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.authoring-header h1 {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.25;
+  font-weight: var(--weight-bold);
+}
+.authoring-header p {
+  margin: 8px 0 0;
+  color: var(--tender-muted, #536680);
+  font-size: 16px;
+}
+.authoring-header .authoring-hint {
+  font-size: 13px;
+}
+.authoring-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.25fr) minmax(250px, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+.authoring-fields {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.authoring-panel {
+  scroll-margin-top: 92px;
+  padding: 18px 20px;
+}
+.authoring-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.tender-authoring h2 {
+  font-size: 20px;
+  line-height: 1.35;
+  margin: 0;
+  font-weight: var(--weight-bold);
+}
+.authoring-panel-title .tender-badge {
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.authoring-hint {
+  font-size: 13px;
+  color: #536680;
+  line-height: 1.5;
+  margin: -4px 0 12px;
+}
+.authoring-two-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px 24px;
+}
+.tender-authoring .form-field {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 14px;
+  gap: 5px;
+}
+.tender-authoring .field-label,
+.tender-authoring label {
+  font-size: 13px;
+  color: #2f3d4e;
+  line-height: 1.5;
+}
+.tender-authoring .field-label {
+  font-weight: var(--weight-medium);
+}
+.tender-authoring .field-description {
+  order: 2;
+  font-size: 12px;
+  color: #536680;
+  margin-top: 4px;
+}
+.tender-authoring input:not([type="file"]),
+.tender-authoring select,
+.tender-authoring textarea {
+  width: 100%;
+  min-width: 0;
+  background: white;
+  color: #101820;
+  border: 1px solid #e1e7ee;
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: none;
+  min-height: 38px;
+}
+.tender-authoring textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+.tender-authoring .field-control {
+  min-width: 0;
+}
+.tender-authoring .form-field:has([required]) > label::after {
+  content: " *";
+  color: #ba5147;
+}
+.tender-authoring .form-field:has([aria-required="true"]) > label::after {
+  content: " *";
+  color: #ba5147;
+}
+.authoring-area .field-control {
+  position: relative;
+  max-width: 390px;
+}
+@media (width <= 360px) {
+  .tender-authoring .date-time-row {
+    flex-direction: column;
+  }
+  .tender-authoring .date-time-row .date-time-input {
+    width: 100% !important;
+    flex: auto;
+  }
+}
+.authoring-area .field-control input {
+  padding-right: 50px;
+}
+.authoring-area-unit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  border-left: 1px solid #e1e7ee;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.tender-authoring .date-field {
+  width: 100%;
+}
+.tender-authoring .date-field-trigger {
+  min-inline-size: 0;
+  min-height: 38px;
+  padding: 7px 10px;
+  font-size: 14px;
+  flex: 1;
+}
+.tender-authoring .date-time-input {
+  width: 110px !important;
+  flex: 0 0 110px;
+}
+.tender-authoring input:focus-visible,
+.tender-authoring select:focus-visible,
+.tender-authoring textarea:focus-visible,
+.tender-authoring summary:focus-visible,
+.tender-authoring button:focus-visible,
+.tender-authoring a:focus-visible {
+  outline: 2px solid #047857;
+  outline-offset: 3px;
+}
+.tender-authoring :disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.tender-authoring ::placeholder {
+  color: #536680;
+}
+.authoring-requirements {
+  border: 1px solid #e1e7ee;
+  border-radius: 8px;
+}
+.authoring-requirements summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: var(--weight-medium);
+  list-style: none;
+}
+.authoring-requirements summary::-webkit-details-marker {
+  display: none;
+}
+.authoring-requirements summary > span {
+  flex: 1;
+}
+.authoring-requirements small {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: #536680;
+  margin-top: 3px;
+}
+.authoring-requirements[open] summary > svg:last-child {
+  transform: rotate(180deg);
+}
+.authoring-requirements > div {
+  padding: 4px 14px 0;
+}
+.authoring-legacy {
+  font-size: 13px;
+  color: #536680;
+  margin-top: 12px;
+}
+.authoring-legacy summary {
+  cursor: pointer;
+  padding: 6px 0;
+}
+.authoring-legacy .authoring-hint {
+  margin: 8px 0;
+}
+.authoring-area {
+  border-top: 1px solid #e1e7ee;
+  margin-top: 12px;
+  padding-top: 12px;
+}
+.authoring-area .form-field {
+  margin: 0;
+}
+.authoring-area-control {
+  display: flex;
+  align-items: center;
+  max-width: 390px;
+}
+.authoring-area-control input {
+  border-radius: 7px 0 0 7px !important;
+}
+.authoring-area-control > span {
+  border: 1px solid #e1e7ee;
+  border-left: 0;
+  border-radius: 0 7px 7px 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  height: 38px;
+}
+.authoring-money {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 90px;
+  gap: 10px;
+}
+.authoring-budget .form-field {
+  margin-bottom: 0;
+}
+.authoring-budget {
+  gap: 18px 24px;
+}
+.tender-authoring .tender-work-editor legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.tender-authoring .tender-edit-item {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 2.7fr) minmax(70px, 1fr) minmax(70px, 1fr)
+    30px;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 6px;
+}
+.tender-authoring .tender-edit-item label {
+  display: grid;
+  gap: 5px;
+}
+.tender-authoring .tender-edit-item:not(:first-child) label {
+  font-size: 0;
+  gap: 0;
+}
+.tender-authoring .tender-edit-item .icon-only {
+  border: 0;
+  padding: 0;
+  min-width: 30px;
+  min-height: 38px;
+}
+.tender-authoring .tender-work-editor > button {
+  margin-top: 2px;
+  min-height: 38px;
+  font-size: 13px;
+  padding: 6px 12px;
+}
+.authoring-drop {
+  background: #f8fafb;
+  border: 1px dashed #9aaabd;
+  border-radius: 7px;
+  text-align: center;
+  position: relative;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.authoring-drop input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.authoring-drop label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  font-weight: var(--weight-medium);
+  min-height: 30px;
+}
+.authoring-drop:focus-within {
+  outline: 2px solid #047857;
+  outline-offset: 3px;
+}
+.authoring-drop p {
+  font-size: 12px;
+  color: #536680;
+  margin: 4px 0 0;
+}
+.authoring-photos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.authoring-photos > div {
+  position: relative;
+}
+.authoring-photos img {
+  width: 100%;
+  aspect-ratio: 1.5;
+  object-fit: cover;
+  border-radius: 7px;
+  display: block;
+}
+.authoring-remove {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 50%;
+  background: white;
+  color: #2f3d4e;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e1e7ee;
+  cursor: pointer;
+}
+.authoring-documents {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  border-radius: 7px;
+}
+.authoring-documents li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e1e7ee;
+  padding: 9px 10px;
+}
+.authoring-documents li + li {
+  border-top: 0;
+}
+.authoring-documents li:first-child {
+  border-radius: 7px 7px 0 0;
+}
+.authoring-documents li:last-child {
+  border-radius: 0 0 7px 7px;
+}
+.authoring-file-meta {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  font-size: 13px;
+}
+.authoring-file-meta strong {
+  overflow-wrap: anywhere;
+  font-weight: var(--weight-medium);
+}
+.authoring-file-meta > span {
+  font-size: 12px;
+  color: #536680;
+}
+.authoring-file-meta progress {
+  accent-color: #047857;
+  width: 100%;
+  height: 8px;
+  margin: 5px 0;
+}
+.authoring-documents .icon-only {
+  min-width: 28px;
+  padding: 4px;
+  border: 0;
+}
+.authoring-privacy {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #e5f7f0;
+  color: #174536;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
+.authoring-privacy svg {
+  flex-shrink: 0;
+  color: #047857;
+}
+.authoring-map {
+  position: relative;
+}
+.authoring-map .location-map {
+  height: 130px;
+  min-height: 130px;
+  border-radius: 8px;
+}
+.authoring-map.is-adjusting .location-map {
+  height: 250px;
+}
+.authoring-map-adjust {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 500;
+  background: white;
+}
+.authoring-sidebar {
+  display: grid;
+  gap: 16px;
+  position: sticky;
+  top: 90px;
+}
+.authoring-sidebar .tender-panel {
+  padding: 18px;
+}
+.authoring-sidebar h2 {
+  font-size: 18px;
+}
+.authoring-sidebar ol {
+  list-style: none;
+  margin: 10px -6px -4px;
+  padding: 0;
+}
+.authoring-sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 8px;
+  border-radius: 7px;
+  font-size: 14px;
+  color: #536680;
+  text-decoration: none;
+}
+.authoring-sidebar nav a > span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #edf1f6;
+  color: #33485f;
+  flex-shrink: 0;
+}
+.authoring-sidebar nav a[aria-current] {
+  background: #e5f7f0;
+  color: #047857;
+  font-weight: var(--weight-medium);
+}
+.authoring-sidebar nav a[aria-current] > span {
+  background: #047857;
+  color: white;
+}
+.authoring-summary h3 {
+  font-size: 20px;
+  line-height: 1.4;
+  margin: 12px 0 20px;
+  overflow-wrap: anywhere;
+}
+.authoring-summary p {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: #2f3d4e;
+  font-size: 14px;
+  margin: 12px 0;
+}
+.authoring-summary p svg {
+  flex-shrink: 0;
+}
+.authoring-summary > .tender-badge {
+  margin-top: 10px;
+}
+.authoring-sidebar-notice {
+  background: #e5f7f0;
+  border: 1px solid #a2dfc8;
+  border-radius: 8px;
+  padding: 4px 12px 12px;
+}
+.authoring-sidebar-notice .authoring-privacy {
+  padding: 8px 0;
+  margin: 0;
+}
+.authoring-sidebar-notice button {
+  width: 100%;
+  margin-top: 8px;
+}
+.authoring-mobile-nav,
+.authoring-mobile-text {
+  display: none;
+}
+.tender-authoring .authoring-actions {
+  display: block;
+  position: sticky;
+  bottom: 0;
+  z-index: 700;
+  border-top: 1px solid #e1e7ee;
+  background: white;
+  padding: 12px 24px;
+}
+.authoring-actions > div {
+  max-width: 1124px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.authoring-action-buttons {
+  display: flex;
+  gap: 12px;
+}
+.authoring-actions .tender-button {
+  min-width: 195px;
+  min-height: 44px;
+  justify-content: center;
+}
+.authoring-discard {
+  font-size: 14px;
+  color: #33485f;
+}
+.authoring-review {
+  display: grid;
+  gap: 16px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.authoring-review .tender-panel {
+  padding: 20px;
+}
+.authoring-review .tender-photo-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.authoring-review .tender-photo {
+  height: 64px;
+  aspect-ratio: auto;
+}
+.authoring-review .tender-photo-overlay {
+  font-size: 11px;
+}
+.authoring-review .tender-photo-overlay svg {
+  width: 16px;
+}
+.authoring-review .tender-location .location-map {
+  height: 130px;
+  min-height: 130px;
+}
+.authoring-review .tender-requirements {
+  gap: 12px;
+}
+.authoring-review .quantity-table {
+  font-size: 14px;
+}
+.authoring-review .quantity-table th,
+.authoring-review .quantity-table td {
+  padding: 10px 8px;
+}
+.authoring-review .quantity-table th:last-child {
+  white-space: nowrap;
+}
+.tender-authoring .authoring-actions {
+  max-block-size: none;
+  overflow: visible;
+}
+.authoring-review-meta {
+  color: #536680;
+  font-size: 14px;
+  margin: 12px 0 18px;
+}
+.authoring-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid #e1e7ee;
+  border-radius: 8px;
+  margin: 0;
+}
+.authoring-facts .tender-fact {
+  padding: 12px;
+  min-width: 0;
+}
+.authoring-facts .tender-fact:nth-child(odd) {
+  border-right: 1px solid #e1e7ee;
+}
+.authoring-facts .tender-fact:nth-child(-n + 2) {
+  border-bottom: 1px solid #e1e7ee;
+}
+.authoring-facts dd {
+  font-size: 16px;
+}
+.authoring-selection {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  font-size: 13px;
+  background: #eaf0fa;
+  color: #354c83;
+  border-radius: 8px;
+  margin: 0;
+}
+.authoring-selection svg {
+  flex-shrink: 0;
+}
+.authoring-saved {
+  color: #047857;
+  font-size: 14px;
+}
+@media (width <= 1000px) and (width > 760px) {
+  .authoring-layout {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 16px;
+  }
+  .authoring-budget {
+    grid-template-columns: 1fr;
+  }
+}
+@media (width <= 760px) {
+  body:has(.tender-authoring) {
+    padding-block-end: 0;
+  }
+  .tender-authoring {
+    padding-bottom: 0 !important;
+  }
+  .authoring-header {
+    padding-top: 0;
+  }
+  .authoring-header h1 {
+    text-wrap: balance;
+  }
+  .tender-authoring .date-field-trigger {
+    min-height: 42px;
+  }
+  body:has(.tender-authoring) .tab-bar {
+    display: none;
+  }
+  body:has(.tender-authoring) .shell-footer {
+    display: none;
+  }
+  body:has(.tender-authoring) {
+    --mobile-nav-height: 0px;
+  }
+  .tender-authoring > .tender-container {
+    padding: 16px 16px 24px;
+  }
+  .authoring-back {
+    margin-bottom: 18px;
+    font-size: 14px;
+  }
+  .authoring-header {
+    margin-bottom: 16px;
+  }
+  .authoring-header h1 {
+    font-size: 28px;
+  }
+  .authoring-title-row {
+    gap: 12px;
+  }
+  .authoring-header p {
+    font-size: 14px;
+  }
+  .authoring-header-action,
+  .authoring-sidebar {
+    display: none;
+  }
+  .authoring-layout {
+    display: block;
+  }
+  .authoring-mobile-nav {
+    display: block;
+    position: sticky;
+    top: 64px;
+    background: #f5f7f9;
+    z-index: 600;
+    padding: 0 0 12px;
+  }
+  .authoring-mobile-nav select {
+    font-weight: var(--weight-medium);
+    min-height: 44px;
+  }
+  .authoring-fields {
+    gap: 14px;
+  }
+  .authoring-panel {
+    padding: 16px;
+    scroll-margin-top: 126px;
+  }
+  .tender-authoring h2 {
+    font-size: 20px;
+  }
+  .authoring-two-columns {
+    gap: 10px 16px;
+  }
+  #project > .authoring-two-columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .authoring-requirements > .authoring-two-columns {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .tender-authoring input:not([type="file"]),
+  .tender-authoring select,
+  .tender-authoring textarea {
+    font-size: 16px;
+    min-height: 42px;
+  }
+  .tender-authoring textarea {
+    min-height: 120px;
+  }
+  .tender-authoring .form-field {
+    margin-bottom: 16px;
+  }
+  .tender-authoring .tender-edit-item {
+    position: relative;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 4px 16px;
+    padding: 8px 10px;
+    border: 1px solid #e1e7ee;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .tender-authoring .tender-edit-item > label:first-child {
+    grid-column: 1 / -1;
+    padding-right: 34px;
+  }
+  .tender-authoring .tender-edit-item label,
+  .tender-authoring .tender-edit-item:not(:first-child) label {
+    font-size: 12px;
+    gap: 1px;
+  }
+  .tender-authoring .tender-edit-item > button {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    width: 44px;
+    height: 44px;
+  }
+  .authoring-budget {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .authoring-budget .form-field {
+    margin-bottom: 12px;
+  }
+  .authoring-money {
+    grid-template-columns: minmax(0, 1fr) 90px;
+  }
+  .authoring-area-control > span {
+    height: 42px;
+    padding-top: 10px;
+  }
+  .authoring-photos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .authoring-remove {
+    width: 32px;
+    height: 32px;
+  }
+  .authoring-remove::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+  .authoring-documents li {
+    gap: 8px;
+    padding: 8px;
+  }
+  .authoring-documents .tender-button.small {
+    font-size: 12px;
+    padding: 6px 10px;
+    min-height: 40px;
+  }
+  .authoring-documents .icon-only {
+    min-height: 44px;
+    min-width: 32px;
+  }
+  .authoring-documents .tender-file-icon {
+    width: 26px;
+    height: 34px;
+    flex-shrink: 0;
+  }
+  .authoring-map .location-map {
+    min-height: 130px;
+    height: 130px;
+  }
+  .authoring-desktop-text {
+    display: none;
+  }
+  .authoring-mobile-text {
+    display: inline;
+  }
+  .authoring-drop label {
+    min-height: 36px;
+  }
+  .tender-authoring .authoring-actions {
+    position: sticky;
+    bottom: 0;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  }
+  .authoring-actions > div {
+    display: block;
+  }
+  .authoring-action-buttons {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 10px;
+  }
+  .authoring-actions .tender-button {
+    min-width: 0;
+    min-height: 46px;
+    font-size: 14px;
+    padding: 10px;
+    line-height: 1.4;
+  }
+  .authoring-actions .tender-button svg {
+    flex-shrink: 0;
+  }
+  .authoring-discard {
+    display: block;
+    margin: 0 0 10px;
+    font-size: 12px;
+  }
+  .authoring-review .tender-panel {
+    padding: 16px;
+  }
+  .authoring-facts .tender-fact {
+    padding: 10px 8px;
+    gap: 8px;
+  }
+  .authoring-facts dd {
+    font-size: 14px;
+  }
+  .authoring-facts dt {
+    font-size: 12px;
+  }
+  .authoring-facts svg {
+    width: 18px;
+    flex-shrink: 0;
+  }
+}

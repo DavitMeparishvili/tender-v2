@@ -10,6 +10,11 @@ import {
   type RefObject,
 } from "react";
 import type { Locale } from "../../localization/config";
+import {
+  georgianDateLabel,
+  georgianMonths,
+  georgianWeekdays,
+} from "./georgian-calendar-labels";
 
 export type DatePickerCopy = Readonly<{
   previousMonth: string;
@@ -138,6 +143,7 @@ function intlLocale(locale: Locale) {
 }
 
 function formatDisplayDate(value: string, locale: Locale) {
+  if (locale === "ka") return georgianDateLabel(value);
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!match) return "";
   const date = new Date(
@@ -152,6 +158,8 @@ function formatDisplayDate(value: string, locale: Locale) {
 }
 
 function monthLabel(cursor: MonthCursor, locale: Locale) {
+  if (locale === "ka")
+    return `${georgianMonths[cursor.month - 1]} ${cursor.year}`;
   const date = new Date(Date.UTC(cursor.year, cursor.month - 1, 1));
   return new Intl.DateTimeFormat(intlLocale(locale), {
     month: "long",
@@ -161,6 +169,7 @@ function monthLabel(cursor: MonthCursor, locale: Locale) {
 }
 
 function weekdayLabels(locale: Locale) {
+  if (locale === "ka") return [...georgianWeekdays];
   // 2024-01-01 is a Monday in UTC — a stable anchor for a Monday-first strip.
   return Array.from({ length: 7 }, (_, index) => {
     const date = new Date(Date.UTC(2024, 0, 1 + index));

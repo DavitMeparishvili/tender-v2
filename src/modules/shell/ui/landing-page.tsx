@@ -86,7 +86,6 @@ export function LandingPage({
     <>
       {/* ---------------------------------------------------------- Hero */}
       <section className="band hero">
-        <div className="motif grid-bg grid-bg--fade-b" />
         <div className="band-inner">
           <div>
             <p className="overline">{copy.overline}</p>

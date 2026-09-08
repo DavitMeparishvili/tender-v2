@@ -40,7 +40,7 @@ test("@phase-1-ui Georgian provider registration fits mobile", async ({
   );
   await expect(page.locator("body")).toHaveCSS(
     "font-family",
-    /Manrope.*Noto Sans Georgian/,
+    /Noto Sans Georgian.*Noto Sans/,
   );
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - window.innerWidth,
@@ -113,7 +113,10 @@ test("@phase-1-ui locale control preserves route and protects dirty input", asyn
 }) => {
   await page.goto("/en/register/client");
   await page.getByLabel("Name").fill("Unsaved Client");
-  const localeLink = page.getByRole("link", { name: "ქართული" });
+  if ((page.viewportSize()?.width ?? 1440) <= 640) {
+    await page.locator(".tender-mobile-locale summary").click();
+  }
+  const localeLink = page.getByRole("link", { name: "ქართული", exact: true });
   await expect(localeLink).toHaveAttribute("href", "/ka/register/client");
 
   page.once("dialog", (dialog) => dialog.dismiss());
@@ -132,18 +135,16 @@ test("@phase-1-ui language switcher is touch-ready in the mobile header", async 
   test.skip(!testInfo.project.name.startsWith("mobile"));
 
   await page.goto("/en/register/client");
-  const switcher = page.locator(".mobile-locale .locale-link");
+  const menu = page.locator(".tender-mobile-locale");
+  const trigger = menu.locator("summary");
+  await expect(trigger).toBeVisible();
+  await expect(trigger).toContainText("EN");
 
-  await expect(switcher).toBeVisible();
-  await expect(switcher).toHaveText("KA");
-  await expect(switcher).toHaveAttribute("href", "/ka/register/client");
-  await expect(switcher).toHaveAttribute("aria-label", "ქართული");
-
-  const box = await switcher.boundingBox();
+  const box = await trigger.boundingBox();
   expect(box?.width).toBeGreaterThanOrEqual(44);
   expect(box?.height).toBeGreaterThanOrEqual(44);
 
-  await page.setViewportSize({ width: 375, height: 800 });
+  await page.setViewportSize({ width: 320, height: 800 });
   const headerWidths = await page
     .locator(".site-header .band-inner")
     .evaluate((element) => ({
@@ -151,9 +152,10 @@ test("@phase-1-ui language switcher is touch-ready in the mobile header", async 
       scroll: element.scrollWidth,
     }));
   expect(headerWidths.scroll).toBeLessThanOrEqual(headerWidths.client);
-  await expect(page.locator(".header-actions")).toBeHidden();
-
-  await switcher.click();
+  await trigger.click();
+  const georgian = menu.getByRole("link", { name: "ქართული", exact: true });
+  await expect(georgian).toHaveAttribute("href", "/ka/register/client");
+  await georgian.click();
   await expect(page).toHaveURL(/\/ka\/register\/client$/);
-  await expect(page.locator(".mobile-locale .locale-link")).toHaveText("EN");
+  await expect(trigger).toContainText("KA");
 });

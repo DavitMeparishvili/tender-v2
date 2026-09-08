@@ -7,7 +7,10 @@ import { listTenderBids } from "@/src/modules/bidding/application/list-tender-bi
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { tenderPageCopy } from "@/src/modules/tenders/ui/tender-page-copy";
-import { PublishedTenderEditor } from "@/src/modules/tenders/ui/published-tender-editor";
+import { TenderAuthoring } from "@/src/modules/tenders/ui/tender-authoring";
+import { tenderToWizardForm } from "@/src/modules/tenders/ui/tender-wizard-initial";
+import { listGeorgianPlaces } from "@/src/modules/tenders/application/list-georgian-places";
+import { getAuthoringAttachments } from "@/src/modules/tenders/application/get-authoring-attachments";
 
 export default async function EditPage({
   params,
@@ -34,6 +37,24 @@ export default async function EditPage({
     tender.deadline > new Date() &&
     bids.ok &&
     bids.value.length === 0;
+  if (allowed) {
+    const [places, attachments] = await Promise.all([
+      listGeorgianPlaces(locale),
+      getAuthoringAttachments(id, access.value),
+    ]);
+    return (
+      <TenderAuthoring
+        locale={locale}
+        messages={messages}
+        places={places}
+        initialTenderId={id}
+        initialForm={tenderToWizardForm(tender)}
+        initialAttachments={attachments}
+        published
+        reference={tender.reference ?? null}
+      />
+    );
+  }
   return (
     <div className="tender-page">
       <div className="tender-container tender-editor">
@@ -42,31 +63,7 @@ export default async function EditPage({
         </Link>
         <section className="tender-panel">
           <h1>{c.edit}</h1>
-          {allowed ? (
-            <PublishedTenderEditor
-              id={id}
-              locale={locale}
-              initial={{
-                title: tender.title,
-                fullDescription: tender.fullDescription ?? "",
-                workerNotes: tender.workerNotes,
-                materialNotes: tender.materialNotes,
-                equipmentNotes: tender.equipmentNotes,
-                areaSquareMeters: tender.areaSquareMeters ?? null,
-                workItems: [...(tender.workItems ?? [])],
-              }}
-              labels={{
-                title: messages.tenders.title,
-                description: c.projectOverview,
-                team: c.team,
-                materials: c.materials,
-                equipment: messages.tenders.equipmentNotes,
-                error: messages.errors.generic,
-              }}
-            />
-          ) : (
-            <p className="tender-description">{c.editBlocked}</p>
-          )}
+          <p className="tender-description">{c.editBlocked}</p>
         </section>
       </div>
     </div>

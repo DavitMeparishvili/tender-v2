@@ -20,6 +20,7 @@ const pinInputSchema = z.object({
   district: z.string().trim().min(1).max(120).nullable().optional(),
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
+  addressLine: z.string().trim().min(3).max(240).optional(),
 });
 export const syncTenderLocationCommandSchema = z.discriminatedUnion("mode", [
   addressInputSchema,
@@ -92,7 +93,7 @@ export function createSyncTenderLocation(dependencies: {
       addressLine:
         parsed.data.mode === "ADDRESS"
           ? parsed.data.addressLine
-          : resolved.value.normalizedAddress,
+          : (parsed.data.addressLine ?? resolved.value.normalizedAddress),
       exact,
       public: coarsenCoordinates(exact),
     };

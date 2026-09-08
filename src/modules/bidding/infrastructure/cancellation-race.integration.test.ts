@@ -43,6 +43,7 @@ describe("serialized cancellation and submission", () => {
             ownerId,
             title: "Race test",
             status: "PUBLISHED",
+            currency: "GEL",
             specialty: "CONSTRUCTION_REPAIR",
             serviceCode: "GENERAL_CONSTRUCTION",
             deadline,

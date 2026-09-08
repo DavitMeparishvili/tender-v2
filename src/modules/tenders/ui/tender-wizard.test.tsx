@@ -270,6 +270,7 @@ describe("toLocationCommand", () => {
 
     expect(toLocationCommand(tenderToWizardForm(pinned))).toEqual({
       mode: "PIN",
+      addressLine: "Near Tbilisi, Georgia",
       placeId: 611717,
       city: "Tbilisi",
       district: "Vake",

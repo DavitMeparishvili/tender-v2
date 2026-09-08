@@ -87,9 +87,13 @@ export class PrismaBidRepository
         );
         const tender = await tx.tender.findUnique({
           where: { id: bid.tenderId },
-          select: { status: true, deadline: true },
+          select: { status: true, deadline: true, currency: true },
         });
-        if (!tender || tender.status !== "PUBLISHED")
+        if (
+          !tender ||
+          tender.status !== "PUBLISHED" ||
+          tender.currency !== bid.currency
+        )
           return { ok: false as const, error: "TENDER_NOT_OPEN" as const };
         // Use wall time after acquiring the lock: a request may wait past close.
         if (

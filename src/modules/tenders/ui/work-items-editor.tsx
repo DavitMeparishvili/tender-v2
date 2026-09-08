@@ -54,12 +54,30 @@ export function WorkItemsEditor({
             </label>
             <label>
               {c.unit}
-              <input
+              <select
                 required
-                maxLength={20}
                 value={item.unit}
                 onChange={(event) => change(index, "unit", event.target.value)}
-              />
+              >
+                {[
+                  ...new Set([
+                    "m²",
+                    "m",
+                    "m³",
+                    "kg",
+                    "pcs",
+                    "hours",
+                    "days",
+                    item.unit,
+                  ]),
+                ]
+                  .filter(Boolean)
+                  .map((unit) => (
+                    <option key={unit} value={unit}>
+                      {unit}
+                    </option>
+                  ))}
+              </select>
             </label>
             <button
               className="tender-button icon-only"

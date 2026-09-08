@@ -104,6 +104,7 @@ export class S3ObjectStorage
         Bucket: this.bucket,
         Key: objectKey,
         ContentType: contentType,
+        IfNoneMatch: "*",
       }),
       { expiresIn: expiresInSeconds },
     );
@@ -118,7 +119,7 @@ export class S3ObjectStorage
         new GetObjectCommand({
           Bucket: this.bucket,
           Key: objectKey,
-          Range: "bytes=0-15",
+          Range: "bytes=0-63",
         }),
       );
       const prefix =

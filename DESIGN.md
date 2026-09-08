@@ -2,8 +2,8 @@
 name: Tender
 description: A live construction marketplace in ink, paper and a single emerald — structured requirements, comparable offers, recorded agreements.
 colors:
-  brand: "#059669"
-  brand-hover: "#047857"
+  brand: "#047857"
+  brand-hover: "#065F46"
   brand-active: "#065F46"
   emerald-50: "#ECFDF5"
   emerald-100: "#D1FAE5"
@@ -44,8 +44,8 @@ colors:
   tender-ink: "#101820"
   tender-muted: "#536680"
   tender-line: "#e1e7ee"
-  tender-green: "#00865f"
-  tender-green-hover: "#006f4f"
+  tender-green: "#047857"
+  tender-green-hover: "#065F46"
   tender-page: "#f5f7f9"
   tender-body: "#2f3d4e"
   tender-control-hover: "#f8fafb"
@@ -63,192 +63,180 @@ colors:
   tender-tab-selected-soft: "#d6f2e6"
   tender-tab-selected-line: "#a2dfc8"
 typography:
-  tender-title:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "36px"
-    fontWeight: 800
-    lineHeight: 1.16
-    letterSpacing: "-0.03em"
-  tender-title-mobile:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "30px"
-    fontWeight: 800
-    lineHeight: 1.15
-    letterSpacing: "-0.03em"
-  tender-section-title:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "20px"
-    fontWeight: 800
-    lineHeight: 1.3
-    letterSpacing: "-0.025em"
-  tender-description:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "14px"
-    lineHeight: 1.6
-  tender-action:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "14px"
-    fontWeight: 650
-    lineHeight: 1.35
-  tender-badge:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "12px"
-    fontWeight: 650
-    lineHeight: 1.5
-  tender-fact-value:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "18px"
-    fontWeight: 800
-    lineHeight: 1.25
   display:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "56px"
-    fontWeight: 800
-    lineHeight: 1.03
-    letterSpacing: "-0.03em"
-  h1:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "42px"
-    fontWeight: 800
-    lineHeight: 1.05
-    letterSpacing: "-0.03em"
-  h2:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "36px"
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "44px"
     fontWeight: 700
-    lineHeight: 1.1
-    letterSpacing: "-0.02em"
-  h3:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "22px"
+    lineHeight: 1.2
+    letterSpacing: "0"
+  display-mobile:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "32px"
+    fontWeight: 700
+    lineHeight: 1.21875
+    letterSpacing: "0"
+  h1:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "32px"
     fontWeight: 700
     lineHeight: 1.25
-    letterSpacing: "-0.02em"
-  h4:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "20px"
+    letterSpacing: "0"
+  tender-title:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "32px"
     fontWeight: 700
-    lineHeight: 1.3
-    letterSpacing: "-0.01em"
-  lead:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "17px"
-    fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.25
+    letterSpacing: "0"
+  tender-title-mobile:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "28px"
+    fontWeight: 700
+    lineHeight: 1.25
+    letterSpacing: "0"
+  h2:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "24px"
+    fontWeight: 600
+    lineHeight: 1.35
+    letterSpacing: "0"
+  tender-section-title:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "24px"
+    fontWeight: 600
+    lineHeight: 1.35
+    letterSpacing: "0"
+  h3:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "20px"
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: "0"
   body:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
     fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.6
-  small:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "14px"
-    fontWeight: 500
-    lineHeight: 1.55
-  caption:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "12px"
-    fontWeight: 500
-    lineHeight: 1.4
-  overline:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "12px"
-    fontWeight: 700
-    lineHeight: 1.3
-    letterSpacing: "0.14em"
-  mono:
-    fontFamily: "ui-monospace, SF Mono, Menlo, Consolas, monospace"
-    fontSize: "13px"
-    fontWeight: 500
-    lineHeight: 1.5
-  score:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "52px"
-    fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "-0.03em"
-  display-ka:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "44px"
-    fontWeight: 800
-    lineHeight: 1.06
-    letterSpacing: "-0.015em"
-  display-md:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "46px"
-    fontWeight: 800
-    lineHeight: 1.05
-    letterSpacing: "-0.03em"
-  page-title:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "40px"
-    fontWeight: 800
-    lineHeight: 1.06
-    letterSpacing: "-0.03em"
-  title-lg:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "34px"
-    fontWeight: 800
-    lineHeight: 1.1
-    letterSpacing: "-0.025em"
-  stat-lg:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "30px"
-    fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "-0.02em"
-  title-md:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "28px"
-    fontWeight: 800
-    lineHeight: 1.1
-    letterSpacing: "-0.015em"
-  title-sm:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "27px"
-    fontWeight: 700
-    lineHeight: 1.18
-    letterSpacing: "-0.015em"
-  stat:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "26px"
-    fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "-0.02em"
-  headline-sm:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "24px"
-    fontWeight: 800
-    lineHeight: 1.1
-    letterSpacing: "-0.02em"
-  headline-xs:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "23px"
-    fontWeight: 800
-    lineHeight: 1.15
-    letterSpacing: "-0.01em"
-  wordmark:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "19px"
-    fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "-0.02em"
-  figure-lg:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "18px"
-    fontWeight: 800
-    lineHeight: 1.2
+    lineHeight: 1.625
+    letterSpacing: "0"
+  tender-description:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: 1.625
+    letterSpacing: "0"
   action:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
     fontSize: "15px"
     fontWeight: 600
     lineHeight: 1.4
-  label-xs:
-    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
-    fontSize: "10.5px"
+    letterSpacing: "0"
+  tender-action:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "15px"
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: "0"
+  small:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "14px"
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: "0"
+  caption:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "0"
+  tender-badge:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "0"
+  input:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "0"
+  mobile-nav:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "12px"
+    fontWeight: 500
+    lineHeight: 1.4
+    letterSpacing: "0"
+  mobile-nav-narrow:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "11px"
+    fontWeight: 500
+    lineHeight: 1.4
+    letterSpacing: "0"
+  tender-fact-value:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "18px"
     fontWeight: 700
-    lineHeight: 1.3
-    letterSpacing: "0.1em"
+    lineHeight: 1.4
+    letterSpacing: "0"
+  figure:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "20px"
+    fontWeight: 700
+    lineHeight: 1.4
+    letterSpacing: "0"
+  section-mobile:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "22px"
+    fontWeight: 600
+    lineHeight: 1.35
+    letterSpacing: "0"
+  wordmark:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "19px"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "0"
+  stat:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "26px"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "0"
+  stat-large:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "30px"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "0"
+  score:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "52px"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "0"
+  legacy-form-title:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "36px"
+    fontWeight: 700
+    lineHeight: 1.08
+    letterSpacing: "0"
+  tender-list-figure:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "21px"
+    fontWeight: 700
+    lineHeight: 1.4
+    letterSpacing: "0"
+  file-format-icon:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "8px"
+    fontWeight: 700
+    lineHeight: 1
+    letterSpacing: "0"
+  offer-count:
+    fontFamily: "Noto Sans Georgian, Noto Sans, Segoe UI, sans-serif"
+    fontSize: "40px"
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: "0"
 rounded:
   tender-control: "9px"
   tender-field: "10px"
@@ -326,7 +314,7 @@ components:
     padding: "13px 4px 11px"
   pill-brand:
     backgroundColor: "{colors.brand}"
-    textColor: "{colors.ink}"
+    textColor: "{colors.page}"
     rounded: "{rounded.pill}"
     padding: "11px 18px"
     height: "44px"
@@ -415,7 +403,7 @@ Tender page, ink, muted, and line tokens supply the cool ground, strong text,
 metadata, and separators. White panels remain distinct from that ground without
 shadow. Tender green marks primary actions, section selection, focus, and map
 details. White text is used on this darker tender green and its hover colour;
-the existing brand-emerald rule below applies to the separate global brand token.
+the same contrast-safe emerald is shared with the global brand token.
 Status badges pair the tender status foreground and soft background, neutral
 badges identify ownership and counts, and category badges use a cool blue pair
 on list cards. Privacy notices use the tender privacy pair. Labels carry the
@@ -423,7 +411,7 @@ meaning alongside these colours.
 
 ### Primary
 
-- **Brand Emerald (#059669):** the single accent. Primary actions, the active nav
+- **Brand Emerald (#047857):** the single accent. Primary actions, the active nav
   underline, countdowns, histogram fills, the lowest-offer highlight.
 - **Tender Ink (#16181C):** headings, high-confidence text, the utility strip,
   the footer, and dark lanes.
@@ -432,7 +420,7 @@ meaning alongside these colours.
 
 The grey ramp is a true neutral from paper (#F8F8F9) to near-ink (#2B2D33).
 `grey-200` is the default hairline; `grey-300` is the interactive border;
-`grey-500` is muted text; `grey-700` is body copy.
+`grey-600` is muted text; `grey-700` is body copy.
 
 ### Secondary
 
@@ -443,8 +431,9 @@ The grey ramp is a true neutral from paper (#F8F8F9) to near-ink (#2B2D33).
 
 ### Named Rules
 
-**The No-White-On-Emerald Rule.** Text on brand emerald is always ink. White on emerald
-fails contrast and is never used, including on hover and active states.
+**The Contrast-Safe Emerald Rule.** Actions use white on #047857 (5.49:1),
+with #065F46 on hover. On charcoal, emerald text uses the lighter #6EE7B7.
+Secondary labels and placeholders use grey-600 on white or cool paper.
 
 **The Single-Pop Rule.** One emerald element owns each decision. If two emerald
 elements compete inside a card, one of them is wrong.
@@ -454,45 +443,32 @@ Neither is decoration, and neither carries meaning by colour alone.
 
 ## Typography
 
-### Scoped tender hierarchy
+### Shared roles and delivery
 
-The tender surfaces inherit the existing Manrope and Noto Sans Georgian stack.
-Their title, section title, description, action, badge, and fact-value roles use
-the prefixed frontmatter tokens. Detail titles reduce to the mobile title role
-at 760px; the owned-list heading is 44px on desktop and 34px on mobile, while
-owned-card titles are 28px and 24px respectively. Fact labels are 12px; metadata
-and table content use 12–13px. Descriptions retain authored line breaks and wrap
-long words; compared amounts and quantities use tabular numerals.
+`app/typography.css` is the shared source for headings, body, labels, controls
+and inputs. Georgian defaults to Noto Sans Georgian with Noto Sans fallback;
+English and Russian put Noto Sans first, retaining Georgian fallback for mixed
+records. The validated URL locale sets the document `lang`.
 
-**Display and Body Font:** Manrope for Latin text, with Noto Sans Georgian as
-the per-glyph fallback for Georgian text.
+The locale layout imports Fontsource production WOFF2 faces at genuine
+400/500/600/700 weights with `font-display: swap`. Noto Sans Unicode ranges
+request only the subsets needed for rendered content. Fontsource retains the
+upstream OFL licenses, also distributed in `public/fonts/licenses`.
 
-**Character:** Manrope gives Latin content a clear, modern construction-marketplace
-voice. Georgian glyphs fall through to Noto Sans Georgian inside the same
-declaration, so mixed-language content retains its hierarchy without a language
-branch.
+- Hero: 44/52.8px desktop and 32/39px mobile, 700.
+- Detail/list title: 32/40px desktop and 28/35px mobile, 700.
+- Section: 24px desktop / 22px mobile, 1.35, 600.
+- Card: 20px desktop / 18px mobile, 1.4, 600.
+- Body: 16/26px, 400, with a maximum 65ch prose measure.
+- Controls: 15px/1.4, 600; labels 13–14px/1.5, 400–500.
+- Editable inputs: 16/24px, 400, with at least 44px height.
+- Mobile bottom navigation is a compact exception: 12px, or 11px below 361px.
+  Short translated labels fit without clipping; enlarged text reduces columns.
 
-### Hierarchy
-
-- **Display** (800, 56px, 1.03, -0.03em): the landing headline only.
-- **H1** (800, 40–42px, 1.05, -0.03em): discovery and tender detail.
-- **H2** (700, 36px, 1.1, -0.02em): landing section titles.
-- **H3** (700, 22px, 1.25, -0.02em): card titles.
-- **Body** (400, 16px, 1.65): descriptions and scope copy.
-- **Small** (500–600, 13.5–14.5px): card metadata and figure values.
-- **Figure label** (500, 11.5px): the label above every number.
-- **Overline** (700, 12px, 0.14em, uppercase, emerald): section eyebrows.
-
-Half-step sizes (11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5px) are part of the
-ramp and come from the bound design system, not from drift.
-
-### Named Rules
-
-**The Tabular-Number Rule.** Any number a user compares — budget, offer amount,
-rating, count, coordinate — is set with `font-variant-numeric: tabular-nums`.
-
-**The Equal-Script Rule.** Georgian may wrap earlier, but it is never given a
-smaller role or a lighter weight than English.
+Normal Georgian tracking is zero. Category chips retain natural case; the
+existing intentional uppercase overlines have Mtavruli coverage. Aligned
+amounts and quantities use tabular numerals. The file-format icon's 8px lettering
+is decorative; the adjacent readable filename supplies the content.
 
 ## Layout
 
@@ -507,10 +483,11 @@ the section gap and switch to the mobile gap in the collapsed detail layout.
 Collapsed children stretch to the available width. Owner offer status moves
 ahead of the sections; owner management follows them.
 
-The detail section links remain sticky below the header. On mobile, task
-actions sit above the 62px bottom navigation and its safe-area inset; between
-641px and 760px they sit directly at the viewport bottom. Content reserves
-bottom space for the fixed controls. Owned-list search precedes horizontally
+Desktop section links remain sticky below the header. Mobile section links
+form a wrapping two-column grid in normal flow. Fixed task actions sit above
+the measured bottom navigation and safe-area inset; between 641px and 760px
+they sit directly at the viewport bottom. A ResizeObserver reserves the actual
+height of both bars as fonts, locales and text size change. Owned-list search precedes wrapping
 scrollable status tabs on mobile. Facts and card actions reflow rather than
 shrinking the desktop card into the viewport. Photo grids change from four
 columns to two. These rules replace the legacy tender-detail layout below only

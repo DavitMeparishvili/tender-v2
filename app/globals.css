@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "../src/modules/tenders/ui/tender-pages.css";
+@import "../src/modules/tenders/ui/tender-authoring.css";
+@import "./typography.css";
 
 /* =============================================================
    Tender Marketplace — visual system
@@ -8,11 +10,7 @@
    the handoff values; do not invent new ones.
    ============================================================= */
 
-/* ---------- Brand type ----------
-   Manrope supplies Latin glyphs and Noto Sans Georgian supplies Georgian
-   glyphs. Both families ship only the 400–800 weights used by the interface,
-   so mixed-language content retains a consistent hierarchy without loading
-   unused font assets. */
+/* Fontsource faces are loaded by the locale layout; roles live in typography.css. */
 
 :root {
   color-scheme: light;
@@ -71,12 +69,12 @@
 
   --fg-1: var(--tip-ink);
   --fg-2: var(--tip-grey-700);
-  --fg-3: var(--tip-grey-500);
+  --fg-3: var(--tip-grey-600);
   --fg-on-inverse: #f2f2f3;
-  --fg-on-brand: var(--tip-ink);
+  --fg-on-brand: var(--tip-white);
 
-  --brand: var(--tip-emerald-500);
-  --brand-hover: var(--tip-emerald-600);
+  --brand: var(--tip-emerald-600);
+  --brand-hover: var(--tip-emerald-700);
   --brand-active: var(--tip-emerald-700);
   --link: var(--tip-blue-700);
 
@@ -85,9 +83,6 @@
   --focus-ring: color-mix(in srgb, var(--tip-emerald-500) 55%, transparent);
 
   /* ---- Type ---- */
-  --font-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* ---- Radii ---- */
@@ -156,27 +151,17 @@ body {
   margin: 0;
   background: var(--bg-page);
   color: var(--fg-1);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.6;
+  font: var(--type-body);
+  font-synthesis: none;
+  overflow-wrap: anywhere;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-}
-
-html[lang="ka"] {
-  --font-sans:
-    "Manrope", "Noto Sans Georgian", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-html[lang="ru"] body {
-  line-height: 1.5;
 }
 
 html[lang="ru"] .pill-brand,
 html[lang="ru"] .pill-ink,
 html[lang="ru"] .nav-tab[aria-current="page"] {
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 button,
@@ -185,6 +170,15 @@ select,
 textarea {
   font: inherit;
   font-family: var(--font-sans);
+}
+
+dialog {
+  font-family: var(--font-sans);
+}
+
+::placeholder {
+  color: var(--fg-3);
+  opacity: 1;
 }
 
 a {
@@ -210,39 +204,6 @@ img {
 /* Numbers are read as quantities all over this product — keep them aligned. */
 .num {
   font-variant-numeric: tabular-nums;
-}
-
-/*
-  Georgian has no capitals and a taller lowercase, so Mkhedruli set at a Latin
-  display size reads roughly a step larger and the tight Latin tracking closes
-  its counters. Display sizes are optically matched rather than demoted — the
-  role, weight and colour are unchanged, per The Equal-Script Rule.
-*/
-html[lang="ka"] .hero h1 {
-  font-size: 44px;
-  letter-spacing: -0.015em;
-}
-
-html[lang="ka"] .discovery-band h1,
-html[lang="ka"] .detail-title-card h1 {
-  font-size: 34px;
-  letter-spacing: -0.015em;
-}
-
-html[lang="ka"] .section-title {
-  font-size: 30px;
-  letter-spacing: -0.01em;
-}
-
-html[lang="ka"] .profile-name-row h1 {
-  font-size: 28px;
-  letter-spacing: -0.01em;
-}
-
-html[lang="ka"] .identity-heading h1,
-html[lang="ka"] .status-page h1 {
-  font-size: clamp(24px, 4vw, 30px);
-  letter-spacing: -0.015em;
 }
 
 /* =============================================================
@@ -350,25 +311,22 @@ html[lang="ka"] .status-page h1 {
 
 .overline {
   color: var(--brand);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1.3;
   text-transform: uppercase;
 }
 
 .section-title {
+  font: var(--type-section);
   margin: 10px 0 0;
   color: var(--fg-1);
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
   text-wrap: pretty;
 }
 
 .section-title-sm {
-  font-size: 30px;
+  font: var(--type-section);
 }
 
 .section-title-gap {
@@ -388,25 +346,20 @@ html[lang="ka"] .status-page h1 {
 }
 
 .card-title {
+  font: var(--type-card);
   margin: 0;
   color: var(--fg-1);
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
 }
 
 .muted {
+  font: var(--type-caption);
   color: var(--fg-3);
-  font-size: 12.5px;
-  font-weight: 500;
 }
 
 .lede {
+  font: var(--type-body);
   margin: 10px 0 0;
   color: var(--fg-2);
-  font-size: 16.5px;
-  line-height: 1.5;
   text-wrap: pretty;
 }
 
@@ -416,8 +369,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .lede-body {
-  font-size: 17px;
-  line-height: 1.6;
+  font: var(--type-body);
 }
 
 /* =============================================================
@@ -434,8 +386,8 @@ html[lang="ka"] .status-page h1 {
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--text-control);
+  font-weight: var(--weight-semibold);
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -449,7 +401,7 @@ html[lang="ka"] .status-page h1 {
 .pill-brand {
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   box-shadow: var(--shadow-xs);
 }
 
@@ -464,7 +416,7 @@ html[lang="ka"] .status-page h1 {
 .pill-ink {
   background: var(--tip-ink);
   color: #fff;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .pill-ink:hover {
@@ -510,9 +462,9 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-pill);
   background: var(--tip-grey-100);
   color: var(--fg-2);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1.3;
   text-transform: uppercase;
   white-space: nowrap;
@@ -559,8 +511,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-pill);
   background: var(--bg-surface);
   color: var(--fg-2);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -577,7 +529,7 @@ html[lang="ka"] .status-page h1 {
 .chip-quiet {
   border-color: transparent;
   background: var(--tip-grey-100);
-  font-size: 12px;
+  font-size: var(--text-caption);
 }
 
 .chip-quiet:hover {
@@ -587,13 +539,13 @@ html[lang="ka"] .status-page h1 {
 
 .chip-remove {
   color: var(--fg-3);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   line-height: 1;
 }
 
 .chip-count {
   color: var(--fg-3);
-  font-weight: 800;
+  font-weight: var(--weight-bold);
 }
 
 .chip-row {
@@ -630,30 +582,27 @@ html[lang="ka"] .status-page h1 {
 .stat-value {
   color: var(--fg-1);
   font-size: 26px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1;
 }
 
 .stat-label {
+  font: var(--type-caption);
   margin-block-start: 5px;
   color: var(--fg-3);
-  font-size: 12.5px;
-  font-weight: 500;
 }
 
 .figure-label {
+  font: var(--type-caption);
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
-  line-height: 1.4;
 }
 
 .figure-value {
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -673,8 +622,8 @@ html[lang="ka"] .status-page h1 {
   align-items: center;
   gap: 5px;
   color: var(--tip-emerald-700);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -697,9 +646,9 @@ html[lang="ka"] .status-page h1 {
 
 .stars {
   color: var(--brand);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   white-space: nowrap;
 }
 
@@ -710,8 +659,8 @@ html[lang="ka"] .status-page h1 {
   align-items: center;
   gap: 8px;
   color: var(--fg-3);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   line-height: 1.45;
 }
 
@@ -720,7 +669,7 @@ html[lang="ka"] .status-page h1 {
   border: 1px dashed var(--border-strong);
   border-radius: var(--radius-md);
   background: var(--tip-grey-50);
-  font-size: 12px;
+  font-size: var(--text-caption);
 }
 
 /* =============================================================
@@ -750,7 +699,7 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--bg-surface);
   color: var(--fg-1);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   box-shadow: var(--shadow-lg);
   overflow-wrap: anywhere;
 }
@@ -769,8 +718,8 @@ html[lang="ka"] .status-page h1 {
   gap: 20px;
   min-block-size: 34px;
   color: var(--tip-grey-400);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .shell-strip-spacer {
@@ -788,7 +737,7 @@ html[lang="ka"] .status-page h1 {
 
 .shell-strip .is-current {
   color: var(--brand);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .locale-switcher {
@@ -799,7 +748,7 @@ html[lang="ka"] .status-page h1 {
 
 .locale-switcher .is-current {
   color: var(--brand-active);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .site-header {
@@ -825,18 +774,18 @@ html[lang="ka"] .status-page h1 {
   gap: 9px;
   color: var(--fg-1);
   font-size: 19px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1;
   text-decoration: none;
 }
 
 .wordmark::before {
   content: "";
+  flex: none;
   inline-size: 26px;
   block-size: 26px;
-  border-radius: 7px;
-  background: var(--brand);
+  background: url("/brand/tender-symbol.svg") center / contain no-repeat;
 }
 
 .nav-tabs {
@@ -845,14 +794,13 @@ html[lang="ka"] .status-page h1 {
 }
 
 .nav-tab {
+  font: var(--type-control);
   display: inline-flex;
   align-items: center;
   min-block-size: 44px;
   padding: 8px 12px;
   border-block-end: 2px solid transparent;
   color: var(--fg-2);
-  font-size: 15px;
-  font-weight: 600;
   text-decoration: none;
   transition: color 150ms var(--ease);
 }
@@ -864,7 +812,7 @@ html[lang="ka"] .status-page h1 {
 .nav-tab[aria-current="page"] {
   border-block-end-color: var(--brand);
   color: var(--fg-1);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .nav-spacer {
@@ -883,12 +831,11 @@ html[lang="ka"] .status-page h1 {
 }
 
 .header-link {
+  font: var(--type-control);
   display: inline-flex;
   align-items: center;
   min-block-size: 44px;
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -933,15 +880,15 @@ html[lang="ka"] .status-page h1 {
   border-radius: 50%;
   background: var(--tip-emerald-100);
   color: var(--brand-active);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1;
 }
 
 .account-menu-trigger-avatar {
   inline-size: 38px;
   block-size: 38px;
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 
 .account-menu-chevron {
@@ -996,7 +943,7 @@ html[lang="ka"] .status-page h1 {
 .account-menu-avatar {
   inline-size: 48px;
   block-size: 48px;
-  font-size: 15px;
+  font-size: var(--text-control);
 }
 
 .account-menu-identity-copy {
@@ -1008,8 +955,8 @@ html[lang="ka"] .status-page h1 {
 .account-menu-identity-copy strong {
   overflow: hidden;
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
   line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1018,8 +965,8 @@ html[lang="ka"] .status-page h1 {
 .account-menu-identity-copy > span {
   overflow: hidden;
   color: var(--fg-3);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   line-height: 1.3;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1045,8 +992,8 @@ html[lang="ka"] .status-page h1 {
   background: transparent;
   color: var(--fg-1);
   font: inherit;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   line-height: 1.25;
   text-align: start;
   text-decoration: none;
@@ -1157,7 +1104,7 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--bg-surface);
   color: var(--fg-2);
-  font-size: 13.5px;
+  font-size: var(--text-label);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1186,34 +1133,34 @@ html[lang="ka"] .status-page h1 {
   margin-block-end: 12px;
   color: #fff;
   font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1;
   text-decoration: none;
 }
 
 .footer-word::before {
   content: "";
+  flex: none;
   inline-size: 24px;
   block-size: 24px;
-  border-radius: 6px;
-  background: var(--brand);
+  background: url("/brand/tender-symbol-on-dark.svg") center / contain no-repeat;
 }
 
 .footer-blurb {
   max-inline-size: 280px;
   margin: 0;
   color: var(--tip-grey-400);
-  font-size: 13.5px;
+  font-size: var(--text-label);
   line-height: 1.6;
 }
 
 .footer-head {
   margin-block-end: 12px;
   color: var(--brand);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1228,7 +1175,7 @@ html[lang="ka"] .status-page h1 {
 
 .footer-col a {
   color: var(--tip-grey-300);
-  font-size: 13.5px;
+  font-size: var(--text-label);
   text-decoration: none;
 }
 
@@ -1240,8 +1187,8 @@ html[lang="ka"] .status-page h1 {
   margin-block-start: 28px;
   padding-block-start: 18px;
   border-block-start: 1px solid rgb(255 255 255 / 12%);
-  color: var(--tip-grey-600);
-  font-size: 12.5px;
+  color: var(--tip-grey-400);
+  font-size: var(--text-caption);
 }
 
 /* Mobile tab bar ---------------------------------------------------------- */
@@ -1271,21 +1218,17 @@ html[lang="ka"] .status-page h1 {
 }
 
 .hero h1 {
+  font: var(--type-hero);
   margin: 16px 0 0;
   color: var(--fg-1);
-  font-size: 56px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.03;
   text-wrap: pretty;
 }
 
 .hero-lead {
+  font: var(--type-body);
   max-inline-size: 540px;
   margin: 20px 0 26px;
   color: var(--fg-2);
-  font-size: 19px;
-  line-height: 1.55;
   text-wrap: pretty;
 }
 
@@ -1308,7 +1251,7 @@ html[lang="ka"] .status-page h1 {
   border: 0;
   background: transparent;
   color: var(--fg-1);
-  font-size: 15px;
+  font-size: var(--text-control);
 }
 
 .search-bar input:focus {
@@ -1327,8 +1270,8 @@ html[lang="ka"] .status-page h1 {
   border: 0;
   background: transparent;
   color: var(--fg-2);
-  font-size: 14.5px;
-  font-weight: 600;
+  font-size: var(--text-control);
+  font-weight: var(--weight-semibold);
   text-overflow: ellipsis;
   cursor: pointer;
 }
@@ -1338,14 +1281,13 @@ html[lang="ka"] .status-page h1 {
 }
 
 .search-bar button {
+  font: var(--type-control);
   flex: none;
   padding: 12px 22px;
   border: 0;
   border-radius: var(--radius-pill);
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-size: 15px;
-  font-weight: 700;
   cursor: pointer;
   transition: background-color 150ms var(--ease);
 }
@@ -1364,7 +1306,7 @@ html[lang="ka"] .status-page h1 {
 .hero-popular > span {
   padding-block: 6px;
   color: var(--fg-3);
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 
 .hero-stats {
@@ -1398,17 +1340,14 @@ html[lang="ka"] .status-page h1 {
 }
 
 .hero-preview-title {
+  font: var(--type-card);
   margin: 14px 0 6px;
   color: var(--fg-1);
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
 }
 
 .hero-preview-meta {
+  font: var(--type-caption);
   color: var(--fg-3);
-  font-size: 13.5px;
 }
 
 .hero-preview-figures {
@@ -1461,25 +1400,25 @@ html[lang="ka"] .status-page h1 {
 
 .offer-name {
   color: var(--fg-1);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .offer-meta {
   color: var(--fg-3);
-  font-size: 11.5px;
+  font-size: var(--text-caption);
 }
 
 .offer-amount {
   color: var(--fg-2);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
 .offer-row-lowest .offer-amount {
   color: var(--fg-1);
-  font-weight: 800;
+  font-weight: var(--weight-bold);
 }
 
 .hero-toast {
@@ -1516,15 +1455,15 @@ html[lang="ka"] .status-page h1 {
 }
 
 .hero-toast-title {
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1.1;
 }
 
 .hero-toast-meta {
+  font: var(--type-caption);
   color: var(--tip-grey-400);
-  font-size: 11.5px;
 }
 
 /* Open-tender cards ------------------------------------------------------- */
@@ -1566,12 +1505,9 @@ html[lang="ka"] .status-page h1 {
 }
 
 .tender-card-title {
+  font: var(--type-card);
   margin: 0;
   color: var(--fg-1);
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
 }
 
 .tender-card-title a {
@@ -1585,7 +1521,7 @@ html[lang="ka"] .status-page h1 {
 
 .tender-card-meta {
   color: var(--fg-3);
-  font-size: 13.5px;
+  font-size: var(--text-label);
 }
 
 .tender-card-figures {
@@ -1597,7 +1533,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .tender-card-figures .figure-value {
-  font-size: 14.5px;
+  font-size: var(--text-control);
 }
 
 /* Category tiles ---------------------------------------------------------- */
@@ -1646,15 +1582,15 @@ html[lang="ka"] .status-page h1 {
 .category-name {
   display: block;
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
 }
 
 .category-count {
   display: block;
   color: var(--fg-3);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .category-tile-ink {
@@ -1671,7 +1607,7 @@ html[lang="ka"] .status-page h1 {
   background: rgb(255 255 255 / 10%);
   color: var(--brand);
   font-size: 18px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
 }
 
 .category-tile-ink .category-name {
@@ -1714,8 +1650,8 @@ html[lang="ka"] .status-page h1 {
 .lane-head span:last-child {
   color: var(--fg-1);
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .lane-ink .lane-head span:last-child {
@@ -1765,20 +1701,20 @@ html[lang="ka"] .status-page h1 {
   border-radius: 50%;
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
   content: counter(lane-step);
 }
 
 .lane-step-title {
   color: var(--fg-1);
-  font-size: 15.5px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
 }
 
 .lane-step-body {
   color: var(--fg-2);
-  font-size: 14px;
+  font-size: var(--text-label);
   line-height: 1.5;
 }
 
@@ -1827,14 +1763,14 @@ html[lang="ka"] .status-page h1 {
 .trust-card h3 {
   margin: 0 0 5px;
   color: var(--fg-1);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
 }
 
 .trust-card p {
   margin: 0;
   color: var(--fg-2);
-  font-size: 14px;
+  font-size: var(--text-label);
   line-height: 1.55;
 }
 
@@ -1858,19 +1794,19 @@ html[lang="ka"] .status-page h1 {
 .quote-card blockquote {
   margin: 10px 0 14px;
   color: var(--fg-1);
-  font-size: 15.5px;
+  font-size: var(--text-body-size);
   line-height: 1.6;
 }
 
 .quote-attrib {
   color: var(--fg-1);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .quote-verify {
+  font: var(--type-caption);
   color: var(--fg-3);
-  font-size: 12.5px;
 }
 
 /* CTA band ---------------------------------------------------------------- */
@@ -1884,19 +1820,15 @@ html[lang="ka"] .status-page h1 {
 }
 
 .cta-band h2 {
+  font: var(--type-section);
   margin: 0 0 8px;
   color: var(--fg-on-brand);
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.12;
 }
 
 .cta-band p {
+  font: var(--type-body);
   margin: 0;
-  color: rgb(22 24 28 / 72%);
-  font-size: 16.5px;
-  line-height: 1.5;
+  color: var(--fg-on-brand);
 }
 
 .cta-actions {
@@ -1907,12 +1839,12 @@ html[lang="ka"] .status-page h1 {
 
 .cta-actions .pill {
   padding: 15px 26px;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
 }
 
 .pill-on-brand {
-  border: 1.5px solid rgb(22 24 28 / 35%);
+  border: 1.5px solid rgb(255 255 255 / 65%);
   color: var(--fg-on-brand);
 }
 
@@ -1934,12 +1866,9 @@ html[lang="ka"] .status-page h1 {
 }
 
 .discovery-band h1 {
+  font: var(--type-title);
   margin: 0;
   color: var(--fg-1);
-  font-size: 42px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
 }
 
 .discovery-band .lede {
@@ -1957,7 +1886,7 @@ html[lang="ka"] .status-page h1 {
 
 .discovery-search .city {
   flex: 1;
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .discovery-search button {
@@ -1977,9 +1906,46 @@ html[lang="ka"] .status-page h1 {
 .filter-rail {
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   background: var(--bg-surface);
-  box-shadow: var(--shadow-sm);
+}
+
+.filter-sheet-close {
+  display: none;
+}
+
+.filter-rail .filter-currency {
+  gap: 8px;
+  padding: 8px;
+  margin-block: 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+
+.filter-rail .filter-currency > label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 0;
+  min-block-size: 36px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.filter-rail .filter-currency input {
+  min-block-size: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-rail .chip-row {
+  gap: 8px;
+  margin-block-start: 10px;
+}
+
+.filter-rail .budget-fields .form-field {
+  min-inline-size: 0;
 }
 
 .filter-rail-head {
@@ -1992,14 +1958,14 @@ html[lang="ka"] .status-page h1 {
 
 .filter-rail-head > span {
   color: var(--fg-1);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
 }
 
 .filter-rail-head a {
   color: var(--link);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .filter-group {
@@ -2017,12 +1983,12 @@ html[lang="ka"] .status-page h1 {
 .filter-rail .form-field > label,
 .filter-rail legend {
   color: var(--fg-1);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
 }
 
 .filter-rail .field-description {
-  font-size: 12px;
+  font-size: var(--text-caption);
   line-height: 1.45;
 }
 
@@ -2049,8 +2015,8 @@ html[lang="ka"] .status-page h1 {
 
 .budget-fields .form-field > label {
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 /* Segmented control (currency) */
@@ -2068,8 +2034,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--tip-grey-100);
   color: var(--fg-2);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   text-align: center;
   cursor: pointer;
   transition:
@@ -2092,7 +2058,7 @@ html[lang="ka"] .status-page h1 {
 .segmented > label:has(input:checked) {
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .segmented > label:has(input:focus-visible) {
@@ -2108,8 +2074,8 @@ html[lang="ka"] .status-page h1 {
   border: 1px dashed var(--border-strong);
   border-radius: var(--radius-md);
   color: var(--fg-2);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   line-height: 1.35;
 }
 
@@ -2125,8 +2091,8 @@ html[lang="ka"] .status-page h1 {
 
 .active-filters > span:first-child {
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .active-filters .chip {
@@ -2153,19 +2119,19 @@ html[lang="ka"] .status-page h1 {
   padding-block-start: 10px;
   border-block-start: 1px solid var(--border);
   color: var(--fg-3);
-  font-size: 12.5px;
+  font-size: var(--text-caption);
   line-height: 1.5;
 }
 
 .result-count {
   color: var(--fg-2);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .result-count strong {
   color: var(--fg-1);
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2179,8 +2145,8 @@ html[lang="ka"] .status-page h1 {
   padding: 7px 13px;
   border-radius: var(--radius-pill);
   color: var(--fg-2);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   text-decoration: none;
   white-space: nowrap;
   transition: background-color 150ms var(--ease);
@@ -2193,7 +2159,7 @@ html[lang="ka"] .status-page h1 {
 .sort-pill[aria-current="true"] {
   background: var(--tip-emerald-soft);
   color: var(--tip-emerald-800);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .result-list {
@@ -2243,8 +2209,8 @@ html[lang="ka"] .status-page h1 {
 .result-card-title {
   margin: 0;
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
@@ -2261,7 +2227,7 @@ html[lang="ka"] .status-page h1 {
 .result-card-desc {
   margin: 6px 0 0;
   color: var(--fg-2);
-  font-size: 14.5px;
+  font-size: var(--text-control);
   line-height: 1.55;
   overflow-wrap: anywhere;
 }
@@ -2275,17 +2241,17 @@ html[lang="ka"] .status-page h1 {
 .result-card-amount {
   color: var(--fg-1);
   font-size: 22px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1.1;
 }
 
 .result-card-offers {
   margin-block-start: 4px;
   color: var(--fg-3);
-  font-size: 12.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .result-card-foot {
@@ -2301,21 +2267,21 @@ html[lang="ka"] .status-page h1 {
 .result-card-foot dd {
   margin: 0;
   color: var(--fg-1);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .result-card-foot dt {
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .result-card-foot .pill {
   min-block-size: 0;
   padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
   white-space: nowrap;
 }
 
@@ -2331,8 +2297,8 @@ html[lang="ka"] .status-page h1 {
   padding-block-start: 18px;
   border-block-start: 1px solid var(--border);
   color: var(--fg-3);
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
 }
 
 .pager > p {
@@ -2354,8 +2320,8 @@ html[lang="ka"] .status-page h1 {
 
 .pager-size > span {
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   white-space: nowrap;
 }
 
@@ -2371,8 +2337,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--bg-surface);
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
   text-decoration: none;
   transition: border-color 150ms var(--ease);
@@ -2386,7 +2352,7 @@ html[lang="ka"] .status-page h1 {
   border-color: var(--brand);
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .pager-pages .is-disabled {
@@ -2439,8 +2405,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-pill);
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-size: 12px;
-  font-weight: 800;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2485,8 +2451,8 @@ html[lang="ka"] .status-page h1 {
   gap: 7px;
   min-block-size: 44px;
   color: var(--fg-2);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   text-decoration: none;
 }
 
@@ -2495,7 +2461,7 @@ html[lang="ka"] .status-page h1 {
 }
 
 .back-link::before {
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   content: "←";
 }
 
@@ -2517,13 +2483,10 @@ html[lang="ka"] .status-page h1 {
 }
 
 .detail-title-card h1 {
+  font: var(--type-title);
   max-inline-size: 660px;
   margin: 0;
   color: var(--fg-1);
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.06;
   text-wrap: pretty;
   overflow-wrap: anywhere;
 }
@@ -2547,17 +2510,17 @@ html[lang="ka"] .status-page h1 {
 
 .detail-figure-value {
   color: var(--fg-1);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
   line-height: 1.35;
 }
 
 .detail-figure-amount {
   color: var(--fg-1);
   font-size: 22px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1.2;
 }
 
@@ -2565,7 +2528,7 @@ html[lang="ka"] .status-page h1 {
   max-inline-size: 720px;
   margin: 0 0 22px;
   color: var(--fg-2);
-  font-size: 16px;
+  font-size: var(--text-body-size);
   line-height: 1.65;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -2574,9 +2537,9 @@ html[lang="ka"] .status-page h1 {
 .detail-subhead {
   margin: 0 0 8px;
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .detail-head-row {
@@ -2611,15 +2574,15 @@ html[lang="ka"] .status-page h1 {
 .hairline-grid dt {
   margin-block-end: 3px;
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .hairline-grid dd {
   margin: 0;
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
@@ -2651,28 +2614,28 @@ html[lang="ka"] .status-page h1 {
 
 .detail-map-side dt {
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .detail-map-side dd {
   margin: 0;
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
 }
 
 .detail-map-side .mono {
   font-family: var(--font-mono);
-  font-size: 15px;
-  font-weight: 600;
+  font-size: var(--text-control);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
 }
 
 .detail-map-note {
   margin-block-start: auto;
   color: var(--fg-3);
-  font-size: 12.5px;
+  font-size: var(--text-caption);
   line-height: 1.5;
 }
 
@@ -2693,23 +2656,23 @@ html[lang="ka"] .status-page h1 {
 .detail-reference dt {
   margin-block-end: 3px;
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .detail-reference dd {
   margin: 0;
   color: var(--fg-1);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   overflow-wrap: anywhere;
 }
 
 .detail-reference .mono {
   color: var(--fg-2);
   font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .detail-reference-divider {
@@ -2747,19 +2710,17 @@ html[lang="ka"] .status-page h1 {
 }
 
 .mini-card-title {
+  font: var(--type-card);
   display: block;
   margin: 11px 0 6px;
   color: var(--fg-1);
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.3;
 }
 
 .mini-card-amount {
   display: block;
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2767,8 +2728,8 @@ html[lang="ka"] .status-page h1 {
   display: block;
   margin-block-start: 3px;
   color: var(--fg-3);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 /* Unlock card ------------------------------------------------------------- */
@@ -2789,9 +2750,9 @@ html[lang="ka"] .status-page h1 {
   border-block-end: 1px solid var(--tip-emerald-200);
   background: var(--tip-emerald-soft);
   color: var(--fg-1);
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .unlock-body {
@@ -2801,15 +2762,15 @@ html[lang="ka"] .status-page h1 {
 .unlock-body > p {
   margin: 0 0 16px;
   color: var(--fg-2);
-  font-size: 14.5px;
+  font-size: var(--text-control);
   line-height: 1.55;
 }
 
 .unlock-primary {
   inline-size: 100%;
   padding-block: 15px;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
   box-shadow: var(--shadow-sm);
 }
 
@@ -2819,9 +2780,9 @@ html[lang="ka"] .status-page h1 {
   gap: 10px;
   margin-block: 14px;
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -2861,21 +2822,21 @@ html[lang="ka"] .status-page h1 {
 .unlock-option-name {
   display: block;
   color: var(--fg-1);
-  font-size: 14.5px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
 }
 
 .unlock-option-note {
   display: block;
   color: var(--fg-3);
-  font-size: 12px;
-  font-weight: 400;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
 }
 
 .unlock-option-price {
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 800;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -2883,7 +2844,7 @@ html[lang="ka"] .status-page h1 {
 .unlock-foot {
   margin-block-start: 14px;
   color: var(--fg-3);
-  font-size: 11.5px;
+  font-size: var(--text-caption);
   line-height: 1.5;
 }
 
@@ -2904,23 +2865,23 @@ html[lang="ka"] .status-page h1 {
   gap: 10px;
   margin-block-end: 12px;
   color: var(--fg-1);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
 }
 
 .rail-headline {
   color: var(--fg-1);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1.1;
 }
 
 .rail-card p {
   margin: 8px 0 0;
   color: var(--fg-2);
-  font-size: 13.5px;
+  font-size: var(--text-label);
   line-height: 1.55;
 }
 
@@ -2934,15 +2895,15 @@ html[lang="ka"] .status-page h1 {
 
 .rail-figures dt {
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .rail-figures dd {
   margin: 0;
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2952,8 +2913,8 @@ html[lang="ka"] .status-page h1 {
   gap: 9px;
   margin: 0;
   color: var(--fg-2);
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
 }
 
 .rail-rows > div {
@@ -2970,7 +2931,7 @@ html[lang="ka"] .status-page h1 {
 .rail-rows dd {
   margin: 0;
   color: var(--fg-1);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
   text-align: end;
 }
@@ -2980,7 +2941,7 @@ html[lang="ka"] .status-page h1 {
   padding-block-start: 12px;
   border-block-start: 1px solid var(--border);
   color: var(--fg-3);
-  font-size: 11.5px;
+  font-size: var(--text-caption);
   line-height: 1.5;
 }
 
@@ -3012,13 +2973,13 @@ html[lang="ka"] .status-page h1 {
   align-items: center;
   gap: 7px;
   color: var(--fg-1);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
 }
 
 .identity-note {
   color: var(--fg-3);
-  font-size: 12.5px;
+  font-size: var(--text-caption);
 }
 
 .rail-actions {
@@ -3029,7 +2990,7 @@ html[lang="ka"] .status-page h1 {
 .rail-actions .pill {
   flex: 1;
   padding-block: 12px;
-  font-size: 13.5px;
+  font-size: var(--text-label);
 }
 
 /* Map frame --------------------------------------------------------------- */
@@ -3091,18 +3052,15 @@ html[lang="ka"] .status-page h1 {
 }
 
 .profile-name-row h1 {
+  font: var(--type-title);
   margin: 0;
   color: var(--fg-1);
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
 }
 
 .profile-descriptor {
   margin: 8px 0 0;
   color: var(--fg-2);
-  font-size: 17px;
+  font-size: var(--text-body-size);
   line-height: 1.5;
 }
 
@@ -3113,8 +3071,8 @@ html[lang="ka"] .status-page h1 {
   gap: 18px;
   margin-block-start: 12px;
   color: var(--fg-3);
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
 }
 
 .profile-meta > span {
@@ -3151,7 +3109,7 @@ html[lang="ka"] .status-page h1 {
 
 .profile-actions-note {
   color: var(--fg-3);
-  font-size: 11.5px;
+  font-size: var(--text-caption);
   line-height: 1.45;
   text-align: center;
 }
@@ -3186,9 +3144,9 @@ html[lang="ka"] .status-page h1 {
 .uppercase-label {
   margin: 0 0 10px;
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -3211,8 +3169,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-lg);
   background: var(--tip-grey-50);
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   line-height: 1.4;
   text-align: center;
 }
@@ -3231,22 +3189,22 @@ html[lang="ka"] .status-page h1 {
 .review-score {
   color: var(--fg-1);
   font-size: 52px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   line-height: 1;
 }
 
 .review-score-stars {
   margin-block-start: 6px;
-  font-size: 17px;
+  font-size: var(--text-body-size);
 }
 
 .review-score-count {
   margin-block-start: 6px;
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .histogram {
@@ -3265,8 +3223,8 @@ html[lang="ka"] .status-page h1 {
 .histogram dt {
   inline-size: 34px;
   color: var(--fg-3);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .histogram dd {
@@ -3294,8 +3252,8 @@ html[lang="ka"] .status-page h1 {
 .histogram-count {
   inline-size: 26px;
   color: var(--fg-2);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
   text-align: end;
 }
@@ -3313,14 +3271,14 @@ html[lang="ka"] .status-page h1 {
   justify-content: space-between;
   gap: 12px;
   color: var(--fg-2);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .criteria-list dd {
   margin: 0;
   color: var(--fg-1);
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -3363,16 +3321,16 @@ html[lang="ka"] .status-page h1 {
 
 .review-item-score {
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 800;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
 .review-item-title {
   margin: 0;
   color: var(--fg-1);
-  font-size: 17px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
   line-height: 1.3;
 }
 
@@ -3380,15 +3338,15 @@ html[lang="ka"] .status-page h1 {
   max-inline-size: 640px;
   margin: 8px 0 0;
   color: var(--fg-2);
-  font-size: 15px;
+  font-size: var(--text-control);
   line-height: 1.6;
 }
 
 .review-item-attrib {
   margin-block-start: 10px;
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .review-item-value {
@@ -3401,7 +3359,7 @@ html[lang="ka"] .status-page h1 {
   margin: 0;
   color: var(--fg-1);
   font-size: 18px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
 }
@@ -3415,8 +3373,8 @@ html[lang="ka"] .status-page h1 {
   padding-block-start: 18px;
   border-block-start: 1px solid var(--border);
   color: var(--fg-3);
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
 }
 
 .check-list {
@@ -3448,13 +3406,13 @@ html[lang="ka"] .status-page h1 {
 
 .check-title {
   color: var(--fg-1);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .check-note {
   color: var(--fg-3);
-  font-size: 11.5px;
+  font-size: var(--text-caption);
 }
 
 .rail-cta {
@@ -3472,14 +3430,14 @@ html[lang="ka"] .status-page h1 {
 .rail-cta h2 {
   margin: 0 0 7px;
   color: #fff;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
 }
 
 .rail-cta p {
   margin: 0 0 14px;
   color: var(--tip-grey-400);
-  font-size: 13.5px;
+  font-size: var(--text-label);
   line-height: 1.55;
 }
 
@@ -3557,8 +3515,8 @@ html[lang="ka"] .status-page h1 {
   margin: 0;
   color: var(--fg-1);
   font-size: clamp(28px, 5vw, 36px);
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1.08;
   text-wrap: pretty;
 }
@@ -3567,7 +3525,7 @@ html[lang="ka"] .status-page h1 {
 .status-page p {
   margin: 0.875rem 0 0;
   color: var(--fg-2);
-  font-size: 16px;
+  font-size: var(--text-body-size);
   line-height: 1.6;
 }
 
@@ -3595,8 +3553,8 @@ html[lang="ka"] .status-page h1 {
   padding: 11px 18px;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: var(--text-control);
+  font-weight: var(--weight-bold);
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -3624,7 +3582,7 @@ html[lang="ka"] .status-page h1 {
   border-color: var(--border-strong);
   background: var(--bg-surface);
   color: var(--fg-1);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .button-secondary:hover {
@@ -3644,7 +3602,7 @@ html[lang="ka"] .status-page h1 {
   border-color: var(--tip-red);
   background: var(--bg-surface);
   color: var(--tip-red-dk);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .button-danger:hover {
@@ -3662,20 +3620,15 @@ html[lang="ka"] .status-page h1 {
 }
 
 .button-status {
-  color: rgb(22 24 28 / 60%);
+  color: inherit;
   font-size: 0.8125rem;
-  font-weight: 500;
-}
-
-.button-secondary .button-status,
-.button-ink .button-status {
-  color: var(--fg-3);
+  font-weight: var(--weight-medium);
 }
 
 .supporting-note {
   margin: 1.5rem 0 0;
   color: var(--fg-3);
-  font-size: 14px;
+  font-size: var(--text-label);
 }
 
 /* Intent picker ----------------------------------------------------------- */
@@ -3707,13 +3660,13 @@ html[lang="ka"] .status-page h1 {
 
 .intent-option > span {
   color: var(--fg-1);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
 }
 
 .intent-option > small {
   color: var(--fg-2);
-  font-size: 14px;
+  font-size: var(--text-label);
   line-height: 1.5;
 }
 
@@ -3739,20 +3692,20 @@ html[lang="ka"] .status-page h1 {
   display: flex;
   justify-content: flex-end;
   margin-block-start: -0.5rem;
-  font-size: 14px;
+  font-size: var(--text-label);
 }
 
 .form-footer {
   margin: 0.25rem 0 0;
   color: var(--fg-3);
-  font-size: 14px;
+  font-size: var(--text-label);
   text-align: center;
 }
 
 .form-footer a,
 .form-link-row a {
   color: var(--fg-1);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .form-field {
@@ -3762,14 +3715,14 @@ html[lang="ka"] .status-page h1 {
 
 .form-field > label {
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .field-description,
 .field-error {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 
 .field-description {
@@ -3778,7 +3731,7 @@ html[lang="ka"] .status-page h1 {
 
 .field-error {
   color: var(--tip-red-dk);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .field-control {
@@ -3797,8 +3750,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--bg-surface);
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
   transition:
     border-color 150ms var(--ease),
     box-shadow 150ms var(--ease);
@@ -3860,7 +3813,7 @@ html[lang="ka"] .status-page h1 {
 
 .error-summary p {
   margin: 0;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .error-summary ul {
@@ -3890,14 +3843,14 @@ html[lang="ka"] .status-page h1 {
 .checkbox-field span {
   display: grid;
   gap: 0.25rem;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .checkbox-field small {
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 400;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
 }
 
 .success-status {
@@ -3907,8 +3860,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--tip-green-soft);
   color: var(--tip-green-dk);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 /* Auth state -------------------------------------------------------------- */
@@ -3921,8 +3874,8 @@ html[lang="ka"] .status-page h1 {
 .auth-state h2 {
   margin: 0;
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .auth-state p {
@@ -3968,8 +3921,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-pill);
   background: var(--tip-green-soft);
   color: var(--tip-green-dk);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .workspace-trust > span {
@@ -3998,8 +3951,8 @@ html[lang="ka"] .status-page h1 {
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   color: var(--fg-2);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   text-align: center;
   text-decoration: none;
 }
@@ -4046,14 +3999,14 @@ html[lang="ka"] .status-page h1 {
 
 .workspace-tile-title {
   color: var(--fg-1);
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .workspace-tile-body {
   color: var(--fg-2);
-  font-size: 14px;
+  font-size: var(--text-label);
   line-height: 1.55;
 }
 
@@ -4072,13 +4025,13 @@ html[lang="ka"] .status-page h1 {
 
 .workspace-facts dt {
   color: var(--fg-3);
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 
 .workspace-facts dd {
   margin: 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
 }
 
 .workspace-empty {
@@ -4089,8 +4042,8 @@ html[lang="ka"] .status-page h1 {
 .workspace-empty h2 {
   margin: 0;
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .workspace-empty p {
@@ -4102,7 +4055,7 @@ html[lang="ka"] .status-page h1 {
   display: inline-block;
   margin-block-start: 0.625rem;
   color: var(--tip-emerald-800);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 
 .workspace-actions {
@@ -4162,7 +4115,7 @@ html[lang="ka"] .status-page h1 {
 .discovery-summary {
   margin: 0;
   color: var(--fg-2);
-  font-size: 14.5px;
+  font-size: var(--text-control);
   line-height: 1.55;
   overflow-wrap: anywhere;
 }
@@ -4179,8 +4132,8 @@ html[lang="ka"] .status-page h1 {
   min-inline-size: 0;
   margin: 0;
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1.25;
 }
 
@@ -4199,9 +4152,9 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-pill);
   background: var(--tip-grey-100);
   color: var(--fg-2);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -4236,15 +4189,15 @@ html[lang="ka"] .status-page h1 {
 
 .tender-list-facts dt {
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .tender-list-facts dd {
   margin: 0.25rem 0 0;
   color: var(--fg-1);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -4262,8 +4215,8 @@ html[lang="ka"] .status-page h1 {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-pill);
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
   text-decoration: none;
   transition: border-color 150ms var(--ease);
 }
@@ -4281,8 +4234,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-pill);
   background: var(--tip-grey-100);
   color: var(--fg-2);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .tender-detail-status > span {
@@ -4369,8 +4322,8 @@ html[lang="ka"] .status-page h1 {
 .tender-detail dt,
 .wizard-review dt {
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 
 .tender-detail dd,
@@ -4378,8 +4331,8 @@ html[lang="ka"] .status-page h1 {
   min-inline-size: 0;
   margin: 0;
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
@@ -4431,8 +4384,8 @@ html[lang="ka"] .status-page h1 {
   margin: 0;
   color: var(--fg-1);
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .tender-cancel {
@@ -4442,7 +4395,7 @@ html[lang="ka"] .status-page h1 {
 .tender-action-hint {
   margin: 0;
   color: var(--fg-2);
-  font-size: 14.5px;
+  font-size: var(--text-control);
   line-height: 1.55;
 }
 
@@ -4466,15 +4419,15 @@ html[lang="ka"] .status-page h1 {
 
 .bid-summary dt {
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .bid-summary dd {
   margin: 0.25rem 0 0;
   color: var(--fg-1);
   font-size: 18px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -4487,8 +4440,8 @@ html[lang="ka"] .status-page h1 {
   padding: 0;
   margin: 0 0 2rem;
   color: var(--fg-3);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
   list-style: none;
 }
 
@@ -4555,9 +4508,9 @@ html[lang="ka"] .status-page h1 {
   gap: 6px;
   margin: 0 0 10px;
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
 }
 
 .lifecycle-parties {
@@ -4583,8 +4536,8 @@ html[lang="ka"] .status-page h1 {
   display: flex;
   align-items: center;
   color: var(--fg-2);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .lifecycle-you {
@@ -4604,14 +4557,14 @@ html[lang="ka"] .status-page h1 {
 .cancellation-summary {
   margin: 0;
   color: var(--tip-red-dk);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .cancellation-explanation {
   margin: 0;
   color: var(--fg-2);
-  font-size: 13.5px;
+  font-size: var(--text-label);
   line-height: 1.5;
 }
 
@@ -4619,8 +4572,8 @@ html[lang="ka"] .status-page h1 {
   margin: 0;
   color: var(--fg-1);
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   line-height: 1.35;
 }
 
@@ -4690,8 +4643,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--bg-surface);
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
   transition:
     border-color 150ms var(--ease),
     box-shadow 150ms var(--ease);
@@ -4726,7 +4679,7 @@ html[lang="ka"] .status-page h1 {
 
 .date-field-trigger[data-placeholder="true"] {
   color: var(--fg-3);
-  font-weight: 400;
+  font-weight: var(--weight-regular);
 }
 
 .date-field-icon {
@@ -4780,8 +4733,8 @@ html[lang="ka"] .status-page h1 {
   flex: 1 1 auto;
   text-align: center;
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
   text-transform: capitalize;
 }
 
@@ -4822,9 +4775,9 @@ html[lang="ka"] .status-page h1 {
 .date-calendar-weekdays {
   padding-block-end: 2px;
   color: var(--fg-3);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   text-align: center;
   text-transform: uppercase;
 }
@@ -4838,8 +4791,8 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--fg-1);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   transition:
@@ -4862,7 +4815,7 @@ html[lang="ka"] .status-page h1 {
 .date-calendar-day[data-selected="true"] {
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   box-shadow: none;
 }
 
@@ -4872,7 +4825,7 @@ html[lang="ka"] .status-page h1 {
   justify-content: space-between;
   padding-block-start: 8px;
   border-block-start: 1px solid var(--border);
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 
 .date-calendar-today,
@@ -4881,8 +4834,8 @@ html[lang="ka"] .status-page h1 {
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-caption);
   cursor: pointer;
   transition:
     background-color 150ms var(--ease),
@@ -4929,15 +4882,15 @@ html[lang="ka"] .status-page h1 {
 
 .wizard-more > summary > span:first-child {
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
 }
 
 .wizard-more-hint {
   flex: 1 1 auto;
   color: var(--fg-3);
-  font-size: 13px;
-  font-weight: 400;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
 }
 
 .wizard-more > summary::after {
@@ -4966,7 +4919,7 @@ html[lang="ka"] .status-page h1 {
 .attachment-count {
   flex: 0 0 100%;
   color: var(--fg-3);
-  font-size: 12px;
+  font-size: var(--text-caption);
   font-variant-numeric: tabular-nums;
 }
 
@@ -4984,7 +4937,7 @@ html[lang="ka"] .status-page h1 {
   padding: 0;
   margin: -0.5rem 0 0;
   color: var(--fg-2);
-  font-size: 13px;
+  font-size: var(--text-caption);
   list-style: none;
 }
 
@@ -5031,14 +4984,14 @@ html[lang="ka"] .status-page h1 {
 }
 
 .attachment-name {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
   overflow-wrap: anywhere;
 }
 
 .attachment-size {
   color: var(--fg-3);
-  font-size: 13px;
+  font-size: var(--text-caption);
   font-variant-numeric: tabular-nums;
 }
 
@@ -5057,21 +5010,21 @@ html[lang="ka"] .status-page h1 {
 .bid-comparison td {
   padding: 12px 16px;
   border-block-end: 1px solid var(--border);
-  font-size: 14px;
+  font-size: var(--text-label);
   text-align: start;
   vertical-align: top;
 }
 
 .bid-comparison thead th {
   color: var(--fg-3);
-  font-size: 11.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
   white-space: nowrap;
 }
 
 .bid-comparison tbody th {
   color: var(--fg-1);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .bid-comparison tbody th a {
@@ -5093,7 +5046,7 @@ html[lang="ka"] .status-page h1 {
 /* The amount is the one figure every offer is ranked by, so it carries more
    weight than the surrounding detail columns. */
 .bid-comparison td:nth-child(2) {
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 /* Included costs, exclusions and conditions are supporting detail, not the
@@ -5103,7 +5056,7 @@ html[lang="ka"] .status-page h1 {
 .bid-comparison td:nth-child(6) {
   max-inline-size: 220px;
   color: var(--fg-2);
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 
 /* The lowest valid offer wins automatically; giving that row the single emerald
@@ -5123,9 +5076,9 @@ html[lang="ka"] .status-page h1 {
 .agreement-list-group > h2 {
   margin: 0;
   color: var(--fg-1);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -5146,8 +5099,8 @@ html[lang="ka"] .status-page h1 {
   display: grid;
   gap: 0.5rem;
   color: var(--fg-1);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
 }
 
 .review-form select,
@@ -5160,7 +5113,7 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-md);
   background: var(--bg-surface);
   color: var(--fg-1);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .inbox-item-meta {
@@ -5168,14 +5121,14 @@ html[lang="ka"] .status-page h1 {
   flex-wrap: wrap;
   gap: 0.75rem;
   color: var(--fg-3);
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 
 .inbox-item-text {
   margin: 0;
   color: var(--fg-1);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--text-body-size);
+  font-weight: var(--weight-semibold);
   line-height: 1.5;
 }
 
@@ -5220,7 +5173,7 @@ html[lang="ka"] .status-page h1 {
 .wizard-map-hint {
   margin: 0;
   color: var(--fg-3);
-  font-size: 14px;
+  font-size: var(--text-label);
 }
 
 .location-map {
@@ -5252,8 +5205,8 @@ html[lang="ka"] .status-page h1 {
   padding: 0.125rem 0.375rem;
   background: rgb(255 255 255 / 88%);
   color: var(--fg-3);
-  font-size: 10.5px;
-  font-weight: 500;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
 }
 
 .location-map .leaflet-control-attribution a {
@@ -5272,7 +5225,7 @@ html[lang="ka"] .status-page h1 {
   border: 1px solid var(--border);
   background: var(--bg-surface);
   color: var(--fg-1);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   line-height: 1.7rem;
 }
 
@@ -5326,7 +5279,7 @@ html[lang="ka"] .status-page h1 {
   border-radius: var(--radius-pill);
   background: var(--brand);
   color: var(--fg-on-brand);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   cursor: pointer;
   overflow-wrap: anywhere;
 }
@@ -5354,7 +5307,7 @@ html[lang="ka"] .status-page h1 {
   }
 
   .hero h1 {
-    font-size: 46px;
+    font: var(--type-hero);
   }
 }
 
@@ -5471,11 +5424,11 @@ html[lang="ka"] .status-page h1 {
   }
 
   .detail-title-card h1 {
-    font-size: 27px;
+    font: var(--type-title);
   }
 
   .discovery-band h1 {
-    font-size: 30px;
+    font: var(--type-title);
   }
 }
 
@@ -5487,7 +5440,9 @@ html[lang="ka"] .status-page h1 {
 
   body {
     /* Room for the fixed bottom tab bar. */
-    padding-block-end: 62px;
+    padding-block-end: calc(
+      var(--mobile-nav-height) + var(--mobile-actions-height)
+    );
   }
 
   .site-header .band-inner {
@@ -5533,9 +5488,9 @@ html[lang="ka"] .status-page h1 {
     border-radius: var(--radius-md);
     background: var(--bg-surface);
     color: var(--fg-1);
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-size: var(--text-caption);
+    font-weight: var(--weight-bold);
+    letter-spacing: 0;
     line-height: 1;
     text-decoration: none;
     box-shadow: var(--shadow-xs);
@@ -5562,23 +5517,11 @@ html[lang="ka"] .status-page h1 {
   }
 
   .hero h1 {
-    font-size: 34px;
-    line-height: 1.06;
-  }
-
-  html[lang="ru"] .hero h1 {
-    font-size: clamp(34px, 9.2vw, 36px);
-    font-weight: 700;
-    line-height: 1.1;
-  }
-
-  html[lang="ka"] .hero h1 {
-    font-size: 34px;
-    line-height: 1.1;
+    font: var(--type-hero);
   }
 
   .hero-lead {
-    font-size: 16.5px;
+    font: var(--type-body);
   }
 
   .hero-stats {
@@ -5609,12 +5552,13 @@ html[lang="ka"] .status-page h1 {
   }
 
   .search-bar button {
+    font: var(--type-control);
     inline-size: 100%;
     min-block-size: 44px;
   }
 
   .section-title {
-    font-size: 26px;
+    font: var(--type-section);
   }
 
   .section-head {
@@ -5684,7 +5628,7 @@ html[lang="ka"] .status-page h1 {
   }
 
   .profile-name-row h1 {
-    font-size: 23px;
+    font: var(--type-title);
   }
 
   .profile-avatar {
@@ -5720,70 +5664,6 @@ html[lang="ka"] .status-page h1 {
 
   .wizard-actions {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  /* -------------------------------------------------- Mobile filter sheet
-     The rail is the same form at every width. On phones it leaves the flow
-     and becomes a bottom sheet over a scrim, so filters never push the
-     results off the first screen. */
-  .filter-sheet-trigger {
-    display: flex;
-  }
-
-  .filter-rail {
-    position: fixed;
-    inset: auto 0 0;
-    z-index: 60;
-    max-block-size: 86vh;
-    overflow-y: auto;
-    border: 0;
-    border-start-start-radius: 22px;
-    border-start-end-radius: 22px;
-    box-shadow: var(--shadow-xl);
-    translate: 0 100%;
-    transition: translate 220ms var(--ease);
-  }
-
-  .filter-rail[data-sheet-open="false"] {
-    visibility: hidden;
-  }
-
-  .filter-rail[data-sheet-open="true"] {
-    visibility: visible;
-    translate: 0 0;
-  }
-
-  .filter-scrim {
-    position: fixed;
-    inset: 0;
-    z-index: 55;
-    display: block;
-    inline-size: 100%;
-    padding: 0;
-    border: 0;
-    background: rgb(22 24 28 / 45%);
-    cursor: pointer;
-  }
-
-  .sheet-handle {
-    display: block;
-    inline-size: 40px;
-    block-size: 4px;
-    margin: 10px auto 2px;
-    border-radius: var(--radius-pill);
-    background: var(--tip-grey-300);
-  }
-
-  .filter-rail .filter-rail-head span {
-    font-size: 20px;
-    font-weight: 800;
-  }
-
-  .filter-rail .filter-foot {
-    position: sticky;
-    inset-block-end: 0;
-    border-block-start: 1px solid var(--border);
-    background: var(--bg-surface);
   }
 
   /*
@@ -5832,8 +5712,8 @@ html[lang="ka"] .status-page h1 {
     display: block;
     margin-block-end: 0.15rem;
     color: var(--fg-3);
-    font-size: 11.5px;
-    font-weight: 500;
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
     content: attr(data-label);
   }
 
@@ -5846,7 +5726,8 @@ html[lang="ka"] .status-page h1 {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    block-size: 62px;
+    min-block-size: 5rem;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     padding-inline: 6px;
     border-block-start: 1px solid var(--border);
     background: rgb(255 255 255 / 94%);
@@ -5864,8 +5745,8 @@ html[lang="ka"] .status-page h1 {
     min-block-size: 44px;
     padding-block: 6px;
     color: var(--fg-3);
-    font-size: 10.5px;
-    font-weight: 600;
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
     text-decoration: none;
   }
 
@@ -5906,7 +5787,7 @@ html[lang="ka"] .status-page h1 {
     background: var(--brand);
     color: var(--fg-on-brand);
     font-size: 22px;
-    font-weight: 800;
+    font-weight: var(--weight-bold);
     line-height: 1;
     box-shadow: var(--shadow-md);
   }
@@ -5920,5 +5801,384 @@ html[lang="ka"] .status-page h1 {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+/* Shared readability and content expansion rules. Keep editable text at 16px
+   even in compact controls; grow labels before shrinking their type. */
+:is(input, select, textarea),
+.field :is(input, select, textarea),
+.search-bar :is(input, select),
+.tender-page :is(input, select, textarea) {
+  font: var(--type-input);
+  min-inline-size: 0;
+}
+:is(input:not([type="checkbox"], [type="radio"], [type="hidden"]), select) {
+  min-block-size: 44px;
+}
+:is(.pill, .chip, .tag, .tender-button, .tender-badge) {
+  max-inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+:is(.tag, .tender-badge.category) {
+  text-transform: none;
+}
+:is(.chip, .tender-button) {
+  line-height: 1.5;
+}
+:is(.pill, .tender-button) {
+  text-align: center;
+}
+.chip {
+  min-block-size: 44px;
+}
+:is(.hero-lead, .tender-description, .step-body, .trust-body) {
+  max-inline-size: 65ch;
+}
+:is(.tender-fact, .tender-requirements) > div {
+  min-inline-size: 0;
+}
+.tender-fact dd {
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.tender-section-nav {
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+.tender-section-nav a {
+  white-space: normal;
+  text-align: center;
+  min-inline-size: 0;
+}
+.tender-documents li {
+  flex-wrap: wrap;
+}
+.tender-document-actions {
+  flex-wrap: wrap;
+}
+.tender-file-meta {
+  flex-basis: 8rem;
+}
+.quantity-table {
+  table-layout: fixed;
+}
+.quantity-table :is(th, td) {
+  overflow-wrap: anywhere;
+}
+.quantity-table :is(th, td):first-child {
+  width: 55%;
+}
+.tender-gallery-dialog {
+  background: var(--bg-surface);
+}
+.tender-gallery-controls {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.owned-list-heading > div {
+  min-inline-size: 0;
+}
+.owned-list-heading > .tender-button {
+  flex-shrink: 0;
+}
+.owned-status-tabs {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+.owned-status-tabs a {
+  white-space: normal;
+  min-block-size: 44px;
+  font: var(--type-label);
+}
+.owned-tender-footer > div {
+  flex-wrap: wrap;
+}
+:is(.figure-value, .stat-value, .quantity-table, .tender-offer-count) {
+  font-variant-numeric: tabular-nums;
+}
+/* Light emerald stays readable on charcoal; dark emerald is for white surfaces. */
+.band-ink .overline,
+.pill-on-ink:hover,
+.footer-head {
+  color: var(--tip-emerald-300);
+}
+
+@media (width > 640px) {
+  .nav-tab,
+  .header-actions > :is(.header-link, .pill) {
+    white-space: nowrap;
+  }
+}
+@media (width <= 760px) {
+  body {
+    padding-block-end: calc(
+      var(--mobile-nav-height) + var(--mobile-actions-height)
+    );
+  }
+  :root:has(.tender-mobile-actions) {
+    --mobile-actions-height: 10rem;
+  }
+  .tender-section-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 8px;
+    position: static;
+  }
+  .tender-panel {
+    scroll-margin-top: 80px;
+  }
+  .tender-mobile-actions {
+    max-block-size: 40dvh;
+    overflow-y: auto;
+    bottom: var(--mobile-nav-height);
+  }
+  .tender-mobile-actions .tender-button {
+    min-inline-size: 0;
+    font: var(--type-control);
+  }
+  .tender-edit-item {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px;
+  }
+  .tender-edit-item > label:first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (width <= 640px) {
+  .tab-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 3.7rem), 1fr));
+    max-block-size: 35dvh;
+    overflow-y: auto;
+    align-items: stretch;
+    block-size: auto;
+  }
+  .tab-item {
+    font: var(--weight-medium) 0.75rem / 1.4 var(--font-sans);
+    padding: 8px 0;
+    gap: 4px;
+    text-align: center;
+  }
+  .tab-item > span:last-child {
+    overflow: visible;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+  }
+  .tab-post {
+    margin-block-start: 0;
+  }
+  .tab-post span:first-child {
+    inline-size: 28px;
+    block-size: 28px;
+  }
+  .tender-facts {
+    padding: 4px;
+  }
+  .tender-fact {
+    gap: 8px;
+    padding: 10px 8px;
+  }
+  .tender-fact > svg {
+    display: none;
+  }
+}
+
+/* Compact roles stay readable without breaking individual Georgian words. */
+.tender-card-head,
+.hero-preview-head {
+  flex-wrap: wrap;
+}
+.tender-card-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+}
+.tender-card-figures > div:last-child {
+  grid-column: 1 / -1;
+}
+.figure-value {
+  overflow-wrap: normal;
+}
+.lane-step-body {
+  font: var(--type-body);
+}
+.lane-head span:last-child {
+  font: var(--type-card);
+}
+.shell-strip .locale-switcher .is-current,
+.footer-col a:hover {
+  color: var(--tip-emerald-300);
+}
+@media (width <= 640px) {
+  .tender-mobile-actions .tender-button {
+    font-size: var(--text-label);
+    overflow-wrap: normal;
+    gap: 6px;
+    padding-inline: 8px;
+  }
+  .tender-mobile-actions .tender-button > svg {
+    display: none;
+  }
+}
+@media (width <= 360px) {
+  .tab-bar {
+    padding-inline: 2px;
+  }
+  .tab-item {
+    font-size: 0.6875rem;
+  }
+}
+
+@media (width <= 760px) {
+  .owned-tender-footer .tender-button {
+    font-size: var(--text-label);
+    overflow-wrap: normal;
+  }
+}
+@media (width <= 360px) {
+  .owned-tender-footer > div,
+  .tender-mobile-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .owned-tender-footer .tender-button {
+    width: 100%;
+  }
+}
+.site-header .band-inner {
+  block-size: auto;
+  min-block-size: 68px;
+  flex-wrap: wrap;
+  padding-block: 8px;
+}
+.nav-tabs {
+  min-inline-size: 0;
+  flex: 1 1 30rem;
+  flex-wrap: wrap;
+}
+.countdown {
+  white-space: normal;
+}
+@media (width <= 640px) {
+  .site-header .band-inner {
+    min-block-size: 56px;
+    flex-wrap: nowrap;
+    padding-block: 0;
+  }
+}
+.nav-spacer {
+  display: none;
+}
+.site-header .band-inner {
+  gap: 20px;
+}
+@media (width <= 640px) {
+  .site-header .band-inner {
+    gap: 12px;
+  }
+}
+
+@media (width <= 1024px) {
+  /* -------------------------------------------------- Mobile filter sheet
+     The rail is the same form at every width. On phones it leaves the flow
+     and becomes a bottom sheet over a scrim, so filters never push the
+     results off the first screen. */
+  .filter-sheet-trigger {
+    display: flex;
+  }
+
+  .filter-rail {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 60;
+    max-block-size: 90dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-padding-block: 80px 130px;
+    border: 0;
+    border-start-start-radius: 22px;
+    border-start-end-radius: 22px;
+    box-shadow: var(--shadow-xl);
+    translate: 0 100%;
+    transition: translate 220ms var(--ease);
+  }
+
+  .filter-rail[data-sheet-open="false"] {
+    visibility: hidden;
+  }
+
+  .filter-rail[data-sheet-open="true"] {
+    visibility: visible;
+    translate: 0 0;
+  }
+
+  .filter-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: block;
+    inline-size: 100%;
+    padding: 0;
+    border: 0;
+    background: rgb(22 24 28 / 45%);
+    cursor: pointer;
+  }
+
+  .sheet-handle {
+    display: block;
+    inline-size: 40px;
+    block-size: 4px;
+    margin: 10px auto 2px;
+    border-radius: var(--radius-pill);
+    background: var(--tip-grey-300);
+  }
+
+  .filter-rail .filter-rail-head span {
+    font-size: 20px;
+    font-weight: var(--weight-bold);
+  }
+
+  .filter-rail-head {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    gap: 16px;
+    background: var(--bg-surface);
+  }
+
+  .filter-rail-head > a {
+    margin-inline-start: auto;
+    padding-block: 12px;
+  }
+
+  .filter-sheet-close {
+    display: grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    color: var(--fg-1);
+    cursor: pointer;
+  }
+
+  .filter-rail .filter-currency > label {
+    min-block-size: 44px;
+  }
+
+  .filter-rail .chip-row > button {
+    min-block-size: 44px;
+  }
+
+  .filter-rail .filter-foot {
+    position: sticky;
+    inset-block-end: 0;
+    border-block-start: 1px solid var(--border);
+    background: var(--bg-surface);
+    padding-block-end: max(16px, env(safe-area-inset-bottom));
   }
 }

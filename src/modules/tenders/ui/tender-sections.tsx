@@ -4,7 +4,7 @@ import type { Messages } from "../../localization/get-messages";
 import type { WorkItem } from "../domain/work-item";
 import { LocationMap } from "./location-map";
 import { locationMapCopy } from "./tender-action-copy";
-import { formatAttachmentSize } from "./tender-format";
+import { formatAttachmentSize, tenderNumberFormat } from "./tender-format";
 import { TenderIcon } from "./tender-icon";
 import { tenderPageCopy } from "./tender-page-copy";
 import { TenderGallery } from "./tender-gallery";
@@ -134,7 +134,7 @@ export function TenderSections({
                   <tr key={index}>
                     <td>{item.name}</td>
                     <td>
-                      {new Intl.NumberFormat(locale, {
+                      {tenderNumberFormat(locale, {
                         maximumFractionDigits: 4,
                       }).format(item.quantity)}
                     </td>

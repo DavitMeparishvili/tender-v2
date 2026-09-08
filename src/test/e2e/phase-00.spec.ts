@@ -48,11 +48,11 @@ test("root redirects to the default locale", async ({ page }) => {
 test("unsupported locale returns a bounded not-found document", async ({
   page,
 }) => {
-  const response = await page.goto("/ru");
+  const response = await page.goto("/de");
 
   expect(response?.status()).toBe(404);
   await expect(page).toHaveTitle("გვერდი ვერ მოიძებნა");
-  await expect(page.locator("html")).not.toHaveAttribute("lang", "ru");
+  await expect(page.locator("html")).not.toHaveAttribute("lang", "de");
   await expect(page.locator("main#main-content")).toHaveCount(1);
 });
 

@@ -1,4 +1,8 @@
 export type TenderIconName =
+  | "save"
+  | "upload"
+  | "eye"
+  | "close"
   | "wallet"
   | "calendar"
   | "pin"
@@ -20,6 +24,10 @@ export type TenderIconName =
   | "chevron"
   | "trash";
 const paths: Record<TenderIconName, string> = {
+  save: "M5 2h10l4 4v16H5V2Zm3 0v7h8V3M8 22v-8h8v8m-3-7v4",
+  upload: "M12 16V3m-5 5 5-5 5 5M3 15v6h18v-6",
+  eye: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12Zm15 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
+  close: "m6 6 12 12M6 18 18 6",
   wallet:
     "M20 8V5a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h16v12H5a3 3 0 0 1-3-3V6m19 7h-5v4h5M6 6h11",
   calendar:

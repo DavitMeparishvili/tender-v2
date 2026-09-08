@@ -13,7 +13,7 @@
   min-width: 0;
 }
 .tender-work-editor legend {
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   margin-bottom: 12px;
 }
 .tender-work-editor > .tender-button {
@@ -29,7 +29,7 @@
 .tender-offer-count {
   display: block;
   font-size: 40px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   line-height: 1.2;
 }
 .tender-competition-rule {
@@ -37,7 +37,7 @@
   margin-top: 16px !important;
   padding-top: 12px;
   color: #536680;
-  font-size: 13px;
+  font-size: var(--text-caption);
   line-height: 1.5;
 }
 .owner-rail {
@@ -62,7 +62,7 @@
   }
 }
 .tender-location .location-map-pin span {
-  background: #00865f;
+  background: var(--brand);
   border: 0;
   border-radius: 50% 50% 50% 0;
   width: 30px;
@@ -81,22 +81,22 @@
   background: white;
 }
 @media (width <= 640px) {
-  body:has(.tender-page) .tender-mobile-locale {
+  body .tender-mobile-locale {
     display: block;
     position: relative;
     margin-right: 14px;
   }
-  body:has(.tender-page) .tender-mobile-locale summary {
+  body .tender-mobile-locale summary {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     min-width: 62px;
-    min-height: 38px;
+    min-height: 44px;
     border: 1px solid #e1e7ee;
     border-radius: 8px;
-    font-size: 13px;
-    font-weight: 650;
+    font-size: var(--text-caption);
+    font-weight: var(--weight-semibold);
     cursor: pointer;
   }
   .tender-mobile-locale nav {
@@ -111,7 +111,7 @@
     display: grid;
     gap: 10px;
   }
-  body:has(.tender-page) .mobile-locale {
+  body .mobile-locale {
     display: none;
   }
   body:has(.tender-page) .tab-item > img {
@@ -126,7 +126,7 @@
     justify-content: center;
     gap: 18px;
     padding-block: 10px;
-    font-size: 14px;
+    font-size: var(--text-label);
   }
   .tender-compact-footer summary {
     cursor: pointer;
@@ -135,7 +135,7 @@
   .tender-compact-footer details p {
     max-width: 200px;
     padding-top: 12px;
-    font-size: 12px;
+    font-size: var(--text-caption);
   }
   .tender-compact-footer a {
     text-decoration: none;
@@ -145,14 +145,14 @@
   }
 }
 .tender-page {
+  font: var(--type-body);
   --tender-ink: #101820;
   --tender-muted: #536680;
   --tender-line: #e1e7ee;
-  --tender-green: #00865f;
+  --tender-green: var(--brand);
   background: #f5f7f9;
   color: var(--tender-ink);
   padding: 22px 0 40px;
-  font-size: 14px;
   min-height: 55vh;
 }
 .tender-container {
@@ -181,29 +181,21 @@
   margin: 0;
 }
 .tender-page h1 {
-  font-size: 36px;
-  line-height: 1.16;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font: var(--type-title);
   overflow-wrap: anywhere;
 }
 .tender-page h2 {
-  font-size: 20px;
-  line-height: 1.3;
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font: var(--type-section);
 }
 .tender-page h3 {
-  font-size: 14px;
-  line-height: 1.4;
-  font-weight: 600;
+  font: var(--type-label);
 }
 .tender-back {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   color: var(--tender-muted);
-  font-size: 13px;
+  font-size: var(--text-caption);
   text-decoration: none;
   margin-bottom: 24px;
   min-height: 24px;
@@ -225,6 +217,7 @@
   margin-bottom: 10px;
 }
 .tender-badge {
+  font: var(--type-caption);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -232,15 +225,11 @@
   padding: 3px 10px;
   color: #006247;
   background: #d9f5e9;
-  font-size: 12px;
-  font-weight: 650;
-  line-height: 1.5;
   white-space: nowrap;
 }
 .tender-badge.category {
-  font-size: 10px;
+  font: var(--type-caption);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   background: #eaf0fa;
   color: #354c83;
 }
@@ -258,14 +247,14 @@
   gap: 8px;
   margin-top: 9px !important;
   color: var(--tender-muted);
-  font-size: 16px;
+  font-size: var(--text-body-size);
 }
 .tender-heading-location > svg {
   display: none;
 }
 .tender-published {
+  font: var(--type-caption);
   color: var(--tender-muted);
-  font-size: 12px;
   margin-top: 4px !important;
 }
 .tender-heading-actions {
@@ -275,6 +264,7 @@
   flex-shrink: 0;
 }
 .tender-button {
+  font: var(--type-control);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -285,11 +275,8 @@
   border-radius: 9px;
   background: white;
   color: var(--tender-ink);
-  font: inherit;
-  font-weight: 650;
   text-decoration: none;
   cursor: pointer;
-  line-height: 1.35;
 }
 .tender-button:hover {
   border-color: #9aaabd;
@@ -301,7 +288,7 @@
   color: white;
 }
 .tender-button.primary:hover {
-  background: #006f4f;
+  background: var(--brand-hover);
 }
 .tender-button:disabled {
   opacity: 0.55;
@@ -312,9 +299,9 @@
   padding: 8px;
 }
 .tender-button.small {
+  font: var(--type-control);
   min-height: 36px;
   padding: 7px 12px;
-  font-size: 12px;
 }
 .tender-facts {
   display: grid;
@@ -336,12 +323,12 @@
   border-left: 1px solid var(--tender-line);
 }
 .tender-fact dt {
-  font-size: 12px;
+  font: var(--type-caption);
   margin-bottom: 5px;
 }
 .tender-fact dd {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   line-height: 1.25;
   color: var(--tender-ink);
   margin: 0;
@@ -370,6 +357,7 @@
   background: #f5f7f9;
 }
 .tender-section-nav a {
+  font: var(--type-control);
   color: var(--tender-muted);
   display: flex;
   align-items: center;
@@ -377,7 +365,6 @@
   padding: 13px 4px 11px;
   text-decoration: none;
   border-bottom: 2px solid transparent;
-  font-weight: 550;
   white-space: nowrap;
 }
 .tender-section-nav a:first-child {
@@ -425,8 +412,8 @@
   justify-content: space-between;
 }
 .tender-description {
+  font: var(--type-body);
   margin-top: 10px !important;
-  line-height: 1.6;
   white-space: pre-line;
   overflow-wrap: anywhere;
   color: #2f3d4e;
@@ -449,19 +436,17 @@
   padding-left: 22px;
 }
 .tender-requirements h3 {
-  font-size: 12px;
+  font: var(--type-label);
   margin-bottom: 2px;
 }
 .tender-requirements p {
-  font-size: 13px;
-  line-height: 1.5;
+  font: var(--type-body);
   color: #334155;
   white-space: pre-line;
 }
 .tender-muted {
+  font: var(--type-caption);
   color: var(--tender-muted);
-  font-size: 13px;
-  line-height: 1.5;
 }
 .tender-subtitle {
   margin-top: 3px !important;
@@ -471,11 +456,11 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 .quantity-table th {
   background: #f0f4f7;
-  font-weight: 650;
+  font-weight: var(--weight-semibold);
   padding: 8px 16px;
 }
 .quantity-table th:first-child {
@@ -498,12 +483,12 @@
   text-align: center;
 }
 .tender-small-note {
+  font: var(--type-caption);
   margin-top: 12px !important;
   display: flex;
   align-items: center;
   gap: 10px;
   color: var(--tender-muted);
-  font-size: 12px;
 }
 .tender-photo-grid {
   display: grid;
@@ -546,8 +531,8 @@
   gap: 7px;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 650;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
 }
 .tender-documents {
   padding: 0;
@@ -574,7 +559,7 @@
   border-radius: 3px;
   padding: 0 2px 6px;
   font-size: 8px;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   clip-path: polygon(0 0, 70% 0, 100% 25%, 100% 100%, 0 100%);
   flex-shrink: 0;
 }
@@ -589,18 +574,19 @@
   flex: 1;
   gap: 2px;
   min-width: 0;
-  font-size: 13px;
+  font-size: var(--text-caption);
   overflow-wrap: anywhere;
 }
 .tender-file-meta span {
+  font: var(--type-caption);
   color: var(--tender-muted);
-  font-size: 12px;
 }
 .tender-document-actions {
   display: flex;
   gap: 8px;
 }
 .tender-privacy {
+  font: var(--type-caption);
   background: #e5f7f0;
   color: #174536;
   padding: 10px 14px;
@@ -609,8 +595,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 12px;
-  line-height: 1.5;
 }
 .tender-address {
   margin: 0 0 10px !important;
@@ -626,13 +610,13 @@
   filter: saturate(0.5) opacity(0.7);
 }
 .tender-map-caption {
+  font: var(--type-caption);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 10px;
-  font-size: 12px;
 }
 .tender-map-caption > :is(span, strong) {
   display: flex;
@@ -660,16 +644,16 @@
   background: white;
 }
 .tender-sidebar .rail-head {
-  font-size: 19px;
+  font: var(--type-card);
 }
 .tender-sidebar .identity-row {
   margin-top: 18px;
 }
 .tender-sidebar .identity-name {
-  font-size: 14px;
+  font-size: var(--text-label);
 }
 .tender-sidebar .identity-note {
-  font-size: 12px;
+  font: var(--type-caption);
 }
 .tender-sidebar .tender-signin {
   background: #e2f8ee;
@@ -708,7 +692,7 @@
   padding: 16px 20px;
 }
 .tender-detail-after .mini-card-title {
-  font-size: 16px;
+  font: var(--type-card);
 }
 .tender-offers {
   grid-column: 2;
@@ -730,8 +714,7 @@
   margin-bottom: 8px;
 }
 .tender-offers-empty h3 {
-  font-size: 20px;
-  font-weight: 750;
+  font: var(--type-card);
 }
 .tender-offers .tender-privacy {
   padding: 12px 14px;
@@ -744,7 +727,7 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  font-size: 12px;
+  font-size: var(--text-caption);
 }
 .tender-status-facts dt {
   color: var(--tender-muted);
@@ -878,17 +861,17 @@
   margin-bottom: 38px;
 }
 .owned-list-heading h1 {
-  font-size: 44px;
+  font: var(--type-title);
 }
 .owned-list-heading p {
-  font-size: 18px;
+  font: var(--type-body);
   color: var(--tender-muted);
   margin-top: 8px !important;
 }
 .owned-list-heading .tender-button {
+  font: var(--type-control);
   min-height: 52px;
   padding-inline: 24px;
-  font-size: 16px;
 }
 .owned-status-tabs {
   display: flex;
@@ -914,13 +897,13 @@
   border-radius: 20px;
   background: #edf1f5;
   padding: 0 8px;
-  font-size: 12px;
+  font-size: var(--text-caption);
 }
 .owned-status-tabs a[aria-current] {
   border-color: #a2dfc8;
   color: #054d38;
   background: #d6f2e6;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 .owned-status-tabs a[aria-current] span {
   background: var(--tender-green);
@@ -988,8 +971,7 @@
   height: 32px;
 }
 .owned-tender-card h2 {
-  font-size: 28px;
-  letter-spacing: -0.03em;
+  font: var(--type-card);
 }
 .owned-tender-card h2 a {
   text-decoration: none;
@@ -999,7 +981,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
-  font-size: 16px;
+  font-size: var(--text-body-size);
   color: var(--tender-muted);
   margin-top: 10px !important;
 }
@@ -1031,13 +1013,14 @@
 }
 .owned-tender-footer > p {
   color: var(--tender-muted);
-  font-size: 13px;
+  font-size: var(--text-caption);
 }
 .owned-tender-footer > div {
   display: flex;
   gap: 12px;
 }
 .owned-tender-footer .tender-button {
+  font: var(--type-control);
   min-width: 150px;
   min-height: 48px;
 }
@@ -1064,7 +1047,7 @@
 .tender-editor label {
   display: grid;
   gap: 6px;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
 }
 .tender-editor :is(input, textarea) {
   width: 100%;
@@ -1084,7 +1067,7 @@
   align-items: end;
 }
 .tender-edit-item label {
-  font-size: 12px;
+  font-size: var(--text-caption);
 }
 @media (width <= 1100px) and (width > 760px) {
   .tender-container {
@@ -1095,7 +1078,7 @@
     gap: 16px;
   }
   .tender-page h1 {
-    font-size: 30px;
+    font: var(--type-title);
   }
   .tender-heading-actions {
     flex-wrap: wrap;
@@ -1107,7 +1090,7 @@
     padding-inline: 18px;
   }
   .tender-fact dd {
-    font-size: 16px;
+    font-size: var(--text-body-size);
   }
   .tender-section-nav {
     gap: 12px;
@@ -1117,7 +1100,7 @@
     gap: 12px;
   }
   .owned-tender-facts dd {
-    font-size: 17px;
+    font-size: var(--text-body-size);
   }
 }
 @media (width <= 760px) {
@@ -1125,19 +1108,19 @@
     padding-inline: 16px;
   }
   .tender-page {
+    font: var(--type-body);
     padding-top: 16px;
-    padding-bottom: 125px;
+    padding-bottom: 24px;
   }
   .tender-back {
     margin-bottom: 20px;
-    font-size: 14px;
+    font-size: var(--text-label);
   }
   .tender-page h1 {
-    font-size: 30px;
-    line-height: 1.15;
+    font: var(--type-title);
   }
   .tender-page h2 {
-    font-size: 20px;
+    font: var(--type-section);
   }
   .desktop-label {
     display: none;
@@ -1167,10 +1150,10 @@
     display: none;
   }
   .tender-published {
-    font-size: 12px;
+    font: var(--type-caption);
   }
   .tender-heading-location {
-    font-size: 14px;
+    font-size: var(--text-label);
     margin-top: 12px !important;
   }
   .tender-facts {
@@ -1184,10 +1167,10 @@
     gap: 14px;
   }
   .tender-fact dt {
-    font-size: 12px;
+    font: var(--type-caption);
   }
   .tender-fact dd {
-    font-size: 17px;
+    font-size: var(--text-body-size);
     line-height: 1.22;
   }
   .tender-fact:nth-child(3) {
@@ -1218,8 +1201,8 @@
     margin-bottom: 0;
   }
   .tender-section-nav a {
+    font: var(--type-control);
     padding: 14px 8px 10px;
-    font-size: 13px;
     min-height: 48px;
   }
   .tender-detail-body {
@@ -1230,8 +1213,7 @@
     scroll-margin-top: 122px;
   }
   .tender-description {
-    font-size: 14px;
-    line-height: 1.5;
+    font: var(--type-body);
   }
   .tender-requirements {
     grid-template-columns: 1fr;
@@ -1249,22 +1231,22 @@
     padding-top: 12px;
   }
   .tender-requirements h3 {
-    font-size: 13px;
+    font: var(--type-label);
   }
   .tender-requirements p {
-    font-size: 13px;
+    font: var(--type-body);
   }
   .quantity-table :is(th, td) {
     padding: 8px;
   }
   .quantity-table {
-    font-size: 13px;
+    font-size: var(--text-caption);
   }
   .quantity-table :is(th, td):last-child {
     width: 12%;
   }
   .tender-small-note {
-    font-size: 11px;
+    font: var(--type-caption);
   }
   .tender-photo-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1281,17 +1263,18 @@
     gap: 6px;
   }
   .tender-button.small {
+    font: var(--type-control);
     min-height: 38px;
     padding: 8px;
   }
   .tender-file-meta {
-    font-size: 12px;
+    font-size: var(--text-caption);
   }
   .tender-file-meta span {
-    font-size: 12px;
+    font: var(--type-caption);
   }
   .tender-privacy {
-    font-size: 11px;
+    font: var(--type-caption);
     padding: 9px 10px;
     gap: 10px;
   }
@@ -1299,7 +1282,7 @@
     height: 180px;
   }
   .tender-map-caption {
-    font-size: 11px;
+    font: var(--type-caption);
   }
   .tender-map-caption > :is(span, strong) {
     gap: 8px;
@@ -1309,7 +1292,7 @@
     justify-content: end;
   }
   .tender-location .tender-panel-heading .tender-muted {
-    font-size: 11px;
+    font: var(--type-caption);
   }
   .tender-sidebar {
     display: grid;
@@ -1349,7 +1332,7 @@
     margin-bottom: 2px;
   }
   .tender-offers-empty h3 {
-    font-size: 20px;
+    font: var(--type-card);
   }
   .tender-offers-empty p {
     display: none;
@@ -1360,7 +1343,7 @@
     background: transparent;
     padding: 0 12px;
     color: var(--tender-muted);
-    font-size: 13px;
+    font-size: var(--text-caption);
   }
   .tender-history summary {
     gap: 6px 14px;
@@ -1375,7 +1358,7 @@
   .tender-mobile-actions {
     position: fixed;
     z-index: 44;
-    bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+    bottom: var(--mobile-nav-height);
     left: 0;
     right: 0;
     padding: 10px 16px;
@@ -1386,8 +1369,8 @@
     gap: 10px;
   }
   .tender-mobile-actions .tender-button {
+    font: var(--type-control);
     flex: 1;
-    font-size: 13px;
     gap: 8px;
     min-height: 44px;
     padding: 8px 12px;
@@ -1396,8 +1379,8 @@
     flex-wrap: wrap;
   }
   .public-actions p {
+    font: var(--type-caption);
     flex-basis: 100%;
-    font-size: 11px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1407,7 +1390,7 @@
     width: 100%;
   }
   .tender-mobile-actions .tender-badge {
-    font-size: 11px;
+    font: var(--type-caption);
     padding: 1px 6px;
   }
   .tender-list-page {
@@ -1420,16 +1403,15 @@
     margin-bottom: 22px;
   }
   .owned-list-heading h1 {
-    font-size: 34px;
+    font: var(--type-title);
   }
   .owned-list-heading p {
-    font-size: 16px;
-    line-height: 1.4;
+    font: var(--type-body);
     margin-top: 8px !important;
   }
   .owned-list-heading .tender-button {
+    font: var(--type-control);
     width: 100%;
-    font-size: 15px;
     min-height: 48px;
   }
   .tender-list-page .tender-container {
@@ -1449,7 +1431,7 @@
     gap: 10px;
   }
   .owned-search-field input {
-    font-size: 14px;
+    font-size: var(--text-label);
   }
   .owned-sort {
     width: 100%;
@@ -1461,7 +1443,7 @@
     border: 0;
     background: transparent;
     padding-right: 0;
-    font-size: 13px;
+    font-size: var(--text-caption);
   }
   .owned-status-tabs {
     order: 2;
@@ -1492,7 +1474,7 @@
   }
   .owned-list-note {
     order: 4;
-    font-size: 13px;
+    font-size: var(--text-caption);
     line-height: 1.5;
     margin-top: 20px !important;
     align-items: start;
@@ -1507,11 +1489,10 @@
     margin-bottom: 12px;
   }
   .owned-tender-card h2 {
-    font-size: 24px;
-    line-height: 1.18;
+    font: var(--type-card);
   }
   .owned-tender-location {
-    font-size: 14px;
+    font-size: var(--text-label);
     gap: 4px;
   }
   .owned-tender-facts {
@@ -1538,7 +1519,7 @@
     font-size: 20px;
   }
   .owned-tender-facts dt {
-    font-size: 14px;
+    font-size: var(--text-label);
   }
   .owned-tender-facts .list-deadline {
     grid-column: 1 / -1;
@@ -1562,9 +1543,9 @@
     display: none;
   }
   .owned-tender-facts .list-attachments dd {
-    font-size: 14px;
+    font-size: var(--text-label);
     color: var(--tender-muted);
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
   .owned-tender-footer {
     padding-top: 4px;
@@ -1577,10 +1558,10 @@
     gap: 12px;
   }
   .owned-tender-footer .tender-button {
+    font: var(--type-control);
     min-width: 0;
     flex: 1;
     padding-inline: 8px;
-    font-size: 14px;
     min-height: 46px;
   }
   body:has(.tender-page) .shell-footer {
@@ -1604,7 +1585,7 @@
     margin: 0;
     padding-top: 20px;
     text-align: center;
-    font-size: 11px;
+    font-size: var(--text-caption);
   }
 }
 @media (640px < width <= 760px) {
@@ -1618,9 +1599,9 @@
 @media (width <= 640px) {
   body:has(.tender-page) .tab-bar {
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    height: calc(62px + env(safe-area-inset-bottom, 0px));
+    height: auto;
   }
   body:has(.tender-page) .tab-item[aria-current="page"] {
-    color: #00865f;
+    color: var(--brand);
   }
 }
