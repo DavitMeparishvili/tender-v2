@@ -31,6 +31,9 @@ export type PublicTenderDetail = PublicTenderSummary &
     equipmentNotes: string | null;
     materialNotes: string | null;
     desiredStartDate: string | null;
+    workItems?: readonly import("./work-item").WorkItem[];
+    areaSquareMeters?: number | null;
+    reference?: string | null;
   }>;
 
 export function toPublicSummary(tender: TenderRecord): PublicTenderSummary {
@@ -61,6 +64,9 @@ export function toPublicDetail(tender: TenderRecord): PublicTenderDetail {
     equipmentNotes: tender.equipmentNotes,
     materialNotes: tender.materialNotes,
     desiredStartDate: tender.desiredStartDate?.toISOString() ?? null,
+    workItems: tender.workItems ?? [],
+    areaSquareMeters: tender.areaSquareMeters ?? null,
+    reference: tender.reference ?? null,
   };
 }
 

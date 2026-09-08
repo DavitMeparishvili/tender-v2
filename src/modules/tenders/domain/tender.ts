@@ -46,6 +46,11 @@ export type TenderDraft = Readonly<{
   shortDescription: string | null;
   fullDescription: string | null;
   scopeOfWork: string | null;
+  workItems?: readonly import("./work-item").WorkItem[];
+  areaSquareMeters?: number | null;
+  reference?: string | null;
+  attachmentCounts?: Readonly<{ photos: number; files: number }>;
+  offerCount?: number;
   budgetMinorUnits: number | null;
   currency: TenderCurrency | null;
   desiredStartDate: Date | null;

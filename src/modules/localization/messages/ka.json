@@ -737,7 +737,7 @@
     "similarEmpty": "ამჟამად მსგავსი ტენდერები არ არის ღია.",
     "aboutClient": "დამკვეთის შესახებ",
     "privateClient": "კერძო დამკვეთი",
-    "identityHidden": "ვინაობა დაფარულია განბლოკვამდე",
+    "identityHidden": "დამკვეთის ვინაობა კონფიდენციალურია.",
     "identityReleased": "ვინაობა გახსნილია თქვენი წვდომით",
     "memberSince": "წევრი",
     "tendersPublished": "გამოქვეყნებული ტენდერი",

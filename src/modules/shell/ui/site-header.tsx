@@ -82,6 +82,23 @@ export function SiteHeader({
           </Link>
           <NavTabs items={nav.items} label={messages.nav.primary} />
           <span className="nav-spacer" />
+          <details className="tender-mobile-locale">
+            <summary aria-label={messages.common.language}>
+              {locale.toUpperCase()}
+              <svg
+                aria-hidden="true"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <LocaleSwitcher locale={locale} messages={messages} />
+          </details>
           <div className="mobile-locale">
             <LocaleSwitcher compact locale={locale} messages={messages} />
           </div>

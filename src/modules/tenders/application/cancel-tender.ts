@@ -37,11 +37,8 @@ export function createCancelTender(dependencies: {
   ): Promise<Result<TenderDraft, CancelError | "INVALID_INPUT">> {
     const parsed = cancelTenderCommandSchema.safeParse(input);
     if (!parsed.success) return { ok: false, error: "INVALID_INPUT" };
-    // Checked before the write rather than inside it, because the bid count
-    // lives in another module's table: the guard has to be a published query,
-    // not a `where` clause. The window this leaves is bounded by the same
-    // deadline both sides respect, and a bid landing in it is protected by
-    // the selection lock, which refuses to run for a CANCELLED tender.
+    // Fast rejection only. The repository repeats this check under the same
+    // Tender row lock used by bid insertion and deadline selection.
     if (await dependencies.hasBids(id)) {
       return { ok: false, error: "TENDER_HAS_BIDS" };
     }

@@ -309,9 +309,7 @@ describe("provider masked discovery UI", () => {
     );
 
     for (const value of [
-      publicTender.id,
       publicTender.title,
-      publicTender.shortDescription,
       publicTender.fullDescription,
       publicTender.scopeOfWork,
       publicTender.workerNotes,
@@ -323,14 +321,13 @@ describe("provider masked discovery UI", () => {
       expect(html).toContain(value ?? ka.tenders.notProvided);
     }
     expect(html).toContain(ka.tenders.specialtyConstructionRepair);
-    expect(html).toContain(ka.tenders.approximateCoordinates);
-    expect(html).toContain("41,7; 44,8");
+    expect(html).toContain(ka.tenders.mapApproximateLabel);
     expect(html).toContain("1234,56");
     for (const sentinel of sensitiveSentinels) {
       expect(html).not.toContain(sentinel);
     }
-    expect(html).not.toContain(ka.tenders.addressLine);
-    expect(html).not.toContain(ka.tenders.attachments);
+    expect(html).not.toContain('class="tender-address"');
+    expect(html).toContain(ka.tenders.attachments);
     expect(html).not.toContain(ka.tenders.conditions);
   });
 
@@ -352,9 +349,7 @@ describe("provider masked discovery UI", () => {
       />,
     );
 
-    expect(html).toContain(en.tenders.addressLine);
     expect(html).toContain("1 Chavchavadze Ave");
-    expect(html).toContain(en.tenders.conditions);
     expect(html).toContain("Weekdays only, 9am to 5pm.");
     expect(html).toContain(en.tenders.mapPreciseLabel);
   });
@@ -368,8 +363,7 @@ describe("provider masked discovery UI", () => {
       />,
     );
 
-    expect(html).toContain('aria-labelledby="map-heading"');
-    expect(html).toContain(en.tenders.mapHeading);
+    expect(html).toContain('id="location"');
     expect(html).toContain(en.tenders.mapApproximateLabel);
     expect(html).not.toContain(en.tenders.mapPreciseLabel);
     expect(html).not.toContain(en.tenders.mapInteractiveLabel);

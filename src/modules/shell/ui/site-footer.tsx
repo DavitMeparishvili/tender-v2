@@ -41,6 +41,14 @@ export function SiteFooter({
   return (
     <footer className="shell-footer">
       <div className="band-inner">
+        <div className="tender-compact-footer">
+          <details>
+            <summary>{messages.common.help}</summary>
+            <p>{messages.common.helpBody}</p>
+          </details>
+          <span aria-hidden="true">·</span>
+          <Link href={at("/#trust")}>{messages.nav.terms}</Link>
+        </div>
         <div className="footer-grid">
           <div>
             <Link className="footer-word" href={at("")}>

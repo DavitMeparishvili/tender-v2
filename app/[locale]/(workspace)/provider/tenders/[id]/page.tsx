@@ -17,6 +17,9 @@ import { BidSummaryView } from "@/src/modules/bidding/ui/bid-summary-view";
 import { getCurrentUser } from "@/src/modules/identity/application/current-user";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
+import { getAttachmentPreviews } from "@/src/modules/tenders/application/get-attachment-previews";
+import { tenderPageCopy } from "@/src/modules/tenders/ui/tender-page-copy";
+import { TenderIcon } from "@/src/modules/tenders/ui/tender-icon";
 import { BrandIcon } from "@/src/modules/shell/ui/brand-icon";
 import {
   RENDERED_LINK_DOWNLOAD_URL_TTL_SECONDS,
@@ -91,7 +94,7 @@ export default async function ProviderTenderDetailPage({
       : getOwnBid(id, actor),
     view.value.disclosure === "FULL" && actor !== null
       ? resolveEntitledAttachments(id, actor)
-      : Promise.resolve(undefined),
+      : getAttachmentPreviews(id),
     actor === null
       ? Promise.resolve({ ok: false, error: "AGREEMENT_NOT_FOUND" } as const)
       : getAgreementForTender(id, actor),
@@ -99,7 +102,9 @@ export default async function ProviderTenderDetailPage({
   ]);
 
   const bid = ownBid.ok ? ownBid.value : null;
-  const isOpen = tender.status === "PUBLISHED";
+  const isOpen =
+    tender.status === "PUBLISHED" && new Date(tender.deadline) > new Date();
+  const c = tenderPageCopy(locale);
   const similarTenders = (similar.ok ? similar.value : [])
     .filter((candidate) => candidate.id !== id)
     .slice(0, 3);
@@ -112,22 +117,98 @@ export default async function ProviderTenderDetailPage({
   );
 
   return (
-    <div className="band band-grey">
-      <div className="band-inner">
-        <Link className="back-link" href={`/${locale}/provider/tenders`}>
+    <div className="tender-page">
+      <div className="tender-container">
+        <Link className="tender-back" href={`/${locale}/provider/tenders`}>
+          <TenderIcon name="back" size={16} />
           {messages.tenders.providerBackToList}
         </Link>
-
-        <div className="detail-layout">
-          <main className="detail-main">
-            <DiscoveryDetailContent
-              {...(attachments === undefined ? {} : { attachments })}
-              locale={locale}
-              messages={messages}
-              view={view.value}
-            />
-
-            {/*
+        <DiscoveryDetailContent
+          attachments={attachments}
+          locale={locale}
+          messages={messages}
+          view={view.value}
+          sidebar={
+            <>
+              {" "}
+              {actor === null && user !== null ? (
+                <section className="tender-panel tender-signin">
+                  <h2>
+                    <TenderIcon name="lock" />
+                    {c.bidTitle}
+                  </h2>
+                  <p>{c.bidBody}</p>
+                  <Link
+                    className="tender-button primary"
+                    href={`/${locale}/login`}
+                  >
+                    {c.signIn}
+                  </Link>
+                </section>
+              ) : (
+                <EntitlementPanel
+                  canPurchase={actor !== null}
+                  copy={entitlementPanelCopy(messages)}
+                  disclosure={view.value.disclosure}
+                  loginHref={`/${locale}/login`}
+                  tenderId={id}
+                />
+              )}
+              {summary.ok && summary.value.bidCount === 0 ? (
+                <section className="tender-panel tender-competition">
+                  <div className="tender-panel-heading split">
+                    <h2>{messages.bidding.summaryTitle}</h2>
+                    <span className="tender-badge">
+                      {isOpen ? messages.detail.competitionOpen : c.ended}
+                    </span>
+                  </div>
+                  <strong className="tender-offer-count">0</strong>
+                  <p>{c.offers.toLowerCase()}</p>
+                  <p className="tender-competition-rule">{c.automatic}</p>
+                </section>
+              ) : summary.ok ? (
+                <BidSummaryView
+                  isOpen={isOpen}
+                  locale={locale}
+                  messages={messages}
+                  summary={summary.value}
+                />
+              ) : null}
+              {/*
+              The client is masked by the same server-side projection that
+              masks the tender, so this card states the masking rather than
+              inventing a profile to fill the space.
+            */}
+              <section aria-labelledby="client-heading" className="rail-card">
+                <h2 className="rail-head" id="client-heading">
+                  {messages.detail.aboutClient}
+                </h2>
+                <div className="identity-row">
+                  <span className="identity-avatar">
+                    <BrandIcon name="profile" size={20} />
+                  </span>
+                  <div>
+                    <div className="identity-name">
+                      {messages.detail.privateClient}
+                    </div>
+                    <div className="identity-note">
+                      {messages.detail.identityHidden}
+                    </div>
+                  </div>
+                </div>
+              </section>
+              {agreement.ok ? (
+                <Link
+                  className="pill pill-outline pill-block"
+                  href={`/${locale}/agreements/${agreement.value.id}`}
+                >
+                  {messages.workspace.agreements}
+                </Link>
+              ) : null}
+            </>
+          }
+        >
+          {/*
               A withdrawn bid keeps its row (submit-bid.ts) and can never be
               revised or resubmitted on this tender (revise-bid.ts and the
               unique (tenderId, providerId) constraint both require an active
@@ -136,147 +217,99 @@ export default async function ProviderTenderDetailPage({
               offer controls that always fail server-side with BID_NOT_ACTIVE,
               so a withdrawn bid gets its own terminal notice instead.
             */}
-            {view.value.disclosure === "FULL" &&
-            isOpen &&
-            bid?.status !== "WITHDRAWN" ? (
-              <BidForm
-                copy={bidFormCopy(messages)}
-                existing={bid}
-                tenderId={id}
-              />
-            ) : null}
-            {view.value.disclosure === "FULL" &&
-            isOpen &&
-            bid?.status === "WITHDRAWN" ? (
-              <p className="tender-action-hint">{messages.bidding.withdrawn}</p>
-            ) : null}
+          {view.value.disclosure === "FULL" &&
+          isOpen &&
+          bid?.status !== "WITHDRAWN" ? (
+            <BidForm
+              copy={bidFormCopy(messages)}
+              existing={bid}
+              tenderId={id}
+            />
+          ) : null}
+          {view.value.disclosure === "FULL" &&
+          isOpen &&
+          bid?.status === "WITHDRAWN" ? (
+            <p className="tender-action-hint">{messages.bidding.withdrawn}</p>
+          ) : null}
 
-            {/*
+          {/*
               The outcome is stated in text, never by colour alone, and it is
               the provider's OWN outcome: a losing bidder is told they lost,
               not who won.
             */}
-            {isOpen ? null : (
-              <section className="bid-outcome">
-                <h2>
-                  {tender.status === "EXPIRED"
-                    ? messages.bidding.outcomeExpiredTitle
-                    : messages.bidding.outcomeWinnerTitle}
-                </h2>
-                {bid?.status === "WINNER" ? (
-                  <p>{messages.bidding.outcomeWonBody}</p>
-                ) : null}
-                {bid?.status === "LOST" ? (
-                  <p>{messages.bidding.outcomeLostBody}</p>
-                ) : null}
-              </section>
+          {tender.status === "PUBLISHED" ? null : (
+            <section className="bid-outcome">
+              <h2>
+                {tender.status === "EXPIRED"
+                  ? messages.bidding.outcomeExpiredTitle
+                  : messages.bidding.outcomeWinnerTitle}
+              </h2>
+              {bid?.status === "WINNER" ? (
+                <p>{messages.bidding.outcomeWonBody}</p>
+              ) : null}
+              {bid?.status === "LOST" ? (
+                <p>{messages.bidding.outcomeLostBody}</p>
+              ) : null}
+            </section>
+          )}
+
+          <section aria-labelledby="similar-heading">
+            <h2 className="card-title" id="similar-heading">
+              {messages.detail.similarTitle}
+            </h2>
+            {similarTenders.length === 0 ? (
+              <p className="tender-action-hint">
+                {messages.detail.similarEmpty}
+              </p>
+            ) : (
+              <ul className="mini-card-grid">
+                {similarTenders.map((candidate) => {
+                  const candidateSummary = similarSummaries.get(candidate.id);
+                  return (
+                    <li key={candidate.id}>
+                      <Link
+                        className="mini-card"
+                        href={`/${locale}/provider/tenders/${candidate.id}`}
+                      >
+                        <span className={specialtyTone(candidate.specialty)}>
+                          {specialtyLabel(candidate.specialty, messages)}
+                        </span>
+                        <span className="mini-card-title">
+                          {candidate.title}
+                        </span>
+                        <span className="mini-card-amount">
+                          {formatTenderMoney(
+                            candidate.budgetMinorUnits,
+                            candidate.currency,
+                            locale,
+                          ) ?? messages.tenders.notProvided}
+                        </span>
+                        <span className="mini-card-meta">
+                          {candidate.city} ·{" "}
+                          {messages.bidding.bidCount.replace(
+                            "{count}",
+                            String(candidateSummary?.bidCount ?? 0),
+                          )}
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             )}
-
-            <section aria-labelledby="similar-heading">
-              <h2 className="card-title" id="similar-heading">
-                {messages.detail.similarTitle}
-              </h2>
-              {similarTenders.length === 0 ? (
-                <p className="tender-action-hint">
-                  {messages.detail.similarEmpty}
-                </p>
-              ) : (
-                <ul className="mini-card-grid">
-                  {similarTenders.map((candidate) => {
-                    const candidateSummary = similarSummaries.get(candidate.id);
-                    return (
-                      <li key={candidate.id}>
-                        <Link
-                          className="mini-card"
-                          href={`/${locale}/provider/tenders/${candidate.id}`}
-                        >
-                          <span className={specialtyTone(candidate.specialty)}>
-                            {specialtyLabel(candidate.specialty, messages)}
-                          </span>
-                          <span className="mini-card-title">
-                            {candidate.title}
-                          </span>
-                          <span className="mini-card-amount">
-                            {formatTenderMoney(
-                              candidate.budgetMinorUnits,
-                              candidate.currency,
-                              locale,
-                            ) ?? messages.tenders.notProvided}
-                          </span>
-                          <span className="mini-card-meta">
-                            {candidate.city} ·{" "}
-                            {messages.bidding.bidCount.replace(
-                              "{count}",
-                              String(candidateSummary?.bidCount ?? 0),
-                            )}
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </section>
-          </main>
-
-          <aside className="detail-rail">
-            <EntitlementPanel
-              canPurchase={actor !== null}
-              copy={entitlementPanelCopy(messages)}
-              disclosure={view.value.disclosure}
-              loginHref={`/${locale}/login`}
-              tenderId={id}
-            />
-
-            {summary.ok ? (
-              <BidSummaryView
-                isOpen={isOpen}
-                locale={locale}
-                messages={messages}
-                summary={summary.value}
-              />
-            ) : null}
-
-            {/*
-              The client is masked by the same server-side projection that
-              masks the tender, so this card states the masking rather than
-              inventing a profile to fill the space.
-            */}
-            <section aria-labelledby="client-heading" className="rail-card">
-              <h2 className="rail-head" id="client-heading">
-                {messages.detail.aboutClient}
-              </h2>
-              <div className="identity-row">
-                <span className="identity-avatar">
-                  <BrandIcon name="profile" size={20} />
-                </span>
-                <div>
-                  <div className="identity-name">
-                    {messages.detail.privateClient}
-                    <span className="tag tag-green">
-                      {messages.common.verified}
-                    </span>
-                  </div>
-                  <div className="identity-note">
-                    {view.value.disclosure === "FULL"
-                      ? messages.detail.identityReleased
-                      : messages.detail.identityHidden}
-                  </div>
-                </div>
-              </div>
-              <p className="rail-note">{messages.detail.notAvailableYet}</p>
-            </section>
-
-            {agreement.ok ? (
-              <Link
-                className="pill pill-outline pill-block"
-                href={`/${locale}/agreements/${agreement.value.id}`}
-              >
-                {messages.workspace.agreements}
-              </Link>
-            ) : null}
-          </aside>
-        </div>
+          </section>
+        </DiscoveryDetailContent>
+        {actor === null ? (
+          <div className="tender-mobile-actions public-actions">
+            <p>
+              <TenderIcon name="lock" size={13} />
+              {user !== null ? c.signInNote : messages.entitlements.signInTitle}
+            </p>
+            <Link className="tender-button primary" href={`/${locale}/login`}>
+              {c.signIn}
+            </Link>
+          </div>
+        ) : null}
       </div>
     </div>
   );

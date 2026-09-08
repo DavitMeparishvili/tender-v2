@@ -1,9 +1,19 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-16T19:20:00.000Z",
+  "generatedAt": "2026-09-08T16:58:24.311Z",
   "title": "Design System: Tender",
   "extensions": {
     "colorMeta": {
+      "tender-green": {
+        "role": "primary",
+        "displayName": "Tender Action Emerald",
+        "tonalRamp": ["oklch(15% 0.04 165)", "oklch(26% 0.06 165)", "oklch(37% 0.08 165)", "oklch(49% 0.1 165)", "oklch(60% 0.11 165)", "oklch(72% 0.09 165)", "oklch(84% 0.05 165)", "oklch(95% 0.02 165)"]
+      },
+      "tender-page": {
+        "role": "neutral",
+        "displayName": "Tender Cool Ground",
+        "tonalRamp": ["oklch(15% 0.006 250)", "oklch(26% 0.006 250)", "oklch(37% 0.006 250)", "oklch(49% 0.006 250)", "oklch(60% 0.006 250)", "oklch(72% 0.006 250)", "oklch(84% 0.006 250)", "oklch(95% 0.006 250)"]
+      },
       "brand": {
         "role": "primary",
         "displayName": "Brand Gold",
@@ -201,6 +211,18 @@
       }
     },
     "typographyMeta": {
+      "tender-title": {
+        "displayName": "Tender Detail Title",
+        "purpose": "Scoped tender detail heading, reduced to tender-title-mobile at 760px."
+      },
+      "tender-section-title": {
+        "displayName": "Tender Section Title",
+        "purpose": "Shared tender overview, quantities, attachment, and location panels."
+      },
+      "tender-fact-value": {
+        "displayName": "Tender Fact Value",
+        "purpose": "Strong values paired with semantic definition-list labels; use tabular numerals."
+      },
       "display": {
         "displayName": "Display",
         "purpose": "The landing headline only. Optically reduced to 44px for Georgian."
@@ -231,6 +253,11 @@
       }
     },
     "shadows": [
+      {
+        "name": "tender-flat",
+        "value": "none",
+        "purpose": "Scoped tender section, fact, owned-list, and sidebar cards use borders and tonal layering."
+      },
       {
         "name": "xs",
         "value": "0 1px 2px rgb(11 27 59 / 6%)",
@@ -280,6 +307,8 @@
       }
     ],
     "breakpoints": [
+      { "name": "tender-tablet", "value": "1100px" },
+      { "name": "tender-mobile", "value": "760px" },
       { "name": "wide", "value": "1180px" },
       { "name": "lg", "value": "1024px" },
       { "name": "md", "value": "900px" },
@@ -287,6 +316,54 @@
     ]
   },
   "components": [
+    {
+      "name": "Tender Primary Action",
+      "kind": "button",
+      "refersTo": "tender-button-primary",
+      "description": "Scoped tender action: white text on the darker tender emerald, with a 44px minimum target.",
+      "html": "<button class=\"ds-tender-primary\">Post a tender</button>",
+      "css": ".ds-tender-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 18px; border: 1px solid #00865f; border-radius: 9px; background: #00865f; color: #fff; font: 650 14px/1.35 var(--font-sans, Manrope, 'Noto Sans Georgian', sans-serif); cursor: pointer; } .ds-tender-primary:hover { background: #006f4f; } .ds-tender-primary:focus-visible { outline: 2px solid #00865f; outline-offset: 3px; } .ds-tender-primary:disabled { opacity: 0.55; cursor: not-allowed; }"
+    },
+    {
+      "name": "Tender Secondary Action",
+      "kind": "button",
+      "refersTo": "tender-button-secondary",
+      "description": "Compact bordered action for tender details and owner management; disabled state preserves the label.",
+      "html": "<button class=\"ds-tender-secondary\">View details</button> <button class=\"ds-tender-secondary\" disabled title=\"Editing is unavailable\">Edit</button>",
+      "css": ".ds-tender-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 18px; border: 1px solid #e1e7ee; border-radius: 9px; background: #fff; color: #101820; font: 650 14px/1.35 var(--font-sans, Manrope, 'Noto Sans Georgian', sans-serif); cursor: pointer; } .ds-tender-secondary:hover { border-color: #9aaabd; background: #f8fafb; } .ds-tender-secondary:focus-visible { outline: 2px solid #00865f; outline-offset: 3px; } .ds-tender-secondary:disabled { opacity: 0.55; cursor: not-allowed; }"
+    },
+    {
+      "name": "Tender Section Panel",
+      "kind": "card",
+      "refersTo": "tender-panel",
+      "description": "Flat section card reused by tender overview, quantities, attachments, and location. Preview uses an empty state.",
+      "html": "<section class=\"ds-tender-panel\"><h2>Project overview</h2><p>Not provided</p></section>",
+      "css": ".ds-tender-panel { padding: 18px 20px; min-width: 0; border: 1px solid #e1e7ee; border-radius: 12px; background: #fff; color: #101820; box-shadow: none; font-family: var(--font-sans, Manrope, 'Noto Sans Georgian', sans-serif); } .ds-tender-panel h2 { margin: 0; font-size: 20px; line-height: 1.3; font-weight: 800; letter-spacing: -0.025em; } .ds-tender-panel p { margin: 10px 0 0; color: #2f3d4e; font-size: 14px; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere; } @media (width <= 760px) { .ds-tender-panel { padding: 16px; } .ds-tender-panel p { line-height: 1.5; } }"
+    },
+    {
+      "name": "Tender Status Badge",
+      "kind": "chip",
+      "refersTo": "tender-status-badge",
+      "description": "Text-labelled status, with a neutral variant for ownership or attachment counts.",
+      "html": "<span class=\"ds-tender-badge\">Open for offers</span> <span class=\"ds-tender-badge ds-tender-badge-neutral\">Your tender</span>",
+      "css": ".ds-tender-badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 30px; padding: 3px 10px; color: #006247; background: #d9f5e9; font: 650 12px/1.5 var(--font-sans, Manrope, 'Noto Sans Georgian', sans-serif); white-space: nowrap; } .ds-tender-badge-neutral { background: #edf1f6; color: #33485f; }"
+    },
+    {
+      "name": "Tender Search Field",
+      "kind": "input",
+      "refersTo": "tender-search-field",
+      "description": "Owned-list search control with a visible keyboard focus outline on the input.",
+      "html": "<label class=\"ds-tender-search\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m16 16 4 4\"/></svg><input aria-label=\"Search your tenders\" placeholder=\"Search your tenders\" type=\"search\"></label>",
+      "css": ".ds-tender-search { display: flex; align-items: center; gap: 16px; padding: 7px 12px 7px 18px; border: 1px solid #e1e7ee; border-radius: 10px; background: #fff; color: #536680; font: 14px var(--font-sans, Manrope, 'Noto Sans Georgian', sans-serif); } .ds-tender-search svg { flex-shrink: 0; } .ds-tender-search input { min-width: 0; flex: 1; border: 0; outline: 0; font: inherit; color: #101820; background: transparent; padding: 6px 0; caret-color: #00865f; } .ds-tender-search input::placeholder { color: #536680; opacity: 1; } .ds-tender-search input:focus-visible { outline: 2px solid #00865f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Tender Section Navigation",
+      "kind": "nav",
+      "refersTo": "tender-section-link",
+      "description": "In-page links on the cool tender ground; current section uses an emerald underline and text.",
+      "html": "<nav class=\"ds-tender-section-nav\" aria-label=\"Tender sections\"><a href=\"#overview\" aria-current=\"location\">Overview</a><a href=\"#quantities\">Quantities</a><a href=\"#attachments\">Files</a><a href=\"#location\">Location</a></nav>",
+      "css": ".ds-tender-section-nav { display: flex; gap: 22px; border-bottom: 1px solid #e1e7ee; background: #f5f7f9; font: 14px var(--font-sans, Manrope, 'Noto Sans Georgian', sans-serif); } .ds-tender-section-nav a { display: flex; align-items: center; justify-content: center; padding: 13px 4px 11px; border-bottom: 2px solid transparent; color: #536680; font-weight: 550; text-decoration: none; white-space: nowrap; } .ds-tender-section-nav a[aria-current] { color: #00865f; border-color: #00865f; } .ds-tender-section-nav a:hover { color: #00865f; } .ds-tender-section-nav a:focus-visible { outline: 2px solid #00865f; outline-offset: 3px; } @media (width <= 760px) { .ds-tender-section-nav { gap: 0; justify-content: space-between; } .ds-tender-section-nav a { min-height: 48px; padding: 14px 8px 10px; font-size: 13px; } }"
+    },
     {
       "name": "Primary Button",
       "kind": "button",
@@ -363,6 +440,11 @@
       "Privacy and selection rules are visible in the UI, not buried in copy."
     ],
     "rules": [
+      {
+        "name": "Scoped tender surface precedence",
+        "body": "The following tender subsections take precedence within that scope, including action text colour, card shape, elevation, and responsive layout. Existing homepage, authentication, discovery, wizard, and other surface guidance remains in force outside it.",
+        "section": "overview"
+      },
       {
         "name": "The No-White-On-Gold Rule",
         "body": "Text on brand gold is always ink. White on gold fails contrast and is never used, including on hover and active states.",

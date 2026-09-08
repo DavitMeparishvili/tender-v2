@@ -24,6 +24,14 @@ function hasSignatureAt(
 export function sniffAttachmentMimeType(
   bytes: Uint8Array,
 ): AllowedAttachmentMimeType | null {
+  // Autodesk DWG version signatures, accepted as download-only documents.
+  const dwgVersion = new TextDecoder("ascii").decode(bytes.slice(0, 6));
+  if (
+    bytes.length >= 64 &&
+    /^AC10(09|12|14|15|18|21|24|27|32)$/.test(dwgVersion)
+  ) {
+    return "image/vnd.dwg";
+  }
   if (startsWith(bytes, PDF_SIGNATURE)) {
     return "application/pdf";
   }

@@ -1,4 +1,4 @@
-import type { Prisma, Tender } from "../../../generated/prisma/client";
+import { Prisma, type Tender } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
 import type { Result } from "../../shared";
 import type {
@@ -18,7 +18,10 @@ import type {
   TenderBiddingContextRepository,
 } from "../application/get-tender-bidding-context";
 import type { GetSettleableTenderRepository } from "../application/get-tender-for-provider";
-import type { ListOwnedTendersRepository } from "../application/list-owned-tenders";
+import type {
+  ListOwnedTendersRepository,
+  OwnedTenderQuery,
+} from "../application/list-owned-tenders";
 import type { PublishTenderRepository } from "../application/publish-tender";
 import {
   MAX_PUBLISHED_TENDER_RESULTS,
@@ -32,6 +35,7 @@ import type {
   UpdateTenderDraftRepository,
 } from "../application/update-tender-draft";
 import { coarsenCoordinates } from "../domain/coordinates";
+import { readWorkItems } from "../domain/work-item";
 import {
   isTenderServiceCode,
   isTenderSpecialty,
@@ -122,6 +126,9 @@ function toTenderDraft(row: Tender): TenderDraft | null {
     shortDescription: row.shortDescription,
     fullDescription: row.fullDescription,
     scopeOfWork: row.scopeOfWork,
+    workItems: readWorkItems(row.workItems),
+    areaSquareMeters: row.areaSquareMeters,
+    reference: row.reference,
     budgetMinorUnits: row.budgetMinorUnits,
     currency: row.currency,
     desiredStartDate: row.desiredStartDate,
@@ -282,14 +289,74 @@ export class PrismaTenderRepository implements TenderRepository {
     return { ok: true, value: draft };
   }
 
-  async listOwned(actor: TenderActor): Promise<readonly TenderDraft[]> {
+  async listOwned(
+    actor: TenderActor,
+    query: OwnedTenderQuery = {},
+  ): Promise<readonly TenderDraft[]> {
     const rows = await database.tender.findMany({
-      where: { ownerId: actor.id },
-      orderBy: { createdAt: "desc" },
+      where: {
+        ownerId: actor.id,
+        ...(query.status ? { status: query.status } : {}),
+        ...(query.search
+          ? {
+              OR: [
+                {
+                  title: {
+                    contains: query.search,
+                    mode: "insensitive" as const,
+                  },
+                },
+                {
+                  city: {
+                    contains: query.search,
+                    mode: "insensitive" as const,
+                  },
+                },
+                {
+                  district: {
+                    contains: query.search,
+                    mode: "insensitive" as const,
+                  },
+                },
+              ],
+            }
+          : {}),
+      },
+      orderBy:
+        query.sort === "deadline"
+          ? [{ deadline: { sort: "asc", nulls: "last" } }, { id: "asc" }]
+          : [
+              { createdAt: query.sort === "oldest" ? "asc" : "desc" },
+              { id: "asc" },
+            ],
+      include: {
+        attachments: { select: { mimeType: true } },
+        _count: { select: { bids: true } },
+      },
     });
     return rows
-      .map(toTenderDraft)
-      .filter((draft): draft is TenderDraft => draft !== null);
+      .map((row) => {
+        const tender = toTenderDraft(row);
+        return tender
+          ? {
+              ...tender,
+              offerCount: row._count.bids,
+              attachmentCounts: {
+                photos: row.attachments.filter(
+                  (file) =>
+                    file.mimeType.startsWith("image/") &&
+                    file.mimeType !== "image/vnd.dwg",
+                ).length,
+                files: row.attachments.filter(
+                  (file) =>
+                    !file.mimeType.startsWith("image/") ||
+                    file.mimeType === "image/vnd.dwg",
+                ).length,
+              },
+            }
+          : null;
+      })
+      .filter((draft) => draft !== null);
   }
 
   async updateDraft(
@@ -298,6 +365,12 @@ export class PrismaTenderRepository implements TenderRepository {
     actor: TenderActor,
   ): Promise<Result<TenderDraft, TenderMutationError>> {
     const data = {
+      ...(command.workItems === undefined
+        ? {}
+        : { workItems: command.workItems }),
+      ...(command.areaSquareMeters === undefined
+        ? {}
+        : { areaSquareMeters: command.areaSquareMeters }),
       ...(command.specialty === undefined
         ? {}
         : { specialty: command.specialty }),
@@ -467,39 +540,35 @@ export class PrismaTenderRepository implements TenderRepository {
     actor: TenderActor,
     now: Date,
   ): Promise<Result<TenderDraft, CancelError>> {
-    // Cancellation is legal from DRAFT and PUBLISHED alike, so the guard
-    // condition differs from `updateDraft`/`publish`: any status other than
-    // CANCELLED is eligible. The conditional `updateMany` is still the sole
-    // state transition, so two concurrent cancellations race on this one
-    // statement and exactly one of them reports `count === 1`; the loser
-    // re-reads the row and observes `status === "CANCELLED"`, reporting
-    // `ALREADY_CANCELLED`.
-    const { count } = await database.tender.updateMany({
-      where: { id, ownerId: actor.id, status: { in: ["DRAFT", "PUBLISHED"] } },
-      data: {
-        status: "CANCELLED",
-        cancelledAt: now,
-        cancelReason: command.reason,
-      },
-    });
-
-    if (count === 0) {
-      const existing = await database.tender.findUnique({ where: { id } });
-      if (existing === null) {
-        return { ok: false, error: "TENDER_NOT_FOUND" };
-      }
-      if (existing.ownerId !== actor.id) {
+    return database.$transaction(async (tx) => {
+      await tx.$queryRaw(
+        Prisma.sql`SELECT "id" FROM "Tender" WHERE "id" = ${id} FOR UPDATE`,
+      );
+      const existing = await tx.tender.findUnique({ where: { id } });
+      if (!existing) return { ok: false, error: "TENDER_NOT_FOUND" };
+      if (existing.ownerId !== actor.id)
         return { ok: false, error: "NOT_OWNER" };
-      }
-      return { ok: false, error: "ALREADY_CANCELLED" };
-    }
-
-    const updated = await database.tender.findUniqueOrThrow({ where: { id } });
-    const draft = toTenderDraft(updated);
-    if (draft === null) {
-      return { ok: false, error: "TENDER_NOT_FOUND" };
-    }
-    return { ok: true, value: draft };
+      if (existing.status !== "DRAFT" && existing.status !== "PUBLISHED")
+        return { ok: false, error: "ALREADY_CANCELLED" };
+      if (
+        await tx.bid.count({
+          where: { tenderId: id, status: { not: "WITHDRAWN" } },
+        })
+      )
+        return { ok: false, error: "TENDER_HAS_BIDS" };
+      const updated = await tx.tender.update({
+        where: { id },
+        data: {
+          status: "CANCELLED",
+          cancelledAt: now,
+          cancelReason: command.reason,
+        },
+      });
+      const draft = toTenderDraft(updated);
+      return draft
+        ? { ok: true, value: draft }
+        : { ok: false, error: "TENDER_NOT_FOUND" };
+    });
   }
 
   async searchPublished(

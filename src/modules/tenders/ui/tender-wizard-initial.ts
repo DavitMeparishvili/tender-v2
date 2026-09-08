@@ -18,6 +18,8 @@ export function tenderToWizardForm(
     shortDescription: tender.shortDescription ?? "",
     fullDescription: tender.fullDescription ?? "",
     scopeOfWork: tender.scopeOfWork ?? "",
+    workItems: tender.workItems ?? [],
+    areaSquareMeters: tender.areaSquareMeters?.toString() ?? "",
     budget:
       tender.budgetMinorUnits === null
         ? ""

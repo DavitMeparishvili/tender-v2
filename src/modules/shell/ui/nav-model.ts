@@ -122,8 +122,9 @@ export function buildShellNav(
     { key: "home", href: at(""), label: messages.nav.home },
     {
       key: "discover",
-      href: at("/provider/tenders"),
+      href: at(isClient ? "/client/tenders" : "/provider/tenders"),
       label: messages.nav.mobileDiscover,
+      match: [at("/provider/tenders")],
     },
     // The centre action mirrors the header: no publish capability, no tab.
     ...(primary === null

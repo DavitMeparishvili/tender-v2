@@ -19,6 +19,7 @@ import {
   publishTenderRequest,
 } from "./tender-mutation-request";
 import { tenderToWizardForm } from "./tender-wizard-initial";
+import { tenderPageCopy } from "./tender-page-copy";
 
 const tender: TenderDraft = {
   id: "tender-1",
@@ -101,17 +102,16 @@ describe("client tender UI", () => {
     expect(html).toContain(en.tenders.cancel);
   });
 
-  it("gives drafts real resume, publish, and cancellation entry points", () => {
+  it("gives drafts resume and detail actions with cancellation behind management", () => {
     const draft: TenderDraft = { ...tender, status: "DRAFT" };
     const html = renderToStaticMarkup(
       <TenderListContent locale="en" messages={en} tenders={[draft]} />,
     );
 
     expect(html).toContain('href="/en/client/tenders/new?tenderId=tender-1"');
-    expect(html).toContain(
-      'href="/en/client/tenders/tender-1#publish-heading"',
-    );
-    expect(html).toContain('href="/en/client/tenders/tender-1#cancel-heading"');
+    expect(html).toContain('href="/en/client/tenders/tender-1"');
+    expect(html).toContain('href="/en/client/tenders/tender-1#management"');
+    expect(html).toContain('<details class="tender-overflow"');
   });
 
   it("keeps cancelled tender rows read-only", () => {
@@ -134,7 +134,7 @@ describe("client tender UI", () => {
       <TenderListContent locale="en" messages={en} tenders={[]} />,
     );
 
-    expect(html).toContain(en.tenders.clientListEmpty);
+    expect(html).toContain(tenderPageCopy("en").noMatches);
     expect(html).not.toContain("<ul");
     expect(html).not.toContain(tender.title);
   });
@@ -178,7 +178,9 @@ describe("client tender UI", () => {
 
     expect(html).toContain("cancel control");
     expect(html).not.toContain("publish control");
-    expect(html).toContain('aria-labelledby="cancel-heading"');
+    expect(html).toContain(
+      '<details class="tender-cancel-disclosure" id="cancel-heading">',
+    );
   });
 
   it("renders publish before cancel for a draft", () => {
@@ -192,7 +194,7 @@ describe("client tender UI", () => {
       />,
     );
 
-    expect(html).toContain('aria-labelledby="publish-heading"');
+    expect(html).toContain('id="publish-heading"');
     expect(html.indexOf("publish control")).toBeLessThan(
       html.indexOf("cancel control"),
     );
@@ -227,14 +229,14 @@ describe("client tender UI", () => {
       />,
     );
 
-    expect(html).toContain('aria-labelledby="attachments-heading"');
+    expect(html).toContain('id="attachments"');
     expect(html).toContain(en.tenders.attachments);
-    expect(html).toContain('href="https://storage.test/site-photo"');
+    expect(html).toContain('aria-label="Preview site-photo.jpg"');
     expect(html).toContain('src="https://storage.test/site-photo"');
     expect(html).toContain("site-photo.jpg");
     expect(html).toContain('href="https://storage.test/scope"');
     expect(html).toContain("scope.pdf");
-    expect(html).toContain("9.1 MB");
+    expect(html).toContain("2 KB");
   });
 
   it("keeps a document attachment out of the image thumbnails", () => {
@@ -251,7 +253,7 @@ describe("client tender UI", () => {
     expect(html).not.toContain("<img");
   });
 
-  it("omits the attachment section entirely when a tender has no files", () => {
+  it("keeps the attachment section reachable and states that there are no files", () => {
     const html = renderToStaticMarkup(
       <TenderDetailContent
         locale="en"
@@ -261,8 +263,8 @@ describe("client tender UI", () => {
       />,
     );
 
-    expect(html).not.toContain('aria-labelledby="attachments-heading"');
-    expect(html).not.toContain(en.tenders.attachments);
+    expect(html).toContain('id="attachments"');
+    expect(html).toContain(tenderPageCopy("en").noAttachments);
   });
 
   it("hydrates an owned draft into the wizard without money or timezone drift", () => {

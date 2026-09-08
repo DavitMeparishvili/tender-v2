@@ -30,6 +30,9 @@ import {
   type TenderSpecialty,
 } from "../domain/service-taxonomy";
 import { AmountInput } from "./amount-input";
+import { WorkItemsEditor } from "./work-items-editor";
+import type { WorkItem } from "../domain/work-item";
+import { tenderPageCopy } from "./tender-page-copy";
 import { DateField, DateTimeField } from "./date-field";
 import { LocationMap } from "./location-map";
 import { datePickerCopy, locationMapCopy } from "./tender-action-copy";
@@ -62,6 +65,8 @@ export type TenderWizardFormState = Readonly<{
   shortDescription?: string;
   fullDescription?: string;
   scopeOfWork?: string;
+  workItems?: readonly WorkItem[];
+  areaSquareMeters?: string;
   budget?: string;
   currency?: "GEL" | "USD";
   deadline?: string;
@@ -122,7 +127,9 @@ const defaultApi: TenderWizardApi = {
         body: JSON.stringify({
           originalFileName: file.name,
           sizeBytes: file.size,
-          contentType: file.type,
+          contentType: file.name.toLowerCase().endsWith(".dwg")
+            ? "image/vnd.dwg"
+            : file.type,
         }),
       },
     );
@@ -547,6 +554,14 @@ export function toUpdateCommand(
     shortDescription: trimmed(form.shortDescription),
     fullDescription: trimmed(form.fullDescription),
     scopeOfWork: trimmed(form.scopeOfWork),
+    ...(form.workItems === undefined ? {} : { workItems: [...form.workItems] }),
+    ...(form.areaSquareMeters === undefined
+      ? {}
+      : {
+          areaSquareMeters: form.areaSquareMeters
+            ? Number(form.areaSquareMeters)
+            : null,
+        }),
     budgetMinorUnits,
     currency: form.currency ?? "GEL",
     deadline,
@@ -1193,6 +1208,27 @@ export function TenderWizard({
               }
             />
           </Field>
+          <WorkItemsEditor
+            locale={locale}
+            items={form.workItems ?? []}
+            onChange={(items) => {
+              setForm((current) => ({ ...current, workItems: items }));
+              setModified(true);
+            }}
+          />
+          <Field id="areaSquareMeters" label={tenderPageCopy(locale).area}>
+            <input
+              type="number"
+              name="areaSquareMeters"
+              min="0.01"
+              max="1000000"
+              step="any"
+              value={form.areaSquareMeters ?? ""}
+              onChange={(event) =>
+                updateField("areaSquareMeters", event.target.value)
+              }
+            />
+          </Field>
           <div className="wizard-compact-fields">
             <Field
               id="budget"
@@ -1417,7 +1453,7 @@ export function TenderWizard({
             <input
               name="attachments"
               type="file"
-              accept="application/pdf,image/jpeg,image/png,image/webp"
+              accept="application/pdf,image/jpeg,image/png,image/webp,image/vnd.dwg,.dwg"
               multiple
               disabled={uploading || attachmentNames.length >= MAX_ATTACHMENTS}
               onChange={uploadFiles}

@@ -7,6 +7,10 @@ import type { TenderMutationError } from "../application/update-tender-draft";
 import type { TenderDraft, TenderRecord } from "../domain/tender";
 import { authorizeCustomer, type RequireCustomer } from "./authorize";
 import { mapTenderError } from "./map-tender-error";
+import {
+  parseOwnedTenderQuery,
+  type OwnedTenderQuery,
+} from "../application/list-owned-tenders";
 
 export type { RequireCustomer };
 
@@ -18,7 +22,10 @@ type TenderHandlersDependencies = Readonly<{
     input: unknown,
     actor: TenderActor,
   ) => Promise<Result<TenderDraft, "INVALID_INPUT">>;
-  listOwned: (actor: TenderActor) => Promise<readonly TenderDraft[]>;
+  listOwned: (
+    actor: TenderActor,
+    query?: OwnedTenderQuery,
+  ) => Promise<readonly TenderDraft[]>;
 }>;
 
 export function createTenderHandlers({
@@ -39,7 +46,10 @@ export function createTenderHandlers({
     GET: async (request: Request): Promise<Response> => {
       const access = await authorizeCustomer(requireCustomer, request.headers);
       if (access instanceof Response) return access;
-      const tenders = await listOwned(access);
+      const query = parseOwnedTenderQuery(
+        Object.fromEntries(new URL(request.url).searchParams),
+      );
+      const tenders = await listOwned(access, query);
       return Response.json({ tenders });
     },
   };

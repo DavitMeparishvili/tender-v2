@@ -737,7 +737,7 @@
     "similarEmpty": "No similar tenders are open right now.",
     "aboutClient": "About the client",
     "privateClient": "Private client",
-    "identityHidden": "Identity hidden until unlock",
+    "identityHidden": "Client identity is private.",
     "identityReleased": "Identity released by your access",
     "memberSince": "Member since",
     "tendersPublished": "Tenders published",

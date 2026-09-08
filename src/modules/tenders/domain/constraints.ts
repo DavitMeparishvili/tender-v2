@@ -9,6 +9,7 @@ export const MAX_BUDGET_MINOR_UNITS = 2_147_483_647;
 export const MAX_ATTACHMENT_BYTES = 15 * 1024 * 1024;
 export const ALLOWED_ATTACHMENT_MIME_TYPES = [
   "application/pdf",
+  "image/vnd.dwg",
   "image/jpeg",
   "image/png",
   "image/webp",

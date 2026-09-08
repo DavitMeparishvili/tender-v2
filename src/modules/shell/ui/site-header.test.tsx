@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { getMessages } from "../../localization/get-messages";
 import { SiteHeader } from "./site-header";
+import { buildShellNav, isCurrent } from "./nav-model";
 
 const navigation = vi.hoisted(() => ({ pathname: "/en/client/tenders" }));
 
@@ -10,6 +11,16 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("SiteHeader", () => {
+  it("keeps mobile Tenders active across client and discovery details", () => {
+    const tab = buildShellNav("en", getMessages("en"), {
+      displayName: "Client",
+      capabilities: ["CUSTOMER"],
+    }).tabs.find((item) => item.key === "discover")!;
+    expect(tab.href).toBe("/en/client/tenders");
+    expect(isCurrent(tab, "/en/client/tenders/owned-id")).toBe(true);
+    expect(isCurrent(tab, "/en/provider/tenders/public-id")).toBe(true);
+    expect(isCurrent(tab, "/en/client/agreements")).toBe(false);
+  });
   it("puts profile and sign-out actions in the global menu for a signed-in viewer", () => {
     navigation.pathname = "/en/profile";
     const messages = getMessages("en");

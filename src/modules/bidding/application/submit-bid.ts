@@ -81,7 +81,9 @@ export interface SubmitBidRepository {
     // Re-asserted inside the write, so a deadline that elapses between the
     // check below and the INSERT is caught by the write itself.
     deadline: Date,
-  ): Promise<Result<Bid, "BID_ALREADY_EXISTS" | "DEADLINE_PASSED">>;
+  ): Promise<
+    Result<Bid, "BID_ALREADY_EXISTS" | "DEADLINE_PASSED" | "TENDER_NOT_OPEN">
+  >;
 }
 
 export function createSubmitBid(dependencies: {

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../src/modules/tenders/ui/tender-pages.css";
 
 /* =============================================================
    Tender Marketplace — visual system

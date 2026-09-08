@@ -41,7 +41,65 @@ colors:
   red: "#BA5147"
   red-dark: "#8F3A32"
   red-soft: "#F6E7E5"
+  tender-ink: "#101820"
+  tender-muted: "#536680"
+  tender-line: "#e1e7ee"
+  tender-green: "#00865f"
+  tender-green-hover: "#006f4f"
+  tender-page: "#f5f7f9"
+  tender-body: "#2f3d4e"
+  tender-control-hover: "#f8fafb"
+  tender-control-hover-line: "#9aaabd"
+  tender-status: "#006247"
+  tender-status-soft: "#d9f5e9"
+  tender-category: "#354c83"
+  tender-category-soft: "#eaf0fa"
+  tender-neutral-status: "#33485f"
+  tender-neutral-status-soft: "#edf1f6"
+  tender-table-head: "#f0f4f7"
+  tender-privacy: "#174536"
+  tender-privacy-soft: "#e5f7f0"
+  tender-tab-selected: "#054d38"
+  tender-tab-selected-soft: "#d6f2e6"
+  tender-tab-selected-line: "#a2dfc8"
 typography:
+  tender-title:
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontSize: "36px"
+    fontWeight: 800
+    lineHeight: 1.16
+    letterSpacing: "-0.03em"
+  tender-title-mobile:
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontSize: "30px"
+    fontWeight: 800
+    lineHeight: 1.15
+    letterSpacing: "-0.03em"
+  tender-section-title:
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontSize: "20px"
+    fontWeight: 800
+    lineHeight: 1.3
+    letterSpacing: "-0.025em"
+  tender-description:
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontSize: "14px"
+    lineHeight: 1.6
+  tender-action:
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontSize: "14px"
+    fontWeight: 650
+    lineHeight: 1.35
+  tender-badge:
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontSize: "12px"
+    fontWeight: 650
+    lineHeight: 1.5
+  tender-fact-value:
+    fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
+    fontSize: "18px"
+    fontWeight: 800
+    lineHeight: 1.25
   display:
     fontFamily: "Manrope, Noto Sans Georgian, sans-serif"
     fontSize: "56px"
@@ -192,6 +250,11 @@ typography:
     lineHeight: 1.3
     letterSpacing: "0.1em"
 rounded:
+  tender-control: "9px"
+  tender-field: "10px"
+  tender-panel: "12px"
+  tender-attachment: "8px"
+  tender-badge: "30px"
   track: "2px"
   xs: "4px"
   sm: "6px"
@@ -206,6 +269,12 @@ rounded:
   sheet: "22px"
   pill: "999px"
 spacing:
+  tender-gutter: "28px"
+  tender-gutter-tablet: "24px"
+  tender-gutter-mobile: "16px"
+  tender-column-gap: "22px"
+  tender-section-gap: "16px"
+  tender-section-gap-mobile: "14px"
   1: "4px"
   2: "8px"
   3: "12px"
@@ -220,6 +289,41 @@ spacing:
   24: "96px"
   32: "128px"
 components:
+  tender-button-primary:
+    backgroundColor: "{colors.tender-green}"
+    textColor: "{colors.page}"
+    typography: "{typography.tender-action}"
+    rounded: "{rounded.tender-control}"
+    padding: "10px 18px"
+  tender-button-primary-hover:
+    backgroundColor: "{colors.tender-green-hover}"
+    textColor: "{colors.page}"
+  tender-button-secondary:
+    backgroundColor: "{colors.page}"
+    textColor: "{colors.tender-ink}"
+    typography: "{typography.tender-action}"
+    rounded: "{rounded.tender-control}"
+    padding: "10px 18px"
+  tender-panel:
+    backgroundColor: "{colors.page}"
+    textColor: "{colors.tender-ink}"
+    rounded: "{rounded.tender-panel}"
+    padding: "18px 20px"
+  tender-status-badge:
+    backgroundColor: "{colors.tender-status-soft}"
+    textColor: "{colors.tender-status}"
+    typography: "{typography.tender-badge}"
+    rounded: "{rounded.tender-badge}"
+    padding: "3px 10px"
+  tender-search-field:
+    backgroundColor: "{colors.page}"
+    textColor: "{colors.tender-muted}"
+    rounded: "{rounded.tender-field}"
+    padding: "7px 12px 7px 18px"
+  tender-section-link:
+    backgroundColor: "{colors.tender-page}"
+    textColor: "{colors.tender-muted}"
+    padding: "13px 4px 11px"
   pill-brand:
     backgroundColor: "{colors.brand}"
     textColor: "{colors.ink}"
@@ -267,6 +371,17 @@ components:
 
 ## Overview
 
+### Scoped tender surface extension
+
+The approved tender detail and owned-tender list redesign uses compact white
+panels on cool grey, darker emerald actions, and labelled project facts. Its
+source is `src/modules/tenders/ui/tender-pages.css` and the shared tender heading,
+sections, and list components. All `tender-*` tokens below belong to these
+surfaces and their scoped editor and shell treatments. The following tender
+subsections take precedence within that scope, including action text colour,
+card shape, elevation, and responsive layout. Existing homepage, authentication,
+discovery, wizard, and other surface guidance remains in force outside it.
+
 **Creative North Star: "Live Supply, Honest Mechanism"**
 
 Tender is a construction marketplace, and a marketplace earns trust by showing
@@ -293,6 +408,18 @@ glassy. Numbers are typeset as quantities, not as decoration.
 - Privacy and selection rules are visible in the UI, not buried in copy.
 
 ## Colors
+
+### Scoped tender palette
+
+Tender page, ink, muted, and line tokens supply the cool ground, strong text,
+metadata, and separators. White panels remain distinct from that ground without
+shadow. Tender green marks primary actions, section selection, focus, and map
+details. White text is used on this darker tender green and its hover colour;
+the existing brand-emerald rule below applies to the separate global brand token.
+Status badges pair the tender status foreground and soft background, neutral
+badges identify ownership and counts, and category badges use a cool blue pair
+on list cards. Privacy notices use the tender privacy pair. Labels carry the
+meaning alongside these colours.
 
 ### Primary
 
@@ -327,6 +454,16 @@ Neither is decoration, and neither carries meaning by colour alone.
 
 ## Typography
 
+### Scoped tender hierarchy
+
+The tender surfaces inherit the existing Manrope and Noto Sans Georgian stack.
+Their title, section title, description, action, badge, and fact-value roles use
+the prefixed frontmatter tokens. Detail titles reduce to the mobile title role
+at 760px; the owned-list heading is 44px on desktop and 34px on mobile, while
+owned-card titles are 28px and 24px respectively. Fact labels are 12px; metadata
+and table content use 12–13px. Descriptions retain authored line breaks and wrap
+long words; compared amounts and quantities use tabular numerals.
+
 **Display and Body Font:** Manrope for Latin text, with Noto Sans Georgian as
 the per-glyph fallback for Georgian text.
 
@@ -359,6 +496,26 @@ smaller role or a lighter weight than English.
 
 ## Layout
 
+### Scoped tender layout
+
+The tender container has a 1200px maximum width and its own gutter tokens.
+At 1100px the gutter narrows to the tablet value; at 760px it narrows to the
+mobile value. Detail content pairs a flexible main column with a 320px rail
+and the tender column gap; the rail becomes 280px between 761px and 1100px.
+The four-column fact strip becomes two columns at 760px. Section panels use
+the section gap and switch to the mobile gap in the collapsed detail layout.
+Collapsed children stretch to the available width. Owner offer status moves
+ahead of the sections; owner management follows them.
+
+The detail section links remain sticky below the header. On mobile, task
+actions sit above the 62px bottom navigation and its safe-area inset; between
+641px and 760px they sit directly at the viewport bottom. Content reserves
+bottom space for the fixed controls. Owned-list search precedes horizontally
+scrollable status tabs on mobile. Facts and card actions reflow rather than
+shrinking the desktop card into the viewport. Photo grids change from four
+columns to two. These rules replace the legacy tender-detail layout below only
+for the scoped tender surfaces.
+
 Every band centres a 1200px column with 40px gutters, narrowing to 24px below
 1180px and 18px below 640px.
 
@@ -378,6 +535,13 @@ by source order.
 
 ## Elevation & Depth
 
+### Scoped tender depth
+
+Tender section, fact, owner-list, and sidebar cards are flat white surfaces
+with the tender line border. Existing sidebar shadows are removed within this
+scope. There is no hover raise on these cards. Hierarchy comes from the cool
+page ground, separators, spacing, and tinted status or privacy regions.
+
 Shadows are soft and cool-tinted (`rgb(11 27 59 / …)`), five steps from `xs` to
 `xl`. A card at rest uses `xs` or `sm`; a card that is a destination raises to
 `md` or `lg` on hover and takes an `emerald-300` border. The hero preview card and
@@ -388,12 +552,49 @@ card that does not navigate does not raise.
 
 ## Shapes
 
+### Scoped tender shapes
+
+Tender panels and the fact strip use the tender panel radius; rectangular
+actions use the control radius, search/sort fields use the field radius, and
+attachments use the attachment radius. Status badges retain their own rounded
+capsule shape. Mobile fixed actions have rounded top corners matching panels.
+These scoped controls and cards replace the global pill and large-card shape
+rules below on tender surfaces.
+
 Radii run 4 / 6 / 10 / 14 / 20 / 28 and the pill. Controls and inputs use 10px;
 result and category cards use 14–20px; feature cards and the unlock gate use
 28px; every button and chip is a pill. Icon chips are 42px squares at 11px
 radius on an emerald-soft ground.
 
 ## Components
+
+### Scoped tender components
+
+- **Actions:** primary and secondary variants share a 44px minimum height,
+  compact padding, and the tender action role. Primary hover darkens the
+  emerald; secondary hover uses the tender control-hover ground and line.
+  Disabled buttons have 0.55 opacity and a not-allowed cursor. Focus on buttons,
+  links, fields, and disclosure summaries uses a 2px tender-green outline with
+  a 3px offset. Small document actions use the explicit compact variant.
+- **Section panels and facts:** white, flat, hairline-bordered panels group
+  overview, quantities, attachments, and location. Padding reduces to 16px on
+  mobile. A semantic definition list pairs fact labels with strong tabular
+  values; separators follow its responsive grid.
+- **Badges:** labelled status and neutral variants share the badge token.
+  Category badges are smaller uppercase labels; they are omitted from compact
+  owner cards where the title and status take priority.
+- **Search and navigation:** the owned-list search is a bordered field beside
+  the sort control on desktop. Status selection combines tint and a count
+  badge on desktop, then an underline on mobile. Section navigation marks the
+  targeted section with an emerald underline and foreground.
+- **Attachments and privacy:** document rows combine a file-type mark, wrapping
+  filename, metadata, and access-appropriate actions. Photos use a four-to-two
+  column grid. Privacy notices remain paired with explanatory text; rendered
+  file and location details depend on server-provided access.
+- **Empty and unavailable states:** empty lists and offer panels use explicit
+  text. Owner edit availability follows the current server state, with disabled
+  controls and explanatory copy where editing is unavailable. Details and
+  disclosure actions stay keyboard reachable when available.
 
 ### Buttons
 
@@ -477,6 +678,10 @@ only continuous mark in the system is the pulsing dot on the live-offer toast,
 and it is decorative and `aria-hidden`.
 
 ## Do's and Don'ts
+
+For the scoped tender surfaces, use the prefixed tokens and tender subsections
+above whenever an older global visual rule conflicts. Preserve actual record
+values, permission boundaries, labelled statuses, and bilingual content.
 
 ### Do:
 

@@ -70,7 +70,9 @@ export class PrismaBidRepository
       qualifyingSubmittedAt: Date;
     }>,
     deadline: Date,
-  ): Promise<Result<Bid, "BID_ALREADY_EXISTS" | "DEADLINE_PASSED">> {
+  ): Promise<
+    Result<Bid, "BID_ALREADY_EXISTS" | "DEADLINE_PASSED" | "TENDER_NOT_OPEN">
+  > {
     // Cheap re-check against the deadline the caller already validated, using
     // the timestamp this write will store, so a request that stalled between
     // the check and the write cannot land a late bid.
@@ -78,22 +80,41 @@ export class PrismaBidRepository
       return { ok: false, error: "DEADLINE_PASSED" };
     }
     try {
-      const created = await database.bid.create({
-        data: {
-          id: bid.id,
-          tenderId: bid.tenderId,
-          providerId: bid.providerId,
-          currency: bid.currency,
-          status: "SUBMITTED",
-          qualifyingSubmittedAt: bid.qualifyingSubmittedAt,
-          ...termsData(bid.command),
-        },
+      return await database.$transaction(async (tx) => {
+        // Serialize with cancellation, published edits, and deadline selection.
+        await tx.$queryRaw(
+          Prisma.sql`SELECT "id" FROM "Tender" WHERE "id" = ${bid.tenderId} FOR UPDATE`,
+        );
+        const tender = await tx.tender.findUnique({
+          where: { id: bid.tenderId },
+          select: { status: true, deadline: true },
+        });
+        if (!tender || tender.status !== "PUBLISHED")
+          return { ok: false as const, error: "TENDER_NOT_OPEN" as const };
+        // Use wall time after acquiring the lock: a request may wait past close.
+        if (
+          !tender.deadline ||
+          tender.deadline <= new Date() ||
+          bid.qualifyingSubmittedAt >= tender.deadline
+        )
+          return { ok: false as const, error: "DEADLINE_PASSED" as const };
+        const created = await tx.bid.create({
+          data: {
+            id: bid.id,
+            tenderId: bid.tenderId,
+            providerId: bid.providerId,
+            currency: bid.currency,
+            status: "SUBMITTED",
+            qualifyingSubmittedAt: bid.qualifyingSubmittedAt,
+            ...termsData(bid.command),
+          },
+        });
+        const mapped = toBid(created);
+        if (mapped === null) {
+          throw new Error(`Failed to map newly created bid ${created.id}.`);
+        }
+        return { ok: true as const, value: mapped };
       });
-      const mapped = toBid(created);
-      if (mapped === null) {
-        throw new Error(`Failed to map newly created bid ${created.id}.`);
-      }
-      return { ok: true, value: mapped };
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&

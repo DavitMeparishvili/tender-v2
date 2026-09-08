@@ -106,6 +106,7 @@ export default async function ClientTenderDetailPage({
     <TenderDetail
       actor={routeAccess.actor}
       hasBids={hasActiveBids}
+      offerCount={bids.length}
       id={id}
       locale={locale}
       messages={messages}

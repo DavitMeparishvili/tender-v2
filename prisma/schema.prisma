@@ -333,6 +333,9 @@ model Tender {
   shortDescription String?
   fullDescription  String?
   scopeOfWork      String?
+  workItems        Json          @default("[]")
+  areaSquareMeters Float?
+  reference        String?       @unique
   budgetMinorUnits Int?
   currency         String?
   desiredStartDate DateTime?

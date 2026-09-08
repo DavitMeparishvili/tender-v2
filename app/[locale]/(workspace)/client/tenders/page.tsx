@@ -9,7 +9,11 @@ import { resolveCustomerRouteAccess } from "@/src/modules/tenders/ui/customer-ro
 
 export default async function ClientTenderListPage({
   params,
-}: Readonly<{ params: Promise<{ locale: string }> }>) {
+  searchParams,
+}: Readonly<{
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}>) {
   const [{ locale }, requestHeaders] = await Promise.all([params, headers()]);
   if (!isLocale(locale)) notFound();
   const messages = getMessages(locale);
@@ -29,6 +33,11 @@ export default async function ClientTenderListPage({
   }
 
   return (
-    <TenderList actor={routeAccess.actor} locale={locale} messages={messages} />
+    <TenderList
+      actor={routeAccess.actor}
+      locale={locale}
+      messages={messages}
+      queryParams={await searchParams}
+    />
   );
 }

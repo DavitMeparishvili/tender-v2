@@ -11,6 +11,18 @@ import {
 } from "../domain/service-taxonomy";
 import type { TenderActor } from "./create-tender-draft";
 
+export const workItemsSchema = z
+  .array(
+    z
+      .object({
+        name: z.string().trim().min(1).max(160),
+        quantity: z.number().finite().positive().max(1_000_000_000),
+        unit: z.string().trim().min(1).max(20),
+      })
+      .strict(),
+  )
+  .max(100);
+
 const tenderSpecialtySchema = z.custom<TenderSpecialty>(
   (value) => typeof value === "string" && isTenderSpecialty(value),
 );
@@ -26,6 +38,14 @@ export const updateTenderDraftCommandSchema = z
     shortDescription: z.string().trim().min(10).max(240).optional(),
     fullDescription: z.string().trim().min(20).max(5_000).optional(),
     scopeOfWork: z.string().trim().min(10).max(2_000).optional(),
+    workItems: workItemsSchema.optional(),
+    areaSquareMeters: z
+      .number()
+      .finite()
+      .positive()
+      .max(1_000_000)
+      .nullable()
+      .optional(),
     // Bounded, not merely positive: `budgetMinorUnits` is written to an INT4
     // column, so an unbounded amount would reach Prisma and fail there as an
     // uncaught overflow — a 500 with a stack trace where the caller should
