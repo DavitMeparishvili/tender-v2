@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { FakeClock } from "../../shared";
 import { createGetTenderForProvider } from "./get-tender-for-provider";
 import type { TenderRecord } from "../domain/tender";
@@ -38,6 +38,12 @@ const record = {
 } satisfies TenderRecord;
 
 const repository = {
+  getClientContact: async () => ({
+    userId: "client-1",
+    displayName: "Test client",
+    email: "client@example.test",
+    phoneE164: "+995555010101",
+  }),
   getSettleable: async (id: string) =>
     id === "tender-1"
       ? ({ ok: true, value: record } as const)
@@ -72,6 +78,7 @@ describe("getTenderForProvider", () => {
       value: {
         disclosure: "FULL",
         tender: { addressLine: "1 Chavchavadze Ave" },
+        clientContact: { email: "client@example.test" },
       },
     });
   });
@@ -113,5 +120,20 @@ describe("getTenderForProvider", () => {
     })("tender-missing", { id: "provider-1" });
 
     expect(view).toEqual({ ok: false, error: "TENDER_NOT_FOUND" });
+  });
+
+  it("never reads or discloses client contact without entitlement", async () => {
+    const getClientContact = vi.fn(repository.getClientContact);
+    const read = createGetTenderForProvider({
+      repository: { ...repository, getClientContact },
+      clock,
+      isEntitled: async () => false,
+    });
+    for (const actor of [null, { id: "provider-1" }]) {
+      const result = await read("tender-1", actor);
+      expect(JSON.stringify(result)).not.toContain("client@example.test");
+      expect(JSON.stringify(result)).not.toContain("clientContact");
+    }
+    expect(getClientContact).not.toHaveBeenCalled();
   });
 });

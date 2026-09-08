@@ -1,0 +1,1729 @@
+{
+  "rows": [
+    {
+      "url": "/ka",
+      "width": 390,
+      "count": 128,
+      "pairs": [
+        {
+          "cls": "section-title section-title-gap-sm",
+          "tag": "H2",
+          "text": "ფასის გამჭვირვალობა, პატიოსნად დაცული",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SUMMARY",
+          "text": "KA",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "countdown",
+          "tag": "SPAN",
+          "text": "იხურება 20დღ 18სთ-ში",
+          "fg": "rgb(6, 95, 70)",
+          "bg": [255, 255, 255],
+          "ratio": 7.684,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "section-title section-title-sm",
+          "tag": "H2",
+          "text": "დასრულებული თანამშრომლობებიდან",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [255, 255, 255],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "muted",
+          "tag": "SPAN",
+          "text": "აქ მოცემული ყოველი მიმოხილვა მიბმულია დადასტურებულ, დასრულებულ თანამშრომლობაზე.",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [255, 255, 255],
+          "ratio": 6.188,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "overline",
+          "tag": "P",
+          "text": "ნდობა",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [248, 248, 249],
+          "ratio": 5.167,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "lede lede-body",
+          "tag": "P",
+          "text": "პლატფორმის ყველა მექანიზმი არსებობს იმისთვის, რომ შეთავაზებები შესადარებელი იყოს და რ",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [248, 248, 249],
+          "ratio": 8.877,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "pill pill-on-brand",
+          "tag": "A",
+          "text": "დათვალიერება შემსრულებლად",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "note-row note-dashed",
+          "tag": "P",
+          "text": "დამკვეთი და სრული სპეციფიკაცია იხსნება შემსრულებლის წვდომით",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [248, 248, 249],
+          "ratio": 5.83,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "მიმოხილვები ჯერ არ გამოქვეყნებულა. პირველი მაშინ გამოჩნდება, როცა თანამშრომლობა დასრუ",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [255, 255, 255],
+          "ratio": 9.421,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "overline",
+          "tag": "P",
+          "text": "როგორ მუშაობს",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [255, 255, 255],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tag tag-blue",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(60, 72, 119)",
+          "bg": [238, 240, 250],
+          "ratio": 7.747,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-word",
+          "tag": "A",
+          "text": "Tender",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [22, 24, 28],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-legal",
+          "tag": "P",
+          "text": "© 2026 Tender. სახელი დროებითია — ლოგო და ბრენდი განსასაზღვრია.",
+          "fg": "rgb(171, 173, 180)",
+          "bg": [22, 24, 28],
+          "ratio": 7.929,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-head",
+          "tag": "H2",
+          "text": "კომპანია",
+          "fg": "rgb(110, 231, 183)",
+          "bg": [22, 24, 28],
+          "ratio": 11.66,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(210, 212, 216)",
+          "bg": [22, 24, 28],
+          "ratio": 11.975,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    },
+    {
+      "url": "/ka",
+      "width": 1440,
+      "count": 141,
+      "pairs": [
+        {
+          "cls": "section-title section-title-gap-sm",
+          "tag": "H2",
+          "text": "ფასის გამჭვირვალობა, პატიოსნად დაცული",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-legal",
+          "tag": "P",
+          "text": "© 2026 Tender. სახელი დროებითია — ლოგო და ბრენდი განსასაზღვრია.",
+          "fg": "rgb(171, 173, 180)",
+          "bg": [22, 24, 28],
+          "ratio": 7.929,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "მიმოხილვები ჯერ არ გამოქვეყნებულა. პირველი მაშინ გამოჩნდება, როცა თანამშრომლობა დასრუ",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [255, 255, 255],
+          "ratio": 9.421,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-head",
+          "tag": "H2",
+          "text": "კომპანია",
+          "fg": "rgb(110, 231, 183)",
+          "bg": [22, 24, 28],
+          "ratio": 11.66,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(210, 212, 216)",
+          "bg": [22, 24, 28],
+          "ratio": 11.975,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "wordmark",
+          "tag": "A",
+          "text": "Tender",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "nav-tab",
+          "tag": "A",
+          "text": "შეტყობინებები",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [254, 254, 254],
+          "ratio": 9.344,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "pill pill-on-brand",
+          "tag": "A",
+          "text": "დათვალიერება შემსრულებლად",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "overline",
+          "tag": "P",
+          "text": "ნდობა",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [248, 248, 249],
+          "ratio": 5.167,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "lede lede-body",
+          "tag": "P",
+          "text": "პლატფორმის ყველა მექანიზმი არსებობს იმისთვის, რომ შეთავაზებები შესადარებელი იყოს და რ",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [248, 248, 249],
+          "ratio": 8.877,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "section-title section-title-sm",
+          "tag": "H2",
+          "text": "დასრულებული თანამშრომლობებიდან",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [255, 255, 255],
+          "ratio": 17.773,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "muted",
+          "tag": "SPAN",
+          "text": "აქ მოცემული ყოველი მიმოხილვა მიბმულია დადასტურებულ, დასრულებულ თანამშრომლობაზე.",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [255, 255, 255],
+          "ratio": 6.188,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "note-row note-dashed",
+          "tag": "P",
+          "text": "დამკვეთი და სრული სპეციფიკაცია იხსნება შემსრულებლის წვდომით",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [248, 248, 249],
+          "ratio": 5.83,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tag tag-emerald",
+          "tag": "SPAN",
+          "text": "ტენდერი · ღიაა",
+          "fg": "rgb(6, 78, 59)",
+          "bg": [209, 250, 229],
+          "ratio": 8.57,
+          "required": 4.5,
+          "hasImage": true
+        },
+        {
+          "cls": "countdown",
+          "tag": "SPAN",
+          "text": "იხურება 20დღ 18სთ-ში",
+          "fg": "rgb(6, 95, 70)",
+          "bg": [255, 255, 255],
+          "ratio": 7.684,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "overline",
+          "tag": "P",
+          "text": "როგორ მუშაობს",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [255, 255, 255],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tag tag-blue",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(60, 72, 119)",
+          "bg": [238, 240, 250],
+          "ratio": 7.747,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-word",
+          "tag": "A",
+          "text": "Tender",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [22, 24, 28],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    },
+    {
+      "url": "/ka/client/tenders",
+      "width": 390,
+      "count": 90,
+      "pairs": [
+        {
+          "cls": "skip-link",
+          "tag": "A",
+          "text": "მთავარ შინაარსზე გადასვლა",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SUMMARY",
+          "text": "KA",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "locale-link is-current",
+          "tag": "SPAN",
+          "text": "ქართული",
+          "fg": "rgb(6, 95, 70)",
+          "bg": [255, 255, 255],
+          "ratio": 7.684,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "locale-link",
+          "tag": "A",
+          "text": "Русский",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [255, 255, 255],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "პროფილი",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [255, 255, 255],
+          "ratio": 6.166,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "ტენდერი",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [255, 255, 255],
+          "ratio": 5.465,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "sr-only",
+          "tag": "SPAN",
+          "text": "დალაგება",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [245, 247, 249],
+          "ratio": 16.663,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [245, 247, 249],
+          "ratio": 5.462,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-button primary",
+          "tag": "A",
+          "text": "დეტალების ნახვა",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "ყველა",
+          "fg": "rgb(5, 77, 56)",
+          "bg": [245, 247, 249],
+          "ratio": 9.202,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "4",
+          "fg": "rgb(0, 98, 71)",
+          "bg": [214, 242, 230],
+          "ratio": 6.238,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "გაუქმებული",
+          "fg": "rgb(49, 68, 93)",
+          "bg": [245, 247, 249],
+          "ratio": 9.244,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "0",
+          "fg": "rgb(49, 68, 93)",
+          "bg": [237, 241, 245],
+          "ratio": 8.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-small-note",
+          "tag": "P",
+          "text": "ვადის გასვლის ან შეთავაზებების მიღების შემდეგ რედაქტირება შეუძლებელია.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [255, 255, 255],
+          "ratio": 5.866,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "DD",
+          "text": "0 შეთავაზებები",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [255, 255, 255],
+          "ratio": 17.895,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge",
+          "tag": "SPAN",
+          "text": "გამოქვეყნებული",
+          "fg": "rgb(0, 98, 71)",
+          "bg": [217, 245, 233],
+          "ratio": 6.409,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    },
+    {
+      "url": "/ka/client/tenders",
+      "width": 1440,
+      "count": 123,
+      "pairs": [
+        {
+          "cls": "skip-link",
+          "tag": "A",
+          "text": "მთავარ შინაარსზე გადასვლა",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-legal",
+          "tag": "P",
+          "text": "© 2026 Tender. სახელი დროებითია — ლოგო და ბრენდი განსასაზღვრია.",
+          "fg": "rgb(171, 173, 180)",
+          "bg": [22, 24, 28],
+          "ratio": 7.929,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "გამოიყენეთ გვერდზე ნაჩვენები უსაფრთხო მოქმედება. დადასტურებისა და აღდგენის ბმულის ხელ",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [255, 255, 255],
+          "ratio": 9.421,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-head",
+          "tag": "H2",
+          "text": "კომპანია",
+          "fg": "rgb(110, 231, 183)",
+          "bg": [22, 24, 28],
+          "ratio": 11.66,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(210, 212, 216)",
+          "bg": [22, 24, 28],
+          "ratio": 11.975,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "nav-tab",
+          "tag": "A",
+          "text": "ჩემი ტენდერები",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "nav-tab",
+          "tag": "A",
+          "text": "შეტყობინებები",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [254, 254, 254],
+          "ratio": 9.344,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-button primary",
+          "tag": "A",
+          "text": "დეტალების ნახვა",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "sr-only",
+          "tag": "SPAN",
+          "text": "დალაგება",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [245, 247, 249],
+          "ratio": 16.663,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "owned-list-note",
+          "tag": "P",
+          "text": "ახალი შეთავაზებები გამოჩნდება ტენდერის დეტალებში.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [245, 247, 249],
+          "ratio": 5.462,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "ყველა",
+          "fg": "rgb(5, 77, 56)",
+          "bg": [214, 242, 230],
+          "ratio": 8.33,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "გაუქმებული",
+          "fg": "rgb(49, 68, 93)",
+          "bg": [255, 255, 255],
+          "ratio": 9.927,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "0",
+          "fg": "rgb(49, 68, 93)",
+          "bg": [237, 241, 245],
+          "ratio": 8.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-small-note",
+          "tag": "P",
+          "text": "ვადის გასვლის ან შეთავაზებების მიღების შემდეგ რედაქტირება შეუძლებელია.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [255, 255, 255],
+          "ratio": 5.866,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "DD",
+          "text": "4 ფოტო · 2 ფაილი",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [255, 255, 255],
+          "ratio": 17.895,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge category",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(53, 76, 131)",
+          "bg": [234, 240, 250],
+          "ratio": 7.3,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge",
+          "tag": "SPAN",
+          "text": "გამოქვეყნებული",
+          "fg": "rgb(0, 98, 71)",
+          "bg": [217, 245, 233],
+          "ratio": 6.409,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-word",
+          "tag": "A",
+          "text": "Tender",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [22, 24, 28],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    },
+    {
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 390,
+      "count": 97,
+      "pairs": [
+        {
+          "cls": "skip-link",
+          "tag": "A",
+          "text": "მთავარ შინაარსზე გადასვლა",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SUMMARY",
+          "text": "KA",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "locale-link is-current",
+          "tag": "SPAN",
+          "text": "ქართული",
+          "fg": "rgb(6, 95, 70)",
+          "bg": [255, 255, 255],
+          "ratio": 7.684,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "LABEL",
+          "text": "გაუქმების მიზეზი",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [255, 255, 255],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "field-description",
+          "tag": "P",
+          "text": "შეიყვანეთ სულ მცირე 5 სიმბოლო. მიზეზი ტენდერის ჩანაწერში შეინახება.",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [255, 255, 255],
+          "ratio": 6.188,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "ტენდერი",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [255, 255, 255],
+          "ratio": 5.465,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [245, 247, 249],
+          "ratio": 5.462,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge",
+          "tag": "SPAN",
+          "text": "0",
+          "fg": "rgb(0, 98, 71)",
+          "bg": [217, 245, 233],
+          "ratio": 6.409,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge neutral",
+          "tag": "SPAN",
+          "text": "0",
+          "fg": "rgb(51, 72, 95)",
+          "bg": [237, 241, 246],
+          "ratio": 8.291,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "H1",
+          "text": "Full apartment renovation in Vake",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [245, 247, 249],
+          "ratio": 16.663,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-button",
+          "tag": "A",
+          "text": "შეთავაზებები",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [255, 255, 255],
+          "ratio": 17.895,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-muted",
+          "tag": "P",
+          "text": "გაუქმებისთვის მიუთითეთ მიზეზი.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [255, 255, 255],
+          "ratio": 5.866,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "მიმოხილვა",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [245, 247, 249],
+          "ratio": 5.107,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "TD",
+          "text": "kg",
+          "fg": "rgb(47, 61, 78)",
+          "bg": [255, 255, 255],
+          "ratio": 11.062,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-address",
+          "tag": "P",
+          "text": "Chavchavadze Avenue 37, Vake, Tbilisi",
+          "fg": "rgb(51, 65, 85)",
+          "bg": [255, 255, 255],
+          "ratio": 10.355,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "TH",
+          "text": "ერთეული",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [240, 244, 247],
+          "ratio": 16.18,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-photo-overlay",
+          "tag": "SPAN",
+          "text": "4 ფოტოს ნახვა",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [105, 112, 107],
+          "ratio": 5.076,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-file-icon pdf",
+          "tag": "SPAN",
+          "text": "PDF",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [219, 39, 26],
+          "ratio": 4.864,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-file-icon cad",
+          "tag": "SPAN",
+          "text": "DWG",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [0, 114, 206],
+          "ratio": 4.886,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-privacy",
+          "tag": "P",
+          "text": "ფაილები ხელმისაწვდომია მხოლოდ წვდომის მქონე შემსრულებლებისთვის.",
+          "fg": "rgb(23, 69, 54)",
+          "bg": [229, 247, 240],
+          "ratio": 9.734,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "H3",
+          "text": "შეთავაზებები ჯერ არ არის",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [238, 250, 245],
+          "ratio": 16.726,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-privacy",
+          "tag": "P",
+          "text": "ვადის ბოლოს ყველაზე დაბალი მოქმედი შეთავაზება ავტომატურად იმარჯვებს.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [238, 250, 245],
+          "ratio": 5.483,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-management-link",
+          "tag": "SUMMARY",
+          "text": "ტენდერის გაუქმება",
+          "fg": "rgb(179, 34, 34)",
+          "bg": [255, 255, 255],
+          "ratio": 6.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "ტენდერის გაუქმება",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    },
+    {
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 1440,
+      "count": 123,
+      "pairs": [
+        {
+          "cls": "skip-link",
+          "tag": "A",
+          "text": "მთავარ შინაარსზე გადასვლა",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-legal",
+          "tag": "P",
+          "text": "© 2026 Tender. სახელი დროებითია — ლოგო და ბრენდი განსასაზღვრია.",
+          "fg": "rgb(171, 173, 180)",
+          "bg": [22, 24, 28],
+          "ratio": 7.929,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "გამოიყენეთ გვერდზე ნაჩვენები უსაფრთხო მოქმედება. დადასტურებისა და აღდგენის ბმულის ხელ",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [255, 255, 255],
+          "ratio": 9.421,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-head",
+          "tag": "H2",
+          "text": "კომპანია",
+          "fg": "rgb(110, 231, 183)",
+          "bg": [22, 24, 28],
+          "ratio": 11.66,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(210, 212, 216)",
+          "bg": [22, 24, 28],
+          "ratio": 11.975,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "nav-tab",
+          "tag": "A",
+          "text": "ჩემი ტენდერები",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "nav-tab",
+          "tag": "A",
+          "text": "შეტყობინებები",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [254, 254, 254],
+          "ratio": 9.344,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "ტენდერის გაუქმება",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "მდებარეობა",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [245, 247, 249],
+          "ratio": 5.462,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge category",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(16, 76, 59)",
+          "bg": [205, 235, 220],
+          "ratio": 7.793,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge",
+          "tag": "SPAN",
+          "text": "გამოქვეყნებული",
+          "fg": "rgb(0, 98, 71)",
+          "bg": [217, 245, 233],
+          "ratio": 6.409,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge neutral",
+          "tag": "SPAN",
+          "text": "6 ფაილი",
+          "fg": "rgb(51, 72, 95)",
+          "bg": [237, 241, 246],
+          "ratio": 8.291,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "H1",
+          "text": "Full apartment renovation in Vake",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [245, 247, 249],
+          "ratio": 16.663,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "H2",
+          "text": "ტენდერის მართვა",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [255, 255, 255],
+          "ratio": 17.895,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-muted",
+          "tag": "P",
+          "text": "გაუქმებისთვის მიუთითეთ მიზეზი.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [255, 255, 255],
+          "ratio": 5.866,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "მიმოხილვა",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [245, 247, 249],
+          "ratio": 5.107,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "TD",
+          "text": "kg",
+          "fg": "rgb(47, 61, 78)",
+          "bg": [255, 255, 255],
+          "ratio": 11.062,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-address",
+          "tag": "P",
+          "text": "Chavchavadze Avenue 37, Vake, Tbilisi",
+          "fg": "rgb(51, 65, 85)",
+          "bg": [255, 255, 255],
+          "ratio": 10.355,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "TH",
+          "text": "ერთეული",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [240, 244, 247],
+          "ratio": 16.18,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-photo-overlay",
+          "tag": "SPAN",
+          "text": "4 ფოტოს ნახვა",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [105, 112, 107],
+          "ratio": 5.076,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-file-icon pdf",
+          "tag": "SPAN",
+          "text": "PDF",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [219, 39, 26],
+          "ratio": 4.864,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-file-icon cad",
+          "tag": "SPAN",
+          "text": "DWG",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [0, 114, 206],
+          "ratio": 4.886,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-privacy",
+          "tag": "P",
+          "text": "ვადის ბოლოს ყველაზე დაბალი მოქმედი შეთავაზება ავტომატურად იმარჯვებს.",
+          "fg": "rgb(23, 69, 54)",
+          "bg": [229, 247, 240],
+          "ratio": 9.734,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-management-link",
+          "tag": "SUMMARY",
+          "text": "ტენდერის გაუქმება",
+          "fg": "rgb(179, 34, 34)",
+          "bg": [255, 255, 255],
+          "ratio": 6.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "LABEL",
+          "text": "გაუქმების მიზეზი",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [255, 255, 255],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "field-description",
+          "tag": "P",
+          "text": "შეიყვანეთ სულ მცირე 5 სიმბოლო. მიზეზი ტენდერის ჩანაწერში შეინახება.",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [255, 255, 255],
+          "ratio": 6.188,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-word",
+          "tag": "A",
+          "text": "Tender",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [22, 24, 28],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    },
+    {
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 390,
+      "count": 64,
+      "pairs": [
+        {
+          "cls": "skip-link",
+          "tag": "A",
+          "text": "მთავარ შინაარსზე გადასვლა",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SUMMARY",
+          "text": "KA",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "locale-link is-current",
+          "tag": "SPAN",
+          "text": "ქართული",
+          "fg": "rgb(6, 95, 70)",
+          "bg": [255, 255, 255],
+          "ratio": 7.684,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "mini-card-amount",
+          "tag": "SPAN",
+          "text": "125 000,00 ₾",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [255, 255, 255],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "mini-card-meta",
+          "tag": "SPAN",
+          "text": "Kutaisi · 0 შეთავაზება",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [255, 255, 255],
+          "ratio": 6.188,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "SPAN",
+          "text": "ტენდერი",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [255, 255, 255],
+          "ratio": 5.465,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [245, 247, 249],
+          "ratio": 5.462,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge category",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(16, 76, 59)",
+          "bg": [205, 235, 220],
+          "ratio": 7.793,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge",
+          "tag": "SPAN",
+          "text": "ღიაა",
+          "fg": "rgb(0, 98, 71)",
+          "bg": [217, 245, 233],
+          "ratio": 6.409,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "H1",
+          "text": "Gori house facade insulation (draft)",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [245, 247, 249],
+          "ratio": 16.663,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-competition-rule",
+          "tag": "P",
+          "text": "ვადის ბოლოს ყველაზე დაბალი მოქმედი შეთავაზება ავტომატურად იმარჯვებს.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [255, 255, 255],
+          "ratio": 5.866,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "დამკვეთის ანგარიში · შედით როგორც შემსრულებელი",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [255, 255, 255],
+          "ratio": 17.895,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "მიმოხილვა",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [245, 247, 249],
+          "ratio": 5.107,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-description",
+          "tag": "P",
+          "text": "Scaffolding, insulation, mesh, base coat, render, painting.",
+          "fg": "rgb(47, 61, 78)",
+          "bg": [255, 255, 255],
+          "ratio": 11.062,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "არ არის მითითებული",
+          "fg": "rgb(51, 65, 85)",
+          "bg": [255, 255, 255],
+          "ratio": 10.355,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge neutral",
+          "tag": "SPAN",
+          "text": "3 ფაილი",
+          "fg": "rgb(51, 72, 95)",
+          "bg": [237, 241, 246],
+          "ratio": 8.291,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-photo-overlay",
+          "tag": "SPAN",
+          "text": "3 ფოტო",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [105, 112, 107],
+          "ratio": 5.076,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-privacy",
+          "tag": "P",
+          "text": "ფოტოები და დოკუმენტები ხელმისაწვდომია წვდომის შეძენის შემდეგ.",
+          "fg": "rgb(23, 69, 54)",
+          "bg": [229, 247, 240],
+          "ratio": 9.734,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "card-title",
+          "tag": "H2",
+          "text": "მსგავსი ტენდერები",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [245, 247, 249],
+          "ratio": 16.55,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tag tag-blue",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(60, 72, 119)",
+          "bg": [238, 240, 250],
+          "ratio": 7.747,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-button primary",
+          "tag": "A",
+          "text": "შედით როგორც შემსრულებელი",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    },
+    {
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 1440,
+      "count": 83,
+      "pairs": [
+        {
+          "cls": "skip-link",
+          "tag": "A",
+          "text": "მთავარ შინაარსზე გადასვლა",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [248, 248, 249],
+          "ratio": 16.746,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-legal",
+          "tag": "P",
+          "text": "© 2026 Tender. სახელი დროებითია — ლოგო და ბრენდი განსასაზღვრია.",
+          "fg": "rgb(171, 173, 180)",
+          "bg": [22, 24, 28],
+          "ratio": 7.929,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "გამოიყენეთ გვერდზე ნაჩვენები უსაფრთხო მოქმედება. დადასტურებისა და აღდგენის ბმულის ხელ",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [255, 255, 255],
+          "ratio": 9.421,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-head",
+          "tag": "H2",
+          "text": "კომპანია",
+          "fg": "rgb(110, 231, 183)",
+          "bg": [22, 24, 28],
+          "ratio": 11.66,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "პირობები",
+          "fg": "rgb(210, 212, 216)",
+          "bg": [22, 24, 28],
+          "ratio": 11.975,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "nav-tab",
+          "tag": "A",
+          "text": "ტენდერების ძებნა",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [254, 254, 254],
+          "ratio": 17.627,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "nav-tab",
+          "tag": "A",
+          "text": "შეტყობინებები",
+          "fg": "rgb(68, 70, 77)",
+          "bg": [254, 254, 254],
+          "ratio": 9.344,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-button primary",
+          "tag": "A",
+          "text": "შედით როგორც შემსრულებელი",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [4, 120, 87],
+          "ratio": 5.484,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "მდებარეობა",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [245, 247, 249],
+          "ratio": 5.462,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge category",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(16, 76, 59)",
+          "bg": [205, 235, 220],
+          "ratio": 7.793,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge",
+          "tag": "SPAN",
+          "text": "ღიაა",
+          "fg": "rgb(0, 98, 71)",
+          "bg": [217, 245, 233],
+          "ratio": 6.409,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "H1",
+          "text": "Gori house facade insulation (draft)",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [245, 247, 249],
+          "ratio": 16.663,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-competition-rule",
+          "tag": "P",
+          "text": "ვადის ბოლოს ყველაზე დაბალი მოქმედი შეთავაზება ავტომატურად იმარჯვებს.",
+          "fg": "rgb(83, 102, 128)",
+          "bg": [255, 255, 255],
+          "ratio": 5.866,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "მიღებული შეთავაზებები",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [255, 255, 255],
+          "ratio": 17.895,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "A",
+          "text": "მიმოხილვა",
+          "fg": "rgb(4, 120, 87)",
+          "bg": [245, 247, 249],
+          "ratio": 5.107,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-description",
+          "tag": "P",
+          "text": "Scaffolding, insulation, mesh, base coat, render, painting.",
+          "fg": "rgb(47, 61, 78)",
+          "bg": [255, 255, 255],
+          "ratio": 11.062,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "არ არის მითითებული",
+          "fg": "rgb(51, 65, 85)",
+          "bg": [255, 255, 255],
+          "ratio": 10.355,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-badge neutral",
+          "tag": "SPAN",
+          "text": "3 ფაილი",
+          "fg": "rgb(51, 72, 95)",
+          "bg": [237, 241, 246],
+          "ratio": 8.291,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-photo-overlay",
+          "tag": "SPAN",
+          "text": "3 ფოტო",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [105, 112, 107],
+          "ratio": 5.076,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "tender-privacy",
+          "tag": "P",
+          "text": "ფოტოები და დოკუმენტები ხელმისაწვდომია წვდომის შეძენის შემდეგ.",
+          "fg": "rgb(23, 69, 54)",
+          "bg": [229, 247, 240],
+          "ratio": 9.734,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "",
+          "tag": "P",
+          "text": "იყენებთ დამკვეთის ანგარიშს. წვდომისა და შეთავაზებისთვის შედით შემსრულებლის ანგარიშით.",
+          "fg": "rgb(16, 24, 32)",
+          "bg": [226, 248, 238],
+          "ratio": 16.101,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "mini-card-amount",
+          "tag": "SPAN",
+          "text": "125 000,00 ₾",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [255, 255, 255],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "mini-card-meta",
+          "tag": "SPAN",
+          "text": "Kutaisi · 0 შეთავაზება",
+          "fg": "rgb(94, 97, 106)",
+          "bg": [255, 255, 255],
+          "ratio": 6.188,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "card-title",
+          "tag": "H2",
+          "text": "მსგავსი ტენდერები",
+          "fg": "rgb(22, 24, 28)",
+          "bg": [245, 247, 249],
+          "ratio": 16.55,
+          "required": 3,
+          "hasImage": false
+        },
+        {
+          "cls": "tag tag-blue",
+          "tag": "SPAN",
+          "text": "მშენებლობა და რემონტი",
+          "fg": "rgb(60, 72, 119)",
+          "bg": [238, 240, 250],
+          "ratio": 7.747,
+          "required": 4.5,
+          "hasImage": false
+        },
+        {
+          "cls": "footer-word",
+          "tag": "A",
+          "text": "Tender",
+          "fg": "rgb(255, 255, 255)",
+          "bg": [22, 24, 28],
+          "ratio": 17.773,
+          "required": 4.5,
+          "hasImage": false
+        }
+      ],
+      "fails": []
+    }
+  ],
+  "failures": []
+}

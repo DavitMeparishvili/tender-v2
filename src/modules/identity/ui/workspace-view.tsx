@@ -49,7 +49,6 @@ export function WorkspaceDenied({
     <IdentityShell title={messages.access.deniedTitle}>
       <AuthState
         state="access-denied"
-        title={messages.access.deniedTitle}
         body={body}
         {...(action ? { action } : {})}
       />

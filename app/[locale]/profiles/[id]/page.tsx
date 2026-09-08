@@ -38,6 +38,7 @@ export default async function PublicProfilePage({
   const messages = getMessages(locale);
   const copy = messages.providerProfile;
   const provider = profile.value;
+  const isProvider = provider.providerSpecialties.length > 0;
   const overall = reviewOutput.aggregate.overall;
   const histogram = histogramOf(
     reviewOutput.reviews.map((review) => review.overall),
@@ -56,7 +57,7 @@ export default async function PublicProfilePage({
         <div className="motif grid-bg grid-bg--fade-b" />
         <div className="band-inner">
           <Link className="back-link" href={`/${locale}/provider/tenders`}>
-            {copy.back}
+            {messages.nav.discover}
           </Link>
 
           <div className="profile-head">
@@ -68,7 +69,11 @@ export default async function PublicProfilePage({
               <div className="profile-name-row">
                 <h1>{provider.displayName}</h1>
                 {record.verifications.email && record.verifications.profile ? (
-                  <span className="tag tag-green">{copy.verifiedProvider}</span>
+                  <span className="tag tag-green">
+                    {isProvider
+                      ? copy.verifiedProvider
+                      : messages.common.verified}
+                  </span>
                 ) : null}
               </div>
               <p className="profile-descriptor">
@@ -93,15 +98,17 @@ export default async function PublicProfilePage({
               </p>
             </div>
 
-            <div className="profile-actions">
-              <Link
-                className="pill pill-brand"
-                href={`/${locale}/client/tenders/new`}
-              >
-                {messages.nav.postTender}
-              </Link>
-              <p className="profile-actions-note">{copy.inviteNote}</p>
-            </div>
+            {isProvider ? (
+              <div className="profile-actions">
+                <Link
+                  className="pill pill-brand"
+                  href={`/${locale}/client/tenders/new`}
+                >
+                  {messages.nav.postTender}
+                </Link>
+                <p className="profile-actions-note">{copy.inviteNote}</p>
+              </div>
+            ) : null}
           </div>
 
           <dl className="profile-stats">
@@ -135,16 +142,22 @@ export default async function PublicProfilePage({
                 {messages.detail.completedEngagements}
               </dt>
             </div>
-            <div>
-              <dd className="stat-value">{record.tendersWon}</dd>
-              <dt className="stat-label">{messages.bidding.statusWinner}</dt>
-            </div>
-            <div>
-              <dd className="stat-value">
-                {record.winRate === null ? "—" : `${record.winRate}%`}
-              </dd>
-              <dt className="stat-label">{copy.biddingRecord}</dt>
-            </div>
+            {isProvider ? (
+              <>
+                <div>
+                  <dd className="stat-value">{record.tendersWon}</dd>
+                  <dt className="stat-label">
+                    {messages.bidding.statusWinner}
+                  </dt>
+                </div>
+                <div>
+                  <dd className="stat-value">
+                    {record.winRate === null ? "—" : `${record.winRate}%`}
+                  </dd>
+                  <dt className="stat-label">{copy.biddingRecord}</dt>
+                </div>
+              </>
+            ) : null}
           </dl>
         </div>
       </section>
@@ -152,44 +165,50 @@ export default async function PublicProfilePage({
       {/* --------------------------------------------------------- Body */}
       <div className="band band-grey">
         <div className="band-inner profile-layout">
-          <main className="detail-main">
+          <div className="detail-main">
             <section className="surface surface-2xl surface-pad">
-              <h2 className="card-title">{copy.about}</h2>
+              <h2 className="card-title">
+                {isProvider ? copy.about : messages.detail.aboutClient}
+              </h2>
               <p className="detail-prose">{provider.activityDescription}</p>
-              <h3 className="uppercase-label">{copy.services}</h3>
-              {record.serviceCounts.length === 0 ? (
-                <p className="muted">{copy.noReviewsYet}</p>
-              ) : (
-                <div className="chip-row">
-                  {record.serviceCounts.map((entry) =>
-                    isTenderServiceCode(entry.serviceCode) ? (
-                      <span className="chip" key={entry.serviceCode}>
-                        {serviceLabel(entry.serviceCode, messages)}
-                        <span className="chip-count">{entry.count}</span>
-                      </span>
-                    ) : null,
+              {isProvider ? (
+                <>
+                  <h3 className="uppercase-label">{copy.services}</h3>
+                  {record.serviceCounts.length === 0 ? null : (
+                    <div className="chip-row">
+                      {record.serviceCounts.map((entry) =>
+                        isTenderServiceCode(entry.serviceCode) ? (
+                          <span className="chip" key={entry.serviceCode}>
+                            {serviceLabel(entry.serviceCode, messages)}
+                            <span className="chip-count">{entry.count}</span>
+                          </span>
+                        ) : null,
+                      )}
+                    </div>
                   )}
-                </div>
-              )}
+                </>
+              ) : null}
             </section>
 
             {/*
               Photo uploads are not built yet, so these frames say so rather
               than showing stock imagery that would imply real work records.
             */}
-            <section className="surface surface-2xl surface-pad">
-              <div className="detail-head-row detail-head-row-split">
-                <h2 className="card-title">{copy.workPhotos}</h2>
-                <span className="muted">{copy.workPhotosNote}</span>
-              </div>
-              <ul className="photo-grid">
-                {[0, 1, 2, 3].map((slot) => (
-                  <li className="photo-placeholder" key={slot}>
-                    {copy.photoPlaceholder}
-                  </li>
-                ))}
-              </ul>
-            </section>
+            {isProvider ? (
+              <section className="surface surface-2xl surface-pad">
+                <div className="detail-head-row detail-head-row-split">
+                  <h2 className="card-title">{copy.workPhotos}</h2>
+                  <span className="muted">{copy.workPhotosNote}</span>
+                </div>
+                <ul className="photo-grid">
+                  {[0, 1, 2, 3].map((slot) => (
+                    <li className="photo-placeholder" key={slot}>
+                      {copy.photoPlaceholder}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             <section
               aria-labelledby="reviews-heading"
@@ -221,29 +240,31 @@ export default async function PublicProfilePage({
                 </p>
               )}
             </section>
-          </main>
+          </div>
 
           <aside className="detail-rail">
-            <section aria-labelledby="record-heading" className="rail-card">
-              <h2 className="rail-head" id="record-heading">
-                {copy.biddingRecord}
-              </h2>
-              <dl className="rail-rows">
-                <div>
-                  <dt>{messages.detail.offersLabel}</dt>
-                  <dd>{record.offersSubmitted}</dd>
-                </div>
-                <div>
-                  <dt>{messages.bidding.statusWinner}</dt>
-                  <dd>{record.tendersWon}</dd>
-                </div>
-                <div>
-                  <dt>{messages.detail.completedEngagements}</dt>
-                  <dd>{record.completedEngagements}</dd>
-                </div>
-              </dl>
-              <p className="rail-note">{messages.bidding.automaticWinner}</p>
-            </section>
+            {isProvider ? (
+              <section aria-labelledby="record-heading" className="rail-card">
+                <h2 className="rail-head" id="record-heading">
+                  {copy.biddingRecord}
+                </h2>
+                <dl className="rail-rows">
+                  <div>
+                    <dt>{messages.detail.offersLabel}</dt>
+                    <dd>{record.offersSubmitted}</dd>
+                  </div>
+                  <div>
+                    <dt>{messages.bidding.statusWinner}</dt>
+                    <dd>{record.tendersWon}</dd>
+                  </div>
+                  <div>
+                    <dt>{messages.detail.completedEngagements}</dt>
+                    <dd>{record.completedEngagements}</dd>
+                  </div>
+                </dl>
+                <p className="rail-note">{messages.bidding.automaticWinner}</p>
+              </section>
+            ) : null}
 
             <section aria-labelledby="verify-heading" className="rail-card">
               <h2 className="rail-head" id="verify-heading">
@@ -275,26 +296,28 @@ export default async function PublicProfilePage({
 
             <section aria-labelledby="coverage-heading" className="rail-card">
               <h2 className="rail-head" id="coverage-heading">
-                {copy.coverage}
+                {isProvider ? copy.coverage : messages.onboarding.city}
               </h2>
               <div className="chip-row">
                 <span className="chip chip-quiet">{provider.city}</span>
               </div>
             </section>
 
-            <section aria-labelledby="profile-cta" className="rail-cta">
-              <div className="motif grid-bg--light grid-bg--fade-b" />
-              <div className="rail-cta-body">
-                <h2 id="profile-cta">{copy.ctaTitle}</h2>
-                <p>{copy.ctaBody}</p>
-                <Link
-                  className="pill pill-brand"
-                  href={`/${locale}/client/tenders/new`}
-                >
-                  {messages.nav.postTender}
-                </Link>
-              </div>
-            </section>
+            {isProvider ? (
+              <section aria-labelledby="profile-cta" className="rail-cta">
+                <div className="motif grid-bg--light grid-bg--fade-b" />
+                <div className="rail-cta-body">
+                  <h2 id="profile-cta">{copy.ctaTitle}</h2>
+                  <p>{copy.ctaBody}</p>
+                  <Link
+                    className="pill pill-brand"
+                    href={`/${locale}/client/tenders/new`}
+                  >
+                    {messages.nav.postTender}
+                  </Link>
+                </div>
+              </section>
+            ) : null}
           </aside>
         </div>
       </div>

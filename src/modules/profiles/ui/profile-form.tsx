@@ -96,35 +96,44 @@ export function ProfileForm({ locale, profile, messages }: ProfileFormProps) {
     setPending(true);
     setSaved(false);
     setIssues([]);
-    const response = await fetch("/api/profile/me", {
-      method: "PATCH",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(command),
-    });
-    const result = (await response.json().catch(() => ({}))) as {
-      code?: unknown;
-      profile?: SafeProfileView;
-    };
-    setPending(false);
-    if (!response.ok || result.profile === undefined) {
-      setIssues([
-        {
-          field: result.code === "PHONE_CONFLICT" ? "phoneE164" : "displayName",
-          message:
-            result.code === "PHONE_CONFLICT"
-              ? messages.errors.phoneConflict
-              : messages.errors.invalidInput,
-        },
-      ]);
-      queueMicrotask(() => focusErrorSummary());
-      return;
-    }
+    try {
+      const response = await fetch("/api/profile/me", {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(command),
+      });
+      const result = (await response.json().catch(() => ({}))) as {
+        code?: unknown;
+        profile?: SafeProfileView;
+      };
+      setPending(false);
+      if (!response.ok || result.profile === undefined) {
+        setIssues([
+          {
+            field:
+              result.code === "PHONE_CONFLICT" ? "phoneE164" : "displayName",
+            message:
+              result.code === "PHONE_CONFLICT"
+                ? messages.errors.phoneConflict
+                : messages.errors.invalidInput,
+          },
+        ]);
+        queueMicrotask(() => focusErrorSummary());
+        return;
+      }
 
-    setCurrent(result.profile);
-    setDirty(false);
-    setSaved(true);
-    if (result.profile.preferredLocale !== locale) {
-      window.location.assign("/" + result.profile.preferredLocale + "/profile");
+      setCurrent(result.profile);
+      setDirty(false);
+      setSaved(true);
+      if (result.profile.preferredLocale !== locale) {
+        window.location.assign(
+          "/" + result.profile.preferredLocale + "/profile",
+        );
+      }
+    } catch {
+      setPending(false);
+      setIssues([{ field: "displayName", message: messages.errors.generic }]);
+      queueMicrotask(() => focusErrorSummary());
     }
   }
 

@@ -97,7 +97,7 @@ export function SiteHeader({
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </summary>
-            <LocaleSwitcher locale={locale} messages={messages} />
+            <LocaleSwitcher compact locale={locale} messages={messages} />
           </details>
           <div className="mobile-locale">
             <LocaleSwitcher compact locale={locale} messages={messages} />

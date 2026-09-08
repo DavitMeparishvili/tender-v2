@@ -100,7 +100,7 @@ export function LandingPage({
               <input
                 id="landing-keyword"
                 name="city"
-                placeholder={copy.searchPlaceholder}
+                placeholder={messages.discovery.cityPlaceholder}
                 type="search"
               />
               <span aria-hidden="true" className="search-divider" />

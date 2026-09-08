@@ -87,6 +87,8 @@ export default async function ProviderTenderDetailPage({
   if (!view.ok) notFound();
 
   const tender = view.value.tender;
+  const clientContact =
+    view.value.disclosure === "FULL" ? view.value.clientContact : null;
   const [summary, ownBid, attachments, agreement, similar] = await Promise.all([
     getBidSummary(id),
     actor === null
@@ -174,11 +176,6 @@ export default async function ProviderTenderDetailPage({
                   summary={summary.value}
                 />
               ) : null}
-              {/*
-              The client is masked by the same server-side projection that
-              masks the tender, so this card states the masking rather than
-              inventing a profile to fill the space.
-            */}
               <section aria-labelledby="client-heading" className="rail-card">
                 <h2 className="rail-head" id="client-heading">
                   {messages.detail.aboutClient}
@@ -189,10 +186,33 @@ export default async function ProviderTenderDetailPage({
                   </span>
                   <div>
                     <div className="identity-name">
-                      {messages.detail.privateClient}
+                      {clientContact ? (
+                        <Link
+                          href={`/${locale}/profiles/${clientContact.userId}`}
+                        >
+                          {clientContact.displayName}
+                        </Link>
+                      ) : (
+                        messages.detail.privateClient
+                      )}
                     </div>
                     <div className="identity-note">
-                      {messages.detail.identityHidden}
+                      {clientContact ? (
+                        <>
+                          <p>
+                            <a href={`mailto:${clientContact.email}`}>
+                              {clientContact.email}
+                            </a>
+                          </p>
+                          <p>
+                            <a href={`tel:${clientContact.phoneE164}`}>
+                              {clientContact.phoneE164}
+                            </a>
+                          </p>
+                        </>
+                      ) : (
+                        messages.detail.identityHidden
+                      )}
                     </div>
                   </div>
                 </div>

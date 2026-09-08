@@ -1,0 +1,52 @@
+[
+  {
+    "mode": "desktop",
+    "kind": "decline",
+    "id": "8a0472e6-3752-4da4-b6bf-cfc579431978"
+  },
+  {
+    "mode": "desktop",
+    "kind": "cancel",
+    "id": "0aae0dab-1c11-4d83-ac7e-bac0f76789d7"
+  },
+  {
+    "mode": "desktop",
+    "kind": "expiry",
+    "id": "97c19f55-01ea-463f-ac18-3ba373b90c55"
+  },
+  {
+    "mode": "desktop",
+    "kind": "withdraw",
+    "id": "f95f36eb-b907-4020-9a6d-eff9ac920791"
+  },
+  {
+    "mode": "desktop",
+    "kind": "cancelTender",
+    "id": "01ab3039-2d33-484b-889a-ad68acaae972"
+  },
+  {
+    "mode": "mobile",
+    "kind": "decline",
+    "id": "be38c4b3-3aaf-45d8-ac38-88f59ea1c9b3"
+  },
+  {
+    "mode": "mobile",
+    "kind": "cancel",
+    "id": "fbb01d3f-b938-47d6-ae74-710e2295ac70"
+  },
+  {
+    "mode": "mobile",
+    "kind": "expiry",
+    "id": "54bdde65-c1b8-4a2e-aa7c-3ff241596c6d"
+  },
+  {
+    "mode": "mobile",
+    "kind": "withdraw",
+    "id": "bd8d0d25-e04b-46d9-b420-59854c7d63dc"
+  },
+  {
+    "mode": "mobile",
+    "kind": "cancelTender",
+    "id": "56dcb265-2c8d-490c-9981-d8719843d2b7"
+  }
+]

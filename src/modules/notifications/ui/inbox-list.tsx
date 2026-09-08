@@ -88,9 +88,14 @@ export function InboxList({
           const href =
             item.aggregateType === "Agreement"
               ? `/${locale}/agreements/${item.aggregateId}`
-              : item.aggregateType === "Review"
-                ? `/${locale}/profiles/${userId}`
-                : null;
+              : item.aggregateType === "Tender" &&
+                  item.messageKey in knownMessages
+                ? typeof item.variables.agreementId === "string"
+                  ? `/${locale}/agreements/${encodeURIComponent(item.variables.agreementId)}`
+                  : `/${locale}/${item.messageKey === "notifications.tenderExpiredNoBids" || item.messageKey === "notifications.tenderWinnerSelected" ? "client" : "provider"}/tenders/${encodeURIComponent(item.aggregateId)}`
+                : item.aggregateType === "Review"
+                  ? `/${locale}/profiles/${userId}`
+                  : null;
           const date = formatTenderDate(item.createdAt, locale);
           const isMarking = markingId === item.id;
           return (

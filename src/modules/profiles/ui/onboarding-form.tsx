@@ -104,33 +104,39 @@ export function OnboardingForm({
 
     setPending(true);
     setIssues([]);
-    const response = await fetch("/api/onboarding/complete", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(command),
-    });
-    const result = (await response.json().catch(() => ({}))) as {
-      code?: unknown;
-    };
-    if (!response.ok) {
-      setPending(false);
-      const field =
-        result.code === "PHONE_CONFLICT" ? "phoneE164" : "displayName";
-      const message =
-        result.code === "PHONE_CONFLICT"
-          ? messages.errors.phoneConflict
-          : result.code === "EMAIL_UNVERIFIED"
-            ? messages.errors.emailUnverified
-            : messages.errors.invalidInput;
-      setIssues([{ field, message }]);
-      queueMicrotask(() => focusErrorSummary());
-      return;
-    }
+    try {
+      const response = await fetch("/api/onboarding/complete", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(command),
+      });
+      const result = (await response.json().catch(() => ({}))) as {
+        code?: unknown;
+      };
+      if (!response.ok) {
+        setPending(false);
+        const field =
+          result.code === "PHONE_CONFLICT" ? "phoneE164" : "displayName";
+        const message =
+          result.code === "PHONE_CONFLICT"
+            ? messages.errors.phoneConflict
+            : result.code === "EMAIL_UNVERIFIED"
+              ? messages.errors.emailUnverified
+              : messages.errors.invalidInput;
+        setIssues([{ field, message }]);
+        queueMicrotask(() => focusErrorSummary());
+        return;
+      }
 
-    setDirty(false);
-    window.location.assign(
-      "/" + locale + (intent === "CLIENT" ? "/client" : "/provider"),
-    );
+      setDirty(false);
+      window.location.assign(
+        "/" + locale + (intent === "CLIENT" ? "/client" : "/provider"),
+      );
+    } catch {
+      setPending(false);
+      setIssues([{ field: "displayName", message: messages.errors.generic }]);
+      queueMicrotask(() => focusErrorSummary());
+    }
   }
 
   return (

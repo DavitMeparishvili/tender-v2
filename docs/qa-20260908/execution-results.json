@@ -1,0 +1,845 @@
+{
+  "target": "http://localhost:3000",
+  "dates": ["2026-09-08", "2026-09-09"],
+  "browser": "Chromium via Playwright MCP",
+  "runs": {
+    "authResult": [
+      {
+        "mode": "desktop",
+        "flow": "A03",
+        "status": "PASS",
+        "email": "qa.mcp.20260908.desktop.client.137542@tender.test"
+      },
+      {
+        "mode": "desktop",
+        "flow": "P01",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "A01/A02",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "A05",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "A04",
+        "status": "PASS",
+        "email": "qa.mcp.20260908.desktop.provider.173209@tender.test"
+      },
+      {
+        "mode": "desktop",
+        "flow": "P01",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "A01/A02",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "A05",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "A03",
+        "status": "PASS",
+        "email": "qa.mcp.20260908.mobile.client.188771@tender.test"
+      },
+      {
+        "mode": "mobile",
+        "flow": "P01",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "A01/A02",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "A05",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "A04",
+        "status": "PASS",
+        "email": "qa.mcp.20260908.mobile.provider.202393@tender.test"
+      },
+      {
+        "mode": "mobile",
+        "flow": "P01",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "A01/A02",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "A05",
+        "status": "PASS"
+      }
+    ],
+    "publicResult": [
+      {
+        "mode": "desktop",
+        "flow": "G01/G02",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "G04",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "G03/G05",
+        "status": "PASS",
+        "note": "Detail map; discovery has no map/list switch"
+      },
+      {
+        "mode": "desktop",
+        "flow": "A02",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "U01/U02",
+        "status": "PASS",
+        "pageErrors": []
+      },
+      {
+        "mode": "mobile",
+        "flow": "G01/G02",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "G04",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "G03/G05",
+        "status": "PASS",
+        "note": "Detail map; discovery has no map/list switch"
+      },
+      {
+        "mode": "mobile",
+        "flow": "A02",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "U01/U02",
+        "status": "PASS",
+        "pageErrors": []
+      }
+    ],
+    "lifecycleResult": [
+      {
+        "action": "Confirm agreement",
+        "status": "AGREED"
+      },
+      {
+        "action": "Acknowledge start",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "action": "Confirm completion",
+        "status": "COMPLETED"
+      }
+    ],
+    "cancelAgreementResult": [
+      {
+        "mode": "desktop",
+        "flow": "L03",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "L03",
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop",
+        "flow": "L04",
+        "status": "PASS",
+        "from": "AGREED"
+      },
+      {
+        "mode": "mobile",
+        "flow": "L04",
+        "status": "PASS",
+        "from": "IN_PROGRESS"
+      }
+    ],
+    "withdrawExpiryResult": [
+      {
+        "mode": "desktop",
+        "flow": "B05",
+        "status": "PASS",
+        "denied": 409
+      },
+      {
+        "mode": "desktop",
+        "flow": "B06",
+        "status": "PASS",
+        "retry": 409,
+        "withdrawn": true
+      },
+      {
+        "mode": "mobile",
+        "flow": "B05",
+        "status": "PASS",
+        "denied": 409
+      },
+      {
+        "mode": "mobile",
+        "flow": "B06",
+        "status": "PASS",
+        "retry": 409,
+        "withdrawn": true
+      },
+      {
+        "flow": "L05",
+        "status": "PASS",
+        "retry": 409
+      },
+      {
+        "flow": "L05",
+        "status": "PASS",
+        "retry": 409
+      }
+    ],
+    "cancelTenderResult": [
+      {
+        "mode": "desktop",
+        "flow": "T07/T08",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile",
+        "flow": "T07/T08",
+        "status": "PASS"
+      }
+    ],
+    "accessResult": {
+      "flow": "B01/B07",
+      "status": "PASS",
+      "protectionStatus": 402,
+      "purchase": "desktop monthly",
+      "verified": "desktop+mobile"
+    },
+    "annualResult": {
+      "flow": "B07",
+      "mode": "mobile",
+      "product": "ANNUAL_PROVIDER",
+      "status": "PASS"
+    },
+    "notificationResult": [
+      {
+        "mode": "desktop",
+        "flow": "N01",
+        "status": "PASS",
+        "destination": "http://localhost:3000/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188"
+      },
+      {
+        "mode": "mobile",
+        "flow": "N01",
+        "status": "PASS",
+        "destination": "http://localhost:3000/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188"
+      }
+    ],
+    "reviewFinalResult": {
+      "out": [
+        {
+          "mode": "desktop",
+          "flow": "R02/R03",
+          "reviews": {
+            "aggregate": {
+              "reviewCount": 0,
+              "overall": null,
+              "quality": null,
+              "deadline": null,
+              "communication": null,
+              "agreedPrice": null
+            },
+            "reviews": []
+          },
+          "denied": 403,
+          "duplicate": 409
+        },
+        {
+          "mode": "mobile",
+          "flow": "R02/R03",
+          "reviews": {
+            "aggregate": {
+              "reviewCount": 0,
+              "overall": null,
+              "quality": null,
+              "deadline": null,
+              "communication": null,
+              "agreedPrice": null
+            },
+            "reviews": []
+          },
+          "denied": 403,
+          "duplicate": 409
+        }
+      ],
+      "attachments": "Attachments\n1 files\n\nFull details unlocked.",
+      "buttons": [
+        {
+          "name": "Preview tender-preview.jpg",
+          "text": ""
+        },
+        {
+          "name": "Close",
+          "text": "×"
+        },
+        {
+          "name": "Previous photo",
+          "text": ""
+        },
+        {
+          "name": "Next photo",
+          "text": ""
+        }
+      ]
+    },
+    "attachmentGuardResult": [
+      {
+        "mode": "desktop",
+        "flow": "T04/T05",
+        "status": "PASS",
+        "removed": true,
+        "oversized": true,
+        "dirtyGuard": true
+      },
+      {
+        "mode": "mobile",
+        "flow": "T04/T05",
+        "status": "PASS",
+        "removed": true,
+        "oversized": true,
+        "dirtyGuard": true
+      }
+    ],
+    "attachmentSpoofResult": {
+      "flow": "T04",
+      "desktop": "PASS",
+      "mobile": "PASS",
+      "spoofError": "There is 1 problem to fix.\n\nAttach a PDF, JPEG, PNG, WebP, or DWG file.",
+      "images": "Persisted and decoded after reload"
+    },
+    "responsiveResult": [
+      {
+        "mode": "desktop-client",
+        "path": "/en/client",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/client",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/client/tenders",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/client/tenders",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/client/agreements",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/client/agreements",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/notifications",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/notifications",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/profile",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "path": "/en/profile",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-client",
+        "flow": "U03",
+        "errors": [],
+        "failures": [],
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider/agreements",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider/agreements",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider/tenders",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider/tenders",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/profiles/WGbSuaGTxryANv4Tp3CbkgCmjXkvaW0y",
+        "width": 1440,
+        "viewport": 1440,
+        "scroll": 1425,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "path": "/en/profiles/WGbSuaGTxryANv4Tp3CbkgCmjXkvaW0y",
+        "width": 720,
+        "viewport": 720,
+        "scroll": 705,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "desktop-provider",
+        "flow": "U03",
+        "errors": [],
+        "failures": [],
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client/tenders",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client/tenders",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client/tenders/new?tenderId=5ada160d-94df-43a5-bf36-a51a144f5e38",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client/tenders/new?tenderId=5ada160d-94df-43a5-bf36-a51a144f5e38",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/notifications",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/notifications",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/profile",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "path": "/en/profile",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "flow": "mobile-language",
+        "labels": "KA\nEN\nRU",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-client",
+        "flow": "U03",
+        "errors": [],
+        "failures": [],
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/provider",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/provider",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/provider/tenders",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/provider/tenders",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/profiles/N1bXkRQi5PBuH8sRJAFBx6Jn0onB3LIF",
+        "width": 390,
+        "viewport": 390,
+        "scroll": 390,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "path": "/en/profiles/N1bXkRQi5PBuH8sRJAFBx6Jn0onB3LIF",
+        "width": 320,
+        "viewport": 320,
+        "scroll": 320,
+        "main": 1,
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "flow": "mobile-language",
+        "labels": "KA\nEN\nRU",
+        "status": "PASS"
+      },
+      {
+        "mode": "mobile-provider",
+        "flow": "U03",
+        "errors": [],
+        "failures": [],
+        "status": "PASS"
+      }
+    ],
+    "roleDenialResult": [
+      {
+        "role": "client",
+        "status": 200,
+        "url": "http://localhost:3000/en/provider",
+        "text": "Workspace unavailable\nWorkspace unavailable\n\nThis workspace is not available for your account.\n\nBack"
+      },
+      {
+        "role": "client",
+        "status": 200,
+        "url": "http://localhost:3000/en/provider",
+        "text": "Workspace unavailable\nWorkspace unavailable\n\nThis workspace is not available for your account.\n\nBack"
+      },
+      {
+        "role": "provider",
+        "status": 200,
+        "url": "http://localhost:3000/en/client",
+        "text": "Workspace unavailable\nWorkspace unavailable\n\nThis workspace is not available for your account.\n\nBack"
+      },
+      {
+        "role": "provider",
+        "status": 200,
+        "url": "http://localhost:3000/en/client",
+        "text": "Workspace unavailable\nWorkspace unavailable\n\nThis workspace is not available for your account.\n\nBack"
+      }
+    ]
+  },
+  "checks": {
+    "unit": {
+      "files": 77,
+      "tests": 406,
+      "status": "PASS"
+    },
+    "integration": {
+      "files": 22,
+      "tests": 89,
+      "status": "PASS"
+    },
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "boundaries": "PASS",
+    "productionBuild": "PASS",
+    "catalogDifferences": 0
+  }
+}

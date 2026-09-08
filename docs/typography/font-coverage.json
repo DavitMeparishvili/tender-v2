@@ -1,0 +1,162 @@
+[
+  {
+    "file": "noto-sans-georgian-georgian-400-normal.woff2",
+    "weight": 400,
+    "version": "Version 2.005",
+    "Mkhedruli": true,
+    "Mtavruli": true,
+    "GEL": false,
+    "latin": false,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-latin-400-normal.woff2",
+    "weight": 400,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": true,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-cyrillic-400-normal.woff2",
+    "weight": 400,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": false,
+    "russian": true
+  },
+  {
+    "file": "noto-sans-latin-ext-400-normal.woff2",
+    "weight": 400,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": true,
+    "latin": false,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-georgian-georgian-500-normal.woff2",
+    "weight": 500,
+    "version": "Version 2.005",
+    "Mkhedruli": true,
+    "Mtavruli": true,
+    "GEL": false,
+    "latin": false,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-latin-500-normal.woff2",
+    "weight": 500,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": true,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-cyrillic-500-normal.woff2",
+    "weight": 500,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": false,
+    "russian": true
+  },
+  {
+    "file": "noto-sans-latin-ext-500-normal.woff2",
+    "weight": 500,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": true,
+    "latin": false,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-georgian-georgian-600-normal.woff2",
+    "weight": 600,
+    "version": "Version 2.005",
+    "Mkhedruli": true,
+    "Mtavruli": true,
+    "GEL": false,
+    "latin": false,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-latin-600-normal.woff2",
+    "weight": 600,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": true,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-cyrillic-600-normal.woff2",
+    "weight": 600,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": false,
+    "russian": true
+  },
+  {
+    "file": "noto-sans-latin-ext-600-normal.woff2",
+    "weight": 600,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": true,
+    "latin": false,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-georgian-georgian-700-normal.woff2",
+    "weight": 700,
+    "version": "Version 2.005",
+    "Mkhedruli": true,
+    "Mtavruli": true,
+    "GEL": false,
+    "latin": false,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-latin-700-normal.woff2",
+    "weight": 700,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": true,
+    "russian": false
+  },
+  {
+    "file": "noto-sans-cyrillic-700-normal.woff2",
+    "weight": 700,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": false,
+    "latin": false,
+    "russian": true
+  },
+  {
+    "file": "noto-sans-latin-ext-700-normal.woff2",
+    "weight": 700,
+    "version": "Version 2.015",
+    "Mkhedruli": false,
+    "Mtavruli": false,
+    "GEL": true,
+    "latin": false,
+    "russian": false
+  }
+]

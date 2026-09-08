@@ -22,6 +22,35 @@ function renderInbox(
 }
 
 describe("InboxList", () => {
+  it.each([
+    [
+      "notifications.tenderWinnerSelected",
+      { agreementId: "agreement-id" },
+      "/en/agreements/agreement-id",
+    ],
+    [
+      "notifications.bidWon",
+      { agreementId: "agreement-id" },
+      "/en/agreements/agreement-id",
+    ],
+    ["notifications.bidLost", {}, "/en/provider/tenders/tender-id"],
+    ["notifications.tenderExpiredNoBids", {}, "/en/client/tenders/tender-id"],
+  ])("opens the relevant destination for %s", (messageKey, variables, href) => {
+    const html = renderInbox([
+      {
+        id: "notification-id",
+        topic: "TENDER_SELECTED",
+        aggregateType: "Tender",
+        aggregateId: "tender-id",
+        messageKey,
+        variables,
+        readAt: null,
+        createdAt: new Date("2026-09-08T10:00:00Z"),
+      },
+    ]);
+    expect(html).toContain(`href="${href}"`);
+  });
+
   it("localizes known messages and provides a semantic unread item", () => {
     const html = renderInbox([
       {

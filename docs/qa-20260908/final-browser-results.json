@@ -1,0 +1,541 @@
+{
+  "note": "Final checks directed by GPT-5.6 Sol medium; executed through root Playwright MCP to preserve authenticated browser contexts.",
+  "deadline": [
+    {
+      "mode": "desktop-client",
+      "flow": "deadline-7-days",
+      "filteredUrl": "http://localhost:3000/en/provider/tenders?deadlineBefore=2026-09-15",
+      "matchingTender": "Gori house facade insulation",
+      "dates": [],
+      "cleared": true,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "flow": "deadline-7-days",
+      "filteredUrl": "http://localhost:3000/en/provider/tenders?deadlineBefore=2026-09-15",
+      "matchingTender": "Gori house facade insulation",
+      "dates": [],
+      "cleared": true,
+      "status": "PASS"
+    }
+  ],
+  "navigation": [
+    {
+      "flow": "mobile-language-menu",
+      "labels": "KA\nEN\nRU",
+      "status": "PASS"
+    },
+    {
+      "flow": "mobile-tab-tenders",
+      "href": "/en/client/tenders",
+      "keyboard": true,
+      "ariaCurrent": "page",
+      "status": "PASS"
+    },
+    {
+      "flow": "mobile-tab-contracts",
+      "href": "/en/client/agreements",
+      "keyboard": true,
+      "ariaCurrent": "page",
+      "status": "PASS"
+    },
+    {
+      "flow": "mobile-tab-profile",
+      "href": "/en/profile",
+      "keyboard": true,
+      "ariaCurrent": "page",
+      "status": "PASS"
+    }
+  ],
+  "wrongRole": [
+    {
+      "mode": "desktop-client",
+      "flow": "wrong-role",
+      "path": "/en/provider",
+      "httpStatus": 200,
+      "headings": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "flow": "wrong-role",
+      "path": "/en/provider",
+      "httpStatus": 200,
+      "headings": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "flow": "wrong-role",
+      "path": "/en/client",
+      "httpStatus": 200,
+      "headings": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "flow": "wrong-role",
+      "path": "/en/client",
+      "httpStatus": 200,
+      "headings": 1,
+      "status": "PASS"
+    }
+  ],
+  "responsive": [
+    {
+      "mode": "desktop-client",
+      "path": "/en/client",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/client",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/client/tenders",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/client/tenders",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/client/agreements",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/client/agreements",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/notifications",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/notifications",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/profile",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "path": "/en/profile",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-client",
+      "flow": "U03",
+      "errors": [],
+      "failures": [],
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider/agreements",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider/agreements",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider/tenders",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider/tenders",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/profiles/WGbSuaGTxryANv4Tp3CbkgCmjXkvaW0y",
+      "width": 1440,
+      "viewport": 1440,
+      "scroll": 1425,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "path": "/en/profiles/WGbSuaGTxryANv4Tp3CbkgCmjXkvaW0y",
+      "width": 720,
+      "viewport": 720,
+      "scroll": 705,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "desktop-provider",
+      "flow": "U03",
+      "errors": [],
+      "failures": [],
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client/tenders",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client/tenders",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client/tenders/new?tenderId=5ada160d-94df-43a5-bf36-a51a144f5e38",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client/tenders/new?tenderId=5ada160d-94df-43a5-bf36-a51a144f5e38",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/client/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/agreements/346f7ea1-8f1f-401c-b116-38b182c51188",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/notifications",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/notifications",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/profile",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "path": "/en/profile",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "flow": "mobile-language",
+      "labels": "KA\nEN\nRU",
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-client",
+      "flow": "U03",
+      "errors": [],
+      "failures": [],
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/provider",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/provider",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/provider/tenders",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/provider/tenders",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/provider/tenders/b1eca10a-976b-4e43-85c7-3b4e0700dc1c",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/profiles/N1bXkRQi5PBuH8sRJAFBx6Jn0onB3LIF",
+      "width": 390,
+      "viewport": 390,
+      "scroll": 390,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "path": "/en/profiles/N1bXkRQi5PBuH8sRJAFBx6Jn0onB3LIF",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "main": 1,
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "flow": "mobile-language",
+      "labels": "KA\nEN\nRU",
+      "status": "PASS"
+    },
+    {
+      "mode": "mobile-provider",
+      "flow": "U03",
+      "errors": [],
+      "failures": [],
+      "status": "PASS"
+    }
+  ]
+}

@@ -39,7 +39,10 @@ export async function getProviderRecord(
       database.bid.count({ where: { providerId: userId } }),
       database.bid.count({ where: { providerId: userId, status: "WINNER" } }),
       database.agreement.count({
-        where: { providerId: userId, status: "COMPLETED" },
+        where: {
+          OR: [{ providerId: userId }, { clientId: userId }],
+          status: "COMPLETED",
+        },
       }),
       // Which services this provider has actually been selected for, so the
       // "services and completed jobs" chips are earned rather than declared.

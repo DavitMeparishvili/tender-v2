@@ -548,7 +548,9 @@ export function DateTimeField({
   // and the trigger would immediately snap back to its placeholder.
   const initialParts = value.includes("T") ? value.split("T") : [value, ""];
   const [dateValue, setDateValue] = useState(initialParts[0] ?? "");
-  const [timeValue, setTimeValue] = useState(initialParts[1] ?? "");
+  // A visible default time makes choosing a date a complete value, so saving
+  // a draft cannot silently discard a date the user already selected.
+  const [timeValue, setTimeValue] = useState(initialParts[1] || "12:00");
 
   function commit(nextDate: string, nextTime: string) {
     setDateValue(nextDate);

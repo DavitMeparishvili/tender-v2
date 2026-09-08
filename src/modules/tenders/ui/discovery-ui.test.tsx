@@ -338,6 +338,7 @@ describe("provider masked discovery UI", () => {
         messages={en}
         view={{
           disclosure: "FULL",
+          clientContact: null,
           tender: {
             ...publicTender,
             addressLine: "1 Chavchavadze Ave",

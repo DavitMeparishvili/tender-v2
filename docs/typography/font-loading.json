@@ -1,0 +1,280 @@
+[
+  {
+    "locale": "ka",
+    "width": 390,
+    "before": {
+      "text": "აღწერეთ საქმე. შეადარეთ შეთავაზებები.",
+      "rect": {
+        "x": 18,
+        "y": 129.890625,
+        "width": 354,
+        "height": 117,
+        "top": 129.890625,
+        "right": 372,
+        "bottom": 246.890625,
+        "left": 18
+      },
+      "font": "700 32px / 39px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "status": "loading"
+    },
+    "after": {
+      "h1": {
+        "x": 18,
+        "y": 129.890625,
+        "width": 354,
+        "height": 117,
+        "top": 129.890625,
+        "right": 372,
+        "bottom": 246.890625,
+        "left": 18
+      },
+      "cls": 0.000048182480437062536,
+      "overflow": 0,
+      "font": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "status": "loaded"
+    },
+    "requests": [
+      "/_next/static/media/noto-sans-georgian-georgian-400-normal.2777d797.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-700-normal.6e3fa15b.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-600-normal.e08ce185.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-500-normal.010b6155.woff2",
+      "/_next/static/media/noto-sans-latin-400-normal.1d02f490.woff2",
+      "/_next/static/media/noto-sans-latin-500-normal.10feed5d.woff2",
+      "/_next/static/media/noto-sans-latin-700-normal.fd476b27.woff2",
+      "/_next/static/media/noto-sans-latin-600-normal.cb57c6a9.woff2",
+      "/_next/static/media/noto-sans-latin-ext-700-normal.8b2cf2a1.woff2"
+    ],
+    "duplicates": 0
+  },
+  {
+    "locale": "ka",
+    "width": 1440,
+    "before": {
+      "text": "აღწერეთ საქმე. შეადარეთ შეთავაზებები.",
+      "rect": {
+        "x": 160,
+        "y": 209.890625,
+        "width": 544.671875,
+        "height": 158.390625,
+        "top": 209.890625,
+        "right": 704.671875,
+        "bottom": 368.28125,
+        "left": 160
+      },
+      "font": "700 44px / 52.8px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "status": "loading"
+    },
+    "after": {
+      "h1": {
+        "x": 160,
+        "y": 209.890625,
+        "width": 544.671875,
+        "height": 158.390625,
+        "top": 209.890625,
+        "right": 704.671875,
+        "bottom": 368.28125,
+        "left": 160
+      },
+      "cls": 0.0002590575870466821,
+      "overflow": 0,
+      "font": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "status": "loaded"
+    },
+    "requests": [
+      "/_next/static/media/noto-sans-georgian-georgian-400-normal.2777d797.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-500-normal.010b6155.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-700-normal.6e3fa15b.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-600-normal.e08ce185.woff2",
+      "/_next/static/media/noto-sans-latin-700-normal.fd476b27.woff2",
+      "/_next/static/media/noto-sans-latin-ext-700-normal.8b2cf2a1.woff2",
+      "/_next/static/media/noto-sans-latin-500-normal.10feed5d.woff2",
+      "/_next/static/media/noto-sans-cyrillic-500-normal.116c1d63.woff2",
+      "/_next/static/media/noto-sans-latin-400-normal.1d02f490.woff2",
+      "/_next/static/media/noto-sans-latin-600-normal.cb57c6a9.woff2"
+    ],
+    "duplicates": 0
+  },
+  {
+    "locale": "en",
+    "width": 390,
+    "before": {
+      "text": "Publish the work. Compare real offers.",
+      "rect": {
+        "x": 18,
+        "y": 129.890625,
+        "width": 354,
+        "height": 78,
+        "top": 129.890625,
+        "right": 372,
+        "bottom": 207.890625,
+        "left": 18
+      },
+      "font": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loading"
+    },
+    "after": {
+      "h1": {
+        "x": 18,
+        "y": 129.890625,
+        "width": 354,
+        "height": 78,
+        "top": 129.890625,
+        "right": 372,
+        "bottom": 207.890625,
+        "left": 18
+      },
+      "cls": 0.0005872471806735973,
+      "overflow": 0,
+      "font": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loaded"
+    },
+    "requests": [
+      "/_next/static/media/noto-sans-latin-400-normal.1d02f490.woff2",
+      "/_next/static/media/noto-sans-latin-700-normal.fd476b27.woff2",
+      "/_next/static/media/noto-sans-latin-600-normal.cb57c6a9.woff2",
+      "/_next/static/media/noto-sans-latin-500-normal.10feed5d.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-700-normal.6e3fa15b.woff2"
+    ],
+    "duplicates": 0
+  },
+  {
+    "locale": "en",
+    "width": 1440,
+    "before": {
+      "text": "Publish the work. Compare real offers.",
+      "rect": {
+        "x": 160,
+        "y": 209.890625,
+        "width": 544.671875,
+        "height": 105.59375,
+        "top": 209.890625,
+        "right": 704.671875,
+        "bottom": 315.484375,
+        "left": 160
+      },
+      "font": "700 44px / 52.8px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loading"
+    },
+    "after": {
+      "h1": {
+        "x": 160,
+        "y": 209.890625,
+        "width": 544.671875,
+        "height": 105.59375,
+        "top": 209.890625,
+        "right": 704.671875,
+        "bottom": 315.484375,
+        "left": 160
+      },
+      "cls": 0.01879503585250289,
+      "overflow": 0,
+      "font": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loaded"
+    },
+    "requests": [
+      "/_next/static/media/noto-sans-latin-400-normal.1d02f490.woff2",
+      "/_next/static/media/noto-sans-latin-500-normal.10feed5d.woff2",
+      "/_next/static/media/noto-sans-latin-700-normal.fd476b27.woff2",
+      "/_next/static/media/noto-sans-latin-600-normal.cb57c6a9.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-500-normal.010b6155.woff2",
+      "/_next/static/media/noto-sans-cyrillic-500-normal.116c1d63.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-700-normal.6e3fa15b.woff2"
+    ],
+    "duplicates": 0
+  },
+  {
+    "locale": "ru",
+    "width": 390,
+    "before": {
+      "text": "Опишите задачу. Сравните предложения.",
+      "rect": {
+        "x": 18,
+        "y": 129.890625,
+        "width": 354,
+        "height": 117,
+        "top": 129.890625,
+        "right": 372,
+        "bottom": 246.890625,
+        "left": 18
+      },
+      "font": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loading"
+    },
+    "after": {
+      "h1": {
+        "x": 18,
+        "y": 129.890625,
+        "width": 354,
+        "height": 117,
+        "top": 129.890625,
+        "right": 372,
+        "bottom": 246.890625,
+        "left": 18
+      },
+      "cls": 0.031902408378011185,
+      "overflow": 0,
+      "font": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loaded"
+    },
+    "requests": [
+      "/_next/static/media/noto-sans-latin-400-normal.1d02f490.woff2",
+      "/_next/static/media/noto-sans-latin-700-normal.fd476b27.woff2",
+      "/_next/static/media/noto-sans-latin-600-normal.cb57c6a9.woff2",
+      "/_next/static/media/noto-sans-cyrillic-500-normal.116c1d63.woff2",
+      "/_next/static/media/noto-sans-cyrillic-700-normal.713429c9.woff2",
+      "/_next/static/media/noto-sans-cyrillic-400-normal.0a9fab11.woff2",
+      "/_next/static/media/noto-sans-cyrillic-600-normal.0907eb7f.woff2",
+      "/_next/static/media/noto-sans-latin-500-normal.10feed5d.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-700-normal.6e3fa15b.woff2"
+    ],
+    "duplicates": 0
+  },
+  {
+    "locale": "ru",
+    "width": 1440,
+    "before": {
+      "text": "Опишите задачу. Сравните предложения.",
+      "rect": {
+        "x": 160,
+        "y": 209.890625,
+        "width": 544.671875,
+        "height": 105.59375,
+        "top": 209.890625,
+        "right": 704.671875,
+        "bottom": 315.484375,
+        "left": 160
+      },
+      "font": "700 44px / 52.8px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loading"
+    },
+    "after": {
+      "h1": {
+        "x": 160,
+        "y": 209.890625,
+        "width": 544.671875,
+        "height": 158.390625,
+        "top": 209.890625,
+        "right": 704.671875,
+        "bottom": 368.28125,
+        "left": 160
+      },
+      "cls": 0.015911323136694636,
+      "overflow": 0,
+      "font": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "status": "loaded"
+    },
+    "requests": [
+      "/_next/static/media/noto-sans-latin-400-normal.1d02f490.woff2",
+      "/_next/static/media/noto-sans-cyrillic-500-normal.116c1d63.woff2",
+      "/_next/static/media/noto-sans-latin-500-normal.10feed5d.woff2",
+      "/_next/static/media/noto-sans-cyrillic-700-normal.713429c9.woff2",
+      "/_next/static/media/noto-sans-latin-700-normal.fd476b27.woff2",
+      "/_next/static/media/noto-sans-cyrillic-600-normal.0907eb7f.woff2",
+      "/_next/static/media/noto-sans-latin-600-normal.cb57c6a9.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-500-normal.010b6155.woff2",
+      "/_next/static/media/noto-sans-cyrillic-400-normal.0a9fab11.woff2",
+      "/_next/static/media/noto-sans-georgian-georgian-700-normal.6e3fa15b.woff2"
+    ],
+    "duplicates": 0
+  }
+]

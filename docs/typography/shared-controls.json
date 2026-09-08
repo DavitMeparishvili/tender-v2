@@ -1,0 +1,25 @@
+[
+  {
+    "control": "gallery",
+    "font": "\"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+    "width": 371,
+    "scroll": 371,
+    "open": true
+  },
+  {
+    "control": "cancel textarea",
+    "font": "16px / 24px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+    "width": 322,
+    "scroll": 322
+  },
+  {
+    "control": "search input",
+    "font": "16px / 24px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+    "height": 44
+  },
+  {
+    "control": "draft filter",
+    "url": "/ka/client/tenders?sort=newest&status=DRAFT",
+    "cards": 3
+  }
+]

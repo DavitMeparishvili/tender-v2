@@ -10,13 +10,25 @@ import type { EntitlementCheck } from "../ports/entitlement-check";
 
 export type ProviderTenderView =
   | Readonly<{ disclosure: "MASKED"; tender: PublicTenderDetail }>
-  | Readonly<{ disclosure: "FULL"; tender: FullTenderDetail }>;
+  | Readonly<{
+      disclosure: "FULL";
+      tender: FullTenderDetail;
+      clientContact: TenderClientContact | null;
+    }>;
+
+export type TenderClientContact = Readonly<{
+  userId: string;
+  displayName: string;
+  email: string;
+  phoneE164: string;
+}>;
 
 export interface GetSettleableTenderRepository {
   // Unlike `getPublished`, this accepts CLOSED and EXPIRED tenders and applies
   // no deadline predicate: the winner/loser views are exactly the case where
   // the deadline has already passed.
   getSettleable(id: string): Promise<Result<TenderRecord, "TENDER_NOT_FOUND">>;
+  getClientContact(ownerId: string): Promise<TenderClientContact | null>;
 }
 
 export function createGetTenderForProvider(dependencies: {
@@ -42,7 +54,13 @@ export function createGetTenderForProvider(dependencies: {
     return {
       ok: true,
       value: entitled
-        ? { disclosure: "FULL", tender: toFullDetail(found.value) }
+        ? {
+            disclosure: "FULL",
+            tender: toFullDetail(found.value),
+            clientContact: await dependencies.repository.getClientContact(
+              found.value.ownerId,
+            ),
+          }
         : { disclosure: "MASKED", tender: toPublicDetail(found.value) },
     };
   };

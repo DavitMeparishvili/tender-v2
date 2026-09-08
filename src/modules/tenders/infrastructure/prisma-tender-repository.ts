@@ -242,6 +242,26 @@ function publishedFilterWhere(
 }
 
 export class PrismaTenderRepository implements TenderRepository {
+  async getClientContact(ownerId: string) {
+    const profile = await database.userProfile.findUnique({
+      where: { userId: ownerId },
+      select: {
+        userId: true,
+        displayName: true,
+        phoneE164: true,
+        user: { select: { email: true } },
+      },
+    });
+    return profile === null
+      ? null
+      : {
+          userId: profile.userId,
+          displayName: profile.displayName,
+          phoneE164: profile.phoneE164,
+          email: profile.user.email,
+        };
+  }
+
   async createDraft(
     command: CreateTenderDraftCommand,
     actor: TenderActor,

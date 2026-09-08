@@ -1,0 +1,242 @@
+[
+  {
+    "path": "/ka",
+    "width": 320,
+    "overflow": 0,
+    "nav": 226,
+    "actions": 0,
+    "padding": 226
+  },
+  {
+    "path": "/ka",
+    "width": 390,
+    "overflow": 0,
+    "nav": 196,
+    "actions": 0,
+    "padding": 196
+  },
+  {
+    "path": "/ka",
+    "width": 640,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 0,
+    "padding": 160
+  },
+  {
+    "path": "/ka",
+    "width": 720,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/ka",
+    "width": 1280,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 320,
+    "overflow": 0,
+    "nav": 232,
+    "actions": 148.1875,
+    "padding": 380.188
+  },
+  {
+    "path": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 390,
+    "overflow": 0,
+    "nav": 199,
+    "actions": 81,
+    "padding": 280
+  },
+  {
+    "path": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 640,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 81,
+    "padding": 241
+  },
+  {
+    "path": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 720,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 82,
+    "padding": 82
+  },
+  {
+    "path": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 1280,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/en",
+    "width": 320,
+    "overflow": 0,
+    "nav": 226,
+    "actions": 0,
+    "padding": 226
+  },
+  {
+    "path": "/en",
+    "width": 390,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 0,
+    "padding": 160
+  },
+  {
+    "path": "/en",
+    "width": 640,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 0,
+    "padding": 160
+  },
+  {
+    "path": "/en",
+    "width": 720,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/en",
+    "width": 1280,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 320,
+    "overflow": 0,
+    "nav": 232,
+    "actions": 148.1875,
+    "padding": 380.188
+  },
+  {
+    "path": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 390,
+    "overflow": 0,
+    "nav": 163,
+    "actions": 81,
+    "padding": 244
+  },
+  {
+    "path": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 640,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 81,
+    "padding": 241
+  },
+  {
+    "path": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 720,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 82,
+    "padding": 82
+  },
+  {
+    "path": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 1280,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/ru",
+    "width": 320,
+    "overflow": 0,
+    "nav": 226,
+    "actions": 0,
+    "padding": 226
+  },
+  {
+    "path": "/ru",
+    "width": 390,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 0,
+    "padding": 160
+  },
+  {
+    "path": "/ru",
+    "width": 640,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 0,
+    "padding": 160
+  },
+  {
+    "path": "/ru",
+    "width": 720,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/ru",
+    "width": 1280,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  },
+  {
+    "path": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 320,
+    "overflow": 0,
+    "nav": 232,
+    "actions": 148.1875,
+    "padding": 380.188
+  },
+  {
+    "path": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 390,
+    "overflow": 0,
+    "nav": 163,
+    "actions": 81,
+    "padding": 244
+  },
+  {
+    "path": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 640,
+    "overflow": 0,
+    "nav": 160,
+    "actions": 81,
+    "padding": 241
+  },
+  {
+    "path": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 720,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 82,
+    "padding": 82
+  },
+  {
+    "path": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+    "width": 1280,
+    "overflow": 0,
+    "nav": 0,
+    "actions": 0,
+    "padding": 0
+  }
+]

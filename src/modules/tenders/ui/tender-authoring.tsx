@@ -287,11 +287,18 @@ export function TenderAuthoring({
         Boolean(normalized[issue.field as keyof TenderWizardFormState]),
     );
     errors.push(
-      ...scopeIssues.map((issue) =>
-        issue.field === "shortDescription" || issue.field === "scopeOfWork"
-          ? { ...issue, field: "fullDescription" }
-          : issue,
-      ),
+      ...scopeIssues
+        .filter(
+          (issue) =>
+            (issue.field !== "shortDescription" &&
+              issue.field !== "scopeOfWork") ||
+            Boolean(form[issue.field]),
+        )
+        .map((issue) =>
+          issue.field === "shortDescription" || issue.field === "scopeOfWork"
+            ? { ...issue, field: "fullDescription" }
+            : issue,
+        ),
     );
     if (complete || form.city || form.addressLine || form.latitude)
       errors.push(...validateWizardStep(2, form, messages));

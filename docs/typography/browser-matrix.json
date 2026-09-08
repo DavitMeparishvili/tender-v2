@@ -1,0 +1,1711 @@
+{
+  "rows": [
+    {
+      "locale": "ka",
+      "surface": "landing",
+      "url": "/ka",
+      "width": 320,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "landing",
+      "url": "/ka",
+      "width": 375,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "landing",
+      "url": "/ka",
+      "width": 390,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "landing",
+      "url": "/ka",
+      "width": 442,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "landing",
+      "url": "/ka",
+      "width": 1280,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 44px / 52.8px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ka",
+      "surface": "landing",
+      "url": "/ka",
+      "width": 1440,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 44px / 52.8px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ka",
+      "surface": "owned",
+      "url": "/ka/client/tenders",
+      "width": 320,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owned",
+      "url": "/ka/client/tenders",
+      "width": 375,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owned",
+      "url": "/ka/client/tenders",
+      "width": 390,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owned",
+      "url": "/ka/client/tenders",
+      "width": 442,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owned",
+      "url": "/ka/client/tenders",
+      "width": 1280,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ka",
+      "surface": "owned",
+      "url": "/ka/client/tenders",
+      "width": 1440,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ka",
+      "surface": "owner",
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 320,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 120,
+      "bottomPadding": 200,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owner",
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 375,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owner",
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 390,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owner",
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 442,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "owner",
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 1280,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ka",
+      "surface": "owner",
+      "url": "/ka/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 1440,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ka",
+      "surface": "discovery",
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 320,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 115,
+      "bottomPadding": 195,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "discovery",
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 375,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 115,
+      "bottomPadding": 195,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "discovery",
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 390,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 115,
+      "bottomPadding": 195,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "discovery",
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 442,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ka",
+      "surface": "discovery",
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 1280,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ka",
+      "surface": "discovery",
+      "url": "/ka/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 1440,
+      "lang": "ka",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans Georgian\", \"Noto Sans\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "ტენდერების ძებნა",
+          "lines": 1
+        },
+        {
+          "text": "ჩემი ტენდერები",
+          "lines": 1
+        },
+        {
+          "text": "შეთანხმებები",
+          "lines": 1
+        },
+        {
+          "text": "შეტყობინებები",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "landing",
+      "url": "/en",
+      "width": 320,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "landing",
+      "url": "/en",
+      "width": 375,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "landing",
+      "url": "/en",
+      "width": 390,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "landing",
+      "url": "/en",
+      "width": 442,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "landing",
+      "url": "/en",
+      "width": 1280,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 44px / 52.8px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "landing",
+      "url": "/en",
+      "width": 1440,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 44px / 52.8px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "owned",
+      "url": "/en/client/tenders",
+      "width": 320,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owned",
+      "url": "/en/client/tenders",
+      "width": 375,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owned",
+      "url": "/en/client/tenders",
+      "width": 390,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owned",
+      "url": "/en/client/tenders",
+      "width": 442,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owned",
+      "url": "/en/client/tenders",
+      "width": 1280,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "owned",
+      "url": "/en/client/tenders",
+      "width": 1440,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "owner",
+      "url": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 320,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 120,
+      "bottomPadding": 200,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owner",
+      "url": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 375,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owner",
+      "url": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 390,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owner",
+      "url": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 442,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "owner",
+      "url": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 1280,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "owner",
+      "url": "/en/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 1440,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "discovery",
+      "url": "/en/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 320,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "discovery",
+      "url": "/en/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 375,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "discovery",
+      "url": "/en/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 390,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "discovery",
+      "url": "/en/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 442,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "en",
+      "surface": "discovery",
+      "url": "/en/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 1280,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "surface": "discovery",
+      "url": "/en/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 1440,
+      "lang": "en",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Discover tenders",
+          "lines": 1
+        },
+        {
+          "text": "My tenders",
+          "lines": 1
+        },
+        {
+          "text": "Agreements",
+          "lines": 1
+        },
+        {
+          "text": "Inbox",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "landing",
+      "url": "/ru",
+      "width": 320,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "landing",
+      "url": "/ru",
+      "width": 375,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "landing",
+      "url": "/ru",
+      "width": 390,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "landing",
+      "url": "/ru",
+      "width": 442,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 39px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "landing",
+      "url": "/ru",
+      "width": 1280,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 44px / 52.8px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "landing",
+      "url": "/ru",
+      "width": 1440,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 44px / 52.8px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "owned",
+      "url": "/ru/client/tenders",
+      "width": 320,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owned",
+      "url": "/ru/client/tenders",
+      "width": 375,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owned",
+      "url": "/ru/client/tenders",
+      "width": 390,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owned",
+      "url": "/ru/client/tenders",
+      "width": 442,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 0,
+      "bottomPadding": 80,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owned",
+      "url": "/ru/client/tenders",
+      "width": 1280,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "owned",
+      "url": "/ru/client/tenders",
+      "width": 1440,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "owner",
+      "url": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 320,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 120,
+      "bottomPadding": 200,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owner",
+      "url": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 375,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owner",
+      "url": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 390,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owner",
+      "url": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 442,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 66,
+      "bottomPadding": 146,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "owner",
+      "url": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 1280,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "owner",
+      "url": "/ru/client/tenders/d4329b32-1f2a-4570-86bd-43e127e7721f",
+      "width": 1440,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "discovery",
+      "url": "/ru/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 320,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 115,
+      "bottomPadding": 195,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "discovery",
+      "url": "/ru/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 375,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "discovery",
+      "url": "/ru/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 390,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "discovery",
+      "url": "/ru/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 442,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 28px / 35px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 80,
+      "actionHeight": 95.5,
+      "bottomPadding": 175.5,
+      "barsOverlap": false,
+      "navRows": 0,
+      "navLines": []
+    },
+    {
+      "locale": "ru",
+      "surface": "discovery",
+      "url": "/ru/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 1280,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    },
+    {
+      "locale": "ru",
+      "surface": "discovery",
+      "url": "/ru/provider/tenders/4d23517f-048c-44e8-a739-fce6a5563310",
+      "width": 1440,
+      "lang": "ru",
+      "overflow": 0,
+      "h1": "700 32px / 40px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "body": "16px / 26px \"Noto Sans\", \"Noto Sans Georgian\", \"Segoe UI\", sans-serif",
+      "clipped": [],
+      "splitWords": [],
+      "navHeight": 0,
+      "actionHeight": 0,
+      "bottomPadding": 0,
+      "barsOverlap": false,
+      "navRows": 1,
+      "navLines": [
+        {
+          "text": "Найти тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Мои тендеры",
+          "lines": 1
+        },
+        {
+          "text": "Договорённости",
+          "lines": 1
+        },
+        {
+          "text": "Уведомления",
+          "lines": 1
+        }
+      ]
+    }
+  ],
+  "count": 72,
+  "errors": [],
+  "failures": []
+}

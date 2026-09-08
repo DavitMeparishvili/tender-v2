@@ -1,6 +1,7 @@
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import { BrandIcon } from "../../shell/ui/brand-icon";
+import { tenderDate } from "../../tenders/ui/tender-heading";
 import {
   formatTenderDate,
   formatTenderMoney,
@@ -192,7 +193,7 @@ export function AgreementDetail({
         <div>
           <dt>{messages.agreements.proposedStartDate}</dt>
           <dd>
-            {formatTenderDate(agreement.snapshot.proposedStartDate, locale) ??
+            {tenderDate(agreement.snapshot.proposedStartDate, locale) ??
               messages.tenders.notProvided}
           </dd>
         </div>

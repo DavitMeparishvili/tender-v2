@@ -10,7 +10,7 @@ type StateAction = Readonly<{
 
 type AuthStateProps = Readonly<{
   state: AuthStateKind;
-  title: string;
+  title?: string;
   body: string;
   action?: StateAction;
   secondaryAction?: StateAction;
@@ -27,7 +27,7 @@ export function AuthState({
     <div className="auth-state" data-auth-state={state}>
       <span className="state-mark" aria-hidden="true" />
       <div>
-        <h2>{title}</h2>
+        {title ? <h2>{title}</h2> : null}
         <p>{body}</p>
       </div>
       {action || secondaryAction ? (

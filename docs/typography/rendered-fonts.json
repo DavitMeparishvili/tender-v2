@@ -1,0 +1,350 @@
+[
+  {
+    "locale": "ka",
+    "selector": ".hero h1",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Bold",
+        "isCustomFont": true,
+        "glyphCount": 33
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Bold",
+        "isCustomFont": true,
+        "glyphCount": 2
+      }
+    ]
+  },
+  {
+    "locale": "ka",
+    "selector": ".hero-lead",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Regular",
+        "isCustomFont": true,
+        "glyphCount": 152
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Regular",
+        "isCustomFont": true,
+        "glyphCount": 4
+      }
+    ]
+  },
+  {
+    "locale": "ka",
+    "selector": ".nav-tab",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian SemiBold",
+        "postScriptName": "NotoSansGeorgian-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 16
+      }
+    ]
+  },
+  {
+    "locale": "ka",
+    "weight": 400,
+    "selector": "#font-probe-400",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Regular",
+        "isCustomFont": true,
+        "glyphCount": 32
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Regular",
+        "isCustomFont": true,
+        "glyphCount": 38
+      }
+    ]
+  },
+  {
+    "locale": "ka",
+    "weight": 500,
+    "selector": "#font-probe-500",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Medium",
+        "postScriptName": "NotoSans-Medium",
+        "isCustomFont": true,
+        "glyphCount": 38
+      },
+      {
+        "familyName": "Noto Sans Georgian Medium",
+        "postScriptName": "NotoSansGeorgian-Medium",
+        "isCustomFont": true,
+        "glyphCount": 32
+      }
+    ]
+  },
+  {
+    "locale": "ka",
+    "weight": 600,
+    "selector": "#font-probe-600",
+    "fonts": [
+      {
+        "familyName": "Noto Sans SemiBold",
+        "postScriptName": "NotoSans-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 38
+      },
+      {
+        "familyName": "Noto Sans Georgian SemiBold",
+        "postScriptName": "NotoSansGeorgian-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 32
+      }
+    ]
+  },
+  {
+    "locale": "ka",
+    "weight": 700,
+    "selector": "#font-probe-700",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Bold",
+        "isCustomFont": true,
+        "glyphCount": 32
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Bold",
+        "isCustomFont": true,
+        "glyphCount": 38
+      }
+    ]
+  },
+  {
+    "locale": "en",
+    "selector": ".hero h1",
+    "fonts": [
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Bold",
+        "isCustomFont": true,
+        "glyphCount": 36
+      }
+    ]
+  },
+  {
+    "locale": "en",
+    "selector": ".hero-lead",
+    "fonts": [
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Regular",
+        "isCustomFont": true,
+        "glyphCount": 195
+      }
+    ]
+  },
+  {
+    "locale": "en",
+    "selector": ".nav-tab",
+    "fonts": [
+      {
+        "familyName": "Noto Sans SemiBold",
+        "postScriptName": "NotoSans-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 16
+      }
+    ]
+  },
+  {
+    "locale": "en",
+    "weight": 400,
+    "selector": "#font-probe-400",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Regular",
+        "isCustomFont": true,
+        "glyphCount": 22
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Regular",
+        "isCustomFont": true,
+        "glyphCount": 48
+      }
+    ]
+  },
+  {
+    "locale": "en",
+    "weight": 500,
+    "selector": "#font-probe-500",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Medium",
+        "postScriptName": "NotoSans-Medium",
+        "isCustomFont": true,
+        "glyphCount": 48
+      },
+      {
+        "familyName": "Noto Sans Georgian Medium",
+        "postScriptName": "NotoSansGeorgian-Medium",
+        "isCustomFont": true,
+        "glyphCount": 22
+      }
+    ]
+  },
+  {
+    "locale": "en",
+    "weight": 600,
+    "selector": "#font-probe-600",
+    "fonts": [
+      {
+        "familyName": "Noto Sans SemiBold",
+        "postScriptName": "NotoSans-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 48
+      },
+      {
+        "familyName": "Noto Sans Georgian SemiBold",
+        "postScriptName": "NotoSansGeorgian-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 22
+      }
+    ]
+  },
+  {
+    "locale": "en",
+    "weight": 700,
+    "selector": "#font-probe-700",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Bold",
+        "isCustomFont": true,
+        "glyphCount": 22
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Bold",
+        "isCustomFont": true,
+        "glyphCount": 48
+      }
+    ]
+  },
+  {
+    "locale": "ru",
+    "selector": ".hero h1",
+    "fonts": [
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Bold",
+        "isCustomFont": true,
+        "glyphCount": 35
+      }
+    ]
+  },
+  {
+    "locale": "ru",
+    "selector": ".hero-lead",
+    "fonts": [
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Regular",
+        "isCustomFont": true,
+        "glyphCount": 212
+      }
+    ]
+  },
+  {
+    "locale": "ru",
+    "selector": ".nav-tab",
+    "fonts": [
+      {
+        "familyName": "Noto Sans SemiBold",
+        "postScriptName": "NotoSans-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 13
+      }
+    ]
+  },
+  {
+    "locale": "ru",
+    "weight": 400,
+    "selector": "#font-probe-400",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Regular",
+        "isCustomFont": true,
+        "glyphCount": 22
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Regular",
+        "isCustomFont": true,
+        "glyphCount": 48
+      }
+    ]
+  },
+  {
+    "locale": "ru",
+    "weight": 500,
+    "selector": "#font-probe-500",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Medium",
+        "postScriptName": "NotoSans-Medium",
+        "isCustomFont": true,
+        "glyphCount": 48
+      },
+      {
+        "familyName": "Noto Sans Georgian Medium",
+        "postScriptName": "NotoSansGeorgian-Medium",
+        "isCustomFont": true,
+        "glyphCount": 22
+      }
+    ]
+  },
+  {
+    "locale": "ru",
+    "weight": 600,
+    "selector": "#font-probe-600",
+    "fonts": [
+      {
+        "familyName": "Noto Sans SemiBold",
+        "postScriptName": "NotoSans-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 48
+      },
+      {
+        "familyName": "Noto Sans Georgian SemiBold",
+        "postScriptName": "NotoSansGeorgian-SemiBold",
+        "isCustomFont": true,
+        "glyphCount": 22
+      }
+    ]
+  },
+  {
+    "locale": "ru",
+    "weight": 700,
+    "selector": "#font-probe-700",
+    "fonts": [
+      {
+        "familyName": "Noto Sans Georgian",
+        "postScriptName": "NotoSansGeorgian-Bold",
+        "isCustomFont": true,
+        "glyphCount": 22
+      },
+      {
+        "familyName": "Noto Sans",
+        "postScriptName": "NotoSans-Bold",
+        "isCustomFont": true,
+        "glyphCount": 48
+      }
+    ]
+  }
+]

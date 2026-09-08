@@ -44,6 +44,7 @@ export type BidFormCopy = Readonly<{
 
 export type ExistingBid = Readonly<{
   amountMinorUnits: number;
+  proposedStartDate: Date | string | null;
   conditions: string;
   includedCosts: string | null;
   exclusions: string | null;
@@ -198,7 +199,17 @@ export function BidForm({
           label={copy.proposedStartDate}
           description={copy.optional}
         >
-          <input name="proposedStartDate" type="date" />
+          <input
+            name="proposedStartDate"
+            type="date"
+            defaultValue={
+              existing?.proposedStartDate
+                ? new Date(existing.proposedStartDate)
+                    .toISOString()
+                    .slice(0, 10)
+                : ""
+            }
+          />
         </Field>
         <Field
           id="bid-duration"
