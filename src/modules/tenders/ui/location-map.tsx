@@ -57,6 +57,7 @@ export function LocationMap({
   // State rather than a ref: the map is created asynchronously, and the effect
   // that draws the marker must re-run once it exists.
   const [map, setMap] = useState<LeafletMap | null>(null);
+  const liveMapRef = useRef<LeafletMap | null>(null);
   const markerRef = useRef<Marker | null>(null);
   const circleRef = useRef<Circle | null>(null);
   // Held in a ref so a new callback identity never tears down the map.
@@ -84,6 +85,9 @@ export function LocationMap({
       if (disposed || containerRef.current === null) return;
 
       created = leaflet.map(container, {
+        // Editing can replace the map immediately. Leaflet's delayed zoom
+        // completion must not run against a pane removed during that switch.
+        zoomAnimation: false,
         zoomControl: interactive,
         dragging: interactive,
         scrollWheelZoom: false,
@@ -93,6 +97,7 @@ export function LocationMap({
         touchZoom: interactive,
         attributionControl: true,
       });
+      liveMapRef.current = created;
       leaflet
         .tileLayer(TILE_URL, {
           attribution: TILE_ATTRIBUTION,
@@ -118,6 +123,7 @@ export function LocationMap({
 
     return () => {
       disposed = true;
+      if (liveMapRef.current === created) liveMapRef.current = null;
       created?.remove();
       setMap(null);
       markerRef.current = null;
@@ -126,7 +132,10 @@ export function LocationMap({
   }, [interactive]);
 
   useEffect(() => {
-    if (map === null) return;
+    // Toggling pin editing recreates the map. React state can still refer to
+    // the removed instance during this commit; never update that instance.
+    if (map === null || liveMapRef.current !== map) return;
+    let disposed = false;
 
     const placed =
       latitude !== null && longitude !== null ? { latitude, longitude } : null;
@@ -135,9 +144,12 @@ export function LocationMap({
         ? { latitude: focusLatitude, longitude: focusLongitude }
         : null;
     const view = resolveInteractiveMapView(placed, focus, precision);
-    map.setView([view.center.latitude, view.center.longitude], view.zoom);
+    map.setView([view.center.latitude, view.center.longitude], view.zoom, {
+      animate: false,
+    });
 
     void import("leaflet").then((leaflet) => {
+      if (disposed || liveMapRef.current !== map) return;
       markerRef.current?.remove();
       markerRef.current = null;
       circleRef.current?.remove();
@@ -179,6 +191,9 @@ export function LocationMap({
         });
       }
     });
+    return () => {
+      disposed = true;
+    };
   }, [
     map,
     latitude,

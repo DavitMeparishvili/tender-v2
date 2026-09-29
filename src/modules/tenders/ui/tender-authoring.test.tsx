@@ -10,8 +10,8 @@ import { datePickerCopy } from "./tender-action-copy";
 
 describe("tender authoring contract", () => {
   it("renders deterministic Georgian dates across server and browser ICU versions", () => {
-    expect(tenderMoney(4800000, "GEL", "ka")).toBe("GEL 48\u00a0000");
-    expect(tenderMoney(123456, "GEL", "ka")).toBe("GEL 1234,56");
+    expect(tenderMoney(4800000, "GEL", "ka")).toBe("48,000\u00a0GEL");
+    expect(tenderMoney(123456, "GEL", "ka")).toBe("1,234.56\u00a0GEL");
     expect(tenderDate("2026-09-24T21:30:00Z", "ka", true)).toBe(
       "25 სექტემბერი, 2026 · 01:30",
     );

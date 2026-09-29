@@ -50,7 +50,10 @@ describe("validateWizardStep", () => {
         messages,
       ),
     ).toEqual([
-      { field: "title", message: messages.tenders.errors.invalidInput },
+      {
+        field: "title",
+        message: messages.errors.minimumLength.replace("{min}", "5"),
+      },
     ]);
 
     expect(
@@ -69,15 +72,15 @@ describe("validateWizardStep", () => {
     ).toEqual([
       {
         field: "shortDescription",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "10"),
       },
       {
         field: "fullDescription",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "20"),
       },
       {
         field: "scopeOfWork",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "10"),
       },
     ]);
   });
@@ -90,10 +93,13 @@ describe("validateWizardStep", () => {
         messages,
       ),
     ).toEqual([
-      { field: "city", message: messages.tenders.errors.invalidInput },
+      {
+        field: "city",
+        message: messages.errors.minimumLength.replace("{min}", "2"),
+      },
       {
         field: "addressLine",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "3"),
       },
     ]);
   });

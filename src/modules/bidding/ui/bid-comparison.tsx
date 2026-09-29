@@ -24,13 +24,12 @@ export type BidComparisonCopy = Readonly<{
   statusLabels: Readonly<Record<BidStatus, string>>;
 }>;
 
-// Green is reserved for the winning offer; every other status shares the
-// same neutral tag so the win is the one thing colour calls out.
+// Keep client and contractor views consistent, with text as well as colour.
 const STATUS_TAG_CLASS: Readonly<Record<BidStatus, string>> = {
-  SUBMITTED: "tag-grey",
-  WINNER: "tag-green",
-  LOST: "tag-grey",
-  WITHDRAWN: "tag-grey",
+  SUBMITTED: "offer-status-active",
+  WINNER: "offer-status-won",
+  LOST: "offer-status-lost",
+  WITHDRAWN: "offer-status-withdrawn",
 };
 
 export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
@@ -62,7 +61,7 @@ export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
 // link out to that provider's public profile, but a read-only navigation link
 // is not a selection control.
 //
-// One DOM structure, not two. The table reflows into labelled cards at 608px
+// One DOM structure, not two. The table reflows into labelled cards when its container is narrow
 // through the `data-label` attributes below, rather than by rendering a second
 // copy of every row — a duplicate would put each provider's name and amount on
 // the page twice for screen readers and for tests.
@@ -70,10 +69,12 @@ export function BidComparison({
   bids,
   copy,
   locale,
+  showSelectionRule = true,
 }: Readonly<{
   bids: readonly ClientBidView[];
   copy: BidComparisonCopy;
   locale: Locale;
+  showSelectionRule?: boolean;
 }>) {
   return (
     <section
@@ -81,7 +82,9 @@ export function BidComparison({
       aria-labelledby="bid-comparison-heading"
     >
       <h2 id="bid-comparison-heading">{copy.title}</h2>
-      <p className="tender-action-hint">{copy.automaticWinner}</p>
+      {showSelectionRule ? (
+        <p className="tender-action-hint">{copy.automaticWinner}</p>
+      ) : null}
       {bids.length === 0 ? (
         <p>{copy.empty}</p>
       ) : (
@@ -130,7 +133,9 @@ export function BidComparison({
                   </td>
                   <td data-label={copy.status}>
                     {/* Status is a labelled tag, never colour alone. */}
-                    <span className={`tag ${STATUS_TAG_CLASS[bid.status]}`}>
+                    <span
+                      className={`offer-status ${STATUS_TAG_CLASS[bid.status]}`}
+                    >
                       {copy.statusLabels[bid.status]}
                     </span>
                   </td>

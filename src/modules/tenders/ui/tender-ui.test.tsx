@@ -82,7 +82,7 @@ const sizeUnits = {
 describe("client tender UI", () => {
   it("formats integer minor units and dates for the selected locale", () => {
     expect(formatTenderMoney(123_456, "GEL", "en")).toContain("1,234.56");
-    expect(formatTenderMoney(123_456, "GEL", "ka")).toContain("1234,56");
+    expect(formatTenderMoney(123_456, "GEL", "ka")).toContain("1,234.56");
     expect(formatTenderMoney(null, "GEL", "en")).toBeNull();
     expect(formatTenderDate(tender.deadline, "en")).toContain("Aug");
     expect(formatTenderDate(tender.deadline, "ka")).not.toContain("Aug");

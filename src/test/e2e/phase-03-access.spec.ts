@@ -46,11 +46,11 @@ for (const locale of ["ka", "en"] as const) {
     });
 
     // Sending an offer is free once access is held.
+    await page.getByLabel(messages.bidding.amount).fill("3900");
+    await expect(page.locator("#bid-amount")).toHaveValue("3,900");
+    await page.getByLabel(messages.bidding.durationDays).fill("14");
     await page
-      .getByLabel(messages.bidding.amount, { exact: true })
-      .fill("3900");
-    await page
-      .getByLabel(messages.bidding.conditions, { exact: true })
+      .getByLabel(messages.bidding.conditions)
       .fill(
         "Materials and labour are included; scaffolding is excluded from this price.",
       );
@@ -67,12 +67,14 @@ for (const locale of ["ka", "en"] as const) {
     await expect(
       page.getByRole("button", { name: messages.bidding.submit }),
     ).toHaveCount(0);
+    await expect(page.locator("#my-offer input")).toHaveCount(0);
+    await page
+      .getByRole("button", { name: messages.bidding.offer.edit, exact: true })
+      .click();
     await expect(
       page.getByText(messages.bidding.revisionResetsQueue),
     ).toBeVisible();
-    await page
-      .getByLabel(messages.bidding.amount, { exact: true })
-      .fill("3600");
+    await page.getByLabel(messages.bidding.amount).fill("3600");
     await page.getByRole("button", { name: messages.bidding.revise }).click();
     await expect(
       page.getByRole("status").filter({ hasText: messages.bidding.revised }),
@@ -82,10 +84,11 @@ for (const locale of ["ka", "en"] as const) {
     // itself is asserted through the API rather than the rendered string,
     // because `Intl.NumberFormat` groups and places the currency symbol
     // differently in ka and en.
-    await expect(page.locator(".bid-summary")).toBeVisible();
-    await expect(page.locator(".bid-summary")).not.toContainText(
-      SEEDED_CLIENT.name,
-    );
+    const competition = page.getByRole("region", {
+      name: messages.bidding.summaryTitle,
+    });
+    await expect(competition).toBeVisible();
+    await expect(competition).not.toContainText(SEEDED_CLIENT.name);
     const summary = await page.request.get(
       `/api/tenders/${tenderId}/bids/summary`,
     );

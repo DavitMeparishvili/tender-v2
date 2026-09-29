@@ -78,6 +78,16 @@ export function WorkspaceView({
   // Every destination here is also in the header nav; the dashboard states
   // what each one is for rather than being the only way to reach it.
   const tiles = [
+    ...(!isClient
+      ? [
+          {
+            href: `/${locale}/provider/offers`,
+            icon: "checklist" as const,
+            title: messages.nav.myOffers,
+            body: messages.bidding.offer.intro,
+          },
+        ]
+      : []),
     {
       href: isClient
         ? `/${locale}/client/tenders`

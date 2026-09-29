@@ -68,6 +68,10 @@ def parse_args() -> argparse.Namespace:
         help="run read-only publication, repository, container, and health checks",
     )
     parser.add_argument(
+        "--skip-database-backup", action="store_true",
+        help="skip PostgreSQL dump for a code-only release; retain environment/image rollback metadata",
+    )
+    parser.add_argument(
         "--configure-mail", action="store_true",
         help="set RESEND_API_KEY and MAIL_FROM from the local process environment",
     )
@@ -349,7 +353,7 @@ def print_snapshot(label: str, values: dict[str, str]) -> None:
         print(f"  {key}: {value}")
 
 
-def create_backup(run: RunRemote, sha: str, migrations: list[str]) -> str:
+def create_backup(run: RunRemote, sha: str, migrations: list[str], skip_database_backup: bool = False) -> str:
     label = "migration-deploy" if migrations else "code-deploy"
     migration_manifest = (
         "printf '%s\\n' "
@@ -358,15 +362,19 @@ def create_backup(run: RunRemote, sha: str, migrations: list[str]) -> str:
         if migrations
         else ""
     )
-    backup_command = (
-        "set -eu; umask 077; "
-        f"backup=/opt/tender-backups/$(date -u +%Y%m%dT%H%M%SZ)-{label}; "
-        "mkdir -p \"$backup\"; "
+    database_backup = "" if skip_database_backup else (
         "docker exec tender-demo-postgres-1 sh -c "
         "'pg_dump -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\" -Fc' "
         "> \"$backup/postgres.dump\"; "
         "docker exec -i tender-demo-postgres-1 pg_restore --list "
         "< \"$backup/postgres.dump\" >/dev/null; "
+    )
+    backup_command = (
+        "set -eu; umask 077; "
+        f"backup=/opt/tender-backups/$(date -u +%Y%m%dT%H%M%SZ)-{label}; "
+        "mkdir -p \"$backup\"; "
+        + database_backup
+        +
         f"cp {REMOTE_REPOSITORY}/deploy/.env.droplet \"$backup/env.droplet\"; "
         "docker inspect tender-demo-app-1 --format '{{.Config.Image}}' "
         "> \"$backup/previous-image.txt\"; "
@@ -375,7 +383,7 @@ def create_backup(run: RunRemote, sha: str, migrations: list[str]) -> str:
         + "printf '%s' \"$backup\""
     )
     backup = run(backup_command, quiet=True)
-    print(f"Validated backup: {backup}")
+    print(f"{'Rollback metadata (database backup skipped)' if skip_database_backup else 'Validated backup'}: {backup}")
     return backup
 
 
@@ -402,7 +410,7 @@ def rollback_app(run: RunRemote, previous_image: str) -> None:
         f"{COMPOSE} up -d --no-deps app"
     )
     public_health(run, retry=True)
-    print("Previous app image is healthy. Database backups were retained.")
+    print("Previous app image is healthy. Rollback files were retained.")
 
 
 def deploy(
@@ -413,11 +421,14 @@ def deploy(
     previous_image: str,
     client: paramiko.SSHClient,
     configure_mail: bool,
+    skip_database_backup: bool = False,
 ) -> None:
+    if skip_database_backup and migrations:
+        raise RuntimeError("Skipping the database backup is supported only for code-only releases.")
     image = f"{IMAGE_REPOSITORY}:{sha}"
     before = snapshot(run)
     print_snapshot("Data summary before:", before)
-    backup = create_backup(run, sha, migrations)
+    backup = create_backup(run, sha, migrations, skip_database_backup)
     app_replaced = False
     try:
         run(
@@ -571,7 +582,7 @@ def main() -> None:
         if already_deployed and not args.configure_mail:
             print(f"{sha} is already deployed and healthy. Nothing to do.")
             return
-        deploy(run, sha, migrations, services, previous_image, client, args.configure_mail)
+        deploy(run, sha, migrations, services, previous_image, client, args.configure_mail, args.skip_database_backup)
     finally:
         client.close()
 

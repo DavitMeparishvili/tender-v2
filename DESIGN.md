@@ -680,3 +680,7 @@ values, permission boundaries, labelled statuses, and bilingual content.
 - **Don't** use the grid motif unmasked, or at a density that competes with
   content.
 - **Don't** communicate status by colour alone.
+
+### Offer status colours
+
+Offer badges retain explicit text labels. Won uses `--trust` on `--trust-soft`; not selected uses `--error` on `--error-soft`. Awaiting deadline/result uses `--status-pending-text` (#854d0e) on `--status-pending-soft` (#fef3c7), a restrained amber with dark readable text. Withdrawn, cancelled and ended use `--fg-2` on `--bg-subtle`. Use the same mapping on the offer list and detail.

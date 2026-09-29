@@ -3,6 +3,7 @@
 export type FormIssue = Readonly<{
   field: string;
   message: string;
+  label?: string | undefined;
 }>;
 
 type ErrorSummaryProps = Readonly<{
@@ -31,7 +32,10 @@ export function ErrorSummary({
       <ul>
         {issues.map((issue) => (
           <li key={`${issue.field}:${issue.message}`}>
-            <a href={`#${issue.field}`}>{issue.message}</a>
+            <a href={`#${issue.field}`}>
+              {issue.label ? `${issue.label}: ` : null}
+              {issue.message}
+            </a>
           </li>
         ))}
       </ul>

@@ -11,8 +11,7 @@ import {
 } from "@/src/modules/bidding/application/get-bid-summary";
 import { listBidSummaries } from "@/src/modules/bidding/application/list-bid-summaries";
 import { getAgreementForTender } from "@/src/modules/agreements/application/get-agreement";
-import { bidFormCopy } from "@/src/modules/bidding/ui/bid-copy";
-import { BidForm } from "@/src/modules/bidding/ui/bid-form";
+import { OwnOffer } from "@/src/modules/bidding/ui/own-offer";
 import { BidSummaryView } from "@/src/modules/bidding/ui/bid-summary-view";
 import { getCurrentUser } from "@/src/modules/identity/application/current-user";
 import { isLocale } from "@/src/modules/localization/config";
@@ -30,7 +29,10 @@ import { listEntitledAttachments } from "@/src/modules/tenders/application/list-
 import { searchPublishedTenders } from "@/src/modules/tenders/application/search-published-tenders";
 import { DiscoveryDetailContent } from "@/src/modules/tenders/ui/discovery-detail";
 import type { TenderAttachmentView } from "@/src/modules/tenders/ui/tender-detail";
-import { formatTenderMoney } from "@/src/modules/tenders/ui/tender-format";
+import {
+  formatTenderDate,
+  formatTenderMoney,
+} from "@/src/modules/tenders/ui/tender-format";
 import { specialtyLabel } from "@/src/modules/tenders/ui/tender-taxonomy";
 import { specialtyTone } from "@/src/modules/tenders/ui/tender-tone";
 
@@ -228,50 +230,29 @@ export default async function ProviderTenderDetailPage({
             </>
           }
         >
-          {/*
-              A withdrawn bid keeps its row (submit-bid.ts) and can never be
-              revised or resubmitted on this tender (revise-bid.ts and the
-              unique (tenderId, providerId) constraint both require an active
-              row) — that withdrawal is final is a deliberate program-design
-              rule, not a gap. Rendering the Submit/Revise form here would
-              offer controls that always fail server-side with BID_NOT_ACTIVE,
-              so a withdrawn bid gets its own terminal notice instead.
-            */}
-          {view.value.disclosure === "FULL" &&
-          isOpen &&
-          bid?.status !== "WITHDRAWN" ? (
-            <BidForm
-              copy={bidFormCopy(messages)}
-              existing={bid}
+          {bid !== null || (view.value.disclosure === "FULL" && isOpen) ? (
+            <OwnOffer
+              dates={{
+                submitted: formatTenderDate(bid?.createdAt ?? null, locale),
+                updated: formatTenderDate(bid?.updatedAt ?? null, locale),
+                deadline: formatTenderDate(tender.deadline, locale),
+                start: bid?.proposedStartDate
+                  ? new Intl.DateTimeFormat(locale, {
+                      dateStyle: "medium",
+                      timeZone: "UTC",
+                    }).format(bid.proposedStartDate)
+                  : null,
+              }}
+              bid={bid}
               tenderId={id}
+              currency={tender.currency}
+              deadline={tender.deadline}
+              tenderStatus={tender.status}
+              canEdit={view.value.disclosure === "FULL" && isOpen}
+              locale={locale}
+              messages={messages}
             />
           ) : null}
-          {view.value.disclosure === "FULL" &&
-          isOpen &&
-          bid?.status === "WITHDRAWN" ? (
-            <p className="tender-action-hint">{messages.bidding.withdrawn}</p>
-          ) : null}
-
-          {/*
-              The outcome is stated in text, never by colour alone, and it is
-              the provider's OWN outcome: a losing bidder is told they lost,
-              not who won.
-            */}
-          {tender.status === "PUBLISHED" ? null : (
-            <section className="bid-outcome">
-              <h2>
-                {tender.status === "EXPIRED"
-                  ? messages.bidding.outcomeExpiredTitle
-                  : messages.bidding.outcomeWinnerTitle}
-              </h2>
-              {bid?.status === "WINNER" ? (
-                <p>{messages.bidding.outcomeWonBody}</p>
-              ) : null}
-              {bid?.status === "LOST" ? (
-                <p>{messages.bidding.outcomeLostBody}</p>
-              ) : null}
-            </section>
-          )}
 
           <section aria-labelledby="similar-heading">
             <h2 className="card-title" id="similar-heading">

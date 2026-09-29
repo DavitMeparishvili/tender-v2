@@ -39,19 +39,19 @@ function formatAmount(raw: string): string {
   return fractionPart === undefined ? grouped : `${grouped}.${fractionPart}`;
 }
 
-function digitsBeforeCursor(text: string, cursor: number): number {
+function charactersBeforeCursor(text: string, cursor: number): number {
   let count = 0;
   for (let index = 0; index < cursor && index < text.length; index += 1) {
-    if (/[0-9]/.test(text[index] ?? "")) count += 1;
+    if (/[0-9.]/.test(text[index] ?? "")) count += 1;
   }
   return count;
 }
 
-function cursorAfterDigits(text: string, digitCount: number): number {
+function cursorAfterCharacters(text: string, digitCount: number): number {
   if (digitCount <= 0) return 0;
   let count = 0;
   for (let index = 0; index < text.length; index += 1) {
-    if (/[0-9]/.test(text[index] ?? "")) {
+    if (/[0-9.]/.test(text[index] ?? "")) {
       count += 1;
       if (count === digitCount) return index + 1;
     }
@@ -65,22 +65,25 @@ function cursorAfterDigits(text: string, digitCount: number): number {
 // only changes the presentation, never the stored value's shape.
 export function AmountInput({ value, onChange, ...rest }: AmountInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const pendingCursorDigits = useRef<number | null>(null);
+  const pendingCursorCharacters = useRef<number | null>(null);
   const displayValue = formatAmount(value);
 
   useLayoutEffect(() => {
-    const digits = pendingCursorDigits.current;
+    const digits = pendingCursorCharacters.current;
     const input = inputRef.current;
     if (digits === null || input === null) return;
-    pendingCursorDigits.current = null;
-    const cursor = cursorAfterDigits(displayValue, digits);
+    pendingCursorCharacters.current = null;
+    const cursor = cursorAfterCharacters(displayValue, digits);
     input.setSelectionRange(cursor, cursor);
   }, [displayValue]);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const input = event.currentTarget;
     const cursor = input.selectionStart ?? input.value.length;
-    pendingCursorDigits.current = digitsBeforeCursor(input.value, cursor);
+    pendingCursorCharacters.current = charactersBeforeCursor(
+      input.value,
+      cursor,
+    );
     onChange(sanitizeAmount(input.value));
   }
 

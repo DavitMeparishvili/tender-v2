@@ -6,7 +6,7 @@ import { TenderIcon, type TenderIconName } from "./tender-icon";
 import { tenderPageCopy } from "./tender-page-copy";
 import { georgianDateLabel } from "./georgian-calendar-labels";
 import { formatGeorgiaDateTimeLocal } from "./georgia-date-time";
-import { tenderNumberFormat } from "./tender-format";
+import { formatTenderMoney } from "./tender-format";
 export function tenderDate(
   value: Date | string | null,
   locale: Locale,
@@ -33,9 +33,27 @@ export function tenderMoney(
   currency: TenderCurrency | null,
   locale: Locale,
 ) {
-  return value === null || currency === null
-    ? "—"
-    : `${currency} ${tenderNumberFormat(locale, { maximumFractionDigits: value % 100 ? 2 : 0 }).format(value / 100)}`;
+  return formatTenderMoney(value, currency, locale) ?? "—";
+}
+
+export function TenderMoney({
+  value,
+  currency,
+  locale,
+}: {
+  value: number | null;
+  currency: TenderCurrency | null;
+  locale: Locale;
+}) {
+  const formatted = formatTenderMoney(value, currency, locale);
+  if (formatted === null) return <>—</>;
+  const amount = formatted.split("\u00a0")[0];
+  return (
+    <span className="tender-money">
+      <span>{amount}</span>{" "}
+      <span className="tender-money-currency">{currency}</span>
+    </span>
+  );
 }
 export function TenderFact({
   icon,
@@ -124,7 +142,7 @@ export function TenderHeading({
       </div>
       <dl className="tender-facts">
         <TenderFact icon="wallet" label={messages.tenders.budget}>
-          {tenderMoney(budget, currency, locale)}
+          <TenderMoney value={budget} currency={currency} locale={locale} />
         </TenderFact>
         <TenderFact icon="calendar" label={messages.tenders.deadline}>
           {tenderDate(deadline, locale, true)}

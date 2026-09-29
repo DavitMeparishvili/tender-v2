@@ -26,6 +26,7 @@ export function WorkItemsEditor({
   return (
     <fieldset className="tender-work-editor">
       <legend>{c.quantities}</legend>
+      <p className="field-description">{c.workItemsHint}</p>
       <div className="tender-edit-items">
         {items.map((item, index) => (
           <div key={index} className="tender-edit-item">

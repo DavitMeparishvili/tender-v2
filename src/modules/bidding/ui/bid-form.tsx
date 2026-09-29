@@ -9,13 +9,23 @@ import {
   focusErrorSummary,
   type FormIssue,
 } from "../../identity/ui/identity-form";
+import { reviseBidRequest, submitBidRequest } from "./bid-request";
+
+import { AmountInput } from "../../tenders/ui/amount-input";
 import {
-  reviseBidRequest,
-  submitBidRequest,
-  withdrawBidRequest,
-} from "./bid-request";
+  bidAmountMinorUnits,
+  validateBidForm,
+  type BidValidationCopy,
+} from "./bid-form-validation";
+import {
+  MAX_BID_CONDITIONS_LENGTH,
+  MAX_BID_DURATION_DAYS,
+  MAX_BID_TERM_LENGTH,
+  MIN_BID_CONDITIONS_LENGTH,
+} from "../domain/constraints";
 
 export type BidFormCopy = Readonly<{
+  cancel: string;
   amount: string;
   amountHint: string;
   proposedStartDate: string;
@@ -25,6 +35,9 @@ export type BidFormCopy = Readonly<{
   conditions: string;
   conditionsHint: string;
   optional: string;
+  required: string;
+  durationHint: string;
+  validation: BidValidationCopy;
   submit: string;
   submitting: string;
   revise: string;
@@ -58,13 +71,6 @@ function responseCode(value: unknown) {
   return typeof value.code === "string" ? value.code : undefined;
 }
 
-// Major units in the input, integer minor units on the wire. The rounding
-// happens once, here, so no floating-point amount ever reaches the API and
-// the platform-wide integer-money rule holds end to end.
-function toMinorUnits(major: string): number {
-  return Math.round(Number.parseFloat(major) * 100);
-}
-
 function optionalText(value: FormDataEntryValue | null): string | undefined {
   const text = typeof value === "string" ? value.trim() : "";
   return text.length === 0 ? undefined : text;
@@ -74,34 +80,51 @@ export function BidForm({
   copy,
   existing,
   tenderId,
+  currency,
+  onSaved,
+  onCancel,
 }: Readonly<{
   copy: BidFormCopy;
   existing: ExistingBid | null;
   tenderId: string;
+  currency: string;
+  onSaved?: () => void;
+  onCancel?: (() => void) | undefined;
 }>) {
   const router = useRouter();
-  const [issue, setIssue] = useState<FormIssue | null>(null);
+  const [issues, setIssues] = useState<FormIssue[]>([]);
+  const [amount, setAmount] = useState(
+    existing === null
+      ? ""
+      : (existing.amountMinorUnits / 100).toFixed(
+          existing.amountMinorUnits % 100 ? 2 : 0,
+        ),
+  );
+  const fieldError = (field: string) =>
+    issues.find((issue) => issue.field === field)?.message;
   const [isPending, setIsPending] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const focusRequest = useRef(false);
   const isRevision = existing !== null;
 
   useEffect(() => {
-    if (!focusRequest.current || issue === null) return;
+    if (!focusRequest.current || issues.length === 0) return;
     focusRequest.current = false;
     focusErrorSummary("bid-errors");
-  }, [issue]);
+  }, [issues]);
 
   function showIssue(code: string | undefined, field: string) {
     focusRequest.current = true;
-    setIssue({
-      field,
-      message: copy.errorsByCode[code ?? ""] ?? copy.genericError,
-    });
+    setIssues([
+      {
+        field,
+        message: copy.errorsByCode[code ?? ""] ?? copy.genericError,
+      },
+    ]);
   }
 
   async function send(request: RequestInit, path: string, success: string) {
-    setIssue(null);
+    setIssues([]);
     setStatus(null);
     setIsPending(true);
     try {
@@ -113,6 +136,7 @@ export function BidForm({
       }
       setStatus(success);
       router.refresh();
+      onSaved?.();
     } catch {
       showIssue(undefined, "bid-amount");
     } finally {
@@ -123,20 +147,23 @@ export function BidForm({
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const amount = toMinorUnits(String(data.get("amount") ?? ""));
-    if (!Number.isSafeInteger(amount) || amount <= 0) {
-      showIssue("INVALID_INPUT", "bid-amount");
+    if (isPending) return;
+    setStatus(null);
+    const validation = validateBidForm(data, amount, {
+      ...copy.validation,
+      amount: copy.validation.amount.replace("{currency}", currency),
+    });
+    if (validation.length) {
+      focusRequest.current = true;
+      setIssues(validation);
       return;
     }
-    const duration = optionalText(data.get("durationDays"));
     const values = {
-      amountMinorUnits: amount,
+      amountMinorUnits: bidAmountMinorUnits(amount)!,
       ...(optionalText(data.get("proposedStartDate")) === undefined
         ? {}
         : { proposedStartDate: String(data.get("proposedStartDate")) }),
-      ...(duration === undefined
-        ? {}
-        : { durationDays: Number.parseInt(duration, 10) }),
+      durationDays: Number(data.get("durationDays")),
       ...(optionalText(data.get("includedCosts")) === undefined
         ? {}
         : { includedCosts: String(data.get("includedCosts")).trim() }),
@@ -159,45 +186,35 @@ export function BidForm({
         ));
   }
 
-  async function onWithdraw(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    await send(
-      withdrawBidRequest,
-      `/api/tenders/${tenderId}/bids/mine`,
-      copy.withdrawn,
-    );
-  }
-
   return (
     <>
       <form className="bid-form form-stack" onSubmit={onSubmit} noValidate>
         <ErrorSummary
           id="bid-errors"
-          issues={issue ? [issue] : []}
+          issues={issues}
           summaryOne={copy.summaryOne}
           summaryMany={copy.summaryMany}
         />
         <Field
           id="bid-amount"
           label={copy.amount}
-          description={copy.amountHint}
+          description={copy.amountHint.replace("{currency}", currency)}
+          requirement={copy.required}
+          error={fieldError("bid-amount")}
+          suffix={<span className="field-currency">{currency}</span>}
         >
-          <input
+          <AmountInput
             name="amount"
-            type="number"
-            inputMode="decimal"
-            min="0.01"
-            step="0.01"
             required
-            defaultValue={
-              existing === null ? "" : String(existing.amountMinorUnits / 100)
-            }
+            value={amount}
+            onChange={setAmount}
           />
         </Field>
         <Field
           id="bid-start"
           label={copy.proposedStartDate}
-          description={copy.optional}
+          requirement={copy.optional}
+          error={fieldError("bid-start")}
         >
           <input
             name="proposedStartDate"
@@ -214,10 +231,14 @@ export function BidForm({
         <Field
           id="bid-duration"
           label={copy.durationDays}
-          description={copy.optional}
+          requirement={copy.required}
+          description={copy.durationHint}
+          error={fieldError("bid-duration")}
         >
           <input
             name="durationDays"
+            required
+            max={MAX_BID_DURATION_DAYS}
             type="number"
             min="1"
             step="1"
@@ -227,10 +248,12 @@ export function BidForm({
         <Field
           id="bid-included"
           label={copy.includedCosts}
-          description={copy.optional}
+          requirement={copy.optional}
+          error={fieldError("bid-included")}
         >
           <textarea
             name="includedCosts"
+            maxLength={MAX_BID_TERM_LENGTH}
             rows={2}
             defaultValue={existing?.includedCosts ?? ""}
           />
@@ -238,10 +261,12 @@ export function BidForm({
         <Field
           id="bid-exclusions"
           label={copy.exclusions}
-          description={copy.optional}
+          requirement={copy.optional}
+          error={fieldError("bid-exclusions")}
         >
           <textarea
             name="exclusions"
+            maxLength={MAX_BID_TERM_LENGTH}
             rows={2}
             defaultValue={existing?.exclusions ?? ""}
           />
@@ -250,12 +275,15 @@ export function BidForm({
           id="bid-conditions"
           label={copy.conditions}
           description={copy.conditionsHint}
+          requirement={copy.required}
+          error={fieldError("bid-conditions")}
         >
           <textarea
             name="conditions"
             rows={4}
             required
-            minLength={30}
+            minLength={MIN_BID_CONDITIONS_LENGTH}
+            maxLength={MAX_BID_CONDITIONS_LENGTH}
             defaultValue={existing?.conditions ?? ""}
           />
         </Field>
@@ -273,14 +301,15 @@ export function BidForm({
           isPending={isPending}
         />
       </form>
-      {isRevision ? (
-        <form className="form-stack" onSubmit={onWithdraw} noValidate>
-          <SubmitButton
-            label={copy.withdraw}
-            pendingLabel={copy.withdrawing}
-            isPending={isPending}
-          />
-        </form>
+      {onCancel ? (
+        <button
+          type="button"
+          className="tender-button"
+          disabled={isPending}
+          onClick={onCancel}
+        >
+          {copy.cancel}
+        </button>
       ) : null}
       {status === null ? null : (
         <p className="success-status" role="status">

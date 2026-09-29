@@ -337,6 +337,20 @@
 .tender-fact > svg {
   margin-top: 2px;
 }
+.tender-money {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.35em;
+}
+.tender-money > span {
+  white-space: nowrap;
+}
+.tender-money-currency {
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: var(--tender-muted);
+}
 .tender-detail-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;

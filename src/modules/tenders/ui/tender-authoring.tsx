@@ -43,7 +43,12 @@ import { WorkItemsEditor } from "./work-items-editor";
 import { LocationMap } from "./location-map";
 import { GeorgianPlaceSelect } from "./georgian-place-select";
 import { TenderIcon } from "./tender-icon";
-import { TenderFact, tenderDate, tenderMoney } from "./tender-heading";
+import {
+  TenderFact,
+  TenderMoney,
+  tenderDate,
+  tenderMoney,
+} from "./tender-heading";
 import {
   TenderSections,
   isPhoto,
@@ -322,7 +327,7 @@ export function TenderAuthoring({
           item.quantity > 1_000_000_000,
       )
     )
-      errors.push({ field: "work", message: m.errors.invalidInput });
+      errors.push({ field: "work", message: d.workItemsHint });
     if (errors.length) {
       showIssues(errors);
       return false;
@@ -589,6 +594,7 @@ export function TenderAuthoring({
     label: string,
     options: {
       required?: boolean;
+      minLength?: number;
       maxLength?: number;
       textarea?: boolean;
       description?: string;
@@ -599,6 +605,7 @@ export function TenderAuthoring({
       name: key,
       value: String(form[key] ?? ""),
       required: props.required,
+      minLength: props.minLength,
       maxLength: props.maxLength,
       onChange: (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -608,8 +615,21 @@ export function TenderAuthoring({
       <Field
         id={key}
         label={label}
+        requirement={
+          props.required ? messages.common.required : messages.common.optional
+        }
         error={issues.find((issue) => issue.field === key)?.message}
-        {...(props.description ? { description: props.description } : {})}
+        description={[
+          props.description,
+          props.minLength
+            ? messages.errors.minimumLength.replace(
+                "{min}",
+                String(props.minLength),
+              )
+            : null,
+        ]
+          .filter(Boolean)
+          .join(" ")}
       >
         {textarea ? <textarea {...control} rows={4} /> : <input {...control} />}
       </Field>
@@ -646,11 +666,11 @@ export function TenderAuthoring({
   const facts = (
     <dl className="authoring-facts">
       <TenderFact icon="wallet" label={m.budget}>
-        {tenderMoney(
-          majorUnitsToMinor(form.budget),
-          form.currency ?? "GEL",
-          locale,
-        )}
+        <TenderMoney
+          value={majorUnitsToMinor(form.budget)}
+          currency={form.currency ?? "GEL"}
+          locale={locale}
+        />
       </TenderFact>
       <TenderFact icon="calendar" label={m.deadline}>
         {tenderDate(
@@ -693,6 +713,9 @@ export function TenderAuthoring({
             <p>
               {review ? c.reviewHint : published ? initialForm.title : c.intro}
             </p>
+            {!review ? (
+              <p className="authoring-hint">{m.requiredFieldsHint}</p>
+            ) : null}
             {published && !review ? (
               <p className="authoring-hint">{c.editingHint}</p>
             ) : null}
@@ -720,7 +743,26 @@ export function TenderAuthoring({
           ) : null}
         </header>
         <ErrorSummary
-          issues={issues}
+          issues={issues.map((issue) => ({
+            ...issue,
+            label: (
+              {
+                specialty: m.filterSpecialty,
+                serviceCode: m.filterService,
+                title: m.title,
+                fullDescription: c.description,
+                budget: m.budget,
+                deadline: m.deadline,
+                desiredStartDate: m.desiredStartDate,
+                city: m.city,
+                addressLine: m.addressLine,
+                latitude: c.location,
+                longitude: c.location,
+                areaSquareMeters: c.area,
+                work: c.quantities,
+              } as Record<string, string>
+            )[issue.field],
+          }))}
           summaryOne={messages.errors.summaryOne}
           summaryMany={messages.errors.summaryMany}
         />
@@ -794,6 +836,7 @@ export function TenderAuthoring({
                   <div className="authoring-two-columns">
                     <Field
                       id="specialty"
+                      requirement={messages.common.required}
                       label={m.filterSpecialty}
                       error={
                         issues.find((issue) => issue.field === "specialty")
@@ -822,6 +865,7 @@ export function TenderAuthoring({
                     </Field>
                     <Field
                       id="serviceCode"
+                      requirement={messages.common.required}
                       label={m.filterService}
                       error={
                         issues.find((issue) => issue.field === "serviceCode")
@@ -853,9 +897,14 @@ export function TenderAuthoring({
                       </select>
                     </Field>
                   </div>
-                  {field("title", m.title, { required: true, maxLength: 160 })}
+                  {field("title", m.title, {
+                    required: true,
+                    minLength: 5,
+                    maxLength: 160,
+                  })}
                   {field("fullDescription", c.description, {
                     required: true,
+                    minLength: 20,
                     textarea: true,
                     maxLength: 5000,
                     description: c.descriptionHint,
@@ -938,6 +987,7 @@ export function TenderAuthoring({
                   <div className="authoring-money">
                     <Field
                       id="budget"
+                      requirement={messages.common.required}
                       label={m.budget}
                       error={
                         issues.find((issue) => issue.field === "budget")
@@ -951,9 +1001,14 @@ export function TenderAuthoring({
                         onChange={(value) => update({ budget: value })}
                       />
                     </Field>
-                    <Field id="currency" label={m.currency}>
+                    <Field
+                      id="currency"
+                      requirement={messages.common.required}
+                      label={m.currency}
+                    >
                       <select
                         name="currency"
+                        required
                         disabled={published}
                         value={form.currency}
                         onChange={(event) => {
@@ -970,6 +1025,7 @@ export function TenderAuthoring({
                   </div>
                   <Field
                     id="deadline"
+                    requirement={messages.common.required}
                     label={m.deadline}
                     description={c.timeZone}
                     error={
@@ -988,7 +1044,12 @@ export function TenderAuthoring({
                   </Field>
                   <Field
                     id="desiredStartDate"
-                    label={`${m.desiredStartDate} (${c.optional})`}
+                    label={m.desiredStartDate}
+                    requirement={messages.common.optional}
+                    error={
+                      issues.find((issue) => issue.field === "desiredStartDate")
+                        ?.message
+                    }
                   >
                     <DateField
                       name="desiredStartDate"
@@ -1164,6 +1225,7 @@ export function TenderAuthoring({
                   <div className="authoring-two-columns">
                     <Field
                       id="city"
+                      requirement={messages.common.required}
                       label={m.city}
                       error={
                         issues.find((issue) => issue.field === "city")?.message
@@ -1192,13 +1254,18 @@ export function TenderAuthoring({
                         }}
                       />
                     </Field>
-                    {field("district", `${m.district} (${c.optional})`, {
+                    {field("district", m.district, {
                       maxLength: 120,
                     })}
                   </div>
                   <Field
                     id="addressLine"
                     label={m.addressLine}
+                    requirement={
+                      form.locationMode === "PIN"
+                        ? messages.common.optional
+                        : messages.common.required
+                    }
                     error={
                       issues.find((issue) => issue.field === "addressLine")
                         ?.message
@@ -1207,6 +1274,8 @@ export function TenderAuthoring({
                   >
                     <input
                       name="addressLine"
+                      required={form.locationMode !== "PIN"}
+                      minLength={3}
                       maxLength={240}
                       value={form.addressLine ?? ""}
                       onChange={(event) =>

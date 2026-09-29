@@ -23,6 +23,7 @@ export function bidFormCopy(messages: Messages): BidFormCopy {
   };
 
   return {
+    cancel: messages.bidding.offer.cancel,
     amount: messages.bidding.amount,
     amountHint: messages.bidding.amountHint,
     proposedStartDate: messages.bidding.proposedStartDate,
@@ -32,6 +33,9 @@ export function bidFormCopy(messages: Messages): BidFormCopy {
     conditions: messages.bidding.conditions,
     conditionsHint: messages.bidding.conditionsHint,
     optional: messages.common.optional,
+    required: messages.common.required,
+    durationHint: messages.bidding.durationHint,
+    validation: messages.bidding.validation,
     submit: messages.bidding.submit,
     submitting: messages.bidding.submitting,
     revise: messages.bidding.revise,

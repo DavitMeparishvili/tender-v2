@@ -18,7 +18,8 @@
     "signOut": "Sign out",
     "security": "Account security",
     "verified": "Verified account",
-    "optional": "Optional"
+    "optional": "Optional",
+    "required": "Required"
   },
   "auth": {
     "homeTitle": "A clear start for every project",
@@ -312,7 +313,9 @@
       "locationRequired": "Add a location before publishing.",
       "deadlineRequired": "Add a bidding deadline before publishing.",
       "deadlineNotFuture": "Choose a bidding deadline in the future."
-    }
+    },
+    "pinRequiredHint": "Required: choose the exact work location on the map.",
+    "requiredFieldsHint": "Fields marked Required must be completed before publishing. You can save a draft after choosing a category, service and title."
   },
   "entitlements": {
     "lockedTitle": "Full access is free for now",
@@ -359,7 +362,7 @@
     "currentLowest": "Current lowest",
     "yourOffer": "Your offer",
     "amount": "Offer amount",
-    "amountHint": "The amount you will complete the work for, in the tender's currency.",
+    "amountHint": "Your total price in {currency}. Use a decimal point for cents, e.g. 20,000.50.",
     "proposedStartDate": "Proposed start date",
     "durationDays": "Duration in days",
     "includedCosts": "Included costs",
@@ -397,6 +400,45 @@
       "bidAlreadyExists": "You already have an offer on this tender. Revise it instead.",
       "bidNotFound": "You do not have an offer on this tender.",
       "bidNotActive": "That offer is withdrawn or already settled."
+    },
+    "durationHint": "Enter a whole number from 1 to 3,650 days.",
+    "validation": {
+      "amount": "Enter an offer amount from 0.01 to 21,474,836.47 {currency}.",
+      "duration": "Enter a duration from 1 to 3,650 whole days.",
+      "conditions": "Describe your terms in 30–4,000 characters.",
+      "date": "Enter a valid proposed start date.",
+      "term": "Use no more than 2,000 characters."
+    },
+    "offer": {
+      "title": "Your offer",
+      "edit": "Edit offer",
+      "cancel": "Cancel editing",
+      "back": "My offers",
+      "empty": "You haven’t sent any offers yet.",
+      "view": "View offer",
+      "deadline": "Tender deadline",
+      "submittedAt": "Submitted",
+      "updatedAt": "Last saved",
+      "confirmTitle": "Withdraw this offer?",
+      "confirmBody": "Withdrawal is final. You cannot submit another offer for this tender.",
+      "confirm": "Yes, withdraw offer",
+      "keep": "Keep offer",
+      "missing": "Not provided",
+      "statuses": {
+        "active": "Submitted · awaiting deadline",
+        "pending": "Awaiting result",
+        "won": "Won",
+        "lost": "Not selected",
+        "withdrawn": "Withdrawn",
+        "cancelled": "Tender cancelled",
+        "ended": "Tender ended"
+      },
+      "activeBody": "Your offer is saved and is taking part in this tender. The lowest eligible offer wins automatically at the deadline.",
+      "pendingBody": "Bidding has ended. The result will appear here after selection is processed.",
+      "withdrawnBody": "This offer is no longer participating. You cannot submit another offer for this tender.",
+      "cancelledBody": "The client cancelled this tender. Your offer is no longer participating.",
+      "endedBody": "This tender has ended.",
+      "intro": "Track the status and saved details of your offers."
     }
   },
   "workspace": {
@@ -567,7 +609,8 @@
     "emailUnverified": "Verify your email before completing your profile.",
     "profileNotFound": "Complete your profile before editing it.",
     "generic": "We could not complete that request. Try again safely.",
-    "dirtyLocale": "Changing language will discard unsaved changes. Continue?"
+    "dirtyLocale": "Changing language will discard unsaved changes. Continue?",
+    "minimumLength": "Enter at least {min} characters."
   },
   "access": {
     "unauthenticated": "Sign in to continue.",
@@ -614,7 +657,8 @@
     "terms": "Terms",
     "legal": "© 2026 Tender. Placeholder name — logo and brand to be defined.",
     "agreementsBody": "Confirm, start and complete the engagements your won tenders produced.",
-    "inboxBody": "Every platform event that concerns you, newest first."
+    "inboxBody": "Every platform event that concerns you, newest first.",
+    "mobileOffers": "Offers"
   },
   "landing": {
     "overline": "Construction procurement",

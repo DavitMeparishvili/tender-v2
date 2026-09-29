@@ -13,6 +13,7 @@ type FieldProps = Readonly<{
   error?: string | undefined;
   children: ReactElement<ControlProps>;
   suffix?: ReactNode;
+  requirement?: string;
 }>;
 
 export function Field({
@@ -22,6 +23,7 @@ export function Field({
   error,
   children,
   suffix,
+  requirement,
 }: FieldProps) {
   const describedBy = [
     description ? `${id}-description` : null,
@@ -32,7 +34,14 @@ export function Field({
 
   return (
     <div className="form-field">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        {label}
+        {requirement ? (
+          <span className="field-requirement" aria-hidden="true">
+            {requirement}
+          </span>
+        ) : null}
+      </label>
       {description ? (
         <p className="field-description" id={`${id}-description`}>
           {description}

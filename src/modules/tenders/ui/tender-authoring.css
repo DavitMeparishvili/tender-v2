@@ -58,10 +58,15 @@
 }
 .authoring-panel-title {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+.authoring-panel-title h2 {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 .tender-authoring h2 {
   font-size: 20px;
@@ -126,14 +131,6 @@
 }
 .tender-authoring .field-control {
   min-width: 0;
-}
-.tender-authoring .form-field:has([required]) > label::after {
-  content: " *";
-  color: #ba5147;
-}
-.tender-authoring .form-field:has([aria-required="true"]) > label::after {
-  content: " *";
-  color: #ba5147;
 }
 .authoring-area .field-control {
   position: relative;
@@ -264,8 +261,12 @@
 }
 .authoring-money {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 90px;
+  grid-template-columns: minmax(0, 1fr) 124px;
   gap: 10px;
+}
+.authoring-money .field-requirement {
+  display: block;
+  margin-inline-start: 0;
 }
 .authoring-budget .form-field {
   margin-bottom: 0;
@@ -790,7 +791,7 @@
     margin-bottom: 12px;
   }
   .authoring-money {
-    grid-template-columns: minmax(0, 1fr) 90px;
+    grid-template-columns: minmax(0, 1fr);
   }
   .authoring-area-control > span {
     height: 42px;

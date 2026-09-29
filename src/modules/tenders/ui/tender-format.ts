@@ -35,14 +35,20 @@ export function formatTenderDate(value: Date | string | null, locale: Locale) {
 export function formatTenderMoney(
   minorUnits: number | null,
   currency: TenderCurrency | null,
-  locale: Locale,
+  _locale: Locale,
 ) {
   if (minorUnits === null || currency === null) return null;
+  // Keep the locale argument for callers; money entry/display intentionally
+  // uses the same separators in all three interface languages.
+  void _locale;
 
-  return new Intl.NumberFormat(intlLocales[locale], {
-    style: "currency",
-    currency,
+  // Match the amount fields across languages: comma groups, decimal point,
+  // and an unambiguous currency code kept with the amount on narrow screens.
+  const amount = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: minorUnits % 100 ? 2 : 0,
+    maximumFractionDigits: 2,
   }).format(minorUnits / 100);
+  return `${amount}\u00a0${currency}`;
 }
 
 const KILOBYTE = 1024;

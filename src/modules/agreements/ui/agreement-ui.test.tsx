@@ -63,7 +63,7 @@ describe("AgreementDetail", () => {
     const html = renderAgreement();
     expect(html).toContain("Kitchen renovation");
     expect(html).toContain("Fixed scope");
-    expect(html).toContain("10.00");
+    expect(html).toContain("10\u00a0GEL");
     expect(html).toContain("12 days");
     expect(html).toContain("Labour and materials");
     expect(html).toContain("Painting");

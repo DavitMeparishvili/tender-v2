@@ -172,6 +172,11 @@ python scripts/deploy-droplet.py --preflight-only
 python scripts/deploy-droplet.py
 ```
 
+For a code-only release when no database backup is wanted, use
+`python scripts/deploy-droplet.py --skip-database-backup`. This keeps the private
+environment and previous-image metadata needed for app rollback, but does not
+run `pg_dump`. Releases with migrations cannot use this option.
+
 The helper waits for the `master` commit's image publication, validates the
 running stack, makes a private PostgreSQL/environment backup in
 `/opt/tender-backups`, and deploys the immutable commit image. Only the app is

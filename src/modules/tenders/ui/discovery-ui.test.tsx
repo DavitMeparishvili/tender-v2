@@ -322,7 +322,7 @@ describe("provider masked discovery UI", () => {
     }
     expect(html).toContain(ka.tenders.specialtyConstructionRepair);
     expect(html).toContain(ka.tenders.mapApproximateLabel);
-    expect(html).toContain("1234,56");
+    expect(html).toContain("1,234.56");
     for (const sentinel of sensitiveSentinels) {
       expect(html).not.toContain(sentinel);
     }

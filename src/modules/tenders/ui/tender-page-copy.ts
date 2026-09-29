@@ -12,6 +12,8 @@ const en = {
   quantity: "Quantity",
   unit: "Unit",
   unitShort: "Unit",
+  workItemsHint:
+    "Optional. For each added row, enter a work item, a quantity greater than zero and a unit, or remove the row.",
   supplied: "Quantities specified by the client.",
   suppliedOwner: "Quantities specified by you.",
   noQuantities: "No itemized quantities provided.",
@@ -85,6 +87,8 @@ const ka: Copy = {
   quantity: "რაოდენობა",
   unit: "ერთეული",
   unitShort: "ერთ.",
+  workItemsHint:
+    "არასავალდებულო. დამატებულ სტრიქონში შეავსეთ სამუშაო, ნულზე მეტი რაოდენობა და ერთეული, ან წაშალეთ სტრიქონი.",
   supplied: "რაოდენობები მითითებულია დამკვეთის მიერ.",
   suppliedOwner: "რაოდენობები მითითებულია თქვენ მიერ.",
   noQuantities: "რაოდენობები არ არის მითითებული.",
@@ -160,6 +164,8 @@ const ru: Copy = {
   quantity: "Количество",
   unit: "Единица",
   unitShort: "Ед.",
+  workItemsHint:
+    "Необязательно. В каждой добавленной строке укажите работу, количество больше нуля и единицу или удалите строку.",
   supplied: "Количество указано заказчиком.",
   suppliedOwner: "Количество указано вами.",
   noQuantities: "Объёмы не указаны.",

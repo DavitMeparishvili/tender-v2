@@ -270,7 +270,7 @@ export function validateWizardStep(
     } else if (title.length < 5) {
       issues.push({
         field: "title",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "5"),
       });
     }
   }
@@ -287,7 +287,7 @@ export function validateWizardStep(
     } else if (shortDescription.length < 10) {
       issues.push({
         field: "shortDescription",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "10"),
       });
     }
     if (fullDescription === "") {
@@ -298,7 +298,7 @@ export function validateWizardStep(
     } else if (fullDescription.length < 20) {
       issues.push({
         field: "fullDescription",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "20"),
       });
     }
     if (scopeOfWork === "") {
@@ -309,7 +309,7 @@ export function validateWizardStep(
     } else if (scopeOfWork.length < 10) {
       issues.push({
         field: "scopeOfWork",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "10"),
       });
     }
     if (trimmed(form.budget) === "" || !form.currency) {
@@ -361,7 +361,7 @@ export function validateWizardStep(
     } else if (city.length < 2) {
       issues.push({
         field: "city",
-        message: messages.tenders.errors.invalidInput,
+        message: messages.errors.minimumLength.replace("{min}", "2"),
       });
     }
     if (form.locationMode === "PIN") {
@@ -381,7 +381,7 @@ export function validateWizardStep(
       } else if (addressLine.length < 3) {
         issues.push({
           field: "addressLine",
-          message: messages.tenders.errors.invalidInput,
+          message: messages.errors.minimumLength.replace("{min}", "3"),
         });
       }
     }
@@ -1069,6 +1069,7 @@ export function TenderWizard({
           />
           <Field
             id="specialty"
+            requirement={messages.common.required}
             label={messages.tenders.filterSpecialty}
             description={messages.tenders.specialtyConstructionRepairHint}
             error={issueFor(issues, "specialty")}
@@ -1095,6 +1096,7 @@ export function TenderWizard({
           </Field>
           <Field
             id="serviceCode"
+            requirement={messages.common.required}
             label={messages.tenders.filterService}
             description={messages.tenders.serviceHint}
             error={issueFor(issues, "serviceCode")}
@@ -1124,8 +1126,10 @@ export function TenderWizard({
           </Field>
           <Field
             id="title"
+            requirement={messages.common.required}
             label={messages.tenders.title}
             error={issueFor(issues, "title")}
+            description={messages.errors.minimumLength.replace("{min}", "5")}
           >
             <input
               name="title"
@@ -1165,8 +1169,10 @@ export function TenderWizard({
           />
           <Field
             id="shortDescription"
+            requirement={messages.common.required}
             label={messages.tenders.shortDescription}
             error={issueFor(issues, "shortDescription")}
+            description={messages.errors.minimumLength.replace("{min}", "10")}
           >
             <textarea
               name="shortDescription"
@@ -1181,8 +1187,10 @@ export function TenderWizard({
           </Field>
           <Field
             id="fullDescription"
+            requirement={messages.common.required}
             label={messages.tenders.fullDescription}
             error={issueFor(issues, "fullDescription")}
+            description={messages.errors.minimumLength.replace("{min}", "20")}
           >
             <textarea
               name="fullDescription"
@@ -1197,8 +1205,10 @@ export function TenderWizard({
           </Field>
           <Field
             id="scopeOfWork"
+            requirement={messages.common.required}
             label={messages.tenders.scopeOfWork}
             error={issueFor(issues, "scopeOfWork")}
+            description={messages.errors.minimumLength.replace("{min}", "10")}
           >
             <textarea
               name="scopeOfWork"
@@ -1219,7 +1229,11 @@ export function TenderWizard({
               setModified(true);
             }}
           />
-          <Field id="areaSquareMeters" label={tenderPageCopy(locale).area}>
+          <Field
+            id="areaSquareMeters"
+            label={tenderPageCopy(locale).area}
+            requirement={messages.common.optional}
+          >
             <input
               type="number"
               name="areaSquareMeters"
@@ -1235,6 +1249,7 @@ export function TenderWizard({
           <div className="wizard-compact-fields">
             <Field
               id="budget"
+              requirement={messages.common.required}
               label={messages.tenders.budget}
               error={issueFor(issues, "budget")}
             >
@@ -1245,9 +1260,14 @@ export function TenderWizard({
                 onChange={(value) => updateField("budget", value)}
               />
             </Field>
-            <Field id="currency" label={messages.tenders.currency}>
+            <Field
+              id="currency"
+              requirement={messages.common.required}
+              label={messages.tenders.currency}
+            >
               <select
                 name="currency"
+                required
                 value={form.currency}
                 onChange={(event) => {
                   currencyTouched.current = true;
@@ -1261,6 +1281,7 @@ export function TenderWizard({
           </div>
           <Field
             id="deadline"
+            requirement={messages.common.required}
             label={messages.tenders.deadline}
             error={issueFor(issues, "deadline")}
           >
@@ -1276,7 +1297,8 @@ export function TenderWizard({
           <Field
             id="desiredStartDate"
             label={messages.tenders.desiredStartDate}
-            description={messages.common.optional}
+            error={issueFor(issues, "desiredStartDate")}
+            requirement={messages.common.optional}
           >
             <DateField
               name="desiredStartDate"
@@ -1305,7 +1327,7 @@ export function TenderWizard({
                 <Field
                   id={field}
                   label={label}
-                  description={messages.common.optional}
+                  requirement={messages.common.optional}
                   key={field}
                 >
                   <textarea
@@ -1345,6 +1367,7 @@ export function TenderWizard({
           />
           <Field
             id="city"
+            requirement={messages.common.required}
             label={messages.tenders.city}
             description={messages.tenders.placeHint}
             error={issueFor(issues, "city")}
@@ -1367,7 +1390,7 @@ export function TenderWizard({
           <Field
             id="district"
             label={messages.tenders.district}
-            description={messages.common.optional}
+            requirement={messages.common.optional}
           >
             <input
               name="district"
@@ -1396,7 +1419,9 @@ export function TenderWizard({
           </label>
           <div className="wizard-map">
             <p className="wizard-map-hint" id="map-hint">
-              {messages.tenders.mapHint}
+              {form.locationMode === "PIN"
+                ? messages.tenders.pinRequiredHint
+                : messages.tenders.mapHint}
             </p>
             <LocationMap
               coordinates={pinCoordinates(form)}
@@ -1422,8 +1447,10 @@ export function TenderWizard({
           ) : (
             <Field
               id="addressLine"
+              requirement={messages.common.required}
               label={messages.tenders.addressLine}
               error={issueFor(issues, "addressLine")}
+              description={messages.errors.minimumLength.replace("{min}", "3")}
             >
               <input
                 name="addressLine"
@@ -1441,6 +1468,7 @@ export function TenderWizard({
           )}
           <Field
             id="attachments"
+            requirement={messages.common.optional}
             label={messages.tenders.uploadAttachment}
             description={messages.tenders.attachmentHint}
             error={issueFor(issues, "attachments")}

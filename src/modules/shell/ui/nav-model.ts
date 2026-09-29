@@ -69,7 +69,7 @@ export function buildShellNav(
   if (isProvider) {
     items.push({
       key: "myOffers",
-      href: at("/provider"),
+      href: at("/provider/offers"),
       label: messages.nav.myOffers,
     });
   }
@@ -119,7 +119,13 @@ export function buildShellNav(
       : { href: at("/profile"), label: viewer.displayName };
 
   const tabs: NavItem[] = [
-    { key: "home", href: at(""), label: messages.nav.home },
+    isProvider
+      ? {
+          key: "myOffers",
+          href: at("/provider/offers"),
+          label: messages.nav.mobileOffers,
+        }
+      : { key: "home", href: at(""), label: messages.nav.home },
     {
       key: "discover",
       href: at(isClient ? "/client/tenders" : "/provider/tenders"),

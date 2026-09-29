@@ -60,6 +60,8 @@
   --tip-red: #ba5147;
   --tip-red-dk: #8f3a32;
   --tip-red-soft: #f6e7e5;
+  --status-pending-text: #854d0e;
+  --status-pending-soft: #fef3c7;
 
   /* ---- Semantic ---- */
   --bg-page: var(--tip-grey-50);
@@ -3725,6 +3727,35 @@ img {
   color: var(--fg-3);
 }
 
+.field-requirement {
+  margin-inline-start: 0.5em;
+  color: var(--fg-3);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.field-currency {
+  flex: none;
+  color: var(--fg-1);
+  font-weight: var(--weight-semibold);
+}
+
+@media (width <= 360px) {
+  .site-header .wordmark {
+    font-size: 24px;
+    gap: 8px;
+  }
+
+  .site-header .wordmark::before {
+    inline-size: 30px;
+    block-size: 28px;
+  }
+}
+
+.bid-form .field-control > input {
+  min-inline-size: 0;
+}
+
 .field-error {
   color: var(--tip-red-dk);
   font-weight: var(--weight-semibold);
@@ -4853,6 +4884,26 @@ img {
 .date-calendar-clear:hover {
   background: var(--tip-red-soft);
   color: var(--tip-red-dk);
+}
+
+@media (max-width: 480px) {
+  .date-calendar {
+    position: fixed;
+    inset-block-start: 50%;
+    inset-inline: 8px;
+    transform: translateY(-50%);
+    min-inline-size: 0;
+    max-block-size: calc(100dvh - 32px);
+    overflow-y: auto;
+    z-index: 60;
+  }
+  .date-calendar-grid,
+  .date-calendar-weekdays {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .date-calendar-day {
+    min-inline-size: 0;
+  }
 }
 
 /* Optional notes collapse behind a disclosure so the required path (budget,
@@ -6183,5 +6234,216 @@ img {
     border-block-start: 1px solid var(--border);
     background: var(--bg-surface);
     padding-block-end: max(16px, env(safe-area-inset-bottom));
+  }
+}
+/* Saved offers share the tender surfaces, with readable terms instead of inputs. */
+.own-offer {
+  padding: clamp(16px, 3vw, 28px);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  scroll-margin-top: 150px;
+  min-width: 0;
+}
+.own-offer-heading,
+.own-offer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.own-offer-actions {
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+.own-offer-heading h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.own-offer > p {
+  margin-block: 12px;
+}
+.own-offer > .offer-status {
+  margin-block: 20px 16px;
+}
+.own-offer .bid-form {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  margin-top: 20px;
+}
+.public-detail .rail-head {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.public-detail .rail-head h2 {
+  flex: 1 1 10rem;
+  margin: 0;
+  font: inherit;
+}
+.public-detail .rail-head .tag {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.public-detail .rail-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.public-detail .rail-figures dd {
+  overflow-wrap: normal;
+}
+.public-detail .identity-row > div {
+  min-width: 0;
+}
+.public-detail .identity-note a {
+  overflow-wrap: anywhere;
+}
+.public-detail :is(.tender-button, button[type="submit"]) {
+  height: auto;
+  min-height: 44px;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.public-detail .own-offer-actions > button {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+.offer-status {
+  overflow-wrap: normal;
+}
+.own-offer-amount {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.own-offer-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.own-offer-facts > div:nth-child(n + 6) {
+  grid-column: 1 / -1;
+}
+.own-offer-facts dt {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+.own-offer-facts dd {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.own-offer-confirm {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+.own-offer-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.offer-status {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--fg-2);
+  background: var(--bg-subtle);
+}
+.offer-status-active,
+.offer-status-pending {
+  color: var(--status-pending-text);
+  background: var(--status-pending-soft);
+}
+.offer-status-won {
+  color: var(--trust);
+  background: var(--trust-soft);
+}
+.offer-status-lost {
+  color: var(--error);
+  background: var(--error-soft);
+}
+
+/* The comparison sits in a narrower detail column even on desktop. */
+.bid-comparison {
+  container-type: inline-size;
+}
+@container (max-width: 1000px) {
+  .bid-comparison-scroll {
+    overflow-x: visible;
+  }
+  .bid-comparison :is(table, tbody) {
+    display: block;
+  }
+  .bid-comparison thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .bid-comparison tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 24px;
+    margin-block: 16px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .bid-comparison tbody :is(th, td) {
+    display: block;
+    min-width: 0;
+    max-inline-size: none;
+    padding: 0;
+    border: 0;
+    overflow-wrap: anywhere;
+    order: 3;
+  }
+  .bid-comparison tbody th {
+    order: 0;
+  }
+  .bid-comparison tbody td:nth-child(n) {
+    max-inline-size: none;
+  }
+  .bid-comparison tbody td:last-child {
+    order: 1;
+  }
+  .bid-comparison tbody td:nth-child(2) {
+    order: 2;
+  }
+  .bid-comparison tbody td:nth-child(3) {
+    order: 2;
+  }
+  .bid-comparison tbody td:nth-child(6) {
+    grid-column: 1 / -1;
+  }
+  .bid-comparison tbody :is(th, td)::before {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--fg-3);
+    font-size: var(--text-caption);
+    font-weight: var(--weight-medium);
+    content: attr(data-label);
+  }
+}
+@container (max-width: 480px) {
+  .bid-comparison tbody tr {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .own-offer-facts {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -87,6 +87,7 @@ export default async function ClientTenderDetailPage({
           </section>
         ) : null}
         <BidComparison
+          showSelectionRule={owned.value.status === "PUBLISHED"}
           bids={bids}
           copy={bidComparisonCopy(messages)}
           locale={locale}

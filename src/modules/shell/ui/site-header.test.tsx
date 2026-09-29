@@ -11,6 +11,16 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("SiteHeader", () => {
+  it("makes own offers reachable from contractor mobile navigation", () => {
+    const nav = buildShellNav("ka", getMessages("ka"), {
+      displayName: "Provider",
+      capabilities: ["PROVIDER"],
+    });
+    const tab = nav.tabs.find((item) => item.key === "myOffers")!;
+    expect(tab.href).toBe("/ka/provider/offers");
+    expect(isCurrent(tab, "/ka/provider/offers")).toBe(true);
+    expect(isCurrent(tab, "/ka/provider/tenders/example")).toBe(false);
+  });
   it("keeps mobile Tenders active across client and discovery details", () => {
     const tab = buildShellNav("en", getMessages("en"), {
       displayName: "Client",

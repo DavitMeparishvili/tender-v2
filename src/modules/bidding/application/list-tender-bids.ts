@@ -2,7 +2,7 @@ import type { Result } from "../../shared";
 import type { Bid } from "../domain/bid";
 import { rankBids } from "../domain/ranking";
 import type { ProviderDirectory } from "../ports/provider-directory";
-import type { BidActor, TenderContextLookup } from "./submit-bid";
+import type { BidActor } from "./submit-bid";
 
 // What the client sees: every bid, ranked, with the provider's public display
 // name. The client may compare but may not choose — no route in this module
@@ -28,7 +28,14 @@ export interface ListTenderBidsRepository {
 
 export function createListTenderBids(dependencies: {
   repository: ListTenderBidsRepository;
-  tenders: TenderContextLookup;
+  tenders: (
+    id: string,
+  ) => Promise<
+    Result<
+      Readonly<{ ownerId: string; currency: Bid["currency"]; deadline: Date }>,
+      "TENDER_NOT_FOUND" | "NOT_OWNER"
+    >
+  >;
   directory: ProviderDirectory;
 }) {
   return async function listTenderBids(
@@ -38,7 +45,7 @@ export function createListTenderBids(dependencies: {
     Result<readonly ClientBidView[], "TENDER_NOT_FOUND" | "NOT_OWNER">
   > {
     const tender = await dependencies.tenders(tenderId);
-    if (!tender.ok) return { ok: false, error: "TENDER_NOT_FOUND" };
+    if (!tender.ok) return tender;
     if (tender.value.ownerId !== actor.id) {
       return { ok: false, error: "NOT_OWNER" };
     }
@@ -88,16 +95,23 @@ export async function listTenderBids(
 ): Promise<Result<readonly ClientBidView[], "TENDER_NOT_FOUND" | "NOT_OWNER">> {
   const [
     { prismaBidRepository },
-    { getTenderBiddingContext },
+    { getOwnedTender },
     { getProviderDisplayNames },
   ] = await Promise.all([
     import("../infrastructure/prisma-bid-repository"),
-    import("../../tenders/application/get-tender-bidding-context"),
+    import("../../tenders/application/get-owned-tender"),
     import("../../profiles/application/get-provider-display-names"),
   ]);
+  // History remains readable after cancellation; the bidding context deliberately
+  // excludes cancelled tenders because it gates new bidding operations.
+  const owned = await getOwnedTender(tenderId, actor);
+  if (!owned.ok) return owned;
+  const { ownerId, currency, deadline } = owned.value;
+  // A draft cancelled before publication cannot have received offers.
+  if (currency === null || deadline === null) return { ok: true, value: [] };
   return createListTenderBids({
     repository: prismaBidRepository,
-    tenders: getTenderBiddingContext,
+    tenders: async () => ({ ok: true, value: { ownerId, currency, deadline } }),
     directory: getProviderDisplayNames,
   })(tenderId, actor);
 }

@@ -7,6 +7,7 @@ import { isCurrent, type NavItem } from "./nav-model";
 function TabIcon({ name }: { name: string }) {
   const paths: Record<string, string> = {
     home: "m3 10 9-8 9 8v12H3V10Z",
+    myOffers: "M5 2h9l5 5v15H5V2Zm9 0v6h5M8 12h8m-8 4h5",
     discover: "M5 2h9l5 5v15H5V2Zm9 0v6h5",
     agreements: "M2 8h20v13H2V8Zm6 0V3h8v5M2 13h20m-12-2v5h4v-5",
     profile: "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM4 22v-3a8 8 0 0 1 16 0v3H4Z",
@@ -30,6 +31,7 @@ function TabIcon({ name }: { name: string }) {
 
 const tabIcons: Readonly<Record<string, string>> = {
   home: "buildings",
+  myOffers: "checklist",
   discover: "magnify",
   agreements: "handshake",
   logIn: "profile",
