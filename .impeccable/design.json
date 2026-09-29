@@ -7,12 +7,30 @@
       "tender-green": {
         "role": "primary",
         "displayName": "Tender Action Emerald",
-        "tonalRamp": ["oklch(15% 0.04 165)", "oklch(26% 0.06 165)", "oklch(37% 0.08 165)", "oklch(49% 0.1 165)", "oklch(60% 0.11 165)", "oklch(72% 0.09 165)", "oklch(84% 0.05 165)", "oklch(95% 0.02 165)"]
+        "tonalRamp": [
+          "oklch(15% 0.04 165)",
+          "oklch(26% 0.06 165)",
+          "oklch(37% 0.08 165)",
+          "oklch(49% 0.1 165)",
+          "oklch(60% 0.11 165)",
+          "oklch(72% 0.09 165)",
+          "oklch(84% 0.05 165)",
+          "oklch(95% 0.02 165)"
+        ]
       },
       "tender-page": {
         "role": "neutral",
         "displayName": "Tender Cool Ground",
-        "tonalRamp": ["oklch(15% 0.006 250)", "oklch(26% 0.006 250)", "oklch(37% 0.006 250)", "oklch(49% 0.006 250)", "oklch(60% 0.006 250)", "oklch(72% 0.006 250)", "oklch(84% 0.006 250)", "oklch(95% 0.006 250)"]
+        "tonalRamp": [
+          "oklch(15% 0.006 250)",
+          "oklch(26% 0.006 250)",
+          "oklch(37% 0.006 250)",
+          "oklch(49% 0.006 250)",
+          "oklch(60% 0.006 250)",
+          "oklch(72% 0.006 250)",
+          "oklch(84% 0.006 250)",
+          "oklch(95% 0.006 250)"
+        ]
       },
       "brand": {
         "role": "primary",

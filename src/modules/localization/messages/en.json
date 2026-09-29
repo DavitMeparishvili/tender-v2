@@ -315,15 +315,15 @@
     }
   },
   "entitlements": {
-    "lockedTitle": "Full details are locked",
-    "lockedBody": "Buy access to see the exact location, the client's conditions, and any attached files, and to send a free offer.",
-    "unlockSingle": "Unlock this tender — USD 1",
-    "unlockMonthly": "Monthly access — USD 20",
-    "unlockAnnual": "Annual access — USD 200",
-    "unlocking": "Opening checkout",
+    "lockedTitle": "Full access is free for now",
+    "lockedBody": "Unlock the exact location, the client's conditions, and attached files, then submit an offer.",
+    "unlockSingle": "Unlock for free",
+    "unlockMonthly": "Monthly access — free for now",
+    "unlockAnnual": "Annual access — free for now",
+    "unlocking": "Unlocking access…",
     "confirmPayment": "Confirm test payment",
     "confirmingPayment": "Confirming payment",
-    "mockNotice": "Payments are simulated in this release. No card is charged and no money moves.",
+    "mockNotice": "Choose any option to unlock access in one click. No payment or card details needed.",
     "unlocked": "Full details unlocked.",
     "signInTitle": "Sign in as a provider to bid",
     "signInBody": "Anyone can browse tenders, but placing a bid and unlocking full details is limited to signed-in providers.",
@@ -347,10 +347,10 @@
     "orEverything": "Or bid on everything",
     "monthlyName": "Monthly access",
     "monthlyNote": "Every tender in your categories",
-    "monthlyPrice": "USD 20",
+    "monthlyPrice": "Free for now",
     "annualName": "Annual access",
-    "annualNote": "Two months free versus monthly",
-    "annualPrice": "USD 200"
+    "annualNote": "Access for a full year",
+    "annualPrice": "Free for now"
   },
   "bidding": {
     "summaryTitle": "Current competition",

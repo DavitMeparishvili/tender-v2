@@ -3,9 +3,7 @@ import { betterAuth } from "better-auth";
 import { z } from "zod";
 import { getServerEnv, type ServerEnv } from "../../../config/env";
 import { database } from "../../../infrastructure/db/client";
-import { isLocale, type Locale } from "../../localization/config";
-import { LogMailSender } from "../../notifications/adapters/log-mail-sender";
-import { getTestMailbox } from "../../notifications/adapters/test-mailbox";
+import { createMailSender } from "../../notifications/adapters/create-mail-sender";
 import type { MailSender } from "../../notifications/ports/mail-sender";
 import {
   ADDRESS_MAX_LENGTH,
@@ -20,16 +18,6 @@ type AuthDependencies = Readonly<{
   mailSender: MailSender;
   env?: ServerEnv;
 }>;
-
-async function preferredLocaleFor(userId: string): Promise<Locale> {
-  const profile = await database.userProfile.findUnique({
-    where: { userId },
-    select: { preferredLocale: true },
-  });
-  return profile !== null && isLocale(profile.preferredLocale)
-    ? profile.preferredLocale
-    : "ka";
-}
 
 function anchorToAppUrl(generatedUrl: string, appUrl: string): string {
   const anchored = new URL(generatedUrl, appUrl);
@@ -87,11 +75,13 @@ export function createAuth({
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: true,
+      resetPasswordTokenExpiresIn: 3600,
+      revokeSessionsOnPasswordReset: true,
       sendResetPassword: async ({ user, url }) => {
         await mailSender.send({
           to: user.email,
           template: "RESET_PASSWORD",
-          locale: await preferredLocaleFor(user.id),
+          locale: "en",
           variables: { resetUrl: anchorToAppUrl(url, env.APP_URL) },
         });
       },
@@ -99,11 +89,12 @@ export function createAuth({
     emailVerification: {
       autoSignInAfterVerification: true,
       sendOnSignUp: true,
+      expiresIn: 3600,
       sendVerificationEmail: async ({ user, url }) => {
         await mailSender.send({
           to: user.email,
           template: "VERIFY_EMAIL",
-          locale: await preferredLocaleFor(user.id),
+          locale: "en",
           variables: {
             verificationUrl: anchorToAppUrl(url, env.APP_URL),
           },
@@ -117,9 +108,6 @@ export function createAuth({
 }
 
 const env = getServerEnv();
-const mailSender =
-  env.NODE_ENV === "production"
-    ? new LogMailSender()
-    : getTestMailbox(env.NODE_ENV);
+const mailSender = createMailSender(env);
 
 export const auth = createAuth({ mailSender, env });

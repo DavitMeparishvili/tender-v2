@@ -6,6 +6,14 @@ const serverEnvSchema = z.object({
   DATABASE_URL_TEST: z.string().url().optional(),
   AUTH_SECRET: z.string().min(32),
   APP_URL: z.string().url(),
+  RESEND_API_KEY: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.string().min(1).optional(),
+  ),
+  MAIL_FROM: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.string().email().optional(),
+  ),
   STORAGE_ENDPOINT: z.string().url(),
   // Server-side S3 calls can use Docker's private network, while presigned
   // browser URLs need the public HTTPS hostname. If omitted, the existing

@@ -42,6 +42,9 @@ export default defineConfig({
   webServer: {
     command: startsProductionServer ? "pnpm start" : "pnpm dev",
     env: {
+      // Keep browser tests offline even when .env.local contains real credentials.
+      RESEND_API_KEY: "",
+      MAIL_FROM: "",
       APP_URL: serverEnv.APP_URL,
       AUTH_SECRET: serverEnv.AUTH_SECRET,
       DATABASE_URL: serverEnv.DATABASE_URL,

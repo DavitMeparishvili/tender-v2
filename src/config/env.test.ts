@@ -20,6 +20,23 @@ const testEnvironment = {
 } satisfies NodeJS.ProcessEnv;
 
 describe("getServerEnv", () => {
+  it("accepts optional mail settings and validates the sender address", () => {
+    expect(
+      getServerEnv({ ...testEnvironment, RESEND_API_KEY: "", MAIL_FROM: "" })
+        .MAIL_FROM,
+    ).toBeUndefined();
+    expect(
+      getServerEnv({
+        ...testEnvironment,
+        RESEND_API_KEY: "test-key",
+        MAIL_FROM: "accounts@example.test",
+      }).MAIL_FROM,
+    ).toBe("accounts@example.test");
+    expect(() =>
+      getServerEnv({ ...testEnvironment, MAIL_FROM: "invalid" }),
+    ).toThrow(/MAIL_FROM/);
+  });
+
   it("rejects a missing database URL", () => {
     expect(() => getServerEnv({ NODE_ENV: "test" })).toThrow(/DATABASE_URL/);
   });

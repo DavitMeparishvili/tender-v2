@@ -10,11 +10,11 @@ is done by clicking around the site like a normal visitor would.
 
 **Test accounts** — use these to log in. All three use the same password.
 
-| Who | Email | Password |
-|---|---|---|
-| Client (posts jobs) | `demo.client@tender.test` | `UuqTRrtvYj0bIMUO` |
-| Provider (bids on jobs) | `demo.provider@tender.test` | `UuqTRrtvYj0bIMUO` |
-| Admin (moderates reviews) | `demo.admin@tender.test` | `UuqTRrtvYj0bIMUO` |
+| Who                       | Email                       | Password           |
+| ------------------------- | --------------------------- | ------------------ |
+| Client (posts jobs)       | `demo.client@tender.test`   | `UuqTRrtvYj0bIMUO` |
+| Provider (bids on jobs)   | `demo.provider@tender.test` | `UuqTRrtvYj0bIMUO` |
+| Admin (moderates reviews) | `demo.admin@tender.test`    | `UuqTRrtvYj0bIMUO` |
 
 **Language:** the site opens in Georgian by default. There's a language switch near
 the top of the page (labelled "ქართული" / "English") — click it to switch to
@@ -54,6 +54,7 @@ Please don't report these as bugs:
 ## 1. First look at the site
 
 **Steps:**
+
 1. Open https://tender-market.online/ in your browser.
 2. Look at the homepage.
 
@@ -65,6 +66,7 @@ top — the page should reload in English, showing the same kind of content.
 ## 2. Browsing jobs without logging in
 
 **Steps:**
+
 1. Without logging in, find the section of the site where jobs/tenders can be
    browsed (a "Find work" or "Browse tenders" style link/page).
 2. Open the "Demo apartment renovation in Tbilisi" job from the list.
@@ -84,12 +86,14 @@ reviews.
 ## 3. Logging in and out
 
 **Steps:**
+
 1. Find the "Log in" link/button (usually top-right of the page).
 2. Log in as the Client using the credentials above.
 3. Once logged in, find and use the "Log out" option.
 4. Log back in, but type the wrong password on purpose.
 
 **What you should see:**
+
 - With correct credentials, you're logged in and taken to your dashboard.
 - With the wrong password, you get a generic error message. (It intentionally
   does not tell you whether the email exists or just the password was wrong — that
@@ -112,6 +116,7 @@ be able to complete verification or log in with this brand-new account.
 Log in as `demo.client@tender.test` for this section.
 
 **Steps:**
+
 1. From your dashboard, find the option to post a new job.
 2. Fill out the form. It's a multi-step form with sections roughly like:
    **Basics** (title, short description) → **Scope** (full description, what
@@ -127,6 +132,7 @@ Log in as `demo.client@tender.test` for this section.
 6. On the final Review step, check everything looks right, then publish the job.
 
 **What you should see:**
+
 - Leaving required fields empty should stop you from moving to the next step,
   with a clear message about what's missing.
 - Attaching a normal-sized PDF or photo (JPEG/PNG/WEBP) should succeed and show up
@@ -153,6 +159,7 @@ list of jobs and continue editing it from where you left off.
 Still logged in as the Client.
 
 **Steps:**
+
 1. Go to your list of posted jobs.
 2. Open the sample "Demo apartment renovation in Tbilisi" job (or one you
    published in Section 4).
@@ -163,6 +170,7 @@ Still logged in as the Client.
    whether you can still cancel it.
 
 **What you should see:**
+
 - You can see all the bids placed on a job (once any exist) in a comparison-style
   view.
 - You can cancel a job that has no bids yet, after entering a reason — the job's
@@ -179,6 +187,7 @@ Still logged in as the Client.
 Log out and log back in as `demo.provider@tender.test` for this section.
 
 **Steps:**
+
 1. From your dashboard, browse available jobs and open the "Demo apartment
    renovation in Tbilisi" job (or another one you can see).
 2. Notice the "locked" panel describing how to unlock full details — it should
@@ -195,6 +204,7 @@ Log out and log back in as `demo.provider@tender.test` for this section.
 8. After withdrawing, try to submit a new bid on the same job again.
 
 **What you should see:**
+
 - Before unlocking, you should not be able to see the exact address, full
   description, conditions, or attached files.
 - Clicking the unlock button should complete instantly with no payment form or
@@ -225,6 +235,7 @@ If an agreement **does** appear (check "My agreements" while logged in as either
 the Client or the Provider), here's how it should behave:
 
 **Steps and expected behaviour, in order:**
+
 1. Open the agreement. Both the client and the provider should each have a
    "Confirm agreement" action available. Once **both** sides have confirmed, the
    agreement's status should move forward (from "waiting for confirmation" to
@@ -245,6 +256,7 @@ the Client or the Provider), here's how it should behave:
 This only works once an agreement has reached "completed" status (Section 7).
 
 **Steps:**
+
 1. From the completed agreement's page, find the option to leave a review.
 2. Fill in the four rating categories (quality, meeting the deadline,
    communication, and sticking to the agreed price), and write a comment.
@@ -253,6 +265,7 @@ This only works once an agreement has reached "completed" status (Section 7).
 5. Try to leave a second review on the same completed job.
 
 **What you should see:**
+
 - A short comment should be rejected, asking for more detail (roughly a couple of
   sentences' worth).
 - A full-length review should submit successfully, and the page should note that
@@ -264,6 +277,7 @@ This only works once an agreement has reached "completed" status (Section 7).
 ## 9. Notifications (Inbox)
 
 **Steps:**
+
 1. While logged in as either the Client or Provider account, find the "Inbox" or
    notifications page.
 2. If you've done anything in Sections 4–8 that would generate a notification
@@ -274,6 +288,7 @@ This only works once an agreement has reached "completed" status (Section 7).
    relevant job/agreement or profile).
 
 **What you should see:**
+
 - New activity relevant to you should show up as a notification with a clear
   "unread" label.
 - Marking one as read should change its label to "read", and this should still be
@@ -288,6 +303,7 @@ Log in as `demo.admin@tender.test` for this section. This only makes sense once
 at least one review exists from Section 8.
 
 **Steps:**
+
 1. Look for a "Moderation" menu item (this should only appear for this admin
    account, not for the Client or Provider accounts).
 2. Open it and find the review you submitted earlier.
@@ -295,6 +311,7 @@ at least one review exists from Section 8.
 4. Try redacting it again with a proper reason (a full short sentence).
 
 **What you should see:**
+
 - The short reason should be rejected, asking for more detail.
 - A proper reason should succeed, and the review should now show as "redacted"
   instead of its original text.

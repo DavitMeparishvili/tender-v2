@@ -15,7 +15,7 @@ vi.mock("next/navigation", () => ({
 const messages = en as Messages;
 
 describe("EntitlementPanel", () => {
-  it("states the three prices exactly as the source documents fix them", () => {
+  it("makes temporary free access clear without advertising paid prices", () => {
     const markup = renderToStaticMarkup(
       <EntitlementPanel
         canPurchase
@@ -26,12 +26,13 @@ describe("EntitlementPanel", () => {
       />,
     );
 
-    expect(markup).toContain("USD 1");
-    expect(markup).toContain("USD 20");
-    expect(markup).toContain("USD 200");
+    expect(markup).toContain("Full access is free for now");
+    expect(markup).toContain("Unlock for free");
+    expect(markup.match(/Free for now/g)).toHaveLength(2);
+    expect(markup).not.toContain("USD");
   });
 
-  it("tells the provider payments are simulated", () => {
+  it("explains that one click opens access without payment details", () => {
     const markup = renderToStaticMarkup(
       <EntitlementPanel
         canPurchase

@@ -51,8 +51,12 @@ export function SiteFooter({
         </div>
         <div className="footer-grid">
           <div>
-            <Link className="footer-word" href={at("")}>
-              {messages.common.brand}
+            <Link
+              aria-label={messages.common.brand}
+              className="footer-word"
+              href={at("")}
+            >
+              <span lang="en">Tender</span>
             </Link>
             <p className="footer-blurb">{messages.nav.footerBlurb}</p>
           </div>

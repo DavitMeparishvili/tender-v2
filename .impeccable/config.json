@@ -15,6 +15,12 @@
         "value": "inter",
         "createdAt": "2026-08-16T18:18:48.020Z",
         "reason": "Family is 'Inter Tight Tipalti', the client's bound brand cut shipped in the Tipalti design-system handoff; the rule matches the 'Inter' substring."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgb(5 150 105 / 25%)",
+        "createdAt": "2026-09-29T17:07:13.860Z",
+        "reason": "Agent review: existing hero status halo uses the established #059669 brand emerald at 25 percent opacity; unrelated to logo refinement."
       }
     ]
   }

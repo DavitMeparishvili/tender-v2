@@ -767,24 +767,28 @@ img {
   block-size: 68px;
 }
 
-.wordmark {
+.wordmark,
+.footer-word {
   display: inline-flex;
   flex: none;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
+  min-block-size: 44px;
   color: var(--fg-1);
-  font-size: 19px;
+  font-family: var(--font-international);
+  font-size: 30px;
   font-weight: var(--weight-bold);
   letter-spacing: 0;
   line-height: 1;
   text-decoration: none;
 }
 
-.wordmark::before {
+.wordmark::before,
+.footer-word::before {
   content: "";
   flex: none;
-  inline-size: 26px;
-  block-size: 26px;
+  inline-size: 36px;
+  block-size: 34px;
   background: url("/brand/tender-symbol.svg") center / contain no-repeat;
 }
 
@@ -1127,23 +1131,11 @@ img {
 }
 
 .footer-word {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
   margin-block-end: 12px;
   color: #fff;
-  font-size: 18px;
-  font-weight: var(--weight-bold);
-  letter-spacing: 0;
-  line-height: 1;
-  text-decoration: none;
 }
 
 .footer-word::before {
-  content: "";
-  flex: none;
-  inline-size: 24px;
-  block-size: 24px;
   background: url("/brand/tender-symbol-on-dark.svg") center / contain no-repeat;
 }
 
@@ -2784,6 +2776,10 @@ img {
   font-weight: var(--weight-semibold);
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.unlock-body > .unlock-divider {
+  margin-block: 16px;
 }
 
 .unlock-divider::before,
@@ -5177,6 +5173,8 @@ img {
 }
 
 .location-map {
+  /* Keep Leaflet's pane and control z-indexes below the sticky app shell. */
+  isolation: isolate;
   block-size: 17.5rem;
   inline-size: 100%;
   overflow: hidden;
@@ -5862,13 +5860,18 @@ img {
   flex-basis: 8rem;
 }
 .quantity-table {
-  table-layout: fixed;
+  table-layout: auto;
 }
 .quantity-table :is(th, td) {
   overflow-wrap: anywhere;
 }
 .quantity-table :is(th, td):first-child {
-  width: 55%;
+  width: auto;
+}
+.quantity-table :is(th, td):nth-child(n + 2) {
+  width: 1%;
+  white-space: nowrap;
+  overflow-wrap: normal;
 }
 .tender-gallery-dialog {
   background: var(--bg-surface);

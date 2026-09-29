@@ -78,7 +78,7 @@ export function SiteHeader({
             className="wordmark"
             href={`/${locale}`}
           >
-            {messages.common.brand}
+            <span lang="en">Tender</span>
           </Link>
           <NavTabs items={nav.items} label={messages.nav.primary} />
           <span className="nav-spacer" />

@@ -126,7 +126,9 @@ export function TenderSections({
                 <tr>
                   <th scope="col">{c.item}</th>
                   <th scope="col">{c.quantity}</th>
-                  <th scope="col">{c.unit}</th>
+                  <th scope="col" aria-label={c.unit} title={c.unit}>
+                    {c.unitShort}
+                  </th>
                 </tr>
               </thead>
               <tbody>

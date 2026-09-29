@@ -458,13 +458,20 @@ export function ForgotPasswordForm({ locale, messages }: AuthFormProps) {
 
     setPending(true);
     setIssues([]);
-    const { authClient } = await import("../infrastructure/auth-client");
-    await authClient.requestPasswordReset({
-      email,
-      redirectTo: window.location.origin + "/" + locale + "/reset-password",
-    });
-    setPending(false);
-    setSent(true);
+    try {
+      const { authClient } = await import("../infrastructure/auth-client");
+      const result = await authClient.requestPasswordReset({
+        email,
+        redirectTo: window.location.origin + "/" + locale + "/reset-password",
+      });
+      if (result.error) throw new Error("Recovery request failed");
+      setSent(true);
+    } catch {
+      setIssues([{ field: "email", message: messages.errors.generic }]);
+      focusIssues();
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -585,17 +592,26 @@ export function VerificationActions({
 }: VerificationActionsProps) {
   const [pending, setPending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   async function resend() {
     if (pending || !validEmail(email)) return;
     setPending(true);
-    const { authClient } = await import("../infrastructure/auth-client");
-    await authClient.sendVerificationEmail({
-      email,
-      callbackURL: "/" + locale + "/continue",
-    });
-    setPending(false);
-    setSent(true);
+    setSent(false);
+    setFailed(false);
+    try {
+      const { authClient } = await import("../infrastructure/auth-client");
+      const result = await authClient.sendVerificationEmail({
+        email,
+        callbackURL: "/" + locale + "/continue",
+      });
+      if (result.error) throw new Error("Verification request failed");
+      setSent(true);
+    } catch {
+      setFailed(true);
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -610,6 +626,7 @@ export function VerificationActions({
         {pending ? " · " + messages.auth.resendingVerification : ""}
       </button>
       {sent ? <p role="status">{messages.auth.verificationSentTitle}</p> : null}
+      {failed ? <p role="alert">{messages.errors.generic}</p> : null}
       <Link
         className="button button-secondary"
         href={"/" + locale + "/register"}

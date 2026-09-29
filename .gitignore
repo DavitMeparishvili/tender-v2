@@ -17,6 +17,8 @@
 /coverage
 /playwright-report/
 /test-results/
+/.playwright-mcp/
+__pycache__/
 /docs/qa-*/*.png
 /docs/typography/screenshots/
 

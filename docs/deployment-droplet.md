@@ -52,7 +52,7 @@ In the DigitalOcean Networking firewall, allow inbound TCP **22**, **80**, and
 
 ## 3. Publish the application image
 
-Push these repository changes to the `main` branch. The GitHub workflow
+Push these repository changes to the `master` branch. The GitHub workflow
 `.github/workflows/publish-container.yml` publishes:
 
 ```text
@@ -108,6 +108,13 @@ APP_IMAGE=ghcr.io/davitmeparishvili/tender-v2:latest
 Do not put a database URL in this file. Compose constructs it inside the app
 container, so the password never travels over the public network.
 
+For activation and password recovery emails, set `RESEND_API_KEY` to your Resend
+sending key and `MAIL_FROM=accounts@email.tender-market.online` in the private
+`deploy/.env.droplet` file. Verify `email.tender-market.online` in Resend first.
+The key must come from Resend, not the random-secret command above. See
+[email setup](email-setup.md). Local `.env.local` credentials are not copied to
+the Droplet; configure them there separately, then recreate the app container.
+
 ## 5. Start the stack and initialize MinIO
 
 From `/opt/tender-market`:
@@ -146,6 +153,45 @@ The seed creates `demo.client@tender.test`, `demo.provider@tender.test`, and
 only to this one command; it is not saved in the `.env` file.
 
 ## Updating and operations
+
+### Deployment helper (recommended)
+
+Install Python, `paramiko` (`python -m pip install paramiko`), and the GitHub CLI.
+Authenticate `gh` and add the Droplet's verified SSH host key to
+`~/.ssh/known_hosts`. Set `TENDER_DROPLET_PASSWORD` in your local process
+environment (never in Git); `TENDER_DROPLET_HOST` optionally overrides
+`159.223.148.92`. The helper uses root SSH and `/opt/tender-market`.
+The remote checkout and Docker must already have access to GitHub/GHCR, or set
+`GH_TOKEN` locally to configure that access during deployment. Use a token with
+repository read access and `read:packages`. The helper stores it only on the
+Droplet in an owner-only Git credential file and Docker's root configuration.
+Keep `deploy/.env.droplet` on the Droplet at mode `600`.
+
+```sh
+python scripts/deploy-droplet.py --preflight-only
+python scripts/deploy-droplet.py
+```
+
+The helper waits for the `master` commit's image publication, validates the
+running stack, makes a private PostgreSQL/environment backup in
+`/opt/tender-backups`, and deploys the immutable commit image. Only the app is
+recreated. Public liveness/readiness and database/storage container identities
+are checked; failed validation restores the previous environment and app image.
+Database migrations are not reversed by an app rollback. Infrastructure changes
+require separate review; new additive migrations require `--allow-migrations`.
+The preflight fetches Git refs but does not change running services.
+
+To configure email while deploying, set `RESEND_API_KEY` and
+`MAIL_FROM=accounts@email.tender-market.online` in your local process environment,
+then run:
+
+```sh
+python scripts/deploy-droplet.py --configure-mail
+```
+
+Credentials are transferred over SFTP into the private environment file, never
+printed or passed as remote command arguments. Existing values are preserved
+on subsequent deployments without this flag.
 
 After a new GitHub Actions image succeeds, update the checked-out Compose files
 and restart only with the new image:
