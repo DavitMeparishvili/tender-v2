@@ -21,9 +21,9 @@ import { MobileContentInsets } from "@/src/modules/shell/ui/mobile-content-inset
 
 const directionContract = `<!--
 THESIS: A marketplace earns trust by showing live supply and the exact mechanism that closes a tender, so the interface leads with open work, real figures and the deadline that decides the winner.
-OWN-WORLD: Near-black ink and paper carry the page, emerald is the single pop and carries contrast-safe white action labels, a faint hairline grid motif marks supporting bands, and soft cool shadows lift cards without turning them into glass.
+OWN-WORLD: Near-black ink and paper carry the page, emerald is the single pop and carries contrast-safe white action labels, a faint hairline grid motif marks supporting bands, and soft cool shado[...]
 STORY: Land on live tenders, filter discovery down to the work you actually do, meet the paid unlock gate on one tender, then judge a provider by job-bound reviews.
-FIRST VIEWPORT: A 34px ink utility strip and a 68px white nav with an emerald active underline sit above a 1200px content column; the landing opens on a 44px headline, a pill search bar and a live tender card, and every workspace page opens on the same banded column.
+FIRST VIEWPORT: A 34px ink utility strip and a 68px white nav with an emerald active underline sit above a 1200px content column; the landing opens on a 44px headline, a pill search bar and a live[...]
 FORM: Tipalti EU design system — Noto Sans for Latin/Cyrillic and Noto Sans Georgian for Georgian, emerald #047857, 4px spacing grid, radii 4→28 and the pill, shadows xs→xl.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->`;
@@ -31,6 +31,26 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 export const metadata: Metadata = {
   title: "Tender Marketplace",
   description: "Construction and repair tenders in Georgia.",
+  openGraph: {
+    title: "Tender Marketplace",
+    description: "Construction and repair tenders in Georgia.",
+    type: "website",
+    url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/icons/buildings.png`,
+        width: 1200,
+        height: 630,
+        alt: "Tender Marketplace Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tender Marketplace",
+    description: "Construction and repair tenders in Georgia.",
+    images: [`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/icons/buildings.png`],
+  },
 };
 
 export const dynamicParams = false;
