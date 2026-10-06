@@ -38,10 +38,10 @@ export const metadata: Metadata = {
     url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/icons/buildings.png`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/images/tender-preview.jpg`,
         width: 1200,
         height: 630,
-        alt: "Tender Marketplace Logo",
+        alt: "Tender Marketplace - Construction and repair tenders in Georgia",
       },
     ],
   },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tender Marketplace",
     description: "Construction and repair tenders in Georgia.",
-    images: [`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/icons/buildings.png`],
+    images: [`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/images/tender-preview.jpg`],
   },
 };
 
