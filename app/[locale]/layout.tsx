@@ -28,20 +28,26 @@ FORM: Tipalti EU design system — Noto Sans for Latin/Cyrillic and Noto Sans Ge
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->`;
 
+// Social crawlers need absolute URLs. NEXT_PUBLIC_* is inlined at build time and the
+// container build does not set it, so fall back to the production origin, not localhost.
+const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://tender-market.online";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Tender Marketplace",
   description: "Construction and repair tenders in Georgia.",
   openGraph: {
     title: "Tender Marketplace",
     description: "Construction and repair tenders in Georgia.",
     type: "website",
-    url: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
+    url: "/",
+    siteName: "Tender Marketplace",
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/images/tender-preview.jpg`,
+        url: "/images/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Tender Marketplace - Construction and repair tenders in Georgia",
+        alt: "Tender — Construction and repair tenders in Georgia",
       },
     ],
   },
@@ -49,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tender Marketplace",
     description: "Construction and repair tenders in Georgia.",
-    images: [`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/images/tender-preview.jpg`],
+    images: ["/images/og-image.png"],
   },
 };
 
