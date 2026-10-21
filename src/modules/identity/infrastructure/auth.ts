@@ -32,7 +32,7 @@ export function createAuth({
   env = getServerEnv(),
 }: AuthDependencies) {
   return betterAuth({
-    appName: "Tender",
+    appName: "Tender Market",
     baseURL: env.APP_URL,
     secret: env.AUTH_SECRET,
     database: prismaAdapter(database, { provider: "postgresql" }),

@@ -40,11 +40,12 @@ import {
   isTenderServiceCode,
   isTenderSpecialty,
 } from "../domain/service-taxonomy";
-import type {
-  TenderCurrency,
-  TenderDraft,
-  TenderLocation,
-  TenderRecord,
+import {
+  PUBLISHED_TENDER_STATUSES,
+  type TenderCurrency,
+  type TenderDraft,
+  type TenderLocation,
+  type TenderRecord,
 } from "../domain/tender";
 
 export interface TenderRepository
@@ -139,6 +140,7 @@ function toTenderDraft(row: Tender): TenderDraft | null {
     location: toTenderLocation(row),
     conditions: row.conditions,
     publishedAt: row.publishedAt,
+    selectionExpiresAt: row.selectionExpiresAt,
     cancelledAt: row.cancelledAt,
     cancelReason: row.cancelReason,
     createdAt: row.createdAt,
@@ -242,6 +244,14 @@ function publishedFilterWhere(
 }
 
 export class PrismaTenderRepository implements TenderRepository {
+  async isOwnedBy(tenderId: string, userId: string): Promise<boolean> {
+    return (
+      (await database.tender.count({
+        where: { id: tenderId, ownerId: userId },
+      })) > 0
+    );
+  }
+
   async getClientContact(ownerId: string) {
     const profile = await database.userProfile.findUnique({
       where: { userId: ownerId },
@@ -628,7 +638,7 @@ export class PrismaTenderRepository implements TenderRepository {
     // No deadline predicate and no PUBLISHED-only filter: this is the read
     // that lets a bidder open the tender they competed on after selection.
     const row = await database.tender.findFirst({
-      where: { id, status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+      where: { id, status: { in: [...PUBLISHED_TENDER_STATUSES] } },
     });
     if (row === null) return { ok: false, error: "TENDER_NOT_FOUND" };
     const record = toTenderRecord(row);
@@ -641,7 +651,7 @@ export class PrismaTenderRepository implements TenderRepository {
     id: string,
   ): Promise<Result<TenderBiddingContext, "TENDER_NOT_FOUND">> {
     const row = await database.tender.findFirst({
-      where: { id, status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+      where: { id, status: { in: [...PUBLISHED_TENDER_STATUSES] } },
       select: {
         id: true,
         ownerId: true,

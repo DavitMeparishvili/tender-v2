@@ -118,24 +118,30 @@ export function buildShellNav(
       ? { href: at("/login"), label: messages.nav.logIn }
       : { href: at("/profile"), label: viewer.displayName };
 
-  const tabs: NavItem[] = [
-    isProvider
+  // The bar is decided by role alone, never by the current page, so every
+  // screen shows the same five tabs and only the active one changes. A viewer
+  // who can publish (signed out or client, i.e. `primary` exists) gets the
+  // centre "+"; a contractor-only viewer gets their offers in that slot
+  // instead. A viewer holding both capabilities follows the client layout, as
+  // the header's call to action and the contracts link already do.
+  const roleTab: NavItem =
+    primary === null
       ? {
           key: "myOffers",
           href: at("/provider/offers"),
           label: messages.nav.mobileOffers,
         }
-      : { key: "home", href: at(""), label: messages.nav.home },
+      : { key: "post", href: primary.href, label: messages.nav.mobilePost };
+
+  const tabs: NavItem[] = [
+    { key: "home", href: at(""), label: messages.nav.home },
     {
       key: "discover",
       href: at(isClient ? "/client/tenders" : "/provider/tenders"),
       label: messages.nav.mobileDiscover,
       match: [at("/provider/tenders")],
     },
-    // The centre action mirrors the header: no publish capability, no tab.
-    ...(primary === null
-      ? []
-      : [{ key: "post", href: primary.href, label: messages.nav.mobilePost }]),
+    roleTab,
     viewer === null
       ? { key: "logIn", href: at("/login"), label: messages.nav.logIn }
       : {

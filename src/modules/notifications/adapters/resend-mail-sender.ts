@@ -13,11 +13,15 @@ function escapeHtml(value: string): string {
   });
 }
 
+const containerStyle =
+  "max-width:480px;margin:0 auto;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;line-height:1.5";
+
 export class ResendMailSender implements MailSender {
   constructor(
     private readonly apiKey: string | undefined,
     private readonly from: string | undefined,
     private readonly request: typeof fetch = fetch,
+    private readonly appUrl: string | undefined = undefined,
   ) {}
 
   async send(message: MailMessage): Promise<void> {
@@ -33,14 +37,18 @@ export class ResendMailSender implements MailSender {
       throw new Error("Email requires a valid HTTP(S) action URL");
     }
     const subject = verification
-      ? "Activate your Tender account"
-      : "Reset your Tender password";
+      ? "Activate your Tender Market account"
+      : "Reset your Tender Market password";
     const action = verification ? "Activate account" : "Reset password";
     const intro = verification
-      ? "Welcome to Tender. Verify your email address to activate your account."
-      : "We received a request to reset your Tender password.";
+      ? "Welcome to Tender Market. Verify your email address to activate your account."
+      : "We received a request to reset your Tender Market password.";
     const footer =
       "This link expires in 1 hour. If you did not request this email, you can ignore it.";
+    const logo = this.appUrl
+      ? `<img src="${escapeHtml(new URL("/brand/tender-market-email-logo.png", this.appUrl).href)}" width="120" height="120" alt="Tender Market" style="display:block;border:0">`
+      : "";
+    const button = `<a href="${escapeHtml(link)}" style="display:inline-block;background:#059669;color:#ffffff;padding:12px 24px;border-radius:8px;font-weight:600;text-decoration:none">${action}</a>`;
     let response: Response;
     try {
       response = await this.request("https://api.resend.com/emails", {
@@ -50,11 +58,11 @@ export class ResendMailSender implements MailSender {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: `Tender <${this.from}>`,
+          from: `Tender Market <${this.from}>`,
           to: [message.to],
           subject,
           text: `${intro}\n\n${action}: ${link}\n\n${footer}`,
-          html: `<html lang="en"><body><h1>${subject}</h1><p>${intro}</p><p><a href="${escapeHtml(link)}">${action}</a></p><p>Or copy this link into your browser:</p><p>${escapeHtml(link)}</p><p>${footer}</p></body></html>`,
+          html: `<html lang="en"><body style="margin:0;padding:16px"><div style="${containerStyle}">${logo}<h1 style="font-size:22px;line-height:1.3;margin:16px 0">${subject}</h1><p>${intro}</p><p>${button}</p><p style="color:#6b7280;font-size:13px">${footer}</p></div></body></html>`,
         }),
         signal: AbortSignal.timeout(10_000),
       });

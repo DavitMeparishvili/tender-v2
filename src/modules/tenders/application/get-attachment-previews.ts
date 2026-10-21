@@ -5,7 +5,11 @@ export async function getAttachmentPreviews(tenderId: string) {
   const rows = await database.tenderAttachment.findMany({
     where: {
       tenderId,
-      tender: { status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+      tender: {
+        status: {
+          in: ["PUBLISHED", "AWAITING_SELECTION", "CLOSED", "EXPIRED"],
+        },
+      },
     },
     select: { id: true, mimeType: true, sizeBytes: true },
     orderBy: { createdAt: "asc" },

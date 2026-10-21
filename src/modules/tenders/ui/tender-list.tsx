@@ -28,6 +28,7 @@ export function TenderListContent({
   const labels = {
     DRAFT: messages.tenders.statusDraft,
     PUBLISHED: messages.tenders.statusPublished,
+    AWAITING_SELECTION: messages.tenders.statusAwaitingSelection,
     CLOSED: messages.tenders.statusClosed,
     EXPIRED: messages.tenders.statusExpired,
     CANCELLED: messages.tenders.statusCancelled,
@@ -180,6 +181,7 @@ export async function TenderList({
   const filters = [
     ["", c.all],
     ["PUBLISHED", messages.tenders.statusPublished],
+    ["AWAITING_SELECTION", messages.tenders.statusAwaitingSelection],
     ["DRAFT", messages.tenders.statusDraft],
     ["CLOSED", messages.tenders.statusClosed],
     ["EXPIRED", messages.tenders.statusExpired],

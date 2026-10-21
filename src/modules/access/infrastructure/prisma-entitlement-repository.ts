@@ -37,7 +37,9 @@ export class PrismaEntitlementRepository
     const tender = await database.tender.findFirst({
       where: {
         id: tenderId,
-        status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] },
+        status: {
+          in: ["PUBLISHED", "AWAITING_SELECTION", "CLOSED", "EXPIRED"],
+        },
       },
       select: { id: true },
     });

@@ -17,6 +17,7 @@ export function createManageAgreement(dependencies: {
   repository: AgreementRepository;
   now: () => Date;
   ids: { next(): string };
+  selectionWindowDays: number;
 }) {
   return (
     id: string,
@@ -32,6 +33,7 @@ export function createManageAgreement(dependencies: {
       action,
       dependencies.now(),
       dependencies.ids,
+      { selectionWindowDays: dependencies.selectionWindowDays },
     );
   };
 }

@@ -4,7 +4,7 @@
 @import "./typography.css";
 
 /* =============================================================
-   Tender Marketplace — visual system
+   Tender Market — visual system
    Foundations come from the bound Tipalti EU design system
    (colors_and_type.css in the design handoff). Values below are
    the handoff values; do not invent new ones.
@@ -792,6 +792,23 @@ img {
   inline-size: 36px;
   block-size: 34px;
   background: url("/brand/tender-symbol.svg") center / contain no-repeat;
+}
+
+/* Brand lockup: bold "Tender" over a small, widely spaced "market". The
+   trailing letter-spacing is pulled back so "market" centres under "Tender". */
+.wordmark-text {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.14em;
+}
+
+.wordmark-sub {
+  margin-inline-end: -0.3em;
+  font-size: 0.4em;
+  font-weight: var(--weight-regular);
+  letter-spacing: 0.3em;
+  text-transform: lowercase;
 }
 
 .nav-tabs {
@@ -2319,8 +2336,20 @@ img {
   white-space: nowrap;
 }
 
-.pager-pages a,
-.pager-pages span {
+.pager-window {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pager-window-compact {
+  display: none;
+}
+
+.pager-pages > a,
+.pager-pages > span,
+.pager-window > a,
+.pager-window > span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2335,7 +2364,18 @@ img {
   font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
   text-decoration: none;
+  white-space: nowrap;
   transition: border-color 150ms var(--ease);
+}
+
+.pager-pages .pager-step {
+  gap: 6px;
+  padding-inline: 12px 15px;
+}
+
+.pager-pages .pager-step[rel="next"],
+.pager-pages .pager-step:last-child {
+  padding-inline: 15px 12px;
 }
 
 .pager-pages a:hover {
@@ -2350,7 +2390,10 @@ img {
 }
 
 .pager-pages .is-disabled {
+  border-color: var(--border);
+  background: var(--bg-subtle);
   color: var(--fg-3);
+  opacity: 0.6;
 }
 
 .pager-pages .is-gap {
@@ -5106,10 +5149,42 @@ img {
   font-size: var(--text-caption);
 }
 
-/* The lowest valid offer wins automatically; giving that row the single emerald
-   highlight makes the mechanism visible instead of buried in a status word. */
+/* The offer the client chose gets the single emerald highlight, so the
+   decision is visible instead of buried in a status word. */
 .bid-comparison tbody tr[data-status="WINNER"] {
   background: var(--tip-emerald-soft);
+}
+
+/* Informational only: the client may choose any offer, not just this one. */
+.bid-comparison .bid-lowest-tag {
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+.choose-bid {
+  display: grid;
+  gap: 0.5rem;
+  min-inline-size: 11rem;
+}
+
+.choose-bid-confirm {
+  margin-top: 0;
+}
+
+.choose-bid-confirm h3 {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-label);
+}
+
+.choose-bid-confirm p {
+  margin: 0 0 0.75rem;
+  color: var(--fg-2);
+  font-size: var(--text-caption);
+}
+
+.choose-bid-confirm .own-offer-actions {
+  margin-top: 0;
+  gap: 8px;
 }
 
 /* Agreements, reviews, inbox ---------------------------------------------- */
@@ -5510,6 +5585,12 @@ img {
     gap: 0;
   }
 
+  /* Signed out, every header action moves to the tab bar; drop the empty
+     group so the language control keeps the right edge. */
+  .header-actions:not(:has(.account-menu)) {
+    display: none;
+  }
+
   .account-menu-primary {
     display: none;
   }
@@ -5657,6 +5738,59 @@ img {
   .pager {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  /* Phones: arrow-only steps and the compact page window keep the row on one
+     line down to 320px. The step labels stay for screen readers. */
+  .pager-pages,
+  .pager-window {
+    gap: 3px;
+  }
+
+  .pager-window-wide {
+    display: none;
+  }
+
+  .pager-window-compact {
+    display: flex;
+  }
+
+  .pager-pages > a,
+  .pager-pages > span,
+  .pager-window > a,
+  .pager-window > span {
+    min-inline-size: 44px;
+    min-block-size: 44px;
+    padding: 0 8px;
+  }
+
+  .pager-pages .pager-step,
+  .pager-pages .pager-step[rel="next"],
+  .pager-pages .pager-step:last-child {
+    padding: 0;
+  }
+
+  .pager-pages .is-gap {
+    padding: 0;
+  }
+
+  /* The page-size choices are secondary; a 40px width keeps "На странице"
+     and all four sizes on one line at 320px. */
+  .pager-size {
+    gap: 6px;
+  }
+
+  .pager-size .pager-pages > a {
+    min-inline-size: 40px;
+  }
+
+  .pager-step-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .surface-pad {
@@ -5807,18 +5941,14 @@ img {
     white-space: nowrap;
   }
 
-  .tab-item img {
-    inline-size: 19px;
-    block-size: 19px;
-    opacity: 0.45;
+  .tab-icon {
+    flex: none;
+    inline-size: 22px;
+    block-size: 22px;
   }
 
   .tab-item[aria-current="page"] {
-    color: var(--fg-1);
-  }
-
-  .tab-item[aria-current="page"] img {
-    opacity: 0.9;
+    color: var(--brand);
   }
 
   .tab-post {
@@ -5864,6 +5994,44 @@ img {
 }
 :is(input:not([type="checkbox"], [type="radio"], [type="hidden"]), select) {
   min-block-size: 44px;
+}
+
+/* One select chevron for every form surface. The native arrow is small and
+   sits at a platform-specific offset, so it is replaced by a 16px stroke
+   chevron with reserved room on the right that the value text never enters.
+   Compact borderless selects tune the inset and room via the custom props. */
+:root {
+  --select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2344464d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  --select-chevron-muted: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23abadb4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+}
+select:is(
+    .tender-authoring select,
+    .field-control > select,
+    .owned-sort select,
+    .search-bar select,
+    .review-form select,
+    .review-moderation-list select
+  ):not([multiple], [size]) {
+  appearance: none;
+  padding-inline-end: var(--select-chevron-room, 40px);
+  background-image: var(--select-chevron);
+  background-position: right var(--select-chevron-inset, 12px) center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+}
+select:is(
+    .tender-authoring select,
+    .field-control > select,
+    .owned-sort select,
+    .search-bar select,
+    .review-form select,
+    .review-moderation-list select
+  ):not([multiple], [size]):disabled {
+  background-image: var(--select-chevron-muted);
+}
+.search-bar select {
+  --select-chevron-inset: 0px;
+  --select-chevron-room: 24px;
 }
 :is(.pill, .chip, .tag, .tender-button, .tender-badge) {
   max-inline-size: 100%;
@@ -6014,11 +6182,17 @@ img {
     gap: 4px;
     text-align: center;
   }
+  /* One line per label in every locale: a wrapped label would sit higher
+     than its neighbours and break mid-word. Ellipsis is the last resort; the
+     link keeps the full label as its accessible name and title. */
   .tab-item > span:last-child {
-    overflow: visible;
-    white-space: normal;
-    overflow-wrap: anywhere;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     line-height: 1.5;
+  }
+  .tab-item[aria-current="page"] {
+    font-weight: var(--weight-semibold);
   }
   .tab-post {
     margin-block-start: 0;
@@ -6026,6 +6200,8 @@ img {
   .tab-post span:first-child {
     inline-size: 28px;
     block-size: 28px;
+    /* Occupy the same 22px row as the stroked icons so every label aligns. */
+    margin-block: -3px;
   }
   .tender-facts {
     padding: 4px;
@@ -6076,12 +6252,15 @@ img {
     display: none;
   }
 }
+@media (width <= 400px) {
+  .tab-item {
+    font-size: 0.6875rem;
+    letter-spacing: -0.01em;
+  }
+}
 @media (width <= 360px) {
   .tab-bar {
     padding-inline: 2px;
-  }
-  .tab-item {
-    font-size: 0.6875rem;
   }
 }
 
@@ -6124,6 +6303,13 @@ img {
 }
 .nav-spacer {
   display: none;
+}
+/* Without the nav tabs nothing else grows, so the spacer pushes the language
+   and account controls to the header's right edge. */
+@media (width <= 900px) {
+  .nav-spacer {
+    display: block;
+  }
 }
 .site-header .band-inner {
   gap: 20px;
@@ -6360,7 +6546,8 @@ img {
   background: var(--bg-subtle);
 }
 .offer-status-active,
-.offer-status-pending {
+.offer-status-pending,
+.offer-status-standby {
   color: var(--status-pending-text);
   background: var(--status-pending-soft);
 }

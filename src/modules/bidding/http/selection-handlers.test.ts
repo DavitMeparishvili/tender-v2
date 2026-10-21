@@ -35,13 +35,14 @@ describe("createSelectionHandlers", () => {
     expect(runDue).not.toHaveBeenCalled();
   });
 
-  it("runs the sweep and reports what it settled", async () => {
+  it("runs the sweep and reports what it moved into selection", async () => {
     const runDue = vi.fn(async () => [
       {
         tenderId: "tender-1",
-        outcome: "WINNER_SELECTED" as const,
-        winningBidId: "bid-1",
-        agreementId: "agreement-1",
+        outcome: "AWAITING_SELECTION" as const,
+        winningBidId: null,
+        agreementId: null,
+        selectionExpiresAt: new Date("2026-11-04T09:00:00.000Z"),
         alreadyRan: false,
       },
     ]);
@@ -54,9 +55,10 @@ describe("createSelectionHandlers", () => {
       selections: [
         {
           tenderId: "tender-1",
-          outcome: "WINNER_SELECTED",
-          winningBidId: "bid-1",
-          agreementId: "agreement-1",
+          outcome: "AWAITING_SELECTION",
+          winningBidId: null,
+          agreementId: null,
+          selectionExpiresAt: "2026-11-04T09:00:00.000Z",
           alreadyRan: false,
         },
       ],

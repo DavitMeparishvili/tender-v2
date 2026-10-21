@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { database } from "../../../infrastructure/db/client";
+import { SELECTION_WINDOW_DAYS } from "../domain/selection";
 import {
   runDeadlineSelection,
   runDueSelections,
@@ -8,6 +9,8 @@ import {
 
 const CONDITIONS =
   "Materials and labour included; scaffolding excluded from this price.";
+const DAY_MS = 24 * 60 * 60 * 1000;
+const WINDOW_DAYS = SELECTION_WINDOW_DAYS;
 
 async function seedUser(): Promise<string> {
   const id = randomUUID();
@@ -22,7 +25,10 @@ async function seedUser(): Promise<string> {
   return id;
 }
 
-async function seedDueTender(ownerId: string): Promise<string> {
+async function seedDueTender(
+  ownerId: string,
+  deadline = new Date(Date.now() - 60_000),
+): Promise<string> {
   const id = randomUUID();
   await database.tender.create({
     data: {
@@ -37,8 +43,7 @@ async function seedDueTender(ownerId: string): Promise<string> {
       scopeOfWork: "Sanding, priming, painting",
       budgetMinorUnits: 80_000,
       currency: "GEL",
-      // Already due: the deadline is in the past.
-      deadline: new Date(Date.now() - 60_000),
+      deadline,
       countryCode: "GE",
       locationMode: "ADDRESS",
       city: "Tbilisi",
@@ -47,7 +52,7 @@ async function seedDueTender(ownerId: string): Promise<string> {
       exactLongitude: 44.8271,
       publicLatitude: 41.72,
       publicLongitude: 44.83,
-      publishedAt: new Date(Date.now() - 120_000),
+      publishedAt: new Date(deadline.getTime() - 120_000),
     },
   });
   return id;
@@ -80,12 +85,18 @@ async function seedBid(
   return id;
 }
 
+const tenderState = (id: string) =>
+  database.tender.findUniqueOrThrow({
+    where: { id },
+    select: { status: true, selectionExpiresAt: true, deadline: true },
+  });
+
 afterAll(async () => {
   await database.$disconnect();
 });
 
 describe("runDeadlineSelection", () => {
-  it("selects the lowest eligible bid and closes the tender", async () => {
+  it("never picks a winner: a due tender with offers awaits the client's choice", async () => {
     const clientId = await seedUser();
     const tenderId = await seedDueTender(clientId);
     const expensive = await seedBid(
@@ -104,46 +115,43 @@ describe("runDeadlineSelection", () => {
     expect(result).toMatchObject({
       ok: true,
       value: {
-        outcome: "WINNER_SELECTED",
-        winningBidId: cheapest,
+        outcome: "AWAITING_SELECTION",
+        winningBidId: null,
+        agreementId: null,
         alreadyRan: false,
       },
     });
-    await expect(
-      database.bid.findUniqueOrThrow({
-        where: { id: cheapest },
-        select: { status: true },
-      }),
-    ).resolves.toEqual({ status: "WINNER" });
-    await expect(
-      database.bid.findUniqueOrThrow({
-        where: { id: expensive },
-        select: { status: true },
-      }),
-    ).resolves.toEqual({ status: "LOST" });
-    await expect(
-      database.tender.findUniqueOrThrow({
-        where: { id: tenderId },
-        select: { status: true },
-      }),
-    ).resolves.toEqual({ status: "CLOSED" });
-  });
-
-  it("breaks an equal amount by the earliest qualifying submission", async () => {
-    const clientId = await seedUser();
-    const tenderId = await seedDueTender(clientId);
-    const early = await seedBid(
-      tenderId,
-      50_000,
-      new Date(Date.now() - 400_000),
+    const tender = await tenderState(tenderId);
+    expect(tender.status).toBe("AWAITING_SELECTION");
+    // Deadline + N days.
+    expect(tender.selectionExpiresAt?.getTime()).toBe(
+      tender.deadline!.getTime() + WINDOW_DAYS * DAY_MS,
     );
-    await seedBid(tenderId, 50_000, new Date(Date.now() - 200_000));
-
-    const result = await runDeadlineSelection(tenderId);
-    expect(result).toMatchObject({ ok: true, value: { winningBidId: early } });
+    // Every offer is still standing; none won, none lost.
+    await expect(
+      database.bid.findMany({
+        where: { id: { in: [expensive, cheapest] } },
+        select: { status: true },
+      }),
+    ).resolves.toEqual([{ status: "SUBMITTED" }, { status: "SUBMITTED" }]);
+    await expect(
+      database.agreement.count({ where: { tenderId } }),
+    ).resolves.toBe(0);
+    // The client is told to choose.
+    await expect(
+      database.inboxNotification.findMany({
+        where: { aggregateId: tenderId },
+        select: { recipientId: true, messageKey: true },
+      }),
+    ).resolves.toEqual([
+      {
+        recipientId: clientId,
+        messageKey: "notifications.tenderAwaitingSelection",
+      },
+    ]);
   });
 
-  it("ignores withdrawn and wrong-currency bids", async () => {
+  it("ignores withdrawn and wrong-currency bids when deciding there is a choice", async () => {
     const clientId = await seedUser();
     const tenderId = await seedDueTender(clientId);
     await seedBid(tenderId, 1_000, new Date(Date.now() - 400_000), {
@@ -152,48 +160,13 @@ describe("runDeadlineSelection", () => {
     await seedBid(tenderId, 2_000, new Date(Date.now() - 400_000), {
       currency: "USD",
     });
-    const onlyEligible = await seedBid(
-      tenderId,
-      70_000,
-      new Date(Date.now() - 300_000),
-    );
 
     const result = await runDeadlineSelection(tenderId);
+
     expect(result).toMatchObject({
       ok: true,
-      value: { winningBidId: onlyEligible },
+      value: { outcome: "EXPIRED_NO_BIDS" },
     });
-  });
-
-  it("creates exactly one pending agreement snapshot of the winning offer", async () => {
-    const clientId = await seedUser();
-    const tenderId = await seedDueTender(clientId);
-    const winnerBid = await seedBid(
-      tenderId,
-      40_000,
-      new Date(Date.now() - 200_000),
-    );
-
-    const result = await runDeadlineSelection(tenderId);
-    if (!result.ok || result.value.agreementId === null) {
-      throw new Error("expected an agreement");
-    }
-
-    const agreement = await database.agreement.findUniqueOrThrow({
-      where: { id: result.value.agreementId },
-    });
-    expect(agreement).toMatchObject({
-      tenderId,
-      clientId,
-      bidId: winnerBid,
-      status: "PENDING_CONFIRMATION",
-      amountMinorUnits: 40_000,
-      currency: "GEL",
-    });
-    // 48 hours, to the minute.
-    expect(
-      agreement.confirmDeadline.getTime() - agreement.createdAt.getTime(),
-    ).toBeGreaterThan(47 * 60 * 60 * 1000);
   });
 
   it("expires a due tender that received no eligible bid", async () => {
@@ -210,12 +183,9 @@ describe("runDeadlineSelection", () => {
         agreementId: null,
       },
     });
-    await expect(
-      database.tender.findUniqueOrThrow({
-        where: { id: tenderId },
-        select: { status: true },
-      }),
-    ).resolves.toEqual({ status: "EXPIRED" });
+    await expect(tenderState(tenderId)).resolves.toMatchObject({
+      status: "EXPIRED",
+    });
     await expect(
       database.agreement.count({ where: { tenderId } }),
     ).resolves.toBe(0);
@@ -223,11 +193,10 @@ describe("runDeadlineSelection", () => {
 
   it("refuses to run before the deadline", async () => {
     const clientId = await seedUser();
-    const tenderId = await seedDueTender(clientId);
-    await database.tender.update({
-      where: { id: tenderId },
-      data: { deadline: new Date(Date.now() + 60_000) },
-    });
+    const tenderId = await seedDueTender(
+      clientId,
+      new Date(Date.now() + 60_000),
+    );
 
     await expect(runDeadlineSelection(tenderId)).resolves.toEqual({
       ok: false,
@@ -235,18 +204,96 @@ describe("runDeadlineSelection", () => {
     });
   });
 
-  it("produces one winner, one agreement, and one outbox set under concurrency", async () => {
+  it("expires the tender when the selection window ends without a choice", async () => {
     const clientId = await seedUser();
     const tenderId = await seedDueTender(clientId);
-    const cheapest = await seedBid(
+    const first = await seedBid(
       tenderId,
-      30_000,
-      new Date(Date.now() - 400_000),
+      40_000,
+      new Date(Date.now() - 300_000),
     );
-    await seedBid(tenderId, 60_000, new Date(Date.now() - 300_000));
-    await seedBid(tenderId, 90_000, new Date(Date.now() - 200_000));
+    const second = await seedBid(
+      tenderId,
+      50_000,
+      new Date(Date.now() - 200_000),
+    );
+    await runDeadlineSelection(tenderId);
 
-    // Eight selectors racing on the same tender, exactly as several worker
+    // One day short of the window: still waiting, nothing changes.
+    const early = await runDeadlineSelection(tenderId, {
+      now: () => new Date(Date.now() + (WINDOW_DAYS - 1) * DAY_MS),
+    });
+    expect(early).toMatchObject({
+      ok: true,
+      value: { outcome: "AWAITING_SELECTION", alreadyRan: true },
+    });
+    await expect(tenderState(tenderId)).resolves.toMatchObject({
+      status: "AWAITING_SELECTION",
+    });
+
+    const late = await runDeadlineSelection(tenderId, {
+      now: () => new Date(Date.now() + (WINDOW_DAYS + 1) * DAY_MS),
+    });
+    expect(late).toMatchObject({
+      ok: true,
+      value: { outcome: "SELECTION_EXPIRED", alreadyRan: false },
+    });
+    await expect(tenderState(tenderId)).resolves.toMatchObject({
+      status: "EXPIRED",
+      selectionExpiresAt: null,
+    });
+    await expect(
+      database.bid.count({
+        where: { id: { in: [first, second] }, status: "LOST" },
+      }),
+    ).resolves.toBe(2);
+    await expect(
+      database.agreement.count({ where: { tenderId } }),
+    ).resolves.toBe(0);
+    // The client and both bidders hear about it.
+    const keys = (
+      await database.inboxNotification.findMany({
+        where: { aggregateId: tenderId },
+        select: { messageKey: true },
+      })
+    ).map((row) => row.messageKey);
+    expect(keys.filter((key) => key === "notifications.bidLost")).toHaveLength(
+      2,
+    );
+    expect(keys).toContain("notifications.tenderSelectionExpired");
+  });
+
+  it("gives a full window from the sweep when it arrives after deadline + N", async () => {
+    const clientId = await seedUser();
+    const tenderId = await seedDueTender(
+      clientId,
+      new Date(Date.now() - (WINDOW_DAYS + 2) * DAY_MS),
+    );
+    await seedBid(
+      tenderId,
+      40_000,
+      new Date(Date.now() - (WINDOW_DAYS + 3) * DAY_MS),
+    );
+
+    await expect(runDeadlineSelection(tenderId)).resolves.toMatchObject({
+      ok: true,
+      value: { outcome: "AWAITING_SELECTION" },
+    });
+    // Never an instant expiry: now + N days.
+    const state = await tenderState(tenderId);
+    expect(state.status).toBe("AWAITING_SELECTION");
+    expect(state.selectionExpiresAt!.getTime()).toBeGreaterThan(
+      Date.now() + (WINDOW_DAYS - 1) * DAY_MS,
+    );
+  });
+
+  it("moves into selection exactly once under concurrency", async () => {
+    const clientId = await seedUser();
+    const tenderId = await seedDueTender(clientId);
+    await seedBid(tenderId, 30_000, new Date(Date.now() - 400_000));
+    await seedBid(tenderId, 60_000, new Date(Date.now() - 300_000));
+
+    // Eight sweeps racing on the same tender, exactly as several worker
     // invocations overlapping in production would.
     const results = await Promise.all(
       Array.from({ length: 8 }, () => runDeadlineSelection(tenderId)),
@@ -255,88 +302,69 @@ describe("runDeadlineSelection", () => {
     for (const result of results) {
       expect(result).toMatchObject({
         ok: true,
-        value: { outcome: "WINNER_SELECTED", winningBidId: cheapest },
+        value: { outcome: "AWAITING_SELECTION" },
       });
     }
+    expect(
+      results.filter((result) => result.ok && !result.value.alreadyRan),
+    ).toHaveLength(1);
     await expect(
-      database.tenderSelection.count({ where: { tenderId } }),
-    ).resolves.toBe(1);
+      database.bid.count({ where: { tenderId, status: { not: "SUBMITTED" } } }),
+    ).resolves.toBe(0);
     await expect(
-      database.bid.count({ where: { tenderId, status: "WINNER" } }),
-    ).resolves.toBe(1);
-    await expect(
-      database.agreement.count({ where: { tenderId } }),
-    ).resolves.toBe(1);
-    await expect(
-      database.outboxMessage.count({
-        where: { aggregateId: tenderId, topic: "BID_WON" },
+      database.inboxNotification.count({
+        where: { aggregateType: "Tender", aggregateId: tenderId },
       }),
     ).resolves.toBe(1);
     await expect(
       database.auditEvent.count({
-        where: { targetId: tenderId, action: "TENDER_WINNER_SELECTED" },
+        where: { targetId: tenderId, action: "TENDER_AWAITING_SELECTION" },
       }),
     ).resolves.toBe(1);
-    // Client, winner, and each losing bidder receive exactly one inbox item.
-    await expect(
-      database.inboxNotification.count({
-        where: { aggregateType: "Tender", aggregateId: tenderId },
-      }),
-    ).resolves.toBe(4);
-  });
-
-  it("re-running returns the existing result with no new side effects", async () => {
-    const clientId = await seedUser();
-    const tenderId = await seedDueTender(clientId);
-    await seedBid(tenderId, 30_000, new Date(Date.now() - 400_000));
-
-    const first = await runDeadlineSelection(tenderId);
-    const outboxAfterFirst = await database.outboxMessage.count({
-      where: { aggregateId: tenderId },
-    });
-    const inboxAfterFirst = await database.inboxNotification.count({
-      where: { aggregateType: "Tender", aggregateId: tenderId },
-    });
-
-    const second = await runDeadlineSelection(tenderId);
-
-    expect(second).toMatchObject({ ok: true, value: { alreadyRan: true } });
-    if (!first.ok || !second.ok) throw new Error("expected both to succeed");
-    expect(second.value.winningBidId).toBe(first.value.winningBidId);
-    expect(second.value.agreementId).toBe(first.value.agreementId);
-    await expect(
-      database.outboxMessage.count({ where: { aggregateId: tenderId } }),
-    ).resolves.toBe(outboxAfterFirst);
-    await expect(
-      database.inboxNotification.count({
-        where: { aggregateType: "Tender", aggregateId: tenderId },
-      }),
-    ).resolves.toBe(inboxAfterFirst);
   });
 });
 
 describe("runDueSelections", () => {
-  it("settles every due tender and leaves future ones alone", async () => {
+  it("handles every due tender and leaves future ones alone", async () => {
     const clientId = await seedUser();
     const dueTender = await seedDueTender(clientId);
     await seedBid(dueTender, 25_000, new Date(Date.now() - 400_000));
-    const futureTender = await seedDueTender(clientId);
-    await database.tender.update({
-      where: { id: futureTender },
-      data: { deadline: new Date(Date.now() + 24 * 60 * 60 * 1000) },
-    });
+    const futureTender = await seedDueTender(
+      clientId,
+      new Date(Date.now() + DAY_MS),
+    );
 
     const results = await runDueSelections();
 
-    expect(results.some((result) => result.tenderId === dueTender)).toBe(true);
+    expect(
+      results.find((result) => result.tenderId === dueTender),
+    ).toMatchObject({ outcome: "AWAITING_SELECTION" });
     expect(results.some((result) => result.tenderId === futureTender)).toBe(
       false,
     );
-    await expect(
-      database.tender.findUniqueOrThrow({
-        where: { id: futureTender },
-        select: { status: true },
-      }),
-    ).resolves.toEqual({ status: "PUBLISHED" });
+    await expect(tenderState(futureTender)).resolves.toMatchObject({
+      status: "PUBLISHED",
+    });
+  });
+
+  it("drives the selection-window expiry from the same sweep", async () => {
+    const clientId = await seedUser();
+    const tenderId = await seedDueTender(clientId);
+    await seedBid(tenderId, 25_000, new Date(Date.now() - 400_000));
+    await runDeadlineSelection(tenderId);
+    // The window has run out.
+    await database.tender.update({
+      where: { id: tenderId },
+      data: { selectionExpiresAt: new Date(Date.now() - 1_000) },
+    });
+
+    const results = await runDueSelections(500);
+
+    expect(
+      results.find((result) => result.tenderId === tenderId),
+    ).toMatchObject({ outcome: "SELECTION_EXPIRED" });
+    await expect(tenderState(tenderId)).resolves.toMatchObject({
+      status: "EXPIRED",
+    });
   });
 });

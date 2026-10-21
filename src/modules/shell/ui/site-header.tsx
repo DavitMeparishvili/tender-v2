@@ -3,6 +3,7 @@ import { SUPPORTED_LOCALES, type Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import { LocaleLink } from "../../identity/ui/locale-link";
 import { AccountMenu } from "./account-menu";
+import { DismissibleDetails } from "./dismissible-details";
 import { MobileTabBar } from "./mobile-tab-bar";
 import { NavTabs } from "./nav-tabs";
 import { buildShellNav, type ShellViewer } from "./nav-model";
@@ -61,12 +62,12 @@ export function SiteHeader({
         <div className="band-inner">
           <span>{messages.nav.tagline}</span>
           <span className="shell-strip-spacer" />
-          <details className="help-menu">
+          <DismissibleDetails className="help-menu">
             <summary aria-label={messages.common.helpLabel}>
               {messages.common.help}
             </summary>
             <p>{messages.common.helpBody}</p>
-          </details>
+          </DismissibleDetails>
           <LocaleSwitcher locale={locale} messages={messages} />
         </div>
       </div>
@@ -78,11 +79,14 @@ export function SiteHeader({
             className="wordmark"
             href={`/${locale}`}
           >
-            <span lang="en">Tender</span>
+            <span className="wordmark-text" lang="en">
+              <span className="wordmark-name">Tender</span>
+              <span className="wordmark-sub">market</span>
+            </span>
           </Link>
           <NavTabs items={nav.items} label={messages.nav.primary} />
           <span className="nav-spacer" />
-          <details className="tender-mobile-locale">
+          <DismissibleDetails className="tender-mobile-locale">
             <summary aria-label={messages.common.language}>
               {locale.toUpperCase()}
               <svg
@@ -98,7 +102,7 @@ export function SiteHeader({
               </svg>
             </summary>
             <LocaleSwitcher compact locale={locale} messages={messages} />
-          </details>
+          </DismissibleDetails>
           <div className="mobile-locale">
             <LocaleSwitcher compact locale={locale} messages={messages} />
           </div>

@@ -6,16 +6,29 @@ export type { TenderServiceCode, TenderSpecialty } from "./service-taxonomy";
 export type TenderStatus =
   | "DRAFT"
   | "PUBLISHED"
-  // Selection ran and produced a winner.
+  // Bidding closed with eligible offers; the client is choosing the
+  // contractor until `selectionExpiresAt`.
+  | "AWAITING_SELECTION"
+  // The client chose a contractor.
   | "CLOSED"
-  // The deadline passed with no eligible bid.
+  // No eligible offer, or the client never chose one in time.
   | "EXPIRED"
   | "CANCELLED";
 
 // The statuses for which every publication-required field is guaranteed
 // non-null. A settled tender is still fully readable — its winner and its
 // losers both need to see the record they competed on.
-export type PublishedTenderStatus = "PUBLISHED" | "CLOSED" | "EXPIRED";
+export type PublishedTenderStatus =
+  "PUBLISHED" | "AWAITING_SELECTION" | "CLOSED" | "EXPIRED";
+
+// Every status a published tender can be in, for queries that must keep a
+// tender readable to the bidders who competed on it.
+export const PUBLISHED_TENDER_STATUSES: readonly PublishedTenderStatus[] = [
+  "PUBLISHED",
+  "AWAITING_SELECTION",
+  "CLOSED",
+  "EXPIRED",
+];
 
 export type TenderCurrency = "GEL" | "USD";
 
@@ -61,6 +74,8 @@ export type TenderDraft = Readonly<{
   location: TenderLocation | null;
   conditions: string | null;
   publishedAt: Date | null;
+  // Set while the client is choosing a contractor (AWAITING_SELECTION).
+  selectionExpiresAt?: Date | null;
   cancelledAt: Date | null;
   cancelReason: string | null;
   createdAt: Date;

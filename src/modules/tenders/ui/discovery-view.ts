@@ -119,24 +119,30 @@ export function discoveryHref(
 /**
  * The numbered pager collapses to first / neighbours / last with gaps, so a
  * long result set does not push a hundred targets into the tab order.
+ *
+ * `compact` is the phone window: first, current and last only, so the row
+ * (with the two arrow buttons) still fits on one line at 320px.
  */
 export function pagerSlots(
   page: number,
   pageCount: number,
+  compact = false,
 ): readonly (number | "gap")[] {
-  if (pageCount <= 7) {
+  if (pageCount <= (compact ? 3 : 7)) {
     return Array.from({ length: pageCount }, (_, index) => index + 1);
   }
 
   const slots = new Set<number>([1, pageCount, page]);
-  if (page - 1 > 1) slots.add(page - 1);
-  if (page + 1 < pageCount) slots.add(page + 1);
-  if (page <= 3) slots.add(2).add(3).add(4);
-  if (page >= pageCount - 2) {
-    slots
-      .add(pageCount - 1)
-      .add(pageCount - 2)
-      .add(pageCount - 3);
+  if (!compact) {
+    if (page - 1 > 1) slots.add(page - 1);
+    if (page + 1 < pageCount) slots.add(page + 1);
+    if (page <= 3) slots.add(2).add(3).add(4);
+    if (page >= pageCount - 2) {
+      slots
+        .add(pageCount - 1)
+        .add(pageCount - 2)
+        .add(pageCount - 3);
+    }
   }
 
   const ordered = [...slots]

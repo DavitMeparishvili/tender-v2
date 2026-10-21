@@ -25,6 +25,7 @@ describe("Resend mail delivery", () => {
         "test-key",
         "accounts@example.test",
         request,
+        "https://app.example.test/",
       );
       const link = message.variables.verificationUrl!;
       await sender.send({
@@ -40,17 +41,23 @@ describe("Resend mail delivery", () => {
       });
       const body = JSON.parse(options?.body as string);
       expect(body).toMatchObject({
-        from: "Tender <accounts@example.test>",
+        from: "Tender Market <accounts@example.test>",
         to: [message.to],
       });
       expect(body.subject).toBe(
         template === "VERIFY_EMAIL"
-          ? "Activate your Tender account"
-          : "Reset your Tender password",
+          ? "Activate your Tender Market account"
+          : "Reset your Tender Market password",
       );
       expect(body.text).toContain(link);
       expect(body.html).toContain("&amp;next=");
       expect(body.html).toContain('lang="en"');
+      expect(body.html).not.toContain("Or copy this link");
+      expect(body.html).toContain(
+        '<img src="https://app.example.test/brand/tender-market-email-logo.png" width="120" height="120" alt="Tender Market"',
+      );
+      expect(body.html).toContain("background:#059669");
+      expect(body.html.split("&amp;next=")).toHaveLength(2);
       expect(options?.signal).toBeInstanceOf(AbortSignal);
     },
   );

@@ -3,7 +3,11 @@ import { afterAll, describe, expect, it } from "vitest";
 import { database } from "../../../infrastructure/db/client";
 import { prismaTenderSelectionGateway } from "./prisma-tender-selection-gateway";
 
-async function seedTender(deadline: Date, status: "PUBLISHED" | "CLOSED") {
+async function seedTender(
+  deadline: Date,
+  status: "PUBLISHED" | "AWAITING_SELECTION" | "CLOSED",
+  selectionExpiresAt: Date | null = null,
+) {
   const ownerId = randomUUID();
   await database.user.create({
     data: {
@@ -37,6 +41,7 @@ async function seedTender(deadline: Date, status: "PUBLISHED" | "CLOSED") {
       publicLatitude: 41.72,
       publicLongitude: 44.83,
       publishedAt: new Date(),
+      selectionExpiresAt,
     },
   });
   return id;
@@ -47,58 +52,55 @@ afterAll(async () => {
 });
 
 describe("prismaTenderSelectionGateway", () => {
-  it("refuses to lock a tender whose deadline has not arrived", async () => {
-    const future = new Date(Date.now() + 60_000);
-    const tenderId = await seedTender(future, "PUBLISHED");
-
-    const locked = await database.$transaction((transaction) =>
-      prismaTenderSelectionGateway.lockDueTender(
-        transaction,
-        tenderId,
-        new Date(),
-      ),
-    );
-
-    expect(locked).toEqual({ ok: false, error: "NOT_DUE" });
-  });
-
-  it("locks a due tender and reports its settlement terms", async () => {
+  it("locks a published tender and reports its selection terms", async () => {
     const past = new Date(Date.now() - 60_000);
     const tenderId = await seedTender(past, "PUBLISHED");
 
     const locked = await database.$transaction((transaction) =>
-      prismaTenderSelectionGateway.lockDueTender(
-        transaction,
-        tenderId,
-        new Date(),
-      ),
+      prismaTenderSelectionGateway.lockTender(transaction, tenderId),
     );
 
     expect(locked).toMatchObject({
       ok: true,
-      value: { id: tenderId, currency: "GEL", status: "PUBLISHED" },
+      value: {
+        id: tenderId,
+        currency: "GEL",
+        status: "PUBLISHED",
+        selectionExpiresAt: null,
+      },
     });
   });
 
-  it("refuses to lock a tender selection has already closed", async () => {
-    const past = new Date(Date.now() - 60_000);
-    const tenderId = await seedTender(past, "CLOSED");
-
+  it("refuses to lock a tender that does not exist", async () => {
     const locked = await database.$transaction((transaction) =>
-      prismaTenderSelectionGateway.lockDueTender(
-        transaction,
-        tenderId,
-        new Date(),
-      ),
+      prismaTenderSelectionGateway.lockTender(transaction, randomUUID()),
     );
 
-    expect(locked).toEqual({ ok: false, error: "NOT_DUE" });
+    expect(locked).toEqual({ ok: false, error: "TENDER_NOT_FOUND" });
   });
 
-  it("closes to CLOSED on a winner and EXPIRED without one", async () => {
+  it("opens the selection window, then closes to CLOSED or EXPIRED", async () => {
     const past = new Date(Date.now() - 60_000);
     const withWinner = await seedTender(past, "PUBLISHED");
-    const withoutBids = await seedTender(past, "PUBLISHED");
+    const withoutChoice = await seedTender(past, "PUBLISHED");
+    const expiresAt = new Date(Date.now() + 60_000);
+
+    await database.$transaction(async (transaction) => {
+      await prismaTenderSelectionGateway.awaitSelection(
+        transaction,
+        withWinner,
+        expiresAt,
+      );
+    });
+    await expect(
+      database.tender.findUniqueOrThrow({
+        where: { id: withWinner },
+        select: { status: true, selectionExpiresAt: true },
+      }),
+    ).resolves.toEqual({
+      status: "AWAITING_SELECTION",
+      selectionExpiresAt: expiresAt,
+    });
 
     await database.$transaction(async (transaction) => {
       await prismaTenderSelectionGateway.closeAfterSelection(
@@ -108,36 +110,55 @@ describe("prismaTenderSelectionGateway", () => {
       );
       await prismaTenderSelectionGateway.closeAfterSelection(
         transaction,
-        withoutBids,
-        "EXPIRED_NO_BIDS",
+        withoutChoice,
+        "EXPIRED",
       );
     });
 
     await expect(
       database.tender.findUniqueOrThrow({
         where: { id: withWinner },
-        select: { status: true },
+        select: { status: true, selectionExpiresAt: true },
       }),
-    ).resolves.toEqual({ status: "CLOSED" });
+    ).resolves.toEqual({ status: "CLOSED", selectionExpiresAt: null });
     await expect(
       database.tender.findUniqueOrThrow({
-        where: { id: withoutBids },
+        where: { id: withoutChoice },
         select: { status: true },
       }),
     ).resolves.toEqual({ status: "EXPIRED" });
   });
 
-  it("lists only tenders that are due, oldest deadline first", async () => {
+  it("lists tenders whose bidding or selection window is due", async () => {
     const older = await seedTender(new Date(Date.now() - 120_000), "PUBLISHED");
     const newer = await seedTender(new Date(Date.now() - 60_000), "PUBLISHED");
     await seedTender(new Date(Date.now() + 60_000), "PUBLISHED");
+    const windowOver = await seedTender(
+      new Date(Date.now() - 90_000),
+      "AWAITING_SELECTION",
+      new Date(Date.now() - 1_000),
+    );
+    const windowOpen = await seedTender(
+      new Date(Date.now() - 90_000),
+      "AWAITING_SELECTION",
+      new Date(Date.now() + 60_000),
+    );
+    const closed = await seedTender(new Date(Date.now() - 90_000), "CLOSED");
 
     const due = await prismaTenderSelectionGateway.listDueTenderIds(
       new Date(),
-      50,
+      500,
     );
 
-    const relevant = due.filter((id) => id === older || id === newer);
-    expect(relevant).toEqual([older, newer]);
+    const seeded: readonly string[] = [
+      older,
+      newer,
+      windowOver,
+      windowOpen,
+      closed,
+    ];
+    const relevant = due.filter((id) => seeded.includes(id));
+    // Oldest deadline first.
+    expect(relevant).toEqual([older, windowOver, newer]);
   });
 });

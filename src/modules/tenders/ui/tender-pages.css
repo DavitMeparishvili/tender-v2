@@ -2,8 +2,7 @@
    project facts, shared section cards, and task actions above mobile navigation.
    Mode: Operate. Actual records and server permissions own every value/state. */
 .tender-mobile-locale,
-.tender-compact-footer,
-.tender-tab-icon {
+.tender-compact-footer {
   display: none;
 }
 .tender-work-editor {
@@ -84,7 +83,6 @@
   body .tender-mobile-locale {
     display: block;
     position: relative;
-    margin-right: 14px;
   }
   body .tender-mobile-locale summary {
     display: flex;
@@ -113,12 +111,6 @@
   }
   body .mobile-locale {
     display: none;
-  }
-  body:has(.tender-page) .tab-item > img {
-    display: none;
-  }
-  body:has(.tender-page) .tender-tab-icon {
-    display: block;
   }
   body:has(.tender-page) .tender-compact-footer {
     display: flex;
@@ -1452,6 +1444,8 @@
     text-align: right;
   }
   .owned-sort select {
+    --select-chevron-inset: 0px;
+    --select-chevron-room: 22px;
     width: auto;
     min-height: 36px;
     border: 0;
@@ -1608,14 +1602,5 @@
   }
   .tender-section-nav {
     top: 68px;
-  }
-}
-@media (width <= 640px) {
-  body:has(.tender-page) .tab-bar {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    height: auto;
-  }
-  body:has(.tender-page) .tab-item[aria-current="page"] {
-    color: var(--brand);
   }
 }

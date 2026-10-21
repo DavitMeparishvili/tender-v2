@@ -30,30 +30,31 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 // Social crawlers need absolute URLs. NEXT_PUBLIC_* is inlined at build time and the
 // container build does not set it, so fall back to the production origin, not localhost.
-const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://tender-market.online";
+const siteUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://tender-market.online";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Tender Marketplace",
+  title: "Tender Market",
   description: "Construction and repair tenders in Georgia.",
   openGraph: {
-    title: "Tender Marketplace",
+    title: "Tender Market",
     description: "Construction and repair tenders in Georgia.",
     type: "website",
     url: "/",
-    siteName: "Tender Marketplace",
+    siteName: "Tender Market",
     images: [
       {
         url: "/images/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Tender — Construction and repair tenders in Georgia",
+        alt: "Tender Market — Construction and repair tenders in Georgia",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tender Marketplace",
+    title: "Tender Market",
     description: "Construction and repair tenders in Georgia.",
     images: ["/images/og-image.png"],
   },

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { BidTenderTerms, RankableBid } from "./bid";
-import { rankBids, selectWinningBid } from "./ranking";
+import { rankBids } from "./ranking";
 
 const terms: BidTenderTerms = {
   currency: "GEL",
@@ -82,28 +82,5 @@ describe("rankBids", () => {
     const snapshot = input.map((entry) => entry.id);
     rankBids(input, terms);
     expect(input.map((entry) => entry.id)).toEqual(snapshot);
-  });
-});
-
-describe("selectWinningBid", () => {
-  it("returns the first ranked bid", () => {
-    const winner = selectWinningBid(
-      [
-        bid("expensive", 90_000, "2026-06-01T00:00:00.000Z"),
-        bid("cheap", 10_000, "2026-06-02T00:00:00.000Z"),
-      ],
-      terms,
-    );
-    expect(winner?.id).toBe("cheap");
-  });
-
-  it("returns null when no bid is eligible", () => {
-    expect(selectWinningBid([], terms)).toBeNull();
-    expect(
-      selectWinningBid(
-        [{ ...bid("x", 10_000, "2026-06-01T00:00:00.000Z"), currency: "USD" }],
-        terms,
-      ),
-    ).toBeNull();
   });
 });

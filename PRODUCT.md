@@ -25,7 +25,7 @@ The product gives construction-sector clients one structured place to publish ne
 
 ## Positioning
 
-This is a construction procurement and service tender system, not a general classifieds site. Its defining mechanism combines structured construction requirements, paid provider access, deadline-based automatic lowest-price selection, recorded agreements, verified completion, and job-bound reviews.
+This is a construction procurement and service tender system, not a general classifieds site. Its defining mechanism combines structured construction requirements, paid provider access, comparable offers listed from the lowest price, the client's own choice of contractor, recorded agreements, verified completion, and job-bound reviews.
 
 ## Operating Context
 
@@ -36,7 +36,7 @@ This is a construction procurement and service tender system, not a general clas
 - Clients publish tenders for free.
 - Providers see masked tender summaries, unlock full details, and then submit offers.
 - A mock payment adapter is used while the core workflow is proven. A Georgian-compatible payment provider is integrated later through the same payment contract.
-- The winning valid offer is selected at the tender deadline. Lowest price wins; earliest submission breaks an equal-price tie. Clients cannot select a different bidder.
+- The client compares the valid offers, listed from the lowest price (earliest submission first on an equal price), and chooses the contractor; the platform never picks a winner automatically. The client may choose before the deadline (which closes the tender early) or after it, within a selection window (default 14 days after the deadline). Without a choice the tender expires. If the agreement with the chosen contractor is declined or expires, the client chooses again among the remaining offers.
 
 ## Capabilities and Constraints
 
@@ -45,7 +45,7 @@ This is a construction procurement and service tender system, not a general clas
 - Location entry, map pinning, reverse geocoding, and route distance where the vertical requires it.
 - Hidden personal contact information and hidden exact location until access is granted.
 - Listing access prices from the source documents: one tender USD 1, monthly USD 20, annual USD 200.
-- No escrow, legal arbitration, financial-dispute adjudication, or private contractor selection.
+- No escrow, legal arbitration, financial-dispute adjudication, or administrator-made contractor selection; the client chooses among the offers every bidder could see competing.
 - Reviews require a platform-recorded completed agreement and a substantive comment.
 - International markets, additional languages, and additional verticals follow the Georgia construction/repair MVP.
 

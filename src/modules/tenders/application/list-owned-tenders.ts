@@ -12,6 +12,7 @@ export function parseOwnedTenderQuery(
   const statuses = [
     "DRAFT",
     "PUBLISHED",
+    "AWAITING_SELECTION",
     "CLOSED",
     "EXPIRED",
     "CANCELLED",

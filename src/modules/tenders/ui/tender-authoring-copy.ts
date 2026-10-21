@@ -51,7 +51,8 @@ const en = {
   timeZone: "Tbilisi time",
   legacy: "Existing summary & scope",
   legacyHint: "These existing details are preserved. You can update them here.",
-  selection: "The lowest valid offer at the deadline wins automatically.",
+  selection:
+    "You compare the offers and choose the contractor yourself, at any time, even before the deadline. Offers are listed from the lowest price.",
   emptyTitle: "Your tender title",
   noFiles: "No files added yet.",
   previewFile: "Preview",
@@ -116,7 +117,7 @@ const ka: Copy = {
   legacy: "არსებული შეჯამება და სამუშაოს აღწერა",
   legacyHint: "არსებული მონაცემები შენარჩუნებულია და შეგიძლიათ განაახლოთ.",
   selection:
-    "ვადის ბოლოს ავტომატურად იმარჯვებს ყველაზე დაბალი მოქმედი შეთავაზება.",
+    "თქვენ ადარებთ შეთავაზებებს და თავად ირჩევთ შემსრულებელს ნებისმიერ დროს, ვადის ამოწურვამდეც. შეთავაზებები დალაგებულია ყველაზე დაბალი ფასიდან.",
   emptyTitle: "თქვენი ტენდერის სათაური",
   noFiles: "ფაილები ჯერ არ არის დამატებული.",
   previewFile: "ნახვა",
@@ -178,7 +179,7 @@ const ru: Copy = {
   legacy: "Существующие сводка и состав работ",
   legacyHint: "Эти данные сохранены. Здесь их можно обновить.",
   selection:
-    "В конце срока автоматически побеждает минимальное действующее предложение.",
+    "Вы сравниваете предложения и сами выбираете исполнителя в любой момент, даже до окончания срока. Предложения показаны начиная с самой низкой цены.",
   emptyTitle: "Название вашего тендера",
   noFiles: "Файлы ещё не добавлены.",
   previewFile: "Просмотр",

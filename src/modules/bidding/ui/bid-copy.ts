@@ -20,6 +20,8 @@ export function bidFormCopy(messages: Messages): BidFormCopy {
     BID_NOT_FOUND: messages.bidding.errors.bidNotFound,
     BID_NOT_ACTIVE: messages.bidding.errors.bidNotActive,
     NOT_OWNER: messages.tenders.errors.notOwner,
+    TENDER_NOT_SELECTABLE: messages.bidding.errors.tenderNotSelectable,
+    BID_NOT_SELECTABLE: messages.bidding.errors.bidNotSelectable,
   };
 
   return {
@@ -45,7 +47,7 @@ export function bidFormCopy(messages: Messages): BidFormCopy {
     submitted: messages.bidding.submitted,
     revised: messages.bidding.revised,
     withdrawn: messages.bidding.withdrawn,
-    automaticWinner: messages.bidding.automaticWinner,
+    selectionRule: messages.bidding.selectionRule,
     revisionResetsQueue: messages.bidding.revisionResetsQueue,
     summaryOne: messages.errors.summaryOne,
     summaryMany: messages.errors.summaryMany,

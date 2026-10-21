@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   createBidHandlers,
   createBidSummaryHandlers,
+  createChooseBidHandlers,
   createOwnBidHandlers,
 } from "./bid-handlers";
 
@@ -143,5 +144,69 @@ describe("createBidSummaryHandlers", () => {
     await expect(response.json()).resolves.toEqual({
       summary: { bidCount: 3, lowestAmountMinorUnits: 42_000, currency: "GEL" },
     });
+  });
+});
+
+describe("createChooseBidHandlers", () => {
+  const chooseContext = {
+    params: Promise.resolve({ id: "tender-1", bidId: "bid-1" }),
+  };
+  const request = () =>
+    new Request("http://localhost/api/tenders/tender-1/bids/bid-1/choose", {
+      method: "POST",
+    });
+
+  it("records the owner's choice with the resolved customer", async () => {
+    const choose = vi.fn(
+      async () =>
+        ({
+          ok: true,
+          value: {
+            tenderId: "tender-1",
+            winningBidId: "bid-1",
+            agreementId: "agreement-1",
+            alreadyChosen: false,
+          },
+        }) as const,
+    );
+    const { POST } = createChooseBidHandlers({
+      requireCustomer: customer,
+      choose,
+    });
+
+    const response = await POST(request(), chooseContext);
+
+    expect(response.status).toBe(200);
+    expect(choose).toHaveBeenCalledWith("tender-1", "bid-1", {
+      id: "client-1",
+    });
+    await expect(response.json()).resolves.toMatchObject({
+      selection: { agreementId: "agreement-1" },
+    });
+  });
+
+  it("refuses a caller without the CUSTOMER capability", async () => {
+    const choose = vi.fn();
+    const { POST } = createChooseBidHandlers({
+      requireCustomer: deniedProvider,
+      choose,
+    });
+
+    expect((await POST(request(), chooseContext)).status).toBe(403);
+    expect(choose).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["NOT_OWNER", 403],
+    ["TENDER_NOT_SELECTABLE", 409],
+    ["BID_NOT_SELECTABLE", 409],
+    ["BID_NOT_FOUND", 404],
+  ] as const)("maps %s to %i", async (error, status) => {
+    const { POST } = createChooseBidHandlers({
+      requireCustomer: customer,
+      choose: async () => ({ ok: false, error }),
+    });
+
+    expect((await POST(request(), chooseContext)).status).toBe(status);
   });
 });

@@ -59,6 +59,10 @@ describe("PrismaTenderRepository", () => {
       { id: otherId },
     );
     expect(otherUpdate).toEqual({ ok: false, error: "NOT_OWNER" });
+
+    expect(await repository.isOwnedBy(created.value.id, ownerId)).toBe(true);
+    expect(await repository.isOwnedBy(created.value.id, otherId)).toBe(false);
+    expect(await repository.isOwnedBy(randomUUID(), ownerId)).toBe(false);
   });
 
   it("syncs the location for a known city and coarsens the public coordinates", async () => {

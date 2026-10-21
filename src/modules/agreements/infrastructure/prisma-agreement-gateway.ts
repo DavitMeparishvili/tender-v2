@@ -1,5 +1,6 @@
 import { Prisma, type Agreement } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
+import { prismaSelectionLifecycle } from "../../bidding/infrastructure/prisma-selection-lifecycle";
 import { OUTBOX_TOPICS } from "../../notifications/domain/outbox-topic";
 import { prismaNotificationPublisher } from "../../notifications/infrastructure/prisma-outbox-gateway";
 import type { IdGenerator, Result } from "../../shared";
@@ -44,12 +45,18 @@ export type CompletedAgreementForReview = Readonly<{
   tenderTitle: string;
   status: Agreement["status"];
 }>;
+export type AgreementManageOptions = Readonly<{
+  // How long the client gets to choose again when a pending agreement falls
+  // through after the bidding deadline (SELECTION_WINDOW_DAYS).
+  selectionWindowDays: number;
+}>;
 export type AgreementRepository = {
   manage(
     id: string,
     action: AgreementAction,
     now: Date,
     ids: IdGenerator,
+    options: AgreementManageOptions,
   ): Promise<
     Result<
       AgreementView,
@@ -219,7 +226,12 @@ export class PrismaAgreementGateway
     return { ok: true as const, value: view(row, actorId) };
   }
   async getForTender(tenderId: string, actorId: string) {
-    const row = await database.agreement.findUnique({ where: { tenderId } });
+    // A tender can hold several agreements once a declined one reopened
+    // selection; the latest is the one that matters to both parties.
+    const row = await database.agreement.findFirst({
+      where: { tenderId },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    });
     if (!row)
       return { ok: false as const, error: "AGREEMENT_NOT_FOUND" as const };
     if (actorId !== row.clientId && actorId !== row.providerId)
@@ -239,6 +251,7 @@ export class PrismaAgreementGateway
     action: AgreementAction,
     now: Date,
     ids: IdGenerator,
+    options: AgreementManageOptions,
   ): Promise<
     Result<
       AgreementView,
@@ -287,6 +300,29 @@ export class PrismaAgreementGateway
               },
             });
             const event = next.value.event;
+            // The tender side of the transition commits with it: an agreed
+            // agreement settles the standby offers, and a pending one that
+            // falls through sends the client back to choose among the rest.
+            const settled = { tenderId: row.tenderId, bidId: row.bidId };
+            if (event === "AGREEMENT_AGREED") {
+              await prismaSelectionLifecycle.agreementAgreed(
+                tx,
+                settled,
+                now,
+                ids,
+              );
+            } else if (
+              event === "AGREEMENT_DECLINED" ||
+              event === "AGREEMENT_EXPIRED"
+            ) {
+              await prismaSelectionLifecycle.agreementFellThrough(
+                tx,
+                settled,
+                now,
+                ids,
+                options.selectionWindowDays,
+              );
+            }
             await tx.auditEvent.create({
               data: {
                 id: ids.next(),

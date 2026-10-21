@@ -50,9 +50,15 @@ export function TenderDetailContent({
   tender: TenderDraft;
 }) {
   const c = tenderPageCopy(locale);
+  const showsComparison =
+    offerCount > 0 ||
+    tender.status === "AWAITING_SELECTION" ||
+    tender.status === "CLOSED" ||
+    tender.status === "EXPIRED";
   const status = {
     DRAFT: messages.tenders.statusDraft,
     PUBLISHED: messages.tenders.statusPublished,
+    AWAITING_SELECTION: messages.tenders.statusAwaitingSelection,
     CLOSED: messages.tenders.statusClosed,
     EXPIRED: messages.tenders.statusExpired,
     CANCELLED: messages.tenders.statusCancelled,
@@ -187,9 +193,7 @@ export function TenderDetailContent({
               {publishControl}
             </section>
           ) : null}
-          {offerCount > 0 ||
-          tender.status === "CLOSED" ||
-          tender.status === "EXPIRED" ? (
+          {showsComparison ? (
             <div id="offer-comparison">{comparison}</div>
           ) : null}
         </div>
@@ -211,7 +215,11 @@ export function TenderDetailContent({
                 {c.offersShort} · {offerCount}
               </a>
             )}
-            <p className="tender-privacy">{c.automatic}</p>
+            {/* Once the comparison renders it states the rule next to the
+                offers; repeating it here would show the sentence twice. */}
+            {showsComparison ? null : (
+              <p className="tender-privacy">{c.selectionRuleOwner}</p>
+            )}
           </section>
           <aside className="tender-sidebar owner-sidebar">
             <section className="tender-panel">
@@ -224,6 +232,15 @@ export function TenderDetailContent({
                   <dt>{messages.tenders.deadline}</dt>
                   <dd>{tenderDate(tender.deadline, locale, true)}</dd>
                 </div>
+                {tender.status === "AWAITING_SELECTION" &&
+                tender.selectionExpiresAt ? (
+                  <div>
+                    <dt>{messages.tenders.selectionExpiresAt}</dt>
+                    <dd>
+                      {tenderDate(tender.selectionExpiresAt, locale, true)}
+                    </dd>
+                  </div>
+                ) : null}
                 <div>
                   <dt>{messages.tenders.desiredStartDate}</dt>
                   <dd>{tenderDate(tender.desiredStartDate, locale)}</dd>

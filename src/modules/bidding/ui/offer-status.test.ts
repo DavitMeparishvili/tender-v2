@@ -21,4 +21,12 @@ describe("provider offer status", () => {
   ])("keeps %s / %s terminal", (bid, tender, expected) => {
     expect(offerStatus(bid, tender, deadline, 0)).toBe(expected);
   });
+  it("reports a standing offer as under review while the client chooses", () => {
+    expect(offerStatus("SUBMITTED", "AWAITING_SELECTION", deadline, 0)).toBe(
+      "pending",
+    );
+  });
+  it("reports a standing offer as on hold once another offer was chosen", () => {
+    expect(offerStatus("SUBMITTED", "CLOSED", deadline, 0)).toBe("standby");
+  });
 });

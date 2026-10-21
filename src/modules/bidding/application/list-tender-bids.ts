@@ -1,12 +1,13 @@
 import type { Result } from "../../shared";
 import type { Bid } from "../domain/bid";
 import { rankBids } from "../domain/ranking";
+import { isChoosableBid } from "../domain/selection";
 import type { ProviderDirectory } from "../ports/provider-directory";
 import type { BidActor } from "./submit-bid";
 
-// What the client sees: every bid, ranked, with the provider's public display
-// name. The client may compare but may not choose — no route in this module
-// accepts a client-selected winner.
+// What the client sees: every bid, lowest price first, with the provider's
+// public display name. The client compares them and chooses the contractor;
+// the order is informational and never picks a winner by itself.
 export type ClientBidView = Readonly<{
   id: string;
   providerId: string;
@@ -20,6 +21,11 @@ export type ClientBidView = Readonly<{
   exclusions: string | null;
   conditions: string;
   qualifyingSubmittedAt: string;
+  // An active, eligible offer the client could choose (when the tender's
+  // selection is open).
+  choosable: boolean;
+  // The lowest-priced choosable offer. Informational only.
+  lowestPrice: boolean;
 }>;
 
 export interface ListTenderBidsRepository {
@@ -55,9 +61,14 @@ export function createListTenderBids(dependencies: {
       currency: tender.value.currency,
       deadline: tender.value.deadline,
     };
-    // Ranked order is the comparison order the client sees, so the ordering
-    // the selector will use is visible rather than implied.
+    // Lowest price first: the comparison order the client sees.
     const rankedIds = rankBids(bids, terms).map((bid) => bid.id);
+    const lowestId = bids
+      .filter((bid) => isChoosableBid(bid, terms))
+      .sort(
+        (left, right) =>
+          rankedIds.indexOf(left.id) - rankedIds.indexOf(right.id),
+      )[0]?.id;
     const ordered = [
       ...rankedIds
         .map((id) => bids.find((bid) => bid.id === id))
@@ -84,6 +95,8 @@ export function createListTenderBids(dependencies: {
         exclusions: bid.exclusions,
         conditions: bid.conditions,
         qualifyingSubmittedAt: bid.qualifyingSubmittedAt.toISOString(),
+        choosable: isChoosableBid(bid, terms),
+        lowestPrice: bid.id === lowestId,
       })),
     };
   };

@@ -4,6 +4,11 @@ import { notFound, redirect } from "next/navigation";
 import { getAgreementForTender } from "@/src/modules/agreements/application/get-agreement";
 import { listTenderBids } from "@/src/modules/bidding/application/list-tender-bids";
 import {
+  displayedSelectionEnd,
+  isSelectionOpen,
+  SELECTION_WINDOW_DAYS,
+} from "@/src/modules/bidding/domain/selection";
+import {
   BidComparison,
   bidComparisonCopy,
 } from "@/src/modules/bidding/ui/bid-comparison";
@@ -13,6 +18,7 @@ import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { getOwnedTender } from "@/src/modules/tenders/application/get-owned-tender";
 import { TenderDetail } from "@/src/modules/tenders/ui/tender-detail";
+import { formatTenderDate } from "@/src/modules/tenders/ui/tender-format";
 import { resolveCustomerRouteAccess } from "@/src/modules/tenders/ui/customer-route-access";
 
 export default async function ClientTenderDetailPage({
@@ -52,10 +58,29 @@ export default async function ClientTenderDetailPage({
   ]);
   const bids = bidsResult?.ok ? bidsResult.value : [];
 
+  const status = owned.value.status;
+  // The same rule the choose use case applies under the tender lock, so the
+  // control is offered exactly when the server would accept it.
+  const now = new Date();
+  const selectionState = {
+    status,
+    selectionExpiresAt: owned.value.selectionExpiresAt ?? null,
+  };
+  const selectionOpen = isSelectionOpen(selectionState, now);
+  const chooseBy =
+    owned.value.deadline === null
+      ? null
+      : displayedSelectionEnd(
+          { ...selectionState, deadline: owned.value.deadline },
+          now,
+          SELECTION_WINDOW_DAYS,
+        );
+  // After a declined agreement the tender is back in selection, and the
+  // cancelled agreement is history rather than the outcome.
   const showOutcome =
-    agreement.ok ||
-    owned.value.status === "CLOSED" ||
-    owned.value.status === "EXPIRED";
+    status === "CLOSED" ||
+    status === "EXPIRED" ||
+    (agreement.ok && status !== "PUBLISHED" && status !== "AWAITING_SELECTION");
   const comparison =
     bidsResult === null ? undefined : (
       <>
@@ -63,17 +88,17 @@ export default async function ClientTenderDetailPage({
           <section
             className="bid-outcome"
             aria-label={
-              owned.value.status === "CLOSED"
+              status === "CLOSED"
                 ? messages.bidding.outcomeWinnerTitle
-                : owned.value.status === "EXPIRED"
+                : status === "EXPIRED"
                   ? messages.bidding.outcomeExpiredTitle
                   : messages.workspace.agreements
             }
           >
-            {owned.value.status === "CLOSED" ? (
+            {status === "CLOSED" ? (
               <h2>{messages.bidding.outcomeWinnerTitle}</h2>
             ) : null}
-            {owned.value.status === "EXPIRED" ? (
+            {status === "EXPIRED" ? (
               <h2>{messages.bidding.outcomeExpiredTitle}</h2>
             ) : null}
             {agreement.ok ? (
@@ -87,10 +112,15 @@ export default async function ClientTenderDetailPage({
           </section>
         ) : null}
         <BidComparison
-          showSelectionRule={owned.value.status === "PUBLISHED"}
+          showSelectionRule={selectionOpen || status === "PUBLISHED"}
           bids={bids}
           copy={bidComparisonCopy(messages)}
           locale={locale}
+          selection={{
+            tenderId: id,
+            open: selectionOpen,
+            chooseBy: formatTenderDate(chooseBy, locale),
+          }}
         />
       </>
     );
