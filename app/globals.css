@@ -3136,6 +3136,58 @@ img {
   border-radius: 50%;
 }
 
+.profile-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 0;
+}
+
+.profile-contacts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+
+.profile-contacts dt {
+  color: var(--fg-3);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.profile-contacts dd {
+  margin: 0;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.profile-contacts a {
+  color: var(--link);
+}
+
+.profile-contacts-hidden {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-inline-size: 60ch;
+  margin: 14px 0 0;
+  color: var(--fg-3);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+
+.profile-contacts-hidden img {
+  flex: none;
+  margin-block-start: 1px;
+  opacity: 0.55;
+}
+
 .profile-actions {
   display: flex;
   flex: none;
@@ -4614,6 +4666,27 @@ img {
   margin-inline-start: 8px;
 }
 
+.agreement-party {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  white-space: normal;
+}
+
+.agreement-party a,
+.agreement-counterparty a {
+  color: var(--link);
+  font-weight: var(--weight-semibold);
+}
+
+.agreement-counterparty {
+  margin: 0;
+  color: var(--fg-3);
+  font-size: var(--text-label);
+  overflow-wrap: anywhere;
+}
+
 .cancellation-banner {
   display: grid;
   gap: 6px;
@@ -5498,6 +5571,63 @@ img {
 
   .profile-actions {
     inline-size: 100%;
+  }
+}
+
+/* On phones the avatar sits beside the name only; the description, meta and
+   contacts run the full width instead of hanging in a narrow column. */
+@media (width <= 640px) {
+  .profile-head {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 0 14px;
+    align-items: center;
+  }
+
+  .profile-identity {
+    display: contents;
+  }
+
+  .profile-head > :is(.profile-actions),
+  .profile-identity
+    > :is(
+      .profile-descriptor,
+      .profile-meta,
+      .profile-contacts,
+      .profile-contacts-hidden
+    ) {
+    grid-column: 1 / -1;
+  }
+
+  .profile-descriptor {
+    margin-block-start: 14px;
+  }
+
+  .profile-meta {
+    gap: 8px 16px;
+  }
+
+  .profile-actions {
+    margin-block-start: 20px;
+  }
+
+  .profile-contacts {
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+  }
+
+  .profile-contacts > div {
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  .profile-contacts > div + div {
+    border-block-start: 1px solid var(--border);
   }
 }
 

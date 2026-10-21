@@ -25,14 +25,50 @@ function needsAction(agreement: AgreementView) {
   );
 }
 
+// The other side of the agreement from the viewer's point of view.
+export function counterpartyOf(agreement: AgreementView) {
+  return agreement.partyRole === "CLIENT"
+    ? agreement.providerId
+    : agreement.clientId;
+}
+
+function CounterpartyLine({
+  agreement,
+  locale,
+  messages,
+  partyNames,
+}: Readonly<{
+  agreement: AgreementView;
+  locale: Locale;
+  messages: Messages;
+  partyNames: ReadonlyMap<string, string>;
+}>) {
+  const label =
+    agreement.partyRole === "CLIENT"
+      ? messages.agreements.partyProvider
+      : messages.agreements.partyClient;
+  const userId = counterpartyOf(agreement);
+  return (
+    <p className="agreement-counterparty">
+      <span>{label}:</span>{" "}
+      <Link href={`/${locale}/profiles/${userId}`}>
+        {partyNames.get(userId) ?? label}
+      </Link>
+    </p>
+  );
+}
+
 export function AgreementList({
   agreements,
   locale,
   messages,
+  partyNames = new Map(),
 }: Readonly<{
   agreements: readonly AgreementView[];
   locale: Locale;
   messages: Messages;
+  // Display names by user id, for linking each agreement's other party.
+  partyNames?: ReadonlyMap<string, string>;
 }>) {
   if (agreements.length === 0) {
     return <p className="tender-empty">{messages.agreements.empty}</p>;
@@ -82,6 +118,12 @@ export function AgreementList({
                   locale,
                 )}
               </p>
+              <CounterpartyLine
+                agreement={agreement}
+                locale={locale}
+                messages={messages}
+                partyNames={partyNames}
+              />
             </li>
           ))}
         </ul>

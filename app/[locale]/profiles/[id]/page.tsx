@@ -1,11 +1,20 @@
+import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getCurrentUser } from "@/src/modules/identity/application/current-user";
+import {
+  getProfileContact,
+  type ProfileContact,
+} from "@/src/modules/profiles/application/get-profile-contact";
 import { getPublicProfile } from "@/src/modules/profiles/application/get-public-profile";
 import { getProfileReviews } from "@/src/modules/reviews/application/get-profile-reviews";
 import { ReviewList } from "@/src/modules/reviews/ui/review-list";
 import { ReviewSummary, Stars } from "@/src/modules/reviews/ui/review-summary";
 import { isLocale } from "@/src/modules/localization/config";
-import { getMessages } from "@/src/modules/localization/get-messages";
+import {
+  getMessages,
+  type Messages,
+} from "@/src/modules/localization/get-messages";
 import { getProviderRecord } from "@/src/modules/shell/application/provider-record";
 import { BrandIcon } from "@/src/modules/shell/ui/brand-icon";
 import { formatTenderDate } from "@/src/modules/tenders/ui/tender-format";
@@ -22,18 +31,53 @@ function histogramOf(overalls: readonly number[]): readonly number[] {
   return buckets;
 }
 
+function ProfileContacts({
+  contact,
+  copy,
+}: Readonly<{
+  contact: ProfileContact | null;
+  copy: Messages["providerProfile"];
+}>) {
+  if (contact === null) {
+    return (
+      <p className="profile-contacts-hidden">
+        <BrandIcon name="secure" size={16} />
+        {copy.contactsHidden}
+      </p>
+    );
+  }
+  return (
+    <dl aria-label={copy.contactsTitle} className="profile-contacts">
+      <div>
+        <dt>{copy.contactEmail}</dt>
+        <dd>
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </dd>
+      </div>
+      <div>
+        <dt>{copy.contactPhone}</dt>
+        <dd>
+          <a href={`tel:${contact.phoneE164}`}>{contact.phoneE164}</a>
+        </dd>
+      </div>
+    </dl>
+  );
+}
+
 export default async function PublicProfilePage({
   params,
 }: Readonly<{ params: Promise<{ locale: string; id: string }> }>) {
   const { locale, id } = await params;
   if (!isLocale(locale)) notFound();
 
-  const [profile, reviewOutput, record] = await Promise.all([
+  const [profile, reviewOutput, record, viewer] = await Promise.all([
     getPublicProfile(id),
     getProfileReviews(id),
     getProviderRecord(id),
+    headers().then(getCurrentUser),
   ]);
   if (!profile.ok) notFound();
+  const contact = await getProfileContact(id, viewer);
 
   const messages = getMessages(locale);
   const copy = messages.providerProfile;
@@ -96,6 +140,7 @@ export default async function PublicProfilePage({
                   </span>
                 )}
               </p>
+              <ProfileContacts contact={contact} copy={copy} />
             </div>
 
             {isProvider ? (
