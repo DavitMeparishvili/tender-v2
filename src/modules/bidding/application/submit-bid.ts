@@ -53,7 +53,7 @@ export type TenderContextLookup = (id: string) => Promise<
     Readonly<{
       id: string;
       ownerId: string;
-      status: "PUBLISHED" | "CLOSED" | "EXPIRED";
+      status: "PUBLISHED" | "AWAITING_SELECTION" | "CLOSED" | "EXPIRED";
       currency: BidCurrency;
       deadline: Date;
     }>,

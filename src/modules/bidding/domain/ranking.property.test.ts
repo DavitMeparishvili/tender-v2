@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { BidTenderTerms, RankableBid } from "./bid";
-import { rankBids, selectWinningBid } from "./ranking";
+import { rankBids } from "./ranking";
 
 const terms: BidTenderTerms = {
   currency: "GEL",
@@ -85,11 +85,11 @@ describe("rankBids ranks arbitrary valid bid sets deterministically", () => {
     }
   });
 
-  it("always selects a bid that no other eligible bid beats", () => {
+  it("always lists first a bid that no other eligible bid undercuts", () => {
     for (let seed = 1; seed <= 200; seed += 1) {
       const random = createRandom(seed);
       const bids = generateBids(random, 1 + Math.floor(random() * 12));
-      const winner = selectWinningBid(bids, terms);
+      const winner = rankBids(bids, terms)[0] ?? null;
       expect(winner).not.toBeNull();
 
       for (const other of bids) {

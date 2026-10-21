@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   EntitlementPanel,
   entitlementPanelCopy,
@@ -24,6 +24,7 @@ import {
   RENDERED_LINK_DOWNLOAD_URL_TTL_SECONDS,
   getEntitledAttachmentDownload,
 } from "@/src/modules/tenders/application/get-attachment-download";
+import { isTenderOwnedBy } from "@/src/modules/tenders/application/is-tender-owned-by";
 import { getTenderForProvider } from "@/src/modules/tenders/application/get-tender-for-provider";
 import { listEntitledAttachments } from "@/src/modules/tenders/application/list-tender-attachments";
 import { searchPublishedTenders } from "@/src/modules/tenders/application/search-published-tenders";
@@ -80,6 +81,10 @@ export default async function ProviderTenderDetailPage({
   // non-entitled provider would see, with no own-bid, agreement, or
   // attachment lookups run on their behalf.
   const user = await getCurrentUser(requestHeaders);
+  // An owner always lands on the management view, whichever link they used.
+  if (user !== null && (await isTenderOwnedBy(id, user.id))) {
+    redirect(`/${locale}/client/tenders/${id}`);
+  }
   const actor =
     user !== null && user.capabilities.includes("PROVIDER")
       ? { id: user.id }
@@ -108,6 +113,10 @@ export default async function ProviderTenderDetailPage({
   const bid = ownBid.ok ? ownBid.value : null;
   const isOpen =
     tender.status === "PUBLISHED" && new Date(tender.deadline) > new Date();
+  // Bidding is over and the client has not chosen yet.
+  const reviewing =
+    tender.status === "AWAITING_SELECTION" ||
+    (tender.status === "PUBLISHED" && !isOpen);
   const c = tenderPageCopy(locale);
   const similarTenders = (similar.ok ? similar.value : [])
     .filter((candidate) => candidate.id !== id)
@@ -163,16 +172,24 @@ export default async function ProviderTenderDetailPage({
                   <div className="tender-panel-heading split">
                     <h2>{messages.bidding.summaryTitle}</h2>
                     <span className="tender-badge">
-                      {isOpen ? messages.detail.competitionOpen : c.ended}
+                      {isOpen
+                        ? messages.detail.competitionOpen
+                        : reviewing
+                          ? messages.detail.clientReviewing
+                          : tender.status === "CLOSED"
+                            ? messages.detail.contractorChosen
+                            : c.ended}
                     </span>
                   </div>
                   <strong className="tender-offer-count">0</strong>
                   <p>{c.offers.toLowerCase()}</p>
-                  <p className="tender-competition-rule">{c.automatic}</p>
+                  <p className="tender-competition-rule">{c.selectionRule}</p>
                 </section>
               ) : summary.ok ? (
                 <BidSummaryView
                   isOpen={isOpen}
+                  reviewing={reviewing}
+                  contractorChosen={tender.status === "CLOSED"}
                   locale={locale}
                   messages={messages}
                   summary={summary.value}

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Locale } from "../../localization/config";
 import { SignOutButton } from "../../identity/ui/sign-out-button";
+import { DismissibleDetails } from "./dismissible-details";
 
 type AccountMenuProps = Readonly<{
   displayName: string;
@@ -81,7 +82,7 @@ export function AccountMenu({
   const initials = initialsFor(displayName, locale);
 
   return (
-    <details className="account-menu">
+    <DismissibleDetails className="account-menu">
       <summary aria-label={`${profileLabel}: ${displayName}`}>
         <span className="account-menu-trigger-avatar" aria-hidden="true">
           {initials}
@@ -140,6 +141,6 @@ export function AccountMenu({
           />
         </div>
       </div>
-    </details>
+    </DismissibleDetails>
   );
 }

@@ -56,7 +56,10 @@ export function SiteFooter({
               className="footer-word"
               href={at("")}
             >
-              <span lang="en">Tender</span>
+              <span className="wordmark-text" lang="en">
+                <span className="wordmark-name">Tender</span>
+                <span className="wordmark-sub">market</span>
+              </span>
             </Link>
             <p className="footer-blurb">{messages.nav.footerBlurb}</p>
           </div>

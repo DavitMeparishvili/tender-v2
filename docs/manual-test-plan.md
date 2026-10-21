@@ -37,12 +37,12 @@ Please don't report these as bugs:
   fill out the sign-up form and see the "check your email" message, but you won't
   be able to finish creating a new account. Stick to the three test accounts above
   for anything that requires being logged in.
-- **"What happens after a job's deadline passes" may not happen automatically in
-  this demo.** Normally, once a posted job's deadline passes, the site
-  automatically picks a winning bid and starts an agreement between the client and
-  the winning provider. In this demo environment, that automatic step might not be
-  switched on. If you get to that part of the guide and nothing happens on its
-  own, that's expected — skip that section rather than treating it as a bug.
+- **The client picks the winning bid.** The site never picks one automatically.
+  The client can choose a bid from the job's page at any time (before or after the
+  deadline); choosing closes the job and starts an agreement with that provider.
+  Once a job's deadline passes, a background step moves it to "Choosing
+  contractor"; in this demo that step might not be switched on, which only
+  matters for jobs whose deadline has passed.
 - **The admin account can only moderate reviews.** It cannot manage users, tenders,
   or payments — even though it sounds like an "admin" should be able to do more.
   That's the current, intentional scope of this demo.
@@ -215,8 +215,8 @@ Log out and log back in as `demo.provider@tender.test` for this section.
 - Submitting a bid without the required conditions note (or with only a few
   characters in it) should be blocked with a message asking for more detail.
 - A valid bid should submit successfully, and you should see a note explaining
-  that the lowest bid wins automatically at the deadline and that no one can
-  hand-pick a different winner.
+  that the client compares the offers and chooses the contractor (offers are
+  listed from the lowest price).
 - Revising your bid should succeed and update the amount shown.
 - Withdrawing your bid should succeed, and afterward you should not be able to
   place a new bid on that same job again — the bidding option for that job should
@@ -224,12 +224,10 @@ Log out and log back in as `demo.provider@tender.test` for this section.
 
 ## 7. What happens after a job's deadline (Agreements)
 
-As explained above, this part may not happen automatically in this demo — the
-step where a winning bid is picked and an "agreement" is created between client
-and provider might need to be switched on behind the scenes by the development
-team. If nothing changes on its own after a deadline passes, treat that as a
-known limitation and skip ahead to Section 9 (Notifications) and Section 8
-(Reviews only if an agreement already exists to review).
+As the client, open your job and press "Choose this contractor" on one of the
+bids, then confirm. The job closes and an "agreement" is created between you and
+that provider. If either side declines the agreement, the job returns to
+"Choosing contractor" and the client can pick another of the remaining bids.
 
 If an agreement **does** appear (check "My agreements" while logged in as either
 the Client or the Provider), here's how it should behave:

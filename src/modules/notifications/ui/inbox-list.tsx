@@ -22,9 +22,26 @@ const knownMessages = {
   "notifications.bidWon": "bidWon",
   "notifications.bidLost": "bidLost",
   "notifications.tenderExpiredNoBids": "tenderExpiredNoBids",
+  "notifications.tenderAwaitingSelection": "tenderAwaitingSelection",
+  "notifications.tenderReopenedForSelection": "tenderReopenedForSelection",
+  "notifications.tenderSelectionExpired": "tenderSelectionExpired",
+  "notifications.tenderExpiredNoOffersLeft": "tenderExpiredNoOffersLeft",
+  "notifications.tenderReopenedForBidding": "tenderReopenedForBidding",
   "notifications.reviewPublished": "reviewPublished",
   "notifications.reviewRedacted": "reviewRedacted",
 } as const;
+
+// Tender notifications addressed to the tender's owner open the client view;
+// the rest are about a provider's own offer.
+const CLIENT_TENDER_MESSAGES: ReadonlySet<string> = new Set([
+  "notifications.tenderExpiredNoBids",
+  "notifications.tenderWinnerSelected",
+  "notifications.tenderAwaitingSelection",
+  "notifications.tenderReopenedForSelection",
+  "notifications.tenderSelectionExpired",
+  "notifications.tenderExpiredNoOffersLeft",
+  "notifications.tenderReopenedForBidding",
+]);
 
 function interpolate(template: string, variables: InboxItem["variables"]) {
   return template.replace(/\{([\w]+)\}/gu, (_, name: string) => {
@@ -92,7 +109,7 @@ export function InboxList({
                   item.messageKey in knownMessages
                 ? typeof item.variables.agreementId === "string"
                   ? `/${locale}/agreements/${encodeURIComponent(item.variables.agreementId)}`
-                  : `/${locale}/${item.messageKey === "notifications.tenderExpiredNoBids" || item.messageKey === "notifications.tenderWinnerSelected" ? "client" : "provider"}/tenders/${encodeURIComponent(item.aggregateId)}`
+                  : `/${locale}/${CLIENT_TENDER_MESSAGES.has(item.messageKey) ? "client" : "provider"}/tenders/${encodeURIComponent(item.aggregateId)}`
                 : item.aggregateType === "Review"
                   ? `/${locale}/profiles/${userId}`
                   : null;

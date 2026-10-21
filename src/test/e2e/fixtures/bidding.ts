@@ -10,13 +10,15 @@ export const PHASE_3_PROVIDERS = {
 } as const;
 
 // The three seeded amounts. The cheapest is the SECOND bid submitted, on
-// purpose, so "the winner" is never simply "the first" or "the last" offer.
+// purpose, so the comparison order is never simply submission order.
 export const PHASE_3_BID_AMOUNTS = {
   providerA: 420_000,
   providerB: 380_000,
   providerC: 400_000,
 } as const;
-export const PHASE_3_WINNING_AMOUNT = PHASE_3_BID_AMOUNTS.providerB;
+// The client deliberately chooses an offer that is NOT the cheapest: the
+// lowest price is information, not an automatic winner.
+export const PHASE_3_CHOSEN_AMOUNT = PHASE_3_BID_AMOUNTS.providerC;
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 

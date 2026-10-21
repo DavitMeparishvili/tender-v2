@@ -1,11 +1,17 @@
 import type { AuthError } from "../../identity/application/require-capability";
+import type { ChooseWinningBidError } from "../application/choose-winning-bid";
 import type { Messages } from "../../localization/get-messages";
 import type { ReviseBidError } from "../application/revise-bid";
 import type { SubmitBidError } from "../application/submit-bid";
 import type { WithdrawBidError } from "../application/withdraw-bid";
 
 export type BiddingErrorCode =
-  AuthError | SubmitBidError | ReviseBidError | WithdrawBidError | "NOT_OWNER";
+  | AuthError
+  | SubmitBidError
+  | ReviseBidError
+  | WithdrawBidError
+  | ChooseWinningBidError
+  | "NOT_OWNER";
 
 type MessageKey<T> = {
   [K in keyof T & string]: T[K] extends string ? K : `${K}.${MessageKey<T[K]>}`;
@@ -35,6 +41,8 @@ const BIDDING_STATUS_BY_ERROR: Readonly<
   BID_NOT_FOUND: 404,
   BID_NOT_ACTIVE: 409,
   NOT_OWNER: 403,
+  TENDER_NOT_SELECTABLE: 409,
+  BID_NOT_SELECTABLE: 409,
 };
 
 export const BIDDING_ERROR_MESSAGE_KEYS: Readonly<
@@ -56,6 +64,8 @@ export const BIDDING_ERROR_MESSAGE_KEYS: Readonly<
   BID_NOT_FOUND: "bidding.errors.bidNotFound",
   BID_NOT_ACTIVE: "bidding.errors.bidNotActive",
   NOT_OWNER: "tenders.errors.notOwner",
+  TENDER_NOT_SELECTABLE: "bidding.errors.tenderNotSelectable",
+  BID_NOT_SELECTABLE: "bidding.errors.bidNotSelectable",
 };
 
 function isAuthError(error: BiddingErrorCode): error is AuthError {

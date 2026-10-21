@@ -141,9 +141,9 @@ The offer may include:
 * Transportation costs; 
 * Additional conditions. 
 
-According to the final concept of the platform, the relevant offer with the lowest price may be automatically declared the winner. 
-The goal of this principle is to reduce costs for the client and ensure transparency in the process. 
-The system does not include a mechanism for secretly or privately selecting a contractor, which would put other participants at a disadvantage.
+The client compares the offers, which are listed from the lowest price, and makes the final choice of contractor; the platform never declares a winner automatically. 
+The client may choose at any time — before the deadline, which closes the tender early, or after it, within a selection window (14 days by default). If no offer is chosen in that window, the tender expires. If the agreement with the chosen contractor is declined, the client may choose again among the remaining offers. 
+The goal of this principle is to keep the process transparent: every participant competes in the same open comparison, and the decision belongs to the client.
 
 ## Application Viewing System
 Before viewing the full application, the contractor can only see the basic information: 

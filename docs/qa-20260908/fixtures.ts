@@ -61,8 +61,9 @@ try {
     console.log(JSON.stringify(await runDeadlineSelection(tender.id)));
   } else if (operation === "expire") {
     if (!id) throw new Error("QA tender ID required");
-    const agreement = await database.agreement.findUniqueOrThrow({
+    const agreement = await database.agreement.findFirstOrThrow({
       where: { tenderId: id },
+      orderBy: { createdAt: "desc" },
     });
     if (!agreement.tenderTitle.startsWith("QA MCP 20260908"))
       throw new Error("Not a QA agreement");
@@ -79,6 +80,7 @@ try {
       { type: "EXPIRE", actorId: null },
       now,
       { next: () => crypto.randomUUID() },
+      { selectionWindowDays: 14 },
     );
     console.log(JSON.stringify({ id: agreement.id, result }));
   } else if (operation === "qa-provider-login") {

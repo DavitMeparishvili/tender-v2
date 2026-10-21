@@ -7,11 +7,17 @@ import type { BidSummary } from "../domain/bid-summary";
 // bidder identity, terms, or timestamps in it, and this view must not add any.
 export function BidSummaryView({
   isOpen = true,
+  reviewing = false,
+  contractorChosen = false,
   locale,
   messages,
   summary,
 }: Readonly<{
   isOpen?: boolean;
+  // Bidding has closed and the client is choosing the contractor.
+  reviewing?: boolean;
+  // The client has chosen a contractor (an agreement is pending or agreed).
+  contractorChosen?: boolean;
   locale: Locale;
   messages: Messages;
   summary: BidSummary;
@@ -29,7 +35,11 @@ export function BidSummaryView({
         <span className={isOpen ? "tag tag-green" : "tag tag-grey"}>
           {isOpen
             ? messages.detail.competitionOpen
-            : messages.detail.competitionClosed}
+            : reviewing
+              ? messages.detail.clientReviewing
+              : contractorChosen
+                ? messages.detail.contractorChosen
+                : messages.detail.competitionClosed}
         </span>
       </div>
 
@@ -41,7 +51,7 @@ export function BidSummaryView({
       ) : (
         <>
           <p className="rail-headline">{lowest}</p>
-          <p>{messages.bidding.automaticWinner}</p>
+          <p>{messages.bidding.selectionRule}</p>
           <dl className="rail-figures">
             <div>
               <dt>{messages.detail.offersLabel}</dt>

@@ -113,9 +113,16 @@ test("@phase-1-ui locale control preserves route and protects dirty input", asyn
 }) => {
   await page.goto("/en/register/client");
   await page.getByLabel("Name").fill("Unsaved Client");
-  if ((page.viewportSize()?.width ?? 1440) <= 640) {
-    await page.locator(".tender-mobile-locale summary").click();
-  }
+  // On mobile the links sit in a disclosure menu that closes once one is
+  // activated, even when the leave-page dialog is then cancelled.
+  const openMobileMenu = async () => {
+    if ((page.viewportSize()?.width ?? 1440) <= 640) {
+      const menu = page.locator(".tender-mobile-locale");
+      await expect(menu).not.toHaveAttribute("open");
+      await menu.locator("summary").click();
+    }
+  };
+  await openMobileMenu();
   const localeLink = page.getByRole("link", { name: "ქართული", exact: true });
   await expect(localeLink).toHaveAttribute("href", "/ka/register/client");
 
@@ -124,6 +131,7 @@ test("@phase-1-ui locale control preserves route and protects dirty input", asyn
   await expect(page).toHaveURL(/\/en\/register\/client$/);
   await expect(page.getByLabel("Name")).toHaveValue("Unsaved Client");
 
+  await openMobileMenu();
   page.once("dialog", (dialog) => dialog.accept());
   await localeLink.click();
   await expect(page).toHaveURL(/\/ka\/register\/client$/);

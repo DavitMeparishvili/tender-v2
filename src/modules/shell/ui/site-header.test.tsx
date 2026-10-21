@@ -31,6 +31,42 @@ describe("SiteHeader", () => {
     expect(isCurrent(tab, "/en/provider/tenders/public-id")).toBe(true);
     expect(isCurrent(tab, "/en/client/agreements")).toBe(false);
   });
+  it.each([
+    [null, ["home", "discover", "post", "logIn", "register"]],
+    [["CUSTOMER"], ["home", "discover", "post", "agreements", "profile"]],
+    [["PROVIDER"], ["home", "discover", "myOffers", "agreements", "profile"]],
+    [
+      ["CUSTOMER", "PROVIDER"],
+      ["home", "discover", "post", "agreements", "profile"],
+    ],
+  ] as const)(
+    "gives capabilities %j one stable mobile bar",
+    (capabilities, keys) => {
+      const viewer =
+        capabilities === null
+          ? null
+          : { displayName: "Viewer", capabilities: [...capabilities] };
+      const nav = buildShellNav("ka", getMessages("ka"), viewer);
+      expect(nav.tabs.map((tab) => tab.key)).toEqual(keys);
+    },
+  );
+  it("renders one SVG icon per mobile tab and no PNG fallback", () => {
+    navigation.pathname = "/ka/provider/tenders/some-id";
+    const html = renderToStaticMarkup(
+      <SiteHeader
+        locale="ka"
+        messages={getMessages("ka")}
+        viewer={{ displayName: "Provider", capabilities: ["PROVIDER"] }}
+      />,
+    );
+    const start = html.indexOf('class="tab-bar"');
+    const bar = html.slice(start, html.indexOf("</nav>", start));
+    expect(bar.match(/class="tab-icon"/g)).toHaveLength(5);
+    expect(bar).not.toContain("<img");
+    expect(bar).toMatch(
+      /aria-current="page"[^>]*href="\/ka\/provider\/tenders"/,
+    );
+  });
   it("puts profile and sign-out actions in the global menu for a signed-in viewer", () => {
     navigation.pathname = "/en/profile";
     const messages = getMessages("en");

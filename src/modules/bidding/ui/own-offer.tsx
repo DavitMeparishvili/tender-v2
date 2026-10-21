@@ -86,6 +86,7 @@ export function OwnOffer({
               `${state}Body` as
                 | "activeBody"
                 | "pendingBody"
+                | "standbyBody"
                 | "withdrawnBody"
                 | "cancelledBody"
                 | "endedBody"

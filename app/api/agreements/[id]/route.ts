@@ -4,6 +4,7 @@ import { prismaAgreementGateway } from "../../../../src/modules/agreements/infra
 import { createAgreementHandlers } from "../../../../src/modules/agreements/http/agreement-handlers";
 import { requireAnyCommercialCapability } from "../../../../src/modules/identity/application/require-capability";
 import { randomUUID } from "node:crypto";
+import { SELECTION_WINDOW_DAYS } from "../../../../src/modules/bidding/domain/selection";
 const handlers = createAgreementHandlers({
   require: requireAnyCommercialCapability,
   list: async () => [],
@@ -12,6 +13,7 @@ const handlers = createAgreementHandlers({
     repository: prismaAgreementGateway,
     now: () => new Date(),
     ids: { next: randomUUID },
+    selectionWindowDays: SELECTION_WINDOW_DAYS,
   }),
 });
 export async function GET(

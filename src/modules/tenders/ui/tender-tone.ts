@@ -21,6 +21,7 @@ export function specialtyTone(specialty: TenderSpecialty): string {
 const statusTones: Readonly<Record<TenderStatus, string>> = {
   DRAFT: "tag-emerald",
   PUBLISHED: "tag-green",
+  AWAITING_SELECTION: "tag-blue",
   CLOSED: "tag-grey",
   EXPIRED: "tag-red",
   CANCELLED: "tag-red",

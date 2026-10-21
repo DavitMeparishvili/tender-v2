@@ -262,7 +262,7 @@ export default async function PublicProfilePage({
                     <dd>{record.completedEngagements}</dd>
                   </div>
                 </dl>
-                <p className="rail-note">{messages.bidding.automaticWinner}</p>
+                <p className="rail-note">{messages.bidding.selectionRule}</p>
               </section>
             ) : null}
 

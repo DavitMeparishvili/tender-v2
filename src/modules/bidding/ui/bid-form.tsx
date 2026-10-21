@@ -47,7 +47,7 @@ export type BidFormCopy = Readonly<{
   submitted: string;
   revised: string;
   withdrawn: string;
-  automaticWinner: string;
+  selectionRule: string;
   revisionResetsQueue: string;
   summaryOne: string;
   summaryMany: string;
@@ -288,10 +288,11 @@ export function BidForm({
           />
         </Field>
         {/*
-          The two facts the provider must have before confirming: the winner is
-          automatic, and a revision costs them their queue position.
+          The two facts the provider must have before confirming: the client
+          chooses the contractor, and a revision costs them their place in the
+          lowest-price-first listing.
         */}
-        <p className="tender-action-hint">{copy.automaticWinner}</p>
+        <p className="tender-action-hint">{copy.selectionRule}</p>
         {isRevision ? (
           <p className="tender-action-hint">{copy.revisionResetsQueue}</p>
         ) : null}

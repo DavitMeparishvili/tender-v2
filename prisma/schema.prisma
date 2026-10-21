@@ -233,9 +233,12 @@ model AuditEvent {
 enum TenderStatus {
   DRAFT
   PUBLISHED
-  // Selection ran and produced a winner.
+  // Bidding closed with at least one eligible offer; the client has until
+  // `selectionExpiresAt` to choose the contractor.
+  AWAITING_SELECTION
+  // The client chose a contractor (the agreement may still be pending).
   CLOSED
-  // The deadline passed with no eligible bid.
+  // No eligible offer, or the client never chose one in time.
   EXPIRED
   CANCELLED
 }
@@ -264,6 +267,8 @@ enum BidStatus {
 enum SelectionOutcome {
   WINNER_SELECTED
   EXPIRED_NO_BIDS
+  // The selection window closed without the client choosing a contractor.
+  SELECTION_EXPIRED
 }
 
 enum AgreementStatus {
@@ -358,6 +363,9 @@ model Tender {
   publishedAt      DateTime?
   cancelledAt      DateTime?
   cancelReason     String?
+  // End of the client's selection window; set when bidding closes with
+  // eligible offers, and again when a declined agreement reopens selection.
+  selectionExpiresAt DateTime?
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
   attachments      TenderAttachment[]
@@ -366,6 +374,7 @@ model Tender {
   @@index([ownerId, status])
   @@index([georgianPlaceId])
   @@index([status, specialty, serviceCode, city, deadline])
+  @@index([status, selectionExpiresAt])
 }
 
 model TenderAttachment {
@@ -459,19 +468,24 @@ model Bid {
 
 model TenderSelection {
   id           String           @id
-  // The hard idempotency guarantee: a second selection for the same tender
-  // cannot insert, no matter how many workers race.
-  tenderId     String           @unique
+  // Not unique: a declined agreement reopens selection, so a tender can
+  // record more than one choice. The tender row lock serializes them, and
+  // `winningBidId` stays unique so one bid can never win twice.
+  tenderId     String
   outcome      SelectionOutcome
   winningBidId String?          @unique
   agreementId  String?          @unique
   ranAt        DateTime
   createdAt    DateTime         @default(now())
+
+  @@index([tenderId, ranAt])
 }
 
 model Agreement {
   id               String                           @id
-  tenderId         String                           @unique
+  // Not unique: when a pending agreement is declined or expires, the client
+  // may choose another offer, which creates a new agreement for the tender.
+  tenderId         String
   clientId         String
   client           User                             @relation("AgreementClient", fields: [clientId], references: [id], onDelete: Restrict)
   providerId       String
@@ -500,6 +514,7 @@ model Agreement {
   updatedAt        DateTime                         @default(now()) @updatedAt
   reviews          Review[]
 
+  @@index([tenderId, createdAt])
   @@index([clientId, status, updatedAt])
   @@index([providerId, status, updatedAt])
   @@index([status, confirmDeadline])

@@ -28,11 +28,13 @@ async function main(): Promise<void> {
     { database },
     { completeOnboarding },
     { runDeadlineSelection },
+    { chooseWinningBid },
   ] = await Promise.all([
     import("../src/modules/identity/infrastructure/auth"),
     import("../src/infrastructure/db/client"),
     import("../src/modules/profiles/application/complete-onboarding"),
     import("../src/modules/bidding/application/run-deadline-selection"),
+    import("../src/modules/bidding/application/choose-winning-bid"),
   ]);
 
   try {
@@ -59,8 +61,8 @@ async function main(): Promise<void> {
 
     // Previous browser runs leave completed agreements behind because agreement
     // snapshots intentionally outlive tender rows. Reset only this fixed
-    // tender's Phase 4 graph, then let the real selector make a fresh pending
-    // agreement. Shared accounts, unrelated tenders, access, and bids remain
+    // tender's Phase 4 graph, then let the real sweep and the client's real
+    // choice make a fresh pending agreement. Shared accounts, unrelated tenders, access, and bids remain
     // untouched. This makes `pnpm seed:phase-4` independently re-runnable.
     const historicalAgreements = await database.agreement.findMany({
       where: { tenderTitle: DUE_TENDER_TITLE },
@@ -113,15 +115,33 @@ async function main(): Promise<void> {
     });
     await database.tender.update({
       where: { id: tender.id },
-      data: { status: "PUBLISHED", cancelledAt: null, cancelReason: null },
+      data: {
+        status: "PUBLISHED",
+        cancelledAt: null,
+        cancelReason: null,
+        selectionExpiresAt: null,
+      },
     });
 
-    // The worker owns winner selection. It is invoked through the real
-    // application service rather than through a fixture-only winner write.
-    const selected = await runDeadlineSelection(tender.id);
-    if (!selected.ok || selected.value.agreementId === null) {
+    // The sweep only opens the client's selection window; the client then
+    // chooses the Phase 3 provider B offer through the real use case, rather
+    // than through a fixture-only winner write.
+    const swept = await runDeadlineSelection(tender.id);
+    if (!swept.ok || swept.value.outcome !== "AWAITING_SELECTION") {
+      throw new Error("The Phase 3 due tender did not open for selection");
+    }
+    const chosenBid = await database.bid.findUniqueOrThrow({
+      where: {
+        tenderId_providerId: { tenderId: tender.id, providerId: provider.id },
+      },
+      select: { id: true },
+    });
+    const selected = await chooseWinningBid(tender.id, chosenBid.id, {
+      id: client.id,
+    });
+    if (!selected.ok) {
       throw new Error(
-        "The Phase 3 due tender did not produce a winning agreement",
+        `The Phase 4 client could not choose a contractor: ${selected.error}`,
       );
     }
     const agreement = await database.agreement.findUniqueOrThrow({

@@ -41,7 +41,10 @@ const en = {
   offersShort: "Offers",
   noOffers: "No offers yet",
   offersHint: "Offers will appear here when providers submit them.",
-  automatic: "The lowest valid offer at the deadline wins automatically.",
+  selectionRule:
+    "The client compares the offers and chooses the contractor. Offers are listed from the lowest price.",
+  selectionRuleOwner:
+    "You compare the offers and choose the contractor. Offers are listed from the lowest price.",
   all: "All",
   search: "Search your tenders",
   newest: "Newest first",
@@ -118,8 +121,10 @@ const ka: Copy = {
   offersShort: "შეთავაზებები",
   noOffers: "შეთავაზებები ჯერ არ არის",
   offersHint: "აქ გამოჩნდება შემსრულებლების შეთავაზებები.",
-  automatic:
-    "ვადის ბოლოს ყველაზე დაბალი მოქმედი შეთავაზება ავტომატურად იმარჯვებს.",
+  selectionRule:
+    "დამკვეთი ადარებს შეთავაზებებს და თავად ირჩევს შემსრულებელს. შეთავაზებები დალაგებულია ყველაზე დაბალი ფასიდან.",
+  selectionRuleOwner:
+    "თქვენ ადარებთ შეთავაზებებს და თავად ირჩევთ შემსრულებელს. შეთავაზებები დალაგებულია ყველაზე დაბალი ფასიდან.",
   all: "ყველა",
   search: "მოძებნეთ თქვენი ტენდერები",
   newest: "ჯერ ახალი",
@@ -193,8 +198,10 @@ const ru: Copy = {
   offersShort: "Предложения",
   noOffers: "Предложений пока нет",
   offersHint: "Здесь появятся предложения исполнителей.",
-  automatic:
-    "Наименьшее действительное предложение автоматически побеждает по истечении срока.",
+  selectionRule:
+    "Клиент сравнивает предложения и сам выбирает исполнителя. Предложения показаны начиная с самой низкой цены.",
+  selectionRuleOwner:
+    "Вы сравниваете предложения и сами выбираете исполнителя. Предложения показаны начиная с самой низкой цены.",
   all: "Все",
   search: "Поиск ваших тендеров",
   newest: "Сначала новые",

@@ -35,6 +35,31 @@ describe("InboxList", () => {
     ],
     ["notifications.bidLost", {}, "/en/provider/tenders/tender-id"],
     ["notifications.tenderExpiredNoBids", {}, "/en/client/tenders/tender-id"],
+    [
+      "notifications.tenderAwaitingSelection",
+      {},
+      "/en/client/tenders/tender-id",
+    ],
+    [
+      "notifications.tenderReopenedForSelection",
+      {},
+      "/en/client/tenders/tender-id",
+    ],
+    [
+      "notifications.tenderSelectionExpired",
+      {},
+      "/en/client/tenders/tender-id",
+    ],
+    [
+      "notifications.tenderExpiredNoOffersLeft",
+      {},
+      "/en/client/tenders/tender-id",
+    ],
+    [
+      "notifications.tenderReopenedForBidding",
+      {},
+      "/en/client/tenders/tender-id",
+    ],
   ])("opens the relevant destination for %s", (messageKey, variables, href) => {
     const html = renderInbox([
       {
@@ -102,6 +127,11 @@ describe("InboxList", () => {
       "notifications.bidWon",
       "notifications.bidLost",
       "notifications.tenderExpiredNoBids",
+      "notifications.tenderAwaitingSelection",
+      "notifications.tenderReopenedForSelection",
+      "notifications.tenderSelectionExpired",
+      "notifications.tenderExpiredNoOffersLeft",
+      "notifications.tenderReopenedForBidding",
       "notifications.agreementPartyConfirmed",
       "notifications.agreementAgreed",
       "notifications.agreementDeclined",
@@ -126,8 +156,15 @@ describe("InboxList", () => {
         createdAt: new Date("2026-08-16T10:00:00Z"),
       })),
     );
-    expect(html).toContain("Kitchen renovation: a winning offer was selected.");
-    expect(html).toContain("Kitchen renovation: your offer won.");
+    expect(html).toContain(
+      "Kitchen renovation: a contractor was selected. The agreement is awaiting confirmation.",
+    );
+    // Neutral wording: also true for notifications written by the old
+    // automatic selector before TM-8.
+    expect(html).toContain("Kitchen renovation: your offer was selected.");
+    expect(html).toContain(
+      "Kitchen renovation: bidding has closed. Compare the offers and choose a contractor.",
+    );
     expect(html).toContain("A review was published.");
     expect(html).not.toContain(messages.notifications.generic);
   });

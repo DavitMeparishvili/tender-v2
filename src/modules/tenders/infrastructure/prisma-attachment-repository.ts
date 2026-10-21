@@ -144,7 +144,11 @@ export class PrismaAttachmentRepository implements AttachmentRepository {
       where: {
         id: attachmentId,
         tenderId,
-        tender: { status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+        tender: {
+          status: {
+            in: ["PUBLISHED", "AWAITING_SELECTION", "CLOSED", "EXPIRED"],
+          },
+        },
       },
       select: { objectKey: true },
     });
@@ -159,7 +163,11 @@ export class PrismaAttachmentRepository implements AttachmentRepository {
     const rows = await database.tenderAttachment.findMany({
       where: {
         tenderId,
-        tender: { status: { in: ["PUBLISHED", "CLOSED", "EXPIRED"] } },
+        tender: {
+          status: {
+            in: ["PUBLISHED", "AWAITING_SELECTION", "CLOSED", "EXPIRED"],
+          },
+        },
       },
       orderBy: { createdAt: "asc" },
     });

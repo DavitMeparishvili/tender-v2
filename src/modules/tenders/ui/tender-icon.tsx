@@ -22,6 +22,8 @@ export type TenderIconName =
   | "photo"
   | "clip"
   | "chevron"
+  | "chevronLeft"
+  | "chevronRight"
   | "trash";
 const paths: Record<TenderIconName, string> = {
   save: "M5 2h10l4 4v16H5V2Zm3 0v7h8V3M8 22v-8h8v8m-3-7v4",
@@ -49,6 +51,8 @@ const paths: Record<TenderIconName, string> = {
   photo: "M3 3h18v18H3V3Zm0 14 6-6 5 5 3-3 4 4M16 7h.01",
   clip: "m8 13 7-7a3 3 0 0 1 4 4l-9 9a5 5 0 0 1-7-7L13 2m-5 11a1 1 0 0 0 2 2l7-7",
   chevron: "m6 9 6 6 6-6",
+  chevronLeft: "m15 6-6 6 6 6",
+  chevronRight: "m9 6 6 6-6 6",
   trash: "M3 6h18M9 6V2h6v4M5 6l1 16h12l1-16M10 10v8m4-8v8",
 };
 export function TenderIcon({

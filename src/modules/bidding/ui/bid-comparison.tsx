@@ -7,11 +7,17 @@ import {
 } from "../../tenders/ui/tender-format";
 import type { ClientBidView } from "../application/list-tender-bids";
 import type { BidStatus } from "../domain/bid";
+import { bidFormCopy } from "./bid-copy";
+import { ChooseBidButton, type ChooseBidCopy } from "./choose-bid-button";
 
 export type BidComparisonCopy = Readonly<{
   title: string;
   empty: string;
-  automaticWinner: string;
+  selectionRule: string;
+  chooseBy: string;
+  decision: string;
+  lowestPrice: string;
+  choose: ChooseBidCopy;
   provider: string;
   amount: string;
   durationDays: string;
@@ -36,7 +42,21 @@ export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
   return {
     title: messages.bidding.comparisonTitle,
     empty: messages.bidding.comparisonEmpty,
-    automaticWinner: messages.bidding.automaticWinner,
+    // The comparison is only ever shown to the tender's owner.
+    selectionRule: messages.bidding.selectionRuleOwner,
+    chooseBy: messages.bidding.chooseBy,
+    decision: messages.bidding.decision,
+    lowestPrice: messages.bidding.lowestPrice,
+    choose: {
+      choose: messages.bidding.choose.action,
+      confirmTitle: messages.bidding.choose.confirmTitle,
+      confirmBody: messages.bidding.choose.confirmBody,
+      confirm: messages.bidding.choose.confirm,
+      keep: messages.bidding.choose.keep,
+      choosing: messages.bidding.choose.choosing,
+      errorsByCode: bidFormCopy(messages).errorsByCode,
+      genericError: messages.errors.generic,
+    },
     provider: messages.bidding.provider,
     amount: messages.bidding.amount,
     durationDays: messages.bidding.durationDays,
@@ -55,11 +75,10 @@ export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
   };
 }
 
-// A server component with no control that could select a winner. The client
-// may compare offers and may not choose one, and the surest way to guarantee
-// that is for this view to contain no button or form. The provider name does
-// link out to that provider's public profile, but a read-only navigation link
-// is not a selection control.
+// The client compares the offers — listed from the lowest price — and chooses
+// the contractor. A choose control appears only while `selection.open` is
+// true and only on offers that can still be chosen; the server re-checks both
+// under the tender lock. The "lowest price" tag is information, not a rule.
 //
 // One DOM structure, not two. The table reflows into labelled cards when its container is narrow
 // through the `data-label` attributes below, rather than by rendering a second
@@ -70,12 +89,21 @@ export function BidComparison({
   copy,
   locale,
   showSelectionRule = true,
+  selection,
 }: Readonly<{
   bids: readonly ClientBidView[];
   copy: BidComparisonCopy;
   locale: Locale;
   showSelectionRule?: boolean;
+  // Present on the owner's page. `chooseBy` is the formatted end of the
+  // selection window, shown once bidding has closed.
+  selection?: Readonly<{
+    tenderId: string;
+    open: boolean;
+    chooseBy: string | null;
+  }>;
 }>) {
+  const canChoose = selection?.open === true;
   return (
     <section
       className="bid-comparison"
@@ -83,7 +111,12 @@ export function BidComparison({
     >
       <h2 id="bid-comparison-heading">{copy.title}</h2>
       {showSelectionRule ? (
-        <p className="tender-action-hint">{copy.automaticWinner}</p>
+        <p className="tender-action-hint">{copy.selectionRule}</p>
+      ) : null}
+      {canChoose && selection?.chooseBy ? (
+        <p className="tender-action-hint bid-choose-by" role="note">
+          {copy.chooseBy.replace("{date}", selection.chooseBy)}
+        </p>
       ) : null}
       {bids.length === 0 ? (
         <p>{copy.empty}</p>
@@ -100,11 +133,12 @@ export function BidComparison({
                 <th scope="col">{copy.conditions}</th>
                 <th scope="col">{copy.submittedAt}</th>
                 <th scope="col">{copy.status}</th>
+                {canChoose ? <th scope="col">{copy.decision}</th> : null}
               </tr>
             </thead>
             <tbody>
               {bids.map((bid) => (
-                <tr key={bid.id} data-status={bid.status}>
+                <tr key={bid.id} data-bid-id={bid.id} data-status={bid.status}>
                   <th scope="row" data-label={copy.provider}>
                     <Link href={`/${locale}/profiles/${bid.providerId}`}>
                       {bid.providerDisplayName}
@@ -116,6 +150,14 @@ export function BidComparison({
                       bid.currency,
                       locale,
                     )}
+                    {canChoose && bid.lowestPrice ? (
+                      <>
+                        {" "}
+                        <span className="tag tag-emerald bid-lowest-tag">
+                          {copy.lowestPrice}
+                        </span>
+                      </>
+                    ) : null}
                   </td>
                   <td data-label={copy.durationDays}>
                     {bid.durationDays ?? copy.notProvided}
@@ -139,6 +181,18 @@ export function BidComparison({
                       {copy.statusLabels[bid.status]}
                     </span>
                   </td>
+                  {canChoose && selection ? (
+                    <td data-label={copy.decision}>
+                      {bid.choosable ? (
+                        <ChooseBidButton
+                          bidId={bid.id}
+                          copy={copy.choose}
+                          providerName={bid.providerDisplayName}
+                          tenderId={selection.tenderId}
+                        />
+                      ) : null}
+                    </td>
+                  ) : null}
                 </tr>
               ))}
             </tbody>

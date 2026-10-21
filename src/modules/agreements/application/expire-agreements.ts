@@ -4,6 +4,7 @@ export function createExpireDueAgreements(dependencies: {
   repository: AgreementRepository;
   now: () => Date;
   ids: { next(): string };
+  selectionWindowDays: number;
 }) {
   return async (limit = MAX_AGREEMENT_EXPIRIES_PER_SWEEP) => {
     const now = dependencies.now();
@@ -17,6 +18,7 @@ export function createExpireDueAgreements(dependencies: {
         { type: "EXPIRE", actorId: null },
         now,
         dependencies.ids,
+        { selectionWindowDays: dependencies.selectionWindowDays },
       );
       if (result.ok) expired.push(result.value);
     }

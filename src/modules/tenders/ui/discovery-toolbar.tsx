@@ -10,6 +10,7 @@ import {
   type DiscoverySort,
   type DiscoveryView,
 } from "./discovery-view";
+import { TenderIcon } from "./tender-icon";
 
 type SearchParams = Pick<URLSearchParams, "toString">;
 
@@ -146,6 +147,26 @@ export function DiscoveryPager({
     discoveryHref(pathname, searchParams, {
       page: target === 1 ? null : target,
     });
+  const renderSlots = (slots: readonly (number | "gap")[]) =>
+    slots.map((slot, index) =>
+      slot === "gap" ? (
+        <span aria-hidden="true" className="is-gap" key={`gap-${index}`}>
+          …
+        </span>
+      ) : slot === page.page ? (
+        <span aria-current="page" key={slot}>
+          {slot}
+        </span>
+      ) : (
+        <Link
+          aria-label={messages.discovery.page.replace("{number}", String(slot))}
+          href={href(slot)}
+          key={slot}
+        >
+          {slot}
+        </Link>
+      ),
+    );
 
   return (
     <nav aria-label={messages.discovery.sortLabel} className="pager">
@@ -158,42 +179,50 @@ export function DiscoveryPager({
 
       <div className="pager-pages">
         {page.page > 1 ? (
-          <Link href={href(page.page - 1)} rel="prev">
-            {messages.discovery.previous}
+          <Link
+            aria-label={messages.discovery.previous}
+            className="pager-step"
+            href={href(page.page - 1)}
+            rel="prev"
+          >
+            <TenderIcon name="chevronLeft" size={18} />
+            <span className="pager-step-label">
+              {messages.discovery.previous}
+            </span>
           </Link>
         ) : (
-          <span className="is-disabled">{messages.discovery.previous}</span>
+          <span className="pager-step is-disabled">
+            <TenderIcon name="chevronLeft" size={18} />
+            <span className="pager-step-label">
+              {messages.discovery.previous}
+            </span>
+          </span>
         )}
 
-        {pagerSlots(page.page, page.pageCount).map((slot, index) =>
-          slot === "gap" ? (
-            <span aria-hidden="true" className="is-gap" key={`gap-${index}`}>
-              …
-            </span>
-          ) : slot === page.page ? (
-            <span aria-current="page" key={slot}>
-              {slot}
-            </span>
-          ) : (
-            <Link
-              aria-label={messages.discovery.page.replace(
-                "{number}",
-                String(slot),
-              )}
-              href={href(slot)}
-              key={slot}
-            >
-              {slot}
-            </Link>
-          ),
-        )}
+        {/* Two windows over the same pages: CSS shows the wide one on larger
+            screens and the compact one (first / current / last) on phones. */}
+        <div className="pager-window pager-window-wide">
+          {renderSlots(pagerSlots(page.page, page.pageCount))}
+        </div>
+        <div className="pager-window pager-window-compact">
+          {renderSlots(pagerSlots(page.page, page.pageCount, true))}
+        </div>
 
         {page.page < page.pageCount ? (
-          <Link href={href(page.page + 1)} rel="next">
-            {messages.discovery.next}
+          <Link
+            aria-label={messages.discovery.next}
+            className="pager-step"
+            href={href(page.page + 1)}
+            rel="next"
+          >
+            <span className="pager-step-label">{messages.discovery.next}</span>
+            <TenderIcon name="chevronRight" size={18} />
           </Link>
         ) : (
-          <span className="is-disabled">{messages.discovery.next}</span>
+          <span className="pager-step is-disabled">
+            <span className="pager-step-label">{messages.discovery.next}</span>
+            <TenderIcon name="chevronRight" size={18} />
+          </span>
         )}
       </div>
 

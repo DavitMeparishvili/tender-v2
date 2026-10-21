@@ -1,5 +1,9 @@
 import type { AuthError } from "../../identity/application/require-capability";
 import type { Result } from "../../shared";
+import type {
+  ChooseWinningBidError,
+  ChooseWinningBidResult,
+} from "../application/choose-winning-bid";
 import type { ClientBidView } from "../application/list-tender-bids";
 import type { ReviseBidError } from "../application/revise-bid";
 import type { BidActor, SubmitBidError } from "../application/submit-bid";
@@ -133,6 +137,40 @@ export function createBidSummaryHandlers({
       const result = await summarize(id);
       return result.ok
         ? Response.json({ summary: result.value })
+        : mapBiddingError(result.error);
+    },
+  };
+}
+
+type ChooseRouteContext = Readonly<{
+  params: Promise<Readonly<{ id: string; bidId: string }>>;
+}>;
+
+// The client's choice of contractor. CUSTOMER is required here and ownership
+// is re-checked under the tender lock in the repository; an administrator
+// without the tender cannot choose.
+export function createChooseBidHandlers({
+  requireCustomer,
+  choose,
+}: Readonly<{
+  requireCustomer: RequireActor;
+  choose: (
+    tenderId: string,
+    bidId: unknown,
+    actor: BidActor,
+  ) => Promise<Result<ChooseWinningBidResult, ChooseWinningBidError>>;
+}>) {
+  return {
+    POST: async (
+      request: Request,
+      context: ChooseRouteContext,
+    ): Promise<Response> => {
+      const actor = await authorize(requireCustomer, request.headers);
+      if (actor instanceof Response) return actor;
+      const { id, bidId } = await context.params;
+      const result = await choose(id, bidId, actor);
+      return result.ok
+        ? Response.json({ selection: result.value })
         : mapBiddingError(result.error);
     },
   };

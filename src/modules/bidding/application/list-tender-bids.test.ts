@@ -61,3 +61,41 @@ it("does not load offer history for another client", async () => {
   });
   expect(mocks.list).not.toHaveBeenCalled();
 });
+it("flags choosable offers and the lowest price without choosing one", async () => {
+  mocks.owned.mockResolvedValue({
+    ok: true,
+    value: {
+      ownerId: "client",
+      status: "AWAITING_SELECTION",
+      currency: "GEL",
+      deadline: new Date("2026-10-01"),
+    },
+  });
+  const offer = (id: string, amountMinorUnits: number, status: string) => ({
+    id,
+    providerId: `provider-${id}`,
+    status,
+    currency: "GEL",
+    amountMinorUnits,
+    qualifyingSubmittedAt: new Date("2026-09-29"),
+    proposedStartDate: null,
+    conditions: "Saved terms",
+  });
+  mocks.list.mockResolvedValue([
+    offer("withdrawn", 10_000, "WITHDRAWN"),
+    offer("dear", 90_000, "SUBMITTED"),
+    offer("cheap", 50_000, "SUBMITTED"),
+  ]);
+  mocks.names.mockResolvedValue(new Map());
+
+  const result = await listTenderBids("tender", { id: "client" });
+
+  expect(result).toMatchObject({
+    ok: true,
+    value: [
+      { id: "cheap", choosable: true, lowestPrice: true },
+      { id: "dear", choosable: true, lowestPrice: false },
+      { id: "withdrawn", choosable: false, lowestPrice: false },
+    ],
+  });
+});
