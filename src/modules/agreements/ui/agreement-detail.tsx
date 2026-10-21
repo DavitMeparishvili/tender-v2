@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import { BrandIcon } from "../../shell/ui/brand-icon";
@@ -131,16 +132,42 @@ function LifecyclePhase({
   );
 }
 
+function PartyLink({
+  isViewer,
+  locale,
+  messages,
+  name,
+  userId,
+}: Readonly<{
+  isViewer: boolean;
+  locale: Locale;
+  messages: Messages;
+  name: string;
+  userId: string;
+}>) {
+  return (
+    <span className="agreement-party">
+      <Link href={`/${locale}/profiles/${userId}`}>{name}</Link>
+      {isViewer ? (
+        <span className="tag tag-emerald">{messages.agreements.you}</span>
+      ) : null}
+    </span>
+  );
+}
+
 export function AgreementDetail({
   agreement,
   hasPublishedReview = false,
   locale,
   messages,
+  partyNames = new Map(),
 }: Readonly<{
   agreement: AgreementView;
   hasPublishedReview?: boolean;
   locale: Locale;
   messages: Messages;
+  // Display names by user id; a party without a profile falls back to a label.
+  partyNames?: ReadonlyMap<string, string>;
 }>) {
   const currentStep =
     agreement.status === "PENDING_CONFIRMATION"
@@ -172,6 +199,36 @@ export function AgreementDetail({
         {messages.agreements.status}: {statusLabel(agreement.status, messages)}
       </p>
       <dl className="tender-detail">
+        <div>
+          <dt>{messages.agreements.partyClient}</dt>
+          <dd>
+            <PartyLink
+              isViewer={agreement.partyRole === "CLIENT"}
+              locale={locale}
+              messages={messages}
+              name={
+                partyNames.get(agreement.clientId) ??
+                messages.agreements.partyClient
+              }
+              userId={agreement.clientId}
+            />
+          </dd>
+        </div>
+        <div>
+          <dt>{messages.agreements.partyProvider}</dt>
+          <dd>
+            <PartyLink
+              isViewer={agreement.partyRole === "PROVIDER"}
+              locale={locale}
+              messages={messages}
+              name={
+                partyNames.get(agreement.providerId) ??
+                messages.agreements.partyProvider
+              }
+              userId={agreement.providerId}
+            />
+          </dd>
+        </div>
         <div>
           <dt>{messages.agreements.tender}</dt>
           <dd>{agreement.snapshot.tenderTitle}</dd>

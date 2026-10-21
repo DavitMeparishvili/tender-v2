@@ -7,6 +7,7 @@ import { IdentityShell } from "@/src/modules/identity/ui/identity-shell";
 import { WorkspaceDenied } from "@/src/modules/identity/ui/workspace-view";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
+import { getProviderDisplayNames } from "@/src/modules/profiles/application/get-provider-display-names";
 import { getAgreementReview } from "@/src/modules/reviews/application/get-agreement-review";
 
 export default async function AgreementPage({
@@ -31,9 +32,15 @@ export default async function AgreementPage({
   }
   const agreement = await getAgreement(id, access.value);
   if (!agreement.ok) notFound();
-  const existingReview = agreement.value.canReview
-    ? await getAgreementReview(id, access.value)
-    : null;
+  const [existingReview, partyNames] = await Promise.all([
+    agreement.value.canReview
+      ? getAgreementReview(id, access.value)
+      : Promise.resolve(null),
+    getProviderDisplayNames([
+      agreement.value.clientId,
+      agreement.value.providerId,
+    ]),
+  ]);
   return (
     <IdentityShell title={messages.agreements.detailTitle} width="form">
       <AgreementDetail
@@ -41,6 +48,7 @@ export default async function AgreementPage({
         hasPublishedReview={existingReview !== null}
         locale={locale}
         messages={messages}
+        partyNames={partyNames}
       />
     </IdentityShell>
   );

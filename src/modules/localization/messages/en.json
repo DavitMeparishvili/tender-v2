@@ -539,7 +539,8 @@
     "phaseCompletion": "Completion",
     "cancelledByClient": "The client cancelled this agreement",
     "cancelledByProvider": "The provider cancelled this agreement",
-    "cancelledGeneric": "This agreement was cancelled"
+    "cancelledGeneric": "This agreement was cancelled",
+    "parties": "Parties"
   },
   "notifications": {
     "title": "Inbox",
@@ -852,6 +853,10 @@
     "coverage": "Coverage",
     "ctaTitle": "Want offers from providers like this?",
     "ctaBody": "Publish a structured tender and verified providers in your category will bid.",
-    "noReviewsYet": "No job-bound reviews yet. A review can only follow a completed engagement."
+    "noReviewsYet": "No job-bound reviews yet. A review can only follow a completed engagement.",
+    "contactsTitle": "Contacts",
+    "contactEmail": "Email",
+    "contactPhone": "Mobile",
+    "contactsHidden": "Email and mobile are shared once you are connected through a tender: an offer, paid tender access, or an agreement."
   }
 }
