@@ -6,6 +6,7 @@ import { getMessages } from "@/src/modules/localization/get-messages";
 import { getOwnedTender } from "@/src/modules/tenders/application/get-owned-tender";
 import { listGeorgianPlaces } from "@/src/modules/tenders/application/list-georgian-places";
 import { listTenderAttachments } from "@/src/modules/tenders/application/list-tender-attachments";
+import { TenderAiChat } from "@/src/modules/tenders/ui/tender-ai-chat";
 import { TenderAuthoring } from "@/src/modules/tenders/ui/tender-authoring";
 import { getAuthoringAttachments } from "@/src/modules/tenders/application/get-authoring-attachments";
 import { tenderToWizardForm } from "@/src/modules/tenders/ui/tender-wizard-initial";
@@ -29,14 +30,24 @@ export default async function NewTenderPage({
 
   const tenderId =
     typeof query.tenderId === "string" ? query.tenderId.trim() : undefined;
+  // Fixed drafting advice: the chat never reads or fills the form.
+  const chat = (
+    <TenderAiChat
+      copy={getMessages(locale).detail.ai}
+      context={{ kind: "authoring" }}
+    />
+  );
   if (!tenderId) {
     const places = await placesPromise;
     return (
-      <TenderAuthoring
-        locale={locale}
-        messages={getMessages(locale)}
-        places={places}
-      />
+      <>
+        <TenderAuthoring
+          locale={locale}
+          messages={getMessages(locale)}
+          places={places}
+        />
+        {chat}
+      </>
     );
   }
 
@@ -51,16 +62,22 @@ export default async function NewTenderPage({
   }
 
   return (
-    <TenderAuthoring
-      locale={locale}
-      messages={getMessages(locale)}
-      places={places}
-      initialTenderId={tenderId}
-      initialAttachments={await getAuthoringAttachments(tenderId, access.value)}
-      initialForm={tenderToWizardForm(
-        owned.value,
-        attachments.value.map(({ originalFileName }) => originalFileName),
-      )}
-    />
+    <>
+      <TenderAuthoring
+        locale={locale}
+        messages={getMessages(locale)}
+        places={places}
+        initialTenderId={tenderId}
+        initialAttachments={await getAuthoringAttachments(
+          tenderId,
+          access.value,
+        )}
+        initialForm={tenderToWizardForm(
+          owned.value,
+          attachments.value.map(({ originalFileName }) => originalFileName),
+        )}
+      />
+      {chat}
+    </>
   );
 }

@@ -290,7 +290,7 @@ export function BidForm({
         {/*
           The two facts the provider must have before confirming: the client
           chooses the contractor, and a revision costs them their place in the
-          lowest-price-first listing.
+          price-ranked listing.
         */}
         <p className="tender-action-hint">{copy.selectionRule}</p>
         {isRevision ? (

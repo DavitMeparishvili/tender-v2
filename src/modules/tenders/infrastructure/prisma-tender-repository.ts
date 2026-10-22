@@ -45,6 +45,7 @@ import {
   type TenderCurrency,
   type TenderDraft,
   type TenderLocation,
+  type TenderReadRecord,
   type TenderRecord,
 } from "../domain/tender";
 
@@ -187,6 +188,26 @@ function toTenderRecord(row: Tender): TenderRecord | null {
     location: draft.location,
     publishedAt: draft.publishedAt,
   };
+}
+
+// The owner's VIP status is read through the owner's membership row, the same
+// relation the VIP module writes. Prisma cannot sort by it: a nullable to-one
+// relation has no NULLS LAST option, and DESC would put every owner without a
+// membership row first. `searchPublished` therefore splits the set on this
+// relation rather than ordering by it.
+const ownerVipInclude = {
+  owner: { select: { vipMembership: { select: { active: true } } } },
+} as const;
+
+type TenderWithOwnerVip = Tender & {
+  owner: { vipMembership: { active: boolean } | null };
+};
+
+function toTenderReadRecord(row: TenderWithOwnerVip): TenderReadRecord | null {
+  const record = toTenderRecord(row);
+  return record === null
+    ? null
+    : { ...record, ownerIsVip: row.owner.vipMembership?.active === true };
 }
 
 // Shared by `searchPublished` and `getPublished`: both discovery query
@@ -604,28 +625,52 @@ export class PrismaTenderRepository implements TenderRepository {
   async searchPublished(
     filter: SearchPublishedTendersQuery,
     now: Date,
-  ): Promise<readonly TenderRecord[]> {
-    const rows = await database.tender.findMany({
-      where: publishedFilterWhere(filter, now),
-      orderBy: { publishedAt: "desc" },
+  ): Promise<readonly TenderReadRecord[]> {
+    // VIP-owned tenders come first, then everyone else, and both halves keep
+    // the default newest-first order. The two reads together are the same as
+    // one query ordered by VIP status, then `publishedAt`, capped at the same
+    // total, so the cap decides what is visible and no page is cut short.
+    const where = publishedFilterWhere(filter, now);
+    const vipOwned: Prisma.TenderWhereInput = {
+      owner: { vipMembership: { is: { active: true } } },
+    };
+    const orderBy: Prisma.TenderOrderByWithRelationInput[] = [
+      { publishedAt: "desc" },
+      { id: "asc" },
+    ];
+    const vipRows = await database.tender.findMany({
+      where: { AND: [where, vipOwned] },
+      orderBy,
       take: MAX_PUBLISHED_TENDER_RESULTS,
+      include: ownerVipInclude,
     });
-    return rows
-      .map(toTenderRecord)
-      .filter((record): record is TenderRecord => record !== null);
+    const remaining = MAX_PUBLISHED_TENDER_RESULTS - vipRows.length;
+    const otherRows =
+      remaining > 0
+        ? await database.tender.findMany({
+            where: { AND: [where, { NOT: vipOwned }] },
+            orderBy,
+            take: remaining,
+            include: ownerVipInclude,
+          })
+        : [];
+    return [...vipRows, ...otherRows]
+      .map(toTenderReadRecord)
+      .filter((record): record is TenderReadRecord => record !== null);
   }
 
   async getPublished(
     id: string,
     now: Date,
-  ): Promise<Result<TenderRecord, "TENDER_NOT_FOUND">> {
+  ): Promise<Result<TenderReadRecord, "TENDER_NOT_FOUND">> {
     const row = await database.tender.findFirst({
       where: { id, status: "PUBLISHED", deadline: { gt: now } },
+      include: ownerVipInclude,
     });
     if (row === null) {
       return { ok: false, error: "TENDER_NOT_FOUND" };
     }
-    const record = toTenderRecord(row);
+    const record = toTenderReadRecord(row);
     if (record === null) {
       return { ok: false, error: "TENDER_NOT_FOUND" };
     }
@@ -634,14 +679,15 @@ export class PrismaTenderRepository implements TenderRepository {
 
   async getSettleable(
     id: string,
-  ): Promise<Result<TenderRecord, "TENDER_NOT_FOUND">> {
+  ): Promise<Result<TenderReadRecord, "TENDER_NOT_FOUND">> {
     // No deadline predicate and no PUBLISHED-only filter: this is the read
     // that lets a bidder open the tender they competed on after selection.
     const row = await database.tender.findFirst({
       where: { id, status: { in: [...PUBLISHED_TENDER_STATUSES] } },
+      include: ownerVipInclude,
     });
     if (row === null) return { ok: false, error: "TENDER_NOT_FOUND" };
-    const record = toTenderRecord(row);
+    const record = toTenderReadRecord(row);
     return record === null
       ? { ok: false, error: "TENDER_NOT_FOUND" }
       : { ok: true, value: record };

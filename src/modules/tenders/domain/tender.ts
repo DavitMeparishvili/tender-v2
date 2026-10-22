@@ -97,3 +97,11 @@ export type TenderRecord = TenderDraft &
     location: TenderLocation;
     publishedAt: Date;
   }>;
+
+// The published projection as discovery and detail reads return it. The owner's
+// VIP status is read-side only: it orders and badges a listing and never
+// travels with a write.
+export type TenderReadRecord = TenderRecord &
+  Readonly<{
+    ownerIsVip: boolean;
+  }>;

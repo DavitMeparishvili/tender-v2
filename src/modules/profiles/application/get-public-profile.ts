@@ -1,4 +1,5 @@
 import type { Result } from "../../shared";
+import type { TenderSpecialty } from "../../tenders/domain/service-taxonomy";
 
 export type PublicProfileView = Readonly<{
   userId: string;
@@ -6,7 +7,8 @@ export type PublicProfileView = Readonly<{
   accountKind: "PERSON" | "COMPANY";
   city: string;
   activityDescription: string;
-  providerSpecialties: readonly "CONSTRUCTION_REPAIR"[];
+  // Every category the provider serves, in stored order; empty for clients.
+  providerSpecialties: readonly TenderSpecialty[];
 }>;
 
 export interface PublicProfileRepository {

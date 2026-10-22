@@ -2,6 +2,7 @@ import { Prisma } from "../../../generated/prisma/client";
 import { database } from "../../../infrastructure/db/client";
 import { isLocale } from "../../localization/config";
 import type { Result } from "../../shared";
+import { isTenderSpecialty } from "../../tenders/domain/service-taxonomy";
 import type {
   CompleteOnboardingCommand,
   OnboardingActor,
@@ -284,12 +285,12 @@ export class PrismaProfileRepository
       accountKind: profile.accountKind === "COMPANY" ? "COMPANY" : "PERSON",
       city: profile.city,
       activityDescription: profile.activityDescription,
+      // Any stored specialty makes the account a provider. This used to keep
+      // only CONSTRUCTION_REPAIR, which was the only specialty when onboarding
+      // was built, so providers in other categories rendered as clients.
       providerSpecialties: (
         profile.user.providerProfile?.specialties ?? []
-      ).filter(
-        (specialty): specialty is "CONSTRUCTION_REPAIR" =>
-          specialty === "CONSTRUCTION_REPAIR",
-      ),
+      ).filter(isTenderSpecialty),
     };
     return { ok: true as const, value };
   }

@@ -42,9 +42,9 @@ const en = {
   noOffers: "No offers yet",
   offersHint: "Offers will appear here when providers submit them.",
   selectionRule:
-    "The client compares the offers and chooses the contractor. Offers are listed from the lowest price.",
+    "The client compares the offers and chooses the contractor. VIP partners are listed first, then offers from the lowest price.",
   selectionRuleOwner:
-    "You compare the offers and choose the contractor. Offers are listed from the lowest price.",
+    "You compare the offers and choose the contractor. VIP partners are listed first, then offers from the lowest price.",
   all: "All",
   search: "Search your tenders",
   newest: "Newest first",
@@ -122,9 +122,9 @@ const ka: Copy = {
   noOffers: "შეთავაზებები ჯერ არ არის",
   offersHint: "აქ გამოჩნდება შემსრულებლების შეთავაზებები.",
   selectionRule:
-    "დამკვეთი ადარებს შეთავაზებებს და თავად ირჩევს შემსრულებელს. შეთავაზებები დალაგებულია ყველაზე დაბალი ფასიდან.",
+    "დამკვეთი ადარებს შეთავაზებებს და თავად ირჩევს შემსრულებელს. ჯერ VIP პარტნიორების შეთავაზებები ჩანს, შემდეგ დანარჩენი ყველაზე დაბალი ფასიდან.",
   selectionRuleOwner:
-    "თქვენ ადარებთ შეთავაზებებს და თავად ირჩევთ შემსრულებელს. შეთავაზებები დალაგებულია ყველაზე დაბალი ფასიდან.",
+    "თქვენ ადარებთ შეთავაზებებს და თავად ირჩევთ შემსრულებელს. ჯერ VIP პარტნიორების შეთავაზებები ჩანს, შემდეგ დანარჩენი ყველაზე დაბალი ფასიდან.",
   all: "ყველა",
   search: "მოძებნეთ თქვენი ტენდერები",
   newest: "ჯერ ახალი",
@@ -199,9 +199,9 @@ const ru: Copy = {
   noOffers: "Предложений пока нет",
   offersHint: "Здесь появятся предложения исполнителей.",
   selectionRule:
-    "Клиент сравнивает предложения и сам выбирает исполнителя. Предложения показаны начиная с самой низкой цены.",
+    "Клиент сравнивает предложения и сам выбирает исполнителя. Сначала показаны предложения VIP-партнёров, затем остальные — начиная с самой низкой цены.",
   selectionRuleOwner:
-    "Вы сравниваете предложения и сами выбираете исполнителя. Предложения показаны начиная с самой низкой цены.",
+    "Вы сравниваете предложения и сами выбираете исполнителя. Сначала показаны предложения VIP-партнёров, затем остальные — начиная с самой низкой цены.",
   all: "Все",
   search: "Поиск ваших тендеров",
   newest: "Сначала новые",

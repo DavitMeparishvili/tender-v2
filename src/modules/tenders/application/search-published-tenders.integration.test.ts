@@ -6,6 +6,7 @@ import type {
   TenderServiceCode,
   TenderSpecialty,
 } from "../domain/service-taxonomy";
+import { getPublishedTender } from "./get-published-tender";
 import { publishTender } from "./publish-tender";
 import {
   MAX_PUBLISHED_TENDER_RESULTS,
@@ -299,5 +300,89 @@ describe("searchPublishedTenders", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.value).toHaveLength(1);
+  });
+});
+
+describe("searchPublishedTenders VIP ordering", () => {
+  async function makeMembership(userId: string, active: boolean) {
+    await database.vipMembership.create({
+      data: { id: randomUUID(), userId, active },
+    });
+  }
+
+  it("lists a VIP-owned tender ahead of a newer standard tender, and flags the owner", async () => {
+    const vipOwner = await seedOwner();
+    await makeMembership(vipOwner, true);
+    const standardOwner = await seedOwner();
+    const city = `VIP Order City ${randomUUID()}`;
+
+    const vipId = await seedPublishedTender(vipOwner, city, "Older VIP tender");
+    const standardId = await seedPublishedTender(
+      standardOwner,
+      city,
+      "Newer standard tender",
+    );
+
+    const result = await searchPublishedTenders({ city });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.map((tender) => tender.id)).toEqual([
+      vipId,
+      standardId,
+    ]);
+    expect(result.value.map((tender) => tender.ownerIsVip)).toEqual([
+      true,
+      false,
+    ]);
+
+    const detail = await getPublishedTender(vipId);
+    expect(detail).toMatchObject({ ok: true, value: { ownerIsVip: true } });
+  });
+
+  it("treats an inactive membership as a standard owner", async () => {
+    const inactiveOwner = await seedOwner();
+    await makeMembership(inactiveOwner, false);
+    const standardOwner = await seedOwner();
+    const city = `Inactive VIP City ${randomUUID()}`;
+
+    const inactiveId = await seedPublishedTender(
+      inactiveOwner,
+      city,
+      "Older inactive-membership tender",
+    );
+    const standardId = await seedPublishedTender(
+      standardOwner,
+      city,
+      "Newer standard tender",
+    );
+
+    const result = await searchPublishedTenders({ city });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.map((tender) => tender.id)).toEqual([
+      standardId,
+      inactiveId,
+    ]);
+    expect(result.value.every((tender) => !tender.ownerIsVip)).toBe(true);
+  });
+
+  it("keeps a VIP-owned tender inside the result cap when more newer tenders are published", async () => {
+    const vipOwner = await seedOwner();
+    await makeMembership(vipOwner, true);
+    const city = `Capped VIP City ${randomUUID()}`;
+
+    const vipId = await seedPublishedTender(vipOwner, city, "Older VIP tender");
+    await seedManyPublishedTenders(
+      await seedOwner(),
+      city,
+      MAX_PUBLISHED_TENDER_RESULTS + 5,
+    );
+
+    const result = await searchPublishedTenders({ city });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value).toHaveLength(MAX_PUBLISHED_TENDER_RESULTS);
+    expect(result.value[0]?.id).toBe(vipId);
+    expect(result.value.filter((tender) => tender.ownerIsVip)).toHaveLength(1);
   });
 });

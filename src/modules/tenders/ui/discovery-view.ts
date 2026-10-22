@@ -46,19 +46,25 @@ export function parseDiscoveryView(
   return { sort, page, pageSize };
 }
 
-const comparators: Readonly<
-  Record<
-    DiscoverySort,
-    (a: PublicTenderSummary, b: PublicTenderSummary) => number
-  >
-> = {
-  newest: (a, b) => b.publishedAt.localeCompare(a.publishedAt),
-  closing: (a, b) => a.deadline.localeCompare(b.deadline),
+type Comparator = (a: PublicTenderSummary, b: PublicTenderSummary) => number;
+
+// VIP-owned tenders lead under every sort. The search query already returns
+// them first, but this page re-sorts what it fetched, so without this key the
+// closing and budget sorts would bury them.
+function vipFirst(compare: Comparator): Comparator {
+  return (a, b) => Number(b.ownerIsVip) - Number(a.ownerIsVip) || compare(a, b);
+}
+
+const comparators: Readonly<Record<DiscoverySort, Comparator>> = {
+  newest: vipFirst((a, b) => b.publishedAt.localeCompare(a.publishedAt)),
+  closing: vipFirst((a, b) => a.deadline.localeCompare(b.deadline)),
   // Budgets are integer minor units, and a cross-currency comparison would be
   // meaningless, so equal amounts in different currencies keep a stable order
   // by id rather than pretending one outranks the other.
-  budget: (a, b) =>
-    b.budgetMinorUnits - a.budgetMinorUnits || a.id.localeCompare(b.id),
+  budget: vipFirst(
+    (a, b) =>
+      b.budgetMinorUnits - a.budgetMinorUnits || a.id.localeCompare(b.id),
+  ),
 };
 
 export function sortTenders(

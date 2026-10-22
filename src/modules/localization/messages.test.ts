@@ -34,6 +34,7 @@ describe("identity message catalogs", () => {
       "providerProfile",
       "reviews",
       "tenders",
+      "vip",
       "workspace",
     ]);
     expect(Object.keys(ka).sort()).toEqual(Object.keys(en).sort());

@@ -1,17 +1,24 @@
 import type { Result } from "../../shared";
 import type { Bid } from "../domain/bid";
+import { orderVipFirst } from "../domain/display-order";
 import { rankBids } from "../domain/ranking";
 import { isChoosableBid } from "../domain/selection";
-import type { ProviderDirectory } from "../ports/provider-directory";
+import type {
+  ProviderDirectory,
+  ProviderVipDirectory,
+} from "../ports/provider-directory";
 import type { BidActor } from "./submit-bid";
 
-// What the client sees: every bid, lowest price first, with the provider's
-// public display name. The client compares them and chooses the contractor;
-// the order is informational and never picks a winner by itself.
+// What the client sees: every bid, with the provider's public display name.
+// Offers from VIP providers come first, then the rest, each group lowest price
+// first. The client compares them and chooses the contractor; the order is
+// informational and never picks a winner by itself.
 export type ClientBidView = Readonly<{
   id: string;
   providerId: string;
   providerDisplayName: string;
+  // Display order only: whether the provider holds an active VIP membership.
+  providerIsVip: boolean;
   amountMinorUnits: number;
   currency: Bid["currency"];
   status: Bid["status"];
@@ -43,6 +50,7 @@ export function createListTenderBids(dependencies: {
     >
   >;
   directory: ProviderDirectory;
+  vipDirectory: ProviderVipDirectory;
 }) {
   return async function listTenderBids(
     tenderId: string,
@@ -76,16 +84,29 @@ export function createListTenderBids(dependencies: {
       ...bids.filter((bid) => !rankedIds.includes(bid.id)),
     ];
 
-    const names = await dependencies.directory(
-      ordered.map((bid) => bid.providerId),
-    );
+    const providerIds = ordered.map((bid) => bid.providerId);
+    const [names, vipIds] = await Promise.all([
+      dependencies.directory(providerIds),
+      dependencies.vipDirectory(providerIds),
+    ]);
+    // Applied after `lowestId` is fixed above, so the lowest-price flag is
+    // computed from price rank alone, whatever order the rows are shown in.
+    // Withdrawn offers stay at the bottom whatever the provider's VIP status,
+    // so the VIP partition only ever reorders live offers.
+    const live = ordered.filter((bid) => bid.status !== "WITHDRAWN");
+    const withdrawn = ordered.filter((bid) => bid.status === "WITHDRAWN");
+    const displayed = [
+      ...orderVipFirst(live, (bid) => vipIds.has(bid.providerId)),
+      ...withdrawn,
+    ];
 
     return {
       ok: true,
-      value: ordered.map((bid) => ({
+      value: displayed.map((bid) => ({
         id: bid.id,
         providerId: bid.providerId,
         providerDisplayName: names.get(bid.providerId) ?? "",
+        providerIsVip: vipIds.has(bid.providerId),
         amountMinorUnits: bid.amountMinorUnits,
         currency: bid.currency,
         status: bid.status,
@@ -110,10 +131,12 @@ export async function listTenderBids(
     { prismaBidRepository },
     { getOwnedTender },
     { getProviderDisplayNames },
+    { vipUserIds },
   ] = await Promise.all([
     import("../infrastructure/prisma-bid-repository"),
     import("../../tenders/application/get-owned-tender"),
     import("../../profiles/application/get-provider-display-names"),
+    import("../../vip/application/vip-membership"),
   ]);
   // History remains readable after cancellation; the bidding context deliberately
   // excludes cancelled tenders because it gates new bidding operations.
@@ -126,5 +149,6 @@ export async function listTenderBids(
     repository: prismaBidRepository,
     tenders: async () => ({ ok: true, value: { ownerId, currency, deadline } }),
     directory: getProviderDisplayNames,
+    vipDirectory: vipUserIds,
   })(tenderId, actor);
 }

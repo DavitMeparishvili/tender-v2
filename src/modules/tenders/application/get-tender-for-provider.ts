@@ -5,7 +5,7 @@ import {
   type FullTenderDetail,
   type PublicTenderDetail,
 } from "../domain/masking";
-import type { TenderRecord } from "../domain/tender";
+import type { TenderReadRecord } from "../domain/tender";
 import type { EntitlementCheck } from "../ports/entitlement-check";
 
 export type ProviderTenderView =
@@ -27,7 +27,9 @@ export interface GetSettleableTenderRepository {
   // Unlike `getPublished`, this accepts CLOSED and EXPIRED tenders and applies
   // no deadline predicate: the winner/loser views are exactly the case where
   // the deadline has already passed.
-  getSettleable(id: string): Promise<Result<TenderRecord, "TENDER_NOT_FOUND">>;
+  getSettleable(
+    id: string,
+  ): Promise<Result<TenderReadRecord, "TENDER_NOT_FOUND">>;
   getClientContact(ownerId: string): Promise<TenderClientContact | null>;
 }
 

@@ -52,7 +52,7 @@ const en = {
   legacy: "Existing summary & scope",
   legacyHint: "These existing details are preserved. You can update them here.",
   selection:
-    "You compare the offers and choose the contractor yourself, at any time, even before the deadline. Offers are listed from the lowest price.",
+    "You compare the offers and choose the contractor yourself, at any time, even before the deadline. VIP partners are listed first, then offers from the lowest price.",
   emptyTitle: "Your tender title",
   noFiles: "No files added yet.",
   previewFile: "Preview",
@@ -117,7 +117,7 @@ const ka: Copy = {
   legacy: "არსებული შეჯამება და სამუშაოს აღწერა",
   legacyHint: "არსებული მონაცემები შენარჩუნებულია და შეგიძლიათ განაახლოთ.",
   selection:
-    "თქვენ ადარებთ შეთავაზებებს და თავად ირჩევთ შემსრულებელს ნებისმიერ დროს, ვადის ამოწურვამდეც. შეთავაზებები დალაგებულია ყველაზე დაბალი ფასიდან.",
+    "თქვენ ადარებთ შეთავაზებებს და თავად ირჩევთ შემსრულებელს ნებისმიერ დროს, ვადის ამოწურვამდეც. ჯერ VIP პარტნიორების შეთავაზებები ჩანს, შემდეგ დანარჩენი ყველაზე დაბალი ფასიდან.",
   emptyTitle: "თქვენი ტენდერის სათაური",
   noFiles: "ფაილები ჯერ არ არის დამატებული.",
   previewFile: "ნახვა",
@@ -179,7 +179,7 @@ const ru: Copy = {
   legacy: "Существующие сводка и состав работ",
   legacyHint: "Эти данные сохранены. Здесь их можно обновить.",
   selection:
-    "Вы сравниваете предложения и сами выбираете исполнителя в любой момент, даже до окончания срока. Предложения показаны начиная с самой низкой цены.",
+    "Вы сравниваете предложения и сами выбираете исполнителя в любой момент, даже до окончания срока. Сначала показаны предложения VIP-партнёров, затем остальные — начиная с самой низкой цены.",
   emptyTitle: "Название вашего тендера",
   noFiles: "Файлы ещё не добавлены.",
   previewFile: "Просмотр",

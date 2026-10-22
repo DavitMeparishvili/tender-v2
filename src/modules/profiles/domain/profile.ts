@@ -14,3 +14,13 @@ export type MarketplaceProfile = Readonly<{
   preferredCurrency: PreferredCurrency;
   profilePhotoObjectKey: string | null;
 }>;
+
+/**
+ * The "Verified provider" test that the public profile page uses for its tag:
+ * a confirmed email address and a completed profile.
+ */
+export function isVerifiedProvider(
+  facts: Readonly<{ emailVerified: boolean; onboardingComplete: boolean }>,
+): boolean {
+  return facts.emailVerified && facts.onboardingComplete;
+}

@@ -3,7 +3,7 @@ import type { Clock } from "@/src/modules/shared";
 import { MAX_BUDGET_MINOR_UNITS } from "../domain/constraints";
 import { distanceKilometers } from "../domain/coordinates";
 import { toPublicSummary, type PublicTenderSummary } from "../domain/masking";
-import type { TenderRecord } from "../domain/tender";
+import type { TenderReadRecord } from "../domain/tender";
 import {
   isServiceForSpecialty,
   isTenderServiceCode,
@@ -85,10 +85,13 @@ export type SearchPublishedTendersQuery = z.output<
 export const MAX_PUBLISHED_TENDER_RESULTS = 50;
 
 export interface SearchPublishedTendersRepository {
+  // Returns VIP-owned tenders ahead of the rest, then the default newest-first
+  // order, capped at MAX_PUBLISHED_TENDER_RESULTS. Every discovery sort is applied
+  // to this set afterwards, so the cap is what decides what can be seen.
   searchPublished(
     filter: SearchPublishedTendersQuery,
     now: Date,
-  ): Promise<readonly TenderRecord[]>;
+  ): Promise<readonly TenderReadRecord[]>;
 }
 
 export function createSearchPublishedTenders(dependencies: {

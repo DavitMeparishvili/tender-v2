@@ -1,12 +1,12 @@
 import type { Clock, Result } from "@/src/modules/shared";
 import { toPublicDetail, type PublicTenderDetail } from "../domain/masking";
-import type { TenderRecord } from "../domain/tender";
+import type { TenderReadRecord } from "../domain/tender";
 
 export interface GetPublishedTenderRepository {
   getPublished(
     id: string,
     now: Date,
-  ): Promise<Result<TenderRecord, "TENDER_NOT_FOUND">>;
+  ): Promise<Result<TenderReadRecord, "TENDER_NOT_FOUND">>;
 }
 
 export function createGetPublishedTender(dependencies: {

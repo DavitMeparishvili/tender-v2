@@ -37,6 +37,22 @@ describe("getServerEnv", () => {
     ).toThrow(/MAIL_FROM/);
   });
 
+  it("accepts an optional VIP contact address and validates it", () => {
+    expect(
+      getServerEnv({ ...testEnvironment, VIP_CONTACT_EMAIL: "" })
+        .VIP_CONTACT_EMAIL,
+    ).toBeUndefined();
+    expect(
+      getServerEnv({
+        ...testEnvironment,
+        VIP_CONTACT_EMAIL: "vip@example.test",
+      }).VIP_CONTACT_EMAIL,
+    ).toBe("vip@example.test");
+    expect(() =>
+      getServerEnv({ ...testEnvironment, VIP_CONTACT_EMAIL: "invalid" }),
+    ).toThrow(/VIP_CONTACT_EMAIL/);
+  });
+
   it("rejects a missing database URL", () => {
     expect(() => getServerEnv({ NODE_ENV: "test" })).toThrow(/DATABASE_URL/);
   });

@@ -120,6 +120,7 @@ model User {
   inboxNotifications   InboxNotification[]
   reviewsWritten       Review[]            @relation("ReviewAuthor")
   reviewsReceived      Review[]            @relation("ReviewSubject")
+  vipMembership        VipMembership?
 
   @@unique([email])
   @@map("user")
@@ -213,6 +214,25 @@ model ProviderProfile {
   user        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime                @default(now())
   updatedAt   DateTime                @updatedAt
+}
+
+// VIP placement for one account. An account is VIP when it has a row with
+// `active = true`; grant or revoke by inserting the row or flipping `active`.
+model VipMembership {
+  id           String   @id
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  active       Boolean  @default(true)
+  // Public path of a square logo, e.g. "/vip/logos/kartli-build_icon.svg".
+  logoPath     String?
+  // Localized {"en": "...", "ka": "...", "ru": "..."}. At most 28 characters each.
+  serviceLabel Json?
+  // Localized, at most 120 characters each. Shown on the All partners page only.
+  description  Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([active])
 }
 
 model AuditEvent {

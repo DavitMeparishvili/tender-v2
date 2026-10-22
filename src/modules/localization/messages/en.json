@@ -381,8 +381,8 @@
     "revised": "Your revised offer is registered.",
     "withdrawn": "Your offer is withdrawn.",
     "revisionResetsQueue": "A revision takes a new submission time, so an equal price is ranked behind an earlier one.",
-    "selectionRule": "The client compares the offers and chooses the contractor. Offers are listed from the lowest price.",
-    "selectionRuleOwner": "You compare the offers and choose the contractor. Offers are listed from the lowest price.",
+    "selectionRule": "The client compares the offers and chooses the contractor. VIP partners are listed first, then offers from the lowest price.",
+    "selectionRuleOwner": "You compare the offers and choose the contractor. VIP partners are listed first, then offers from the lowest price.",
     "comparisonTitle": "Offers received",
     "comparisonEmpty": "No offers have been received yet.",
     "provider": "Provider",
@@ -726,7 +726,7 @@
     "clientStep2": "Receive offers while your identity stays private",
     "clientStep2Body": "Only providers with paid access see your full requirement and contact details.",
     "clientStep3": "Choose the contractor",
-    "clientStep3Body": "Compare the offers, lowest price first, and choose the contractor yourself, before or after the deadline. The agreement is recorded on the platform.",
+    "clientStep3Body": "Compare the offers, VIP partners first and then lowest price, and choose the contractor yourself, before or after the deadline. The agreement is recorded on the platform.",
     "clientStep4": "Confirm completion, then review",
     "clientStep4Body": "Reviews are bound to the finished job, so ratings reflect real work only.",
     "providerStep1": "Pick your categories and region",
@@ -746,7 +746,7 @@
     "trust2": "Privacy before paid access",
     "trust2Body": "Client identity and documents stay hidden until a provider unlocks the tender.",
     "trust3": "The client decides",
-    "trust3Body": "Offers are listed from the lowest price, and the client chooses the contractor. If the agreement is declined, the client can choose among the remaining offers.",
+    "trust3Body": "VIP partners' offers are listed first, then the rest from the lowest price, and the client chooses the contractor. If the agreement is declined, the client can choose among the remaining offers.",
     "trust4": "Job-bound reviews",
     "trust4Body": "Only a verified completed engagement can produce a review, on either side.",
     "quotesTitle": "From completed engagements",
@@ -819,7 +819,73 @@
     "saveTender": "Save tender",
     "share": "Share",
     "notAvailableYet": "Not tracked in this release",
-    "offersLabel": "Offers received"
+    "offersLabel": "Offers received",
+    "ai": {
+      "launcher": "Ask AI",
+      "title": "Tender AI",
+      "subtitle": "Answers from tender data",
+      "close": "Close chat",
+      "suggestionsLabel": "Suggested questions",
+      "inputLabel": "Message Tender AI",
+      "send": "Send message",
+      "thinking": "Tender AI is thinking",
+      "disclaimer": "AI can be wrong. Check the tender conditions before you submit.",
+      "tender": {
+        "contextLabel": "Talking about this tender",
+        "placeholder": "Ask about this tender…",
+        "suggestBudget": "Is the budget realistic?",
+        "suggestScope": "Summarise the scope",
+        "suggestOffer": "Help me write an offer",
+        "answerBudget": "The client’s budget is {budget}.",
+        "answerNoBudget": "The client has not set a budget, so price from the scope and your own costs.",
+        "answerOffers": "Offers so far: {count}. The lowest is {lowest}.",
+        "answerNoOffers": "No offers are in yet, so yours can set the price to beat.",
+        "answerPricing": "Price materials, labour and site supervision separately so the client can compare like for like. Before you commit to a fixed price, check the work items and attachments, and ask the client about anything unclear.",
+        "scopeSummary": "In short: “{title}” is one job priced as a whole. The work items and quantities are listed under **Work quantities**; check the attachments and conditions for materials, access and waste removal before you price it.",
+        "offerIntro": "A strong offer covers three things:",
+        "offerPrice": "**Price breakdown**: materials, labour and supervision as separate lines.",
+        "offerTimeline": "**Timeline**: your earliest start date and how many working days you need.",
+        "offerIncluded": "**What’s included** and what isn’t, such as permits or waste removal.",
+        "sourceBudget": "Source: Budget",
+        "sourceScope": "Source: Scope of work",
+        "sourceCompetition": "Source: Competition"
+      },
+      "home": {
+        "contextLabel": "Browsing Tender market",
+        "placeholder": "Ask about Tender market…",
+        "suggestFind": "Find tenders for me",
+        "suggestPartners": "Show VIP partners",
+        "suggestHow": "How does it work?",
+        "findIntro": "Here are the newest open tenders:",
+        "findEmpty": "There are no open tenders right now. Check back soon, or post your own.",
+        "seeAllTenders": "See all tenders",
+        "partnersIntro": "These VIP partners are verified and ready to work:",
+        "partnersEmpty": "VIP partners will be featured here soon. Meanwhile, you can browse the partners page.",
+        "seeAllPartners": "See all VIP partners",
+        "howStep1": "**Post a tender** for free: describe the job, budget and deadline.",
+        "howStep2": "**Providers send offers** before the bidding deadline.",
+        "howStep3": "**You pick the contractor** whose offer suits you best.",
+        "discoverLink": "Discover tenders",
+        "postLink": "Post a tender"
+      },
+      "authoring": {
+        "contextLabel": "Drafting a new tender",
+        "placeholder": "Ask about your tender…",
+        "suggestDescription": "Help me write the description",
+        "suggestCheck": "Check before publishing",
+        "suggestBudget": "What budget should I set?",
+        "descriptionIntro": "Here is a sample you can adapt:",
+        "descriptionSample": "“Renovation of a 65 m² two-bedroom apartment in Tbilisi: remove the old finishes, level and paint the walls, and lay new laminate flooring. The contractor supplies the materials. Work can start next month and should take about four weeks.”",
+        "checkIntro": "Before you publish, make sure the tender has:",
+        "checkTitle": "a clear **title** that names the job and the place",
+        "checkBudget": "a **budget**, even an approximate one",
+        "checkDeadline": "a **bidding deadline** that gives providers at least a week",
+        "checkLocation": "the **location** of the site",
+        "checkPhotos": "**photos or plans** of the site",
+        "checkQuantities": "**work quantities** with units, so offers are comparable",
+        "budgetTip": "Set a **realistic budget** based on similar tenders or a quick quote. A budget far below the market attracts fewer and weaker offers; a fair one brings serious contractors and prices you can compare."
+      }
+    }
   },
   "providerProfile": {
     "back": "Back to providers",
@@ -858,5 +924,50 @@
     "contactEmail": "Email",
     "contactPhone": "Mobile",
     "contactsHidden": "Email and mobile are shared once you are connected through a tender: an offer, paid tender access, or an agreement."
+  },
+  "vip": {
+    "title": "VIP Lounge",
+    "allPartners": "All partners",
+    "previousPartners": "Previous partners",
+    "nextPartners": "Next partners",
+    "partnerListing": "Partner listing",
+    "disclosure": "VIP partners are listed first. Price ranking and the client's choice never change.",
+    "neutrality": "Price ranking and the client's choice never change.",
+    "badgeLabel": "VIP member",
+    "showingAll": {
+      "one": "Showing 1–{n} of {n} partner",
+      "few": "Showing 1–{n} of {n} partners",
+      "many": "Showing 1–{n} of {n} partners",
+      "other": "Showing 1–{n} of {n} partners"
+    },
+    "page": {
+      "subtitle": "All partners: verified providers with a record of completed work on Tendermarket."
+    },
+    "become": "Become a VIP partner",
+    "apply": "Apply for VIP",
+    "viewProfile": "View profile",
+    "completed": {
+      "one": "{n} completed",
+      "few": "{n} completed",
+      "many": "{n} completed",
+      "other": "{n} completed"
+    },
+    "empty": "No partners in this category yet.",
+    "clear": "Clear",
+    "allShort": "All",
+    "breadcrumb": "Breadcrumb",
+    "becomeBody": "Show your company here and on the home page. Available to verified providers with completed work on Tendermarket.",
+    "summaryAll": {
+      "one": "{count} partner matches your filters",
+      "few": "{count} partners match your filters",
+      "many": "{count} partners match your filters",
+      "other": "{count} partners match your filters"
+    },
+    "summaryCategory": {
+      "one": "{count} partner in {category}",
+      "few": "{count} partners in {category}",
+      "many": "{count} partners in {category}",
+      "other": "{count} partners in {category}"
+    }
   }
 }

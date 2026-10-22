@@ -7,6 +7,7 @@ import {
   type ProfileContact,
 } from "@/src/modules/profiles/application/get-profile-contact";
 import { getPublicProfile } from "@/src/modules/profiles/application/get-public-profile";
+import { isVerifiedProvider } from "@/src/modules/profiles/domain/profile";
 import { getProfileReviews } from "@/src/modules/reviews/application/get-profile-reviews";
 import { ReviewList } from "@/src/modules/reviews/ui/review-list";
 import { ReviewSummary, Stars } from "@/src/modules/reviews/ui/review-summary";
@@ -19,7 +20,12 @@ import { getProviderRecord } from "@/src/modules/shell/application/provider-reco
 import { BrandIcon } from "@/src/modules/shell/ui/brand-icon";
 import { formatTenderDate } from "@/src/modules/tenders/ui/tender-format";
 import { isTenderServiceCode } from "@/src/modules/tenders/domain/service-taxonomy";
-import { serviceLabel } from "@/src/modules/tenders/ui/tender-taxonomy";
+import {
+  serviceLabel,
+  specialtyLabel,
+} from "@/src/modules/tenders/ui/tender-taxonomy";
+import { getActiveVipMembership } from "@/src/modules/vip/application/vip-membership";
+import { VipBadge } from "@/src/modules/vip/ui/vip-badge";
 
 /** Counts per whole-star bucket, index 0 = 1★, so the histogram is real. */
 function histogramOf(overalls: readonly number[]): readonly number[] {
@@ -70,12 +76,15 @@ export default async function PublicProfilePage({
   const { locale, id } = await params;
   if (!isLocale(locale)) notFound();
 
-  const [profile, reviewOutput, record, viewer] = await Promise.all([
-    getPublicProfile(id),
-    getProfileReviews(id),
-    getProviderRecord(id),
-    headers().then(getCurrentUser),
-  ]);
+  const [profile, reviewOutput, record, viewer, membership] = await Promise.all(
+    [
+      getPublicProfile(id),
+      getProfileReviews(id),
+      getProviderRecord(id),
+      headers().then(getCurrentUser),
+      getActiveVipMembership(id),
+    ],
+  );
   if (!profile.ok) notFound();
   const contact = await getProfileContact(id, viewer);
 
@@ -83,6 +92,10 @@ export default async function PublicProfilePage({
   const copy = messages.providerProfile;
   const provider = profile.value;
   const isProvider = provider.providerSpecialties.length > 0;
+  const isVerified = isVerifiedProvider({
+    emailVerified: record.verifications.email,
+    onboardingComplete: record.verifications.profile,
+  });
   const overall = reviewOutput.aggregate.overall;
   const histogram = histogramOf(
     reviewOutput.reviews.map((review) => review.overall),
@@ -106,13 +119,25 @@ export default async function PublicProfilePage({
 
           <div className="profile-head">
             <span className="profile-avatar">
-              <BrandIcon name="buildings" size={38} />
+              {membership?.logoPath ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  alt=""
+                  className="profile-avatar-logo"
+                  src={membership.logoPath}
+                />
+              ) : (
+                <BrandIcon name="buildings" size={38} />
+              )}
             </span>
 
             <div className="profile-identity">
               <div className="profile-name-row">
                 <h1>{provider.displayName}</h1>
-                {record.verifications.email && record.verifications.profile ? (
+                {membership === null ? null : (
+                  <VipBadge label={messages.vip.badgeLabel} />
+                )}
+                {isVerified ? (
                   <span className="tag tag-green">
                     {isProvider
                       ? copy.verifiedProvider
@@ -123,6 +148,9 @@ export default async function PublicProfilePage({
               <p className="profile-descriptor">
                 {provider.activityDescription}
               </p>
+              {membership === null ? null : (
+                <p className="vip-disclosure">{messages.vip.disclosure}</p>
+              )}
               <p className="profile-meta">
                 <span>
                   <span aria-hidden="true" className="dot-marker" />
@@ -219,7 +247,7 @@ export default async function PublicProfilePage({
               {isProvider ? (
                 <>
                   <h3 className="uppercase-label">{copy.services}</h3>
-                  {record.serviceCounts.length === 0 ? null : (
+                  {record.serviceCounts.length > 0 ? (
                     <div className="chip-row">
                       {record.serviceCounts.map((entry) =>
                         isTenderServiceCode(entry.serviceCode) ? (
@@ -230,7 +258,17 @@ export default async function PublicProfilePage({
                         ) : null,
                       )}
                     </div>
-                  )}
+                  ) : provider.providerSpecialties.length > 0 ? (
+                    // No won tenders yet, so the categories the provider
+                    // declared stand in for the services list.
+                    <div className="chip-row">
+                      {provider.providerSpecialties.map((specialty) => (
+                        <span className="chip" key={specialty}>
+                          {specialtyLabel(specialty, messages)}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </>
               ) : null}
             </section>

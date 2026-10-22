@@ -14,6 +14,12 @@ const serverEnvSchema = z.object({
     (value) => (value === "" ? undefined : value),
     z.string().email().optional(),
   ),
+  // Optional: the address behind the VIP "Become a VIP partner" links. When it
+  // is unset, the All partners page uses the fallback in the vip module.
+  VIP_CONTACT_EMAIL: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.string().email().optional(),
+  ),
   STORAGE_ENDPOINT: z.string().url(),
   // Server-side S3 calls can use Docker's private network, while presigned
   // browser URLs need the public HTTPS hostname. If omitted, the existing

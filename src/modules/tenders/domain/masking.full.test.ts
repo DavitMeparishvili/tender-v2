@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { toFullDetail, toPublicDetail } from "./masking";
-import type { TenderRecord } from "./tender";
+import type { TenderReadRecord } from "./tender";
 
-const record: TenderRecord = {
+const record: TenderReadRecord = {
+  ownerIsVip: false,
   id: "tender-1",
   ownerId: "client-1",
   status: "PUBLISHED",

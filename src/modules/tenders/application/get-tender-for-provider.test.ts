@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { FakeClock } from "../../shared";
 import { createGetTenderForProvider } from "./get-tender-for-provider";
-import type { TenderRecord } from "../domain/tender";
+import type { TenderReadRecord } from "../domain/tender";
 
 const record = {
   id: "tender-1",
@@ -35,7 +35,8 @@ const record = {
   cancelReason: null,
   createdAt: new Date("2026-06-01T08:00:00.000Z"),
   updatedAt: new Date("2026-06-01T09:00:00.000Z"),
-} satisfies TenderRecord;
+  ownerIsVip: false,
+} satisfies TenderReadRecord;
 
 const repository = {
   getClientContact: async () => ({
