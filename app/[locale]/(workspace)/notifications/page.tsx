@@ -7,6 +7,7 @@ import { getMessages } from "@/src/modules/localization/get-messages";
 import { isLocale } from "@/src/modules/localization/config";
 import { listInbox } from "@/src/modules/notifications/application/list-inbox";
 import { InboxList } from "@/src/modules/notifications/ui/inbox-list";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 export default async function NotificationsPage({
   params,
@@ -18,22 +19,28 @@ export default async function NotificationsPage({
   if (!access.ok) {
     if (access.error === "UNAUTHENTICATED") redirect(`/${locale}/login`);
     return (
-      <WorkspaceDenied
-        error={access.error}
-        locale={locale}
-        messages={messages}
-      />
+      <>
+        <WorkspaceDenied
+          error={access.error}
+          locale={locale}
+          messages={messages}
+        />
+        <HomeAiChat locale={locale} />
+      </>
     );
   }
   const items = await listInbox(access.value);
   return (
-    <IdentityShell title={messages.notifications.title} width="form">
-      <InboxList
-        items={items}
-        locale={locale}
-        messages={messages}
-        userId={access.value.id}
-      />
-    </IdentityShell>
+    <>
+      <IdentityShell title={messages.notifications.title} width="form">
+        <InboxList
+          items={items}
+          locale={locale}
+          messages={messages}
+          userId={access.value.id}
+        />
+      </IdentityShell>
+      <HomeAiChat locale={locale} />
+    </>
   );
 }

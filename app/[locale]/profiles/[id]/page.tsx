@@ -26,6 +26,7 @@ import {
 } from "@/src/modules/tenders/ui/tender-taxonomy";
 import { getActiveVipMembership } from "@/src/modules/vip/application/vip-membership";
 import { VipBadge } from "@/src/modules/vip/ui/vip-badge";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 /** Counts per whole-star bucket, index 0 = 1★, so the histogram is real. */
 function histogramOf(overalls: readonly number[]): readonly number[] {
@@ -404,6 +405,7 @@ export default async function PublicProfilePage({
           </aside>
         </div>
       </div>
+      <HomeAiChat locale={locale} />
     </>
   );
 }

@@ -7,6 +7,7 @@ import { listTenderBids } from "@/src/modules/bidding/application/list-tender-bi
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { tenderPageCopy } from "@/src/modules/tenders/ui/tender-page-copy";
+import { TenderAiChat } from "@/src/modules/tenders/ui/tender-ai-chat";
 import { TenderAuthoring } from "@/src/modules/tenders/ui/tender-authoring";
 import { tenderToWizardForm } from "@/src/modules/tenders/ui/tender-wizard-initial";
 import { listGeorgianPlaces } from "@/src/modules/tenders/application/list-georgian-places";
@@ -31,6 +32,10 @@ export default async function EditPage({
     redirect(`/${locale}/client/tenders/new?tenderId=${id}`);
   const messages = getMessages(locale);
   const c = tenderPageCopy(locale);
+  // The same fixed drafting advice the new-tender page gives.
+  const chat = (
+    <TenderAiChat copy={messages.detail.ai} context={{ kind: "authoring" }} />
+  );
   const allowed =
     tender.status === "PUBLISHED" &&
     tender.deadline !== null &&
@@ -43,29 +48,38 @@ export default async function EditPage({
       getAuthoringAttachments(id, access.value),
     ]);
     return (
-      <TenderAuthoring
-        locale={locale}
-        messages={messages}
-        places={places}
-        initialTenderId={id}
-        initialForm={tenderToWizardForm(tender)}
-        initialAttachments={attachments}
-        published
-        reference={tender.reference ?? null}
-      />
+      <>
+        <TenderAuthoring
+          locale={locale}
+          messages={messages}
+          places={places}
+          initialTenderId={id}
+          initialForm={tenderToWizardForm(tender)}
+          initialAttachments={attachments}
+          published
+          reference={tender.reference ?? null}
+        />
+        {chat}
+      </>
     );
   }
   return (
-    <div className="tender-page">
-      <div className="tender-container tender-editor">
-        <Link className="tender-back" href={`/${locale}/client/tenders/${id}`}>
-          {messages.tenders.viewDetail}
-        </Link>
-        <section className="tender-panel">
-          <h1>{c.edit}</h1>
-          <p className="tender-description">{c.editBlocked}</p>
-        </section>
+    <>
+      <div className="tender-page">
+        <div className="tender-container tender-editor">
+          <Link
+            className="tender-back"
+            href={`/${locale}/client/tenders/${id}`}
+          >
+            {messages.tenders.viewDetail}
+          </Link>
+          <section className="tender-panel">
+            <h1>{c.edit}</h1>
+            <p className="tender-description">{c.editBlocked}</p>
+          </section>
+        </div>
       </div>
-    </div>
+      {chat}
+    </>
   );
 }

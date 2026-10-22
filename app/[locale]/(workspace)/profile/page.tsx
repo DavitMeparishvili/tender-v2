@@ -7,6 +7,7 @@ import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { getOwnProfile } from "@/src/modules/profiles/application/update-own-profile";
 import { ProfileForm } from "@/src/modules/profiles/ui/profile-form";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 export default async function ProfilePage({
   params,
@@ -26,17 +27,24 @@ export default async function ProfilePage({
     : "/" + locale + "/provider";
 
   return (
-    <IdentityShell
-      eyebrow={
-        <Link className="back-link" href={workspace}>
-          {messages.profile.backToWorkspace}
-        </Link>
-      }
-      title={messages.profile.title}
-      subtitle={messages.profile.subtitle}
-      width="form"
-    >
-      <ProfileForm locale={locale} profile={result.value} messages={messages} />
-    </IdentityShell>
+    <>
+      <IdentityShell
+        eyebrow={
+          <Link className="back-link" href={workspace}>
+            {messages.profile.backToWorkspace}
+          </Link>
+        }
+        title={messages.profile.title}
+        subtitle={messages.profile.subtitle}
+        width="form"
+      >
+        <ProfileForm
+          locale={locale}
+          profile={result.value}
+          messages={messages}
+        />
+      </IdentityShell>
+      <HomeAiChat locale={locale} />
+    </>
   );
 }
