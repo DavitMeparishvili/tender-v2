@@ -145,7 +145,11 @@ export function TenderHeading({
         ) : null}
       </div>
       <dl className="tender-facts">
-        <TenderFact icon="wallet" label={messages.tenders.budget}>
+        <TenderFact
+          icon="wallet"
+          label={messages.tenders.budget}
+          className="tender-fact-budget"
+        >
           <TenderMoney value={budget} currency={currency} locale={locale} />
         </TenderFact>
         <TenderFact icon="calendar" label={messages.tenders.deadline}>

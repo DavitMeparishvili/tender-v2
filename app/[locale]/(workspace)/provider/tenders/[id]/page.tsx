@@ -19,6 +19,7 @@ import { getMessages } from "@/src/modules/localization/get-messages";
 import { getAttachmentPreviews } from "@/src/modules/tenders/application/get-attachment-previews";
 import { tenderPageCopy } from "@/src/modules/tenders/ui/tender-page-copy";
 import { TenderIcon } from "@/src/modules/tenders/ui/tender-icon";
+import { TenderAiChat } from "@/src/modules/tenders/ui/tender-ai-chat";
 import { BrandIcon } from "@/src/modules/shell/ui/brand-icon";
 import {
   RENDERED_LINK_DOWNLOAD_URL_TTL_SECONDS,
@@ -328,6 +329,26 @@ export default async function ProviderTenderDetailPage({
             </Link>
           </div>
         ) : null}
+        <TenderAiChat
+          copy={messages.detail.ai}
+          context={{
+            kind: "tender",
+            title: tender.title,
+            budget: formatTenderMoney(
+              tender.budgetMinorUnits,
+              tender.currency,
+              locale,
+            ),
+            offerCount: summary.ok ? summary.value.bidCount : null,
+            lowestOffer: summary.ok
+              ? formatTenderMoney(
+                  summary.value.lowestAmountMinorUnits,
+                  summary.value.currency,
+                  locale,
+                )
+              : null,
+          }}
+        />
       </div>
     </div>
   );

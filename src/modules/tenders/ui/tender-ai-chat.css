@@ -1,0 +1,507 @@
+/* Tender AI demo chat: a launcher and a docked panel (a bottom sheet on
+   phones). Both are portalled to <body> and sit above Leaflet's map
+   controls (1000). */
+.tender-ai-launcher {
+  position: fixed;
+  z-index: 1090;
+  right: 24px;
+  bottom: calc(
+    24px + var(--mobile-nav-height, 0px) + var(--mobile-actions-height, 0px)
+  );
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: 48px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--tip-emerald-500);
+  color: var(--fg-on-brand);
+  font: var(--type-control);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+}
+.tender-ai-launcher:hover {
+  background: var(--brand);
+}
+/* While the chat is open the launcher becomes its round close button. */
+.tender-ai-launcher.is-open {
+  justify-content: center;
+  inline-size: 48px;
+  padding: 0;
+}
+/* One ring around the whole field; the input itself shows none. */
+.tender-ai-field:focus-within {
+  border-color: var(--tip-emerald-500);
+  box-shadow: var(--shadow-focus);
+}
+.tender-ai-field input:focus-visible {
+  outline: none;
+}
+
+/* Docked above the launcher (24px edge + 48px button + 14px gap), clamped
+   so it never clips on short laptop screens and stays clear of the site
+   header (top band + sticky nav, ~112px). */
+.tender-ai-panel {
+  /* Sticky action bars (the authoring wizard footer) lift both. */
+  --panel-bottom: calc(
+    86px + var(--mobile-nav-height, 0px) + var(--mobile-actions-height, 0px)
+  );
+  position: fixed;
+  z-index: 1100;
+  right: 24px;
+  bottom: var(--panel-bottom);
+  display: flex;
+  flex-direction: column;
+  inline-size: 400px;
+  block-size: min(640px, calc(100vh - var(--panel-bottom) - 120px));
+  block-size: min(640px, calc(100dvh - var(--panel-bottom) - 120px));
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  color: var(--fg-1);
+  box-shadow:
+    0 24px 60px rgb(17 24 39 / 22%),
+    0 2px 6px rgb(17 24 39 / 8%);
+  transform-origin: bottom right;
+  animation: tender-ai-pop-in 200ms ease-out;
+}
+.tender-ai-panel.is-closing {
+  animation: tender-ai-pop-out 180ms ease-in forwards;
+}
+/* Focused programmatically when the phone sheet opens; no ring needed. */
+.tender-ai-panel:focus {
+  outline: none;
+}
+
+.tender-ai-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  min-block-size: 52px;
+  padding: 4px 6px 0 16px;
+}
+.tender-ai-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 28px;
+  block-size: 28px;
+  border-radius: var(--radius-md);
+  background: var(--tip-emerald-500);
+  color: var(--fg-on-brand);
+}
+.tender-ai-heading {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tender-ai-heading h2 {
+  margin: 0;
+  font: var(--type-card);
+}
+.tender-ai-compose p {
+  margin: 0;
+  color: var(--fg-3);
+  font: var(--type-caption);
+}
+.tender-ai-icon-button {
+  display: grid;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--fg-3);
+  cursor: pointer;
+}
+.tender-ai-icon-button:hover {
+  background: var(--bg-subtle);
+  color: var(--fg-1);
+}
+
+.tender-ai-context {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 16px 0;
+  padding: 8px 12px;
+  border: 1px solid var(--tip-emerald-200);
+  border-radius: var(--radius-lg);
+  background: var(--tip-emerald-50);
+  color: var(--brand);
+}
+.tender-ai-context > svg {
+  flex: none;
+}
+.tender-ai-context-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+/* Visually hidden: the subtitle, the context label and (on phones) the
+   launcher label stay as accessible text only. */
+.tender-ai-heading p,
+.tender-ai-context-text span {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.tender-ai-context-text strong {
+  overflow: hidden;
+  color: var(--fg-1);
+  font: var(--type-label);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The budget never truncates; a long title gives way instead. */
+.tender-ai-context-budget {
+  flex: none;
+  color: var(--fg-1);
+  font: var(--type-label);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+.tender-ai-log {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  min-block-size: 0;
+  padding: 18px 14px 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  /* Messages fade out under the context chip instead of being cut flush. */
+  mask-image: linear-gradient(to bottom, transparent, #000 14px);
+}
+.tender-ai-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tender-ai-messages:empty {
+  display: none;
+}
+.tender-ai-question {
+  align-self: flex-end;
+  max-inline-size: 82%;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xs);
+  background: var(--tip-emerald-700);
+  color: var(--fg-on-brand);
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.tender-ai-answer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-inline-size: 92%;
+}
+.tender-ai-answer p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.tender-ai-answer strong {
+  font-weight: var(--weight-bold);
+}
+.tender-ai-answer a {
+  color: var(--tip-emerald-700);
+  font-weight: var(--weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.tender-ai-answer a:hover {
+  color: var(--tip-emerald-800);
+}
+.tender-ai-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-inline-start: 20px;
+  list-style: disc;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.tender-ai-list li::marker {
+  color: var(--tip-emerald-500);
+}
+.tender-ai-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tender-ai-sources :is(button, span) {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  color: var(--fg-2);
+  font: var(--type-caption);
+}
+.tender-ai-sources button {
+  color: var(--tip-emerald-700);
+  cursor: pointer;
+}
+.tender-ai-sources button:hover {
+  background: var(--tip-emerald-50);
+  text-decoration: underline;
+}
+
+/* Pulse on the page section a source tag points to. */
+.tender-ai-highlight {
+  border-radius: var(--radius-md);
+  outline: 2px solid var(--tip-emerald-500);
+  outline-offset: 4px;
+  animation: tender-ai-highlight 1.2s ease-out;
+}
+@keyframes tender-ai-highlight {
+  from {
+    box-shadow: 0 0 0 0 var(--tip-emerald-200);
+  }
+  40% {
+    box-shadow: 0 0 0 10px var(--tip-emerald-200);
+  }
+  to {
+    box-shadow: 0 0 0 14px transparent;
+  }
+}
+.tender-ai-thinking {
+  display: flex;
+  gap: 5px;
+  margin: 0;
+  padding: 6px 0;
+}
+.tender-ai-thinking span[aria-hidden] {
+  inline-size: 7px;
+  block-size: 7px;
+  border-radius: 50%;
+  background: var(--tip-grey-400);
+  animation: tender-ai-dot 1s ease-in-out infinite;
+}
+.tender-ai-thinking span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.tender-ai-thinking span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes tender-ai-dot {
+  50% {
+    opacity: 0.3;
+    transform: translateY(-3px);
+  }
+}
+
+.tender-ai-suggestions {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tender-ai-suggestions button {
+  min-block-size: 44px;
+  padding: 6px 12px;
+  border: 1px solid var(--tip-emerald-200);
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  color: var(--tip-emerald-700);
+  font: var(--type-label);
+  font-size: 13px;
+  cursor: pointer;
+}
+.tender-ai-suggestions button:hover:not(:disabled) {
+  background: var(--tip-emerald-50);
+}
+.tender-ai-suggestions button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.tender-ai-compose {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 14px 12px;
+  border-block-start: 1px solid var(--tip-grey-100);
+  text-align: center;
+}
+.tender-ai-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 14px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+}
+.tender-ai-field input {
+  flex: 1;
+  min-inline-size: 0;
+  padding: 8px 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--fg-1);
+  font: var(--type-input);
+}
+.tender-ai-send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--tip-emerald-500);
+  color: var(--fg-on-brand);
+  cursor: pointer;
+}
+.tender-ai-send:disabled {
+  background: var(--tip-grey-300);
+  cursor: default;
+}
+
+/* The drag handle and scrim only exist in the phone bottom sheet. */
+.tender-ai-handle,
+.tender-ai-scrim {
+  display: none;
+}
+
+@media (width <= 640px) {
+  /* Compact round launcher; the label stays as its accessible name. */
+  .tender-ai-launcher {
+    right: calc(16px + env(safe-area-inset-right));
+    bottom: calc(
+      16px + env(safe-area-inset-bottom) + var(--mobile-nav-height, 0px) +
+        var(--mobile-actions-height, 0px)
+    );
+    justify-content: center;
+    inline-size: 56px;
+    block-size: 56px;
+    padding: 0;
+  }
+  .tender-ai-launcher svg {
+    inline-size: 24px;
+    block-size: 24px;
+  }
+  .tender-ai-launcher-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .tender-ai-scrim {
+    display: block;
+    position: fixed;
+    z-index: 1099;
+    inset: 0;
+    background: rgb(22 24 28 / 35%);
+    animation: tender-ai-fade-in 250ms ease-out;
+    transition: opacity 200ms ease-in;
+  }
+  .tender-ai-scrim.is-closing {
+    opacity: 0;
+  }
+
+  /* Bottom sheet. --sheet-keyboard and --sheet-viewport come from the
+     visual viewport while the on-screen keyboard is open. */
+  .tender-ai-panel {
+    inset: auto 0 var(--sheet-keyboard, 0px);
+    inline-size: auto;
+    block-size: 85vh;
+    block-size: 85dvh;
+    max-block-size: calc(var(--sheet-viewport, 100dvh) - 12px);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    box-shadow: 0 -8px 32px rgb(11 27 59 / 16%);
+    animation: tender-ai-sheet-in 250ms ease-out;
+  }
+  /* The sheet exits with an inline transform transition instead. */
+  .tender-ai-panel.is-closing {
+    animation: none;
+  }
+  .tender-ai-grab {
+    flex: none;
+    touch-action: none;
+    user-select: none;
+  }
+  .tender-ai-handle {
+    display: block;
+    inline-size: 38px;
+    block-size: 5px;
+    margin: 8px auto 0;
+    border-radius: var(--radius-pill);
+    background: var(--tip-grey-300);
+  }
+  .tender-ai-header {
+    min-block-size: 48px;
+    padding-block-start: 0;
+  }
+  .tender-ai-sources :is(button, span) {
+    padding: 6px 10px;
+  }
+  .tender-ai-log {
+    padding-inline: 16px;
+    scrollbar-gutter: auto;
+  }
+  .tender-ai-compose {
+    padding: 8px 16px max(12px, env(safe-area-inset-bottom));
+  }
+  .tender-ai-field input {
+    font-size: 16px;
+  }
+}
+
+@keyframes tender-ai-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes tender-ai-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+@keyframes tender-ai-pop-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+@keyframes tender-ai-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tender-ai-thinking span[aria-hidden],
+  .tender-ai-panel,
+  .tender-ai-panel.is-closing,
+  .tender-ai-scrim,
+  .tender-ai-highlight {
+    animation: none;
+  }
+}

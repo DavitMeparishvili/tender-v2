@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "../src/modules/tenders/ui/tender-pages.css";
 @import "../src/modules/tenders/ui/tender-authoring.css";
+@import "../src/modules/tenders/ui/tender-ai-chat.css";
 @import "./typography.css";
 
 /* =============================================================
