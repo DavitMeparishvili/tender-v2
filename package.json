@@ -29,6 +29,7 @@
     "seed:phase-4": "tsx scripts/seed-phase-04.ts",
     "seed:demo": "tsx scripts/seed-demo.ts",
     "seed:vip": "tsx scripts/seed-vip.ts",
+    "seed:demo-ka": "tsx scripts/seed-demo-ka.ts",
     "seed:local-client": "tsx scripts/seed-local-client.ts",
     "prepare:local-fixture-logins": "tsx scripts/prepare-local-fixture-logins.ts",
     "verify:phase-0": "pnpm format:check && pnpm lint && pnpm verify:boundaries && pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm build && pnpm test:e2e --grep-invert \"@phase-1|@phase-2|@phase-3|@phase-4\"",

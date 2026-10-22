@@ -152,6 +152,22 @@ The seed creates `demo.client@tender.test`, `demo.provider@tender.test`, and
 `demo.admin@tender.test`, all with that chosen password. The password is passed
 only to this one command; it is not saved in the `.env` file.
 
+### Georgian demo data
+
+`scripts/seed-demo-ka.ts` seeds Georgian-language data for a live demo: open
+tenders with VIP-first offers, a tender awaiting the client's choice,
+agreements in pending/in-progress/completed states, the VIP Lounge with rated
+partners, a draft, a cancelled tender and a redacted review. Run it again on
+the morning of a demo: agreements awaiting confirmation expire after 48 hours,
+and the seed rebuilds any scenario that drifted.
+
+```sh
+docker compose --env-file deploy/.env.droplet -f compose.droplet.yaml exec   -e DEMO_SEED_CONFIRM=tender_demo   -e DEMO_SEED_PASSWORD='YOUR_DEMO_PASSWORD'   app node_modules/.bin/tsx scripts/seed-demo-ka.ts
+```
+
+Accounts are `client@`, `provider@`, `standard@` and `admin@tender.test`, plus
+supporting partners and clients listed in the script output.
+
 ## Updating and operations
 
 ### Deployment helper (recommended)
