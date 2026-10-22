@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { toPublicDetail, toPublicSummary } from "./masking";
-import type { TenderRecord } from "./tender";
+import type { TenderReadRecord } from "./tender";
 
-const published: TenderRecord = {
+const published: TenderReadRecord = {
+  ownerIsVip: false,
   id: "tender-1",
   ownerId: "owner-1",
   status: "PUBLISHED",
@@ -57,5 +58,11 @@ describe("toPublicSummary / toPublicDetail", () => {
       publicLatitude: 41.72,
       publicLongitude: 44.83,
     });
+  });
+
+  it("carries the owner's VIP status onto the summary and the detail", () => {
+    const vip = { ...published, ownerIsVip: true };
+    expect(toPublicSummary(vip).ownerIsVip).toBe(true);
+    expect(toPublicDetail(vip).ownerIsVip).toBe(true);
   });
 });

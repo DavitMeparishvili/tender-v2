@@ -502,6 +502,972 @@ img {
   color: var(--fg-2);
 }
 
+/* VIP badge (a gold diamond and the word VIP; spec section 7) ------------- */
+
+.vip-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-inline-size: 100%;
+  padding: 5px 10px;
+  border: 1px solid #d6c08f;
+  border-radius: var(--radius-pill);
+  background: #fffcf5;
+  /* Darker than the gold mark so the text meets WCAG AA 4.5:1 on #fffcf5 (about 6:1). */
+  color: #7a5c1e;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.vip-badge-diamond {
+  flex: none;
+  inline-size: 7px;
+  block-size: 7px;
+  border-radius: 2px;
+  background: #b8913f;
+  transform: rotate(45deg);
+}
+
+.vip-disclosure {
+  margin: 12px 0 0;
+  color: var(--fg-2);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+
+/* Offer comparison note: a small muted line with the info glyph. */
+.bid-vip-disclosure {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--fg-2);
+  font-size: var(--text-caption);
+}
+
+.bid-vip-disclosure svg {
+  flex: none;
+  margin-block-start: 2px;
+}
+
+/* VIP Lounge strip (home page; spec section 5, handoff section 3) --------- */
+
+/* A cream panel with a soft gold edge. Its one horizontal scroller is the only
+   scroll area, and its right-edge fade blends into the panel background. */
+.vip-lounge {
+  --vip-pad-x: 20px;
+  margin-block-start: 24px;
+  padding: 16px var(--vip-pad-x);
+  border: 1px solid rgb(214 192 143 / 70%);
+  border-radius: 16px;
+  background: #fffcf5;
+}
+
+.vip-lounge-body {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.vip-lounge-title-block {
+  flex: none;
+  min-inline-size: 0;
+}
+
+.vip-lounge-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--fg-1);
+  font-size: 20px;
+  font-weight: var(--weight-bold);
+  line-height: 1.25;
+}
+
+.vip-lounge-title::before {
+  content: "";
+  flex: none;
+  inline-size: 11px;
+  block-size: 11px;
+  border-radius: 2px;
+  background: #b8913f;
+  transform: rotate(45deg);
+}
+
+/* Indented to line up with the title text, past the diamond. */
+.vip-lounge-note {
+  margin: 4px 0 0 21px;
+  color: var(--fg-3);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.vip-lounge-note-text {
+  cursor: help;
+}
+
+.vip-lounge-all {
+  flex: none;
+  color: var(--brand-hover);
+  font-size: 14px;
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.vip-lounge-all:hover {
+  text-decoration: underline;
+}
+
+.vip-lounge-all:focus-visible,
+.vip-chip:focus-visible,
+.vip-lounge-arrow:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Native horizontal scroll with snap; no autoplay, scrollbar hidden. The
+   scroller clips at its box, so it keeps 6px of padding for the 2px focus ring
+   and its 2px offset. The negative margin cancels that padding, so the layout
+   does not move. */
+.vip-lounge-scroller {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 8px;
+  min-inline-size: 0;
+  margin: -6px;
+  padding: 6px;
+  /* Snapping keeps the same 6px inset, so the first chip's ring stays visible. */
+  scroll-padding: 6px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+/* Edge fades into the panel colour. A fade shows only while chips lie beyond
+   that edge (data-fade-start / data-fade-end, set by VipLoungeArrows). The
+   right fade lets the next chip show through; the left one softens the first
+   chip when the row is scrolled. */
+.vip-lounge-scroller {
+  --vip-fade-start: 0px;
+  --vip-fade-end: 0px;
+}
+
+.vip-lounge-scroller[data-fade-start="true"] {
+  --vip-fade-start: 28px;
+}
+
+.vip-lounge-scroller[data-fade-end="true"] {
+  --vip-fade-end: 36px;
+}
+
+.vip-lounge-scroller[data-fade-start="true"],
+.vip-lounge-scroller[data-fade-end="true"] {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 var(--vip-fade-start),
+    #000 calc(100% - var(--vip-fade-end)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 var(--vip-fade-start),
+    #000 calc(100% - var(--vip-fade-end)),
+    transparent 100%
+  );
+}
+
+.vip-lounge-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+/* The width comes from VipLoungeArrows (--vip-chip-w); the chip fills it. */
+.vip-lounge-item {
+  flex: none;
+  width: var(--vip-chip-w, max-content);
+  scroll-snap-align: start;
+}
+
+.vip-lounge-arrows {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.vip-lounge-arrow {
+  display: grid;
+  place-items: center;
+  inline-size: 36px;
+  block-size: 36px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-surface);
+  color: var(--fg-1);
+  cursor: pointer;
+  transition:
+    border-color 150ms var(--ease),
+    color 150ms var(--ease),
+    transform 150ms var(--ease);
+}
+
+.vip-lounge-arrow:hover:not(:disabled) {
+  border-color: var(--tip-emerald-200);
+  color: var(--brand-hover);
+}
+
+.vip-lounge-arrow:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.vip-lounge-arrow:disabled {
+  color: var(--tip-grey-300);
+  cursor: default;
+}
+
+/* Partner chip: the whole chip is one link to the partner's profile. */
+.vip-chip {
+  display: flex;
+  inline-size: 100%;
+  align-items: center;
+  gap: 10px;
+  max-inline-size: 280px;
+  padding: 10px 16px 10px 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 150ms var(--ease),
+    box-shadow 150ms var(--ease),
+    transform 150ms var(--ease);
+}
+
+@media (hover: hover) {
+  .vip-chip:hover {
+    border-color: var(--tip-emerald-200);
+    box-shadow: 0 2px 10px rgb(5 150 105 / 12%);
+  }
+
+  .vip-chip:hover .vip-chip-name-text {
+    color: var(--brand-hover);
+  }
+}
+
+.vip-chip:active {
+  transform: translateY(1px);
+}
+
+.vip-chip-logo {
+  flex: none;
+  inline-size: 48px;
+  block-size: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.vip-chip-logo-fallback {
+  display: grid;
+  place-items: center;
+  background: var(--bg-subtle);
+  color: var(--fg-2);
+}
+
+.vip-chip-text {
+  display: block;
+  min-inline-size: 0;
+}
+
+.vip-chip-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+  color: var(--fg-1);
+  font-size: 15px;
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.vip-chip-name-text {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vip-chip-verified {
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+}
+
+.vip-chip-service {
+  display: block;
+  margin-block-start: 2px;
+  overflow: hidden;
+  color: var(--fg-3);
+  font-size: 13px;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Desktop: the Popular links stay on one line; if they do not fit, they scroll
+   sideways instead of adding a second row above the strip. */
+@media (width > 1023px) {
+  /* The inline padding keeps focus rings (2px ring plus 2px offset) inside the
+     scroll box. The right side needs 8px, because at the end of the scroll the
+     last ring would otherwise sit 1px outside. The matching negative margins
+     cancel the padding, so the label and pills do not move. The right scroll
+     padding (40px) keeps a focused pill clear of the 36px fade. */
+  .hero .hero-popular {
+    flex-wrap: nowrap;
+    margin-block: 10px 0;
+    margin-inline: -4px -8px;
+    padding-block: 4px;
+    padding-inline: 4px 8px;
+    scroll-padding-inline: 4px 40px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .hero .hero-popular > * {
+    flex: none;
+  }
+
+  /* Only while pills lie beyond the right edge (set by OverflowFade). */
+  .hero .hero-popular[data-fade="true"] {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 calc(100% - 36px),
+      transparent
+    );
+    mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent);
+  }
+
+  .hero .band-inner > .hero-stats {
+    margin-block-start: 28px;
+  }
+}
+
+/* Tablet and phone (<1024px): a full panel inside the content gutters, with
+   title row and "All partners" on top and the scroller below. The scroller
+   clips at the panel's inner right edge, so the next chip is cut off inside the
+   panel as the scroll cue, with a short fade into the panel background. */
+@media (width <= 1023px) {
+  .vip-lounge {
+    --vip-pad-x: 16px;
+    margin-block-start: 20px;
+    padding-block: 14px;
+  }
+
+  .vip-lounge-scroller[data-fade-end="true"] {
+    --vip-fade-end: 28px;
+  }
+
+  .vip-lounge-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px 12px;
+  }
+
+  .vip-lounge-title {
+    font-size: 17px;
+  }
+
+  .vip-lounge-title-block {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .vip-lounge-note,
+  .vip-lounge-arrows {
+    display: none;
+  }
+
+  .vip-lounge-all {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 14px;
+  }
+
+  .vip-lounge-scroller {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: -6px calc(-1 * var(--vip-pad-x)) -6px -6px;
+    padding: 6px var(--vip-pad-x) 6px 6px;
+  }
+
+  /* A common width keeps the cut-off chip at a similar share in every language. */
+  .vip-chip {
+    max-inline-size: 260px;
+    padding: 9px 14px 9px 9px;
+    border-radius: 12px;
+  }
+
+  .vip-chip-logo {
+    inline-size: 44px;
+    block-size: 44px;
+    border-radius: 10px;
+  }
+
+  .vip-chip-name {
+    font-size: 14px;
+  }
+
+  .vip-chip-service {
+    font-size: 12px;
+  }
+}
+
+/* VIP All partners page (spec section 6, handoff section 4) --------------- */
+
+/* One full-width column: a toolbar (summary and category dropdown), then the
+   grid. On mobile the dropdown comes first and the summary sits below it. */
+.vip-partners-page {
+  background: var(--tip-grey-50);
+  color: var(--fg-1);
+}
+
+.vip-partners-inner {
+  padding-block: 16px 56px;
+}
+
+.vip-crumb {
+  color: var(--fg-3);
+  font-size: var(--text-caption);
+  line-height: 1.4;
+}
+
+.vip-crumb a {
+  color: var(--brand);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.vip-crumb a:hover {
+  text-decoration: underline;
+}
+
+.vip-page-header {
+  display: flex;
+  flex-direction: column;
+  margin-block: 8px 20px;
+}
+
+.vip-page-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--fg-1);
+  font-size: 26px;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+/* The gold diamond is the VIP mark (same as the home strip heading). */
+.vip-page-title::before {
+  content: "";
+  flex: none;
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 2px;
+  background: #b8913f;
+  transform: rotate(45deg);
+}
+
+.vip-page-subtitle {
+  max-inline-size: 720px;
+  margin: 6px 0 0;
+  color: var(--fg-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.vip-page-disclosure {
+  margin: 6px 0 0;
+  color: var(--fg-3);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+
+/* Desktop only: the header action, aligned to the right. */
+.vip-page-become {
+  display: none;
+  flex: none;
+  align-items: center;
+  block-size: 40px;
+  padding-inline: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--fg-1);
+  font-size: 14px;
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.vip-page-become:hover {
+  border-color: var(--tip-emerald-200);
+  color: var(--brand-hover);
+}
+
+/* Toolbar: results summary and the category dropdown. Stacked on mobile. */
+.vip-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-block: 16px;
+}
+
+.vip-toolbar-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-inline-size: 0;
+  color: var(--fg-2);
+  font-size: 13.5px;
+}
+
+.vip-summary {
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.vip-summary strong {
+  color: var(--fg-1);
+  font-weight: var(--weight-bold);
+}
+
+.vip-results-clear {
+  flex: none;
+  color: var(--brand);
+  font-size: 13.5px;
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.vip-results-clear:hover {
+  text-decoration: underline;
+}
+
+/* The dropdown is the Discover select: the shared .field-control rules style
+   it. A long Georgian option is cut with an ellipsis inside the closed box. */
+.vip-filter-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  order: -1;
+  min-inline-size: 0;
+  /* The chevron sits 12px from the edge and is 16px wide, so the room for it
+     is 34px, not the 40px default. That gives Georgian labels more width. */
+  --select-chevron-room: 34px;
+}
+
+.vip-filter-form .form-field {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+/* The Discover rail's label style (.filter-rail .form-field > label). */
+.vip-filter-form .form-field > label {
+  color: var(--fg-1);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+}
+
+.vip-filter-form .field-control > select {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vip-filter-submit {
+  flex: none;
+}
+
+@media (width <= 1023px) {
+  .vip-filter-form .field-control > select {
+    padding-inline-start: 8px;
+  }
+}
+
+/* With JavaScript, a change in the dropdown submits it, so the button goes. */
+.vip-filter-form.is-enhanced .vip-filter-submit {
+  display: none;
+}
+
+.vip-results-clear:focus-visible,
+.vip-crumb a:focus-visible,
+.vip-page-become:focus-visible,
+.vip-become-apply:focus-visible,
+.vip-partner-card:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.vip-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vip-grid-item {
+  display: flex;
+  min-inline-size: 0;
+}
+
+.vip-partner-card {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-inline-size: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 150ms var(--ease),
+    box-shadow 150ms var(--ease);
+}
+
+@media (hover: hover) {
+  .vip-partner-card:hover {
+    border-color: var(--tip-emerald-200);
+    box-shadow: 0 4px 16px rgb(5 150 105 / 10%);
+  }
+
+  .vip-partner-card:hover .vip-partner-cta {
+    text-decoration: underline;
+  }
+}
+
+.vip-partner-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-inline-size: 0;
+}
+
+.vip-partner-logo {
+  flex: none;
+  inline-size: 48px;
+  block-size: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.vip-partner-logo-fallback {
+  display: grid;
+  place-items: center;
+  background: var(--bg-subtle);
+  color: var(--fg-2);
+}
+
+.vip-partner-id {
+  display: block;
+  min-inline-size: 0;
+}
+
+.vip-partner-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+  color: var(--fg-1);
+  font-size: 16px;
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
+}
+
+.vip-partner-name-text {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vip-partner-verified {
+  flex: none;
+}
+
+.vip-partner-service {
+  display: block;
+  margin-block-start: 2px;
+  overflow: hidden;
+  color: var(--fg-3);
+  font-size: 13px;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vip-partner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-block-start: 14px;
+  font-size: 12.5px;
+}
+
+.vip-partner-tag {
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--tip-emerald-50);
+  color: var(--brand);
+  font-weight: var(--weight-semibold);
+}
+
+.vip-partner-city {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--fg-3);
+}
+
+.vip-partner-desc {
+  display: -webkit-box;
+  margin-block: 12px 16px;
+  overflow: hidden;
+  color: var(--fg-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Pinned to the bottom of the card, so equal-height cards line up. */
+.vip-partner-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-block-start: auto;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--tip-grey-100);
+  color: var(--fg-2);
+  font-size: 13px;
+}
+
+.vip-partner-rating {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  color: var(--fg-1);
+  font-weight: var(--weight-semibold);
+}
+
+.vip-partner-cta {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  margin-inline-start: auto;
+  color: var(--brand);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+/* The completed count is the part that gives way: it truncates before the
+   rating or the "View profile" link does. */
+.vip-partner-completed {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* "Become a VIP partner": the last grid item, always. Dashed gold line. */
+.vip-become-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  min-inline-size: 0;
+  padding: 18px;
+  border: 1.5px dashed #d6c08f;
+  border-radius: var(--radius-lg);
+  background: #fffcf5;
+}
+
+.vip-become-title {
+  color: var(--fg-1);
+  font-size: 16px;
+  font-weight: var(--weight-bold);
+  line-height: 1.3;
+}
+
+.vip-become-body {
+  color: var(--fg-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.vip-become-apply {
+  display: inline-flex;
+  align-items: center;
+  block-size: 40px;
+  padding-inline: 16px;
+  border-radius: var(--radius-md);
+  background: var(--brand);
+  color: var(--fg-on-brand);
+  font-size: 14px;
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.vip-become-apply:hover {
+  background: var(--brand-hover);
+}
+
+.vip-empty {
+  grid-column: 1 / -1;
+  padding: 40px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  color: var(--fg-2);
+  font-size: 14px;
+  text-align: center;
+}
+
+.vip-count {
+  margin: 28px 0 0;
+  color: var(--fg-3);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (width >= 640px) and (width <= 1023px) {
+  .vip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Desktop (>=1024px): the dropdown sits on the right of the summary, and the
+   grid has three columns across the full content width. */
+@media (width > 1023px) {
+  .vip-partners-inner {
+    padding-block: 28px 56px;
+  }
+
+  .vip-page-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-block: 14px 28px;
+  }
+
+  .vip-page-title {
+    gap: 12px;
+    font-size: 34px;
+  }
+
+  .vip-page-title::before {
+    inline-size: 12px;
+    block-size: 12px;
+  }
+
+  .vip-page-subtitle {
+    margin-block-start: 8px;
+    font-size: 15.5px;
+  }
+
+  .vip-page-disclosure {
+    font-size: 12.5px;
+  }
+
+  .vip-page-become {
+    display: inline-flex;
+  }
+
+  .vip-toolbar {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-block: 0 20px;
+  }
+
+  .vip-toolbar-summary {
+    flex: 1 1 auto;
+    block-size: 44px;
+    font-size: 14px;
+  }
+
+  .vip-filter-form {
+    order: 0;
+    flex: none;
+  }
+
+  .vip-filter-form .form-field {
+    flex: none;
+    inline-size: 400px;
+  }
+
+  .vip-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .vip-partner-card {
+    padding: 16px;
+  }
+
+  .vip-partner-logo {
+    inline-size: 52px;
+    block-size: 52px;
+    border-radius: 13px;
+  }
+
+  /* One line at 1440 in every language: tighter gaps and 12px text. */
+  .vip-partner-foot {
+    flex-wrap: nowrap;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .vip-become-card {
+    padding: 22px;
+  }
+
+  .vip-count {
+    margin-block: 28px 0;
+  }
+}
+
 /* Chips (filters, services, regions) -------------------------------------- */
 
 .chip {
@@ -1219,9 +2185,9 @@ img {
 .hero .band-inner {
   display: grid;
   grid-template-columns: 1.02fr 0.98fr;
-  gap: 52px;
+  gap: 0 52px;
   align-items: start;
-  padding-block: 64px 72px;
+  padding-block: 40px 72px;
 }
 
 .hero .band-inner > * {
@@ -1310,6 +2276,7 @@ img {
 .hero-popular {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
   margin-block-start: 14px;
 }
@@ -1326,6 +2293,64 @@ img {
   gap: 32px;
   justify-content: start;
   margin-block-start: 34px;
+}
+
+/* Hero rows. Desktop: copy and preview share row 1, then the popular links,
+   the stats, and the VIP Lounge strip spanning the full width. Tablet and
+   phone (below 1024px): the strip sits directly under the search box, then the
+   popular links and the stats. The preview is hidden at 900px and below. */
+.hero .band-inner > .hero-main {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.hero .band-inner > .hero-preview {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+}
+
+.hero .band-inner > .hero-popular {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.hero .band-inner > .hero-stats {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.hero .band-inner > .vip-lounge {
+  grid-column: 1 / -1;
+  grid-row: 4;
+}
+
+@media (width <= 1023px) {
+  .hero .band-inner > .hero-preview {
+    grid-row: 1 / span 4;
+  }
+
+  .hero .band-inner > .vip-lounge {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .hero .band-inner > .hero-popular {
+    grid-row: 3;
+  }
+
+  .hero .band-inner > .hero-stats {
+    grid-row: 4;
+  }
+}
+
+@media (width <= 900px) {
+  .hero .band-inner > .hero-main,
+  .hero .band-inner > .vip-lounge,
+  .hero .band-inner > .hero-popular,
+  .hero .band-inner > .hero-stats {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }
 
 /* Hero preview card ------------------------------------------------------- */
@@ -3078,6 +4103,16 @@ img {
 
 .profile-avatar img {
   opacity: 0.35;
+}
+
+/* A VIP account's logo replaces the generic icon, at full strength. */
+.profile-avatar .profile-avatar-logo {
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 12px;
+  border-radius: inherit;
+  object-fit: contain;
+  opacity: 1;
 }
 
 .profile-identity {
@@ -5500,7 +6535,7 @@ img {
   }
 
   .hero .band-inner {
-    gap: 32px;
+    gap: 0 32px;
   }
 
   .hero h1 {

@@ -13,6 +13,9 @@ vi.mock("../infrastructure/prisma-bid-repository", () => ({
 vi.mock("../../profiles/application/get-provider-display-names", () => ({
   getProviderDisplayNames: mocks.names,
 }));
+vi.mock("../../vip/application/vip-membership", () => ({
+  vipUserIds: async () => new Set<string>(),
+}));
 import { listTenderBids } from "./list-tender-bids";
 
 beforeEach(() => vi.clearAllMocks());

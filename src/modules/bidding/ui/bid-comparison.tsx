@@ -5,6 +5,8 @@ import {
   formatTenderDate,
   formatTenderMoney,
 } from "../../tenders/ui/tender-format";
+import { TenderIcon } from "../../tenders/ui/tender-icon";
+import { VipBadge } from "../../vip/ui/vip-badge";
 import type { ClientBidView } from "../application/list-tender-bids";
 import type { BidStatus } from "../domain/bid";
 import { bidFormCopy } from "./bid-copy";
@@ -19,6 +21,8 @@ export type BidComparisonCopy = Readonly<{
   lowestPrice: string;
   choose: ChooseBidCopy;
   provider: string;
+  vipBadge: string;
+  vipNeutrality: string;
   amount: string;
   durationDays: string;
   includedCosts: string;
@@ -58,6 +62,8 @@ export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
       genericError: messages.errors.generic,
     },
     provider: messages.bidding.provider,
+    vipBadge: messages.vip.badgeLabel,
+    vipNeutrality: messages.vip.neutrality,
     amount: messages.bidding.amount,
     durationDays: messages.bidding.durationDays,
     includedCosts: messages.bidding.includedCosts,
@@ -75,8 +81,8 @@ export function bidComparisonCopy(messages: Messages): BidComparisonCopy {
   };
 }
 
-// The client compares the offers — listed from the lowest price — and chooses
-// the contractor. A choose control appears only while `selection.open` is
+// The client compares the offers — VIP providers first, then from the lowest
+// price — and chooses the contractor. A choose control appears only while `selection.open` is
 // true and only on offers that can still be chosen; the server re-checks both
 // under the tender lock. The "lowest price" tag is information, not a rule.
 //
@@ -113,6 +119,12 @@ export function BidComparison({
       {showSelectionRule ? (
         <p className="tender-action-hint">{copy.selectionRule}</p>
       ) : null}
+      {bids.some((bid) => bid.providerIsVip) ? (
+        <p className="tender-action-hint bid-vip-disclosure">
+          <TenderIcon name="info" size={14} />
+          <span>{copy.vipNeutrality}</span>
+        </p>
+      ) : null}
       {canChoose && selection?.chooseBy ? (
         <p className="tender-action-hint bid-choose-by" role="note">
           {copy.chooseBy.replace("{date}", selection.chooseBy)}
@@ -143,6 +155,12 @@ export function BidComparison({
                     <Link href={`/${locale}/profiles/${bid.providerId}`}>
                       {bid.providerDisplayName}
                     </Link>
+                    {bid.providerIsVip ? (
+                      <>
+                        {" "}
+                        <VipBadge label={copy.vipBadge} />
+                      </>
+                    ) : null}
                   </th>
                   <td data-label={copy.amount}>
                     {formatTenderMoney(

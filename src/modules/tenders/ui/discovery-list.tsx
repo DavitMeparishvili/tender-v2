@@ -3,6 +3,7 @@ import type { BidSummary } from "../../bidding/domain/bid-summary";
 import type { Locale } from "../../localization/config";
 import type { Messages } from "../../localization/get-messages";
 import { DeadlineCountdown } from "../../shell/ui/deadline-countdown";
+import { VipBadge } from "../../vip/ui/vip-badge";
 import { searchPublishedTenders } from "../application/search-published-tenders";
 import type { PublicTenderSummary } from "../domain/masking";
 import {
@@ -68,6 +69,9 @@ export function DiscoveryResultCard({
             <span className={specialtyTone(tender.specialty)}>
               {specialtyLabel(tender.specialty, messages)}
             </span>
+            {tender.ownerIsVip ? (
+              <VipBadge label={messages.vip.badgeLabel} />
+            ) : null}
             <DeadlineCountdown
               closedLabel={messages.discovery.closed}
               deadline={tender.deadline}

@@ -13,6 +13,7 @@ const bids: ClientBidView[] = [
     id: "bid-cheap",
     providerId: "provider-alpha",
     providerDisplayName: "Alpha Builders",
+    providerIsVip: false,
     amountMinorUnits: 40_000,
     currency: "GEL",
     status: "SUBMITTED",
@@ -29,6 +30,7 @@ const bids: ClientBidView[] = [
     id: "bid-expensive",
     providerId: "provider-beta",
     providerDisplayName: "Beta Repairs",
+    providerIsVip: false,
     amountMinorUnits: 90_000,
     currency: "GEL",
     status: "SUBMITTED",
@@ -155,5 +157,66 @@ describe("BidComparison", () => {
     );
 
     expect(markup).toContain(messages.bidding.statusWinner);
+  });
+
+  it("badges only the offers from VIP providers", () => {
+    const markup = renderToStaticMarkup(
+      <BidComparison
+        bids={[{ ...bids[0]!, providerIsVip: true }, bids[1]!]}
+        copy={bidComparisonCopy(messages)}
+        locale="en"
+      />,
+    );
+
+    expect(markup).toContain(`aria-label="${messages.vip.badgeLabel}"`);
+    expect(markup.split(messages.vip.badgeLabel)).toHaveLength(2);
+  });
+
+  it("shows the VIP disclosure when an offer is from a VIP provider", () => {
+    const markup = renderToStaticMarkup(
+      <BidComparison
+        bids={[{ ...bids[0]!, providerIsVip: true }, bids[1]!]}
+        copy={bidComparisonCopy(messages)}
+        locale="en"
+      />,
+    );
+
+    // The apostrophe in the copy is HTML-escaped in the markup, so match the
+    // first sentence, which has none.
+    expect(markup).toContain("Price ranking and the client");
+    expect(markup).toContain("never change.");
+  });
+
+  it("does not repeat the VIP-first sentence that the intro already states", () => {
+    const markup = renderToStaticMarkup(
+      <BidComparison
+        bids={[{ ...bids[0]!, providerIsVip: true }, bids[1]!]}
+        copy={bidComparisonCopy(messages)}
+        locale="en"
+      />,
+    );
+
+    // The intro (on by default) carries the VIP-first sentence once; the
+    // disclosure carries only the neutrality sentence, once.
+    expect(markup.split("VIP partners are listed first")).toHaveLength(2);
+    expect(markup.split("never change.")).toHaveLength(2);
+  });
+
+  it("omits the VIP disclosure when no offer is from a VIP provider", () => {
+    const markup = renderToStaticMarkup(
+      <BidComparison
+        bids={bids}
+        copy={bidComparisonCopy(messages)}
+        locale="en"
+      />,
+    );
+
+    expect(markup).not.toContain("never change.");
+  });
+
+  it("states the VIP-first order in the intro, not a price-only order", () => {
+    expect(messages.bidding.selectionRuleOwner).toContain(
+      "VIP partners are listed first",
+    );
   });
 });

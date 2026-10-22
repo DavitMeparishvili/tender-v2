@@ -10,18 +10,25 @@ import {
 } from "../../tenders/ui/tender-format";
 import { serviceLabel, specialtyLabel } from "../../tenders/ui/tender-taxonomy";
 import { specialtyIcon, specialtyTone } from "../../tenders/ui/tender-tone";
+import type { LoungeStrip } from "../../vip/domain/lounge-strip";
+import type { VipPartner } from "../../vip/domain/partner";
+import { VipBadge } from "../../vip/ui/vip-badge";
+import { VipLoungeStrip } from "../../vip/ui/vip-lounge-strip";
 import type {
   LandingReview,
   MarketplaceOverview,
 } from "../application/marketplace-overview";
 import { BrandIcon } from "./brand-icon";
+import { pickHeroTender } from "./hero-tender";
 import { DeadlineCountdown } from "./deadline-countdown";
+import { OverflowFade } from "./overflow-fade";
 
 export type LandingData = Readonly<{
   overview: MarketplaceOverview;
   tenders: readonly PublicTenderSummary[];
   summaries: ReadonlyMap<string, BidSummary>;
   reviews: readonly LandingReview[];
+  lounge: LoungeStrip<VipPartner>;
 }>;
 
 function Stars({ score }: Readonly<{ score: number }>) {
@@ -55,7 +62,8 @@ export function LandingPage({
   const at = (path: string) => `/${locale}${path}`;
   const copy = messages.landing;
   const featured = data.tenders.slice(0, 3);
-  const [preview] = data.tenders;
+  // The hero is neutral: newest published, not the VIP-first list head.
+  const preview = pickHeroTender(data.tenders);
   const previewSummary =
     preview === undefined ? undefined : data.summaries.get(preview.id);
 
@@ -87,7 +95,7 @@ export function LandingPage({
       {/* ---------------------------------------------------------- Hero */}
       <section className="band hero">
         <div className="band-inner">
-          <div>
+          <div className="hero-main">
             <p className="overline">{copy.overline}</p>
             <h1>{copy.title}</h1>
             <p className="hero-lead">{copy.lead}</p>
@@ -118,29 +126,37 @@ export function LandingPage({
               </select>
               <button type="submit">{copy.search}</button>
             </form>
-
-            <div className="hero-popular">
-              <span>{copy.popular}</span>
-              {popular.map((specialty) => (
-                <Link
-                  className="chip"
-                  href={`${at("/provider/tenders")}?specialty=${specialty}`}
-                  key={specialty}
-                >
-                  {specialtyLabel(specialty, messages)}
-                </Link>
-              ))}
-            </div>
-
-            <dl className="hero-stats">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <dd className="stat-value">{stat.value}</dd>
-                  <dt className="stat-label">{stat.label}</dt>
-                </div>
-              ))}
-            </dl>
           </div>
+
+          {/* Desktop: a full-width row below the stats. Mobile and tablet: directly under the search box. */}
+          <VipLoungeStrip
+            locale={locale}
+            lounge={data.lounge}
+            messages={messages}
+          />
+
+          <div className="hero-popular" id="hero-popular">
+            <span>{copy.popular}</span>
+            {popular.map((specialty) => (
+              <Link
+                className="chip"
+                href={`${at("/provider/tenders")}?specialty=${specialty}`}
+                key={specialty}
+              >
+                {specialtyLabel(specialty, messages)}
+              </Link>
+            ))}
+          </div>
+          <OverflowFade targetId="hero-popular" />
+
+          <dl className="hero-stats">
+            {stats.map((stat) => (
+              <div key={stat.label}>
+                <dd className="stat-value">{stat.value}</dd>
+                <dt className="stat-label">{stat.label}</dt>
+              </div>
+            ))}
+          </dl>
 
           {/* The preview is the newest real open tender, not a mock-up. */}
           <div className="hero-preview">
@@ -253,6 +269,9 @@ export function LandingPage({
                         <span className={specialtyTone(tender.specialty)}>
                           {specialtyLabel(tender.specialty, messages)}
                         </span>
+                        {tender.ownerIsVip ? (
+                          <VipBadge label={messages.vip.badgeLabel} />
+                        ) : null}
                         <DeadlineCountdown
                           closedLabel={messages.discovery.closed}
                           deadline={tender.deadline}

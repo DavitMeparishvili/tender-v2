@@ -1,7 +1,7 @@
 import type {
   PublishedTenderStatus,
   TenderCurrency,
-  TenderRecord,
+  TenderReadRecord,
   TenderServiceCode,
   TenderSpecialty,
 } from "./tender";
@@ -21,6 +21,9 @@ export type PublicTenderSummary = Readonly<{
   publicLongitude: number;
   publishedAt: string;
   deadline: string;
+  // Whether the owner holds an active VIP membership. Drives the badge and the
+  // VIP-first ordering only; it never changes the tender's terms.
+  ownerIsVip: boolean;
 }>;
 
 export type PublicTenderDetail = PublicTenderSummary &
@@ -36,7 +39,7 @@ export type PublicTenderDetail = PublicTenderSummary &
     reference?: string | null;
   }>;
 
-export function toPublicSummary(tender: TenderRecord): PublicTenderSummary {
+export function toPublicSummary(tender: TenderReadRecord): PublicTenderSummary {
   return {
     id: tender.id,
     title: tender.title,
@@ -52,10 +55,11 @@ export function toPublicSummary(tender: TenderRecord): PublicTenderSummary {
     publicLongitude: tender.location.public.longitude,
     publishedAt: tender.publishedAt.toISOString(),
     deadline: tender.deadline.toISOString(),
+    ownerIsVip: tender.ownerIsVip,
   };
 }
 
-export function toPublicDetail(tender: TenderRecord): PublicTenderDetail {
+export function toPublicDetail(tender: TenderReadRecord): PublicTenderDetail {
   return {
     ...toPublicSummary(tender),
     fullDescription: tender.fullDescription,
@@ -82,7 +86,7 @@ export type FullTenderDetail = PublicTenderDetail &
     conditions: string | null;
   }>;
 
-export function toFullDetail(tender: TenderRecord): FullTenderDetail {
+export function toFullDetail(tender: TenderReadRecord): FullTenderDetail {
   return {
     ...toPublicDetail(tender),
     addressLine: tender.location.addressLine,

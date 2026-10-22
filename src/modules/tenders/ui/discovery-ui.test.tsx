@@ -32,6 +32,7 @@ const publicTender: PublicTenderDetail = {
   publicLongitude: 44.8,
   publishedAt: "2026-08-15T12:00:00.000Z",
   deadline: "2026-08-31T12:00:00.000Z",
+  ownerIsVip: false,
   fullDescription:
     "Protect the floors, prepare the walls, and apply two coats.",
   scopeOfWork: "Two bedrooms with minor wall repairs.",

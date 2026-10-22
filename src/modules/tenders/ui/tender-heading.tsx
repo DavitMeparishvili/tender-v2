@@ -6,6 +6,7 @@ import { TenderIcon, type TenderIconName } from "./tender-icon";
 import { tenderPageCopy } from "./tender-page-copy";
 import { georgianDateLabel } from "./georgian-calendar-labels";
 import { formatGeorgiaDateTimeLocal } from "./georgia-date-time";
+import { VipBadge } from "../../vip/ui/vip-badge";
 import { formatTenderMoney } from "./tender-format";
 export function tenderDate(
   value: Date | string | null,
@@ -82,6 +83,7 @@ export function TenderHeading({
   service,
   status,
   owner = false,
+  ownerIsVip = false,
   city,
   budget,
   currency,
@@ -99,6 +101,7 @@ export function TenderHeading({
   service: string;
   status: string;
   owner?: boolean;
+  ownerIsVip?: boolean;
   city: string;
   budget: number | null;
   currency: TenderCurrency | null;
@@ -122,6 +125,7 @@ export function TenderHeading({
             {owner ? (
               <span className="tender-badge neutral">{c.yourTender}</span>
             ) : null}
+            {ownerIsVip ? <VipBadge label={messages.vip.badgeLabel} /> : null}
           </div>
           <h1>{title}</h1>
           <p className="tender-heading-location">

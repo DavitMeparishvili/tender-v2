@@ -50,6 +50,7 @@ export function DiscoveryDetailContent({
         id={tender.id}
         locale={locale}
         messages={messages}
+        ownerIsVip={tender.ownerIsVip}
       />
       <div className="tender-detail-grid public-detail">
         <TenderSectionNav locale={locale} />

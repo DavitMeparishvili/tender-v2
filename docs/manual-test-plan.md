@@ -215,8 +215,8 @@ Log out and log back in as `demo.provider@tender.test` for this section.
 - Submitting a bid without the required conditions note (or with only a few
   characters in it) should be blocked with a message asking for more detail.
 - A valid bid should submit successfully, and you should see a note explaining
-  that the client compares the offers and chooses the contractor (offers are
-  listed from the lowest price).
+  that the client compares the offers and chooses the contractor (VIP partners
+  are listed first, then offers from the lowest price).
 - Revising your bid should succeed and update the amount shown.
 - Withdrawing your bid should succeed, and afterward you should not be able to
   place a new bid on that same job again — the bidding option for that job should
