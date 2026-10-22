@@ -195,13 +195,24 @@ export async function TenderList({
             <h1>{messages.tenders.clientListTitle}</h1>
             <p>{c.listHint}</p>
           </div>
-          <Link
-            className="tender-button primary"
-            href={`/${locale}/client/tenders/new`}
-          >
-            <TenderIcon name="plus" />
-            {messages.tenders.newTender}
-          </Link>
+          {/* On phones the bottom "Tenders" tab lands here for clients, so this
+              is their way back to the public listing everyone else browses. */}
+          <div className="owned-list-actions">
+            <Link
+              className="tender-button"
+              href={`/${locale}/provider/tenders`}
+            >
+              <TenderIcon name="search" />
+              {c.browseAll}
+            </Link>
+            <Link
+              className="tender-button primary"
+              href={`/${locale}/client/tenders/new`}
+            >
+              <TenderIcon name="plus" />
+              {messages.tenders.newTender}
+            </Link>
+          </div>
         </header>
         <nav className="owned-status-tabs" aria-label={c.status}>
           {filters.map(([status, label]) => {

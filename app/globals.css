@@ -7268,9 +7268,6 @@ select:is(
 .owned-list-heading > div {
   min-inline-size: 0;
 }
-.owned-list-heading > .tender-button {
-  flex-shrink: 0;
-}
 .owned-status-tabs {
   flex-wrap: wrap;
   overflow-x: visible;
