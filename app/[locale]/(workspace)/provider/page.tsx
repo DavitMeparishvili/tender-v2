@@ -7,6 +7,7 @@ import {
 } from "@/src/modules/identity/ui/workspace-view";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 export default async function ProviderWorkspacePage({
   params,
@@ -20,19 +21,25 @@ export default async function ProviderWorkspacePage({
       redirect("/" + locale + "/login");
     }
     return (
-      <WorkspaceDenied
-        error={access.error}
-        locale={locale}
-        messages={messages}
-      />
+      <>
+        <WorkspaceDenied
+          error={access.error}
+          locale={locale}
+          messages={messages}
+        />
+        <HomeAiChat locale={locale} />
+      </>
     );
   }
   return (
-    <WorkspaceView
-      active="PROVIDER"
-      locale={locale}
-      messages={messages}
-      user={access.value}
-    />
+    <>
+      <WorkspaceView
+        active="PROVIDER"
+        locale={locale}
+        messages={messages}
+        user={access.value}
+      />
+      <HomeAiChat locale={locale} />
+    </>
   );
 }

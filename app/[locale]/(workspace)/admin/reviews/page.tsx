@@ -7,6 +7,7 @@ import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { listReviewsForModeration } from "@/src/modules/reviews/application/list-reviews-for-moderation";
 import { ReviewModerationList } from "@/src/modules/reviews/ui/review-moderation-list";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 export default async function AdminReviewsPage({
   params,
@@ -18,19 +19,25 @@ export default async function AdminReviewsPage({
   if (!access.ok) {
     if (access.error === "UNAUTHENTICATED") redirect(`/${locale}/login`);
     return (
-      <WorkspaceDenied
-        error={access.error}
-        locale={locale}
-        messages={messages}
-      />
+      <>
+        <WorkspaceDenied
+          error={access.error}
+          locale={locale}
+          messages={messages}
+        />
+        <HomeAiChat locale={locale} />
+      </>
     );
   }
   return (
-    <IdentityShell title={messages.moderation.title} width="wide">
-      <ReviewModerationList
-        reviews={await listReviewsForModeration()}
-        copy={messages.moderation}
-      />
-    </IdentityShell>
+    <>
+      <IdentityShell title={messages.moderation.title} width="wide">
+        <ReviewModerationList
+          reviews={await listReviewsForModeration()}
+          copy={messages.moderation}
+        />
+      </IdentityShell>
+      <HomeAiChat locale={locale} />
+    </>
   );
 }

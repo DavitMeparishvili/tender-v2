@@ -11,6 +11,7 @@ import {
   type PartnersSearchParam,
 } from "@/src/modules/vip/domain/partners-page";
 import { VipPartnersPage } from "@/src/modules/vip/ui/vip-partners-page";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 // This page reads the live marketplace database. It must be rendered when a
 // request arrives, not while the Docker image is being built.
@@ -44,13 +45,16 @@ export default async function PartnersPage({
   const contactEmail = vipContactEmail(getServerEnv().VIP_CONTACT_EMAIL);
 
   return (
-    <VipPartnersPage
-      contactHref={`mailto:${contactEmail}`}
-      locale={locale}
-      messages={messages}
-      options={categoryOptions(counts, specialty)}
-      partners={partners}
-      selected={specialty}
-    />
+    <>
+      <VipPartnersPage
+        contactHref={`mailto:${contactEmail}`}
+        locale={locale}
+        messages={messages}
+        options={categoryOptions(counts, specialty)}
+        partners={partners}
+        selected={specialty}
+      />
+      <HomeAiChat locale={locale} />
+    </>
   );
 }

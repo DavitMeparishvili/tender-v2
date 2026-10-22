@@ -7,6 +7,7 @@ import {
 import { IdentityShell } from "@/src/modules/identity/ui/identity-shell";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 function first(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
@@ -50,28 +51,34 @@ export default async function ResetPasswordPage({
               body: messages.auth.invalidLinkBody,
             };
     return (
-      <IdentityShell title={messages.auth.resetTitle}>
-        <AuthState
-          state={state}
-          title={copy.title}
-          body={copy.body}
-          action={{
-            href: "/" + locale + "/forgot-password",
-            label: messages.auth.sendResetLink,
-          }}
-        />
-      </IdentityShell>
+      <>
+        <IdentityShell title={messages.auth.resetTitle}>
+          <AuthState
+            state={state}
+            title={copy.title}
+            body={copy.body}
+            action={{
+              href: "/" + locale + "/forgot-password",
+              label: messages.auth.sendResetLink,
+            }}
+          />
+        </IdentityShell>
+        <HomeAiChat locale={locale} />
+      </>
     );
   }
 
   if (token === undefined) notFound();
 
   return (
-    <IdentityShell
-      title={messages.auth.resetTitle}
-      subtitle={messages.auth.resetSubtitle}
-    >
-      <ResetPasswordForm locale={locale} messages={messages} token={token} />
-    </IdentityShell>
+    <>
+      <IdentityShell
+        title={messages.auth.resetTitle}
+        subtitle={messages.auth.resetSubtitle}
+      >
+        <ResetPasswordForm locale={locale} messages={messages} token={token} />
+      </IdentityShell>
+      <HomeAiChat locale={locale} />
+    </>
   );
 }

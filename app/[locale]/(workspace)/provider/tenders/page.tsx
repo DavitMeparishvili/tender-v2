@@ -28,6 +28,7 @@ import {
   serviceLabel,
   specialtyLabel,
 } from "@/src/modules/tenders/ui/tender-taxonomy";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 function filterCopyFor(messages: Messages): DiscoveryFilterCopy {
   return {
@@ -221,6 +222,7 @@ export default async function ProviderTenderListPage({
           </div>
         </div>
       </div>
+      <HomeAiChat locale={locale} />
     </>
   );
 }

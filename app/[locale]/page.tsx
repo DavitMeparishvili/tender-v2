@@ -7,10 +7,10 @@ import {
   listRecentPublishedReviews,
 } from "@/src/modules/shell/application/marketplace-overview";
 import { pickHeroTender } from "@/src/modules/shell/ui/hero-tender";
+import { homeAiContext } from "@/src/modules/shell/ui/home-ai-chat";
 import { LandingPage } from "@/src/modules/shell/ui/landing-page";
 import { searchPublishedTenders } from "@/src/modules/tenders/application/search-published-tenders";
 import { TenderAiChat } from "@/src/modules/tenders/ui/tender-ai-chat";
-import { formatTenderMoney } from "@/src/modules/tenders/ui/tender-format";
 import { loadLoungeStrip } from "@/src/modules/vip/application/load-lounge-strip";
 
 // This page reads the live marketplace database. It must be rendered when a
@@ -55,12 +55,6 @@ export default async function LocaleHome({
     })),
   );
 
-  // Tender AI gets plain facts only: the newest open tenders and the VIP
-  // partners the lounge strip already loaded.
-  const newest = [...tenders]
-    .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
-    .slice(0, 3);
-
   return (
     <>
       <LandingPage
@@ -70,28 +64,7 @@ export default async function LocaleHome({
       />
       <TenderAiChat
         copy={messages.detail.ai}
-        context={{
-          kind: "home",
-          tenders: newest.map((tender) => ({
-            title: tender.title,
-            budget: formatTenderMoney(
-              tender.budgetMinorUnits,
-              tender.currency,
-              locale,
-            ),
-            href: `/${locale}/provider/tenders/${tender.id}`,
-          })),
-          partners: lounge.partners.slice(0, 3).map((partner) => ({
-            name: partner.name,
-            specialty: partner.serviceLabel,
-            href: `/${locale}/profiles/${partner.userId}`,
-          })),
-          links: {
-            tenders: `/${locale}/provider/tenders`,
-            partners: `/${locale}/partners`,
-            post: `/${locale}/client/tenders/new`,
-          },
-        }}
+        context={homeAiContext({ tenders, partners: lounge.partners }, locale)}
       />
     </>
   );

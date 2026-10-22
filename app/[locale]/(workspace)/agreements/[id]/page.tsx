@@ -9,6 +9,7 @@ import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { getProviderDisplayNames } from "@/src/modules/profiles/application/get-provider-display-names";
 import { getAgreementReview } from "@/src/modules/reviews/application/get-agreement-review";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 export default async function AgreementPage({
   params,
@@ -23,11 +24,14 @@ export default async function AgreementPage({
   if (!access.ok) {
     if (access.error === "UNAUTHENTICATED") redirect(`/${locale}/login`);
     return (
-      <WorkspaceDenied
-        error={access.error}
-        locale={locale}
-        messages={messages}
-      />
+      <>
+        <WorkspaceDenied
+          error={access.error}
+          locale={locale}
+          messages={messages}
+        />
+        <HomeAiChat locale={locale} />
+      </>
     );
   }
   const agreement = await getAgreement(id, access.value);
@@ -42,14 +46,17 @@ export default async function AgreementPage({
     ]),
   ]);
   return (
-    <IdentityShell title={messages.agreements.detailTitle} width="form">
-      <AgreementDetail
-        agreement={agreement.value}
-        hasPublishedReview={existingReview !== null}
-        locale={locale}
-        messages={messages}
-        partyNames={partyNames}
-      />
-    </IdentityShell>
+    <>
+      <IdentityShell title={messages.agreements.detailTitle} width="form">
+        <AgreementDetail
+          agreement={agreement.value}
+          hasPublishedReview={existingReview !== null}
+          locale={locale}
+          messages={messages}
+          partyNames={partyNames}
+        />
+      </IdentityShell>
+      <HomeAiChat locale={locale} />
+    </>
   );
 }

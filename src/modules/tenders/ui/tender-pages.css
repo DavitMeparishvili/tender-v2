@@ -879,6 +879,18 @@
   min-height: 52px;
   padding-inline: 24px;
 }
+.owned-list-heading .owned-list-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  min-inline-size: min-content;
+}
+/* When the pair wraps (just above the mobile breakpoint) each button fills
+   its row, so the stack reads as two equal-width buttons, not ragged ones. */
+.owned-list-actions > .tender-button {
+  flex: 1 1 auto;
+}
 .owned-status-tabs {
   display: flex;
   gap: 12px;
@@ -1405,6 +1417,8 @@
   }
   .owned-list-heading {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
     gap: 22px;
     margin-bottom: 22px;
   }
@@ -1419,6 +1433,13 @@
     font: var(--type-control);
     width: 100%;
     min-height: 48px;
+  }
+  .owned-list-heading .owned-list-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+    gap: 10px;
+    min-inline-size: 0;
   }
   .tender-list-page .tender-container {
     display: flex;

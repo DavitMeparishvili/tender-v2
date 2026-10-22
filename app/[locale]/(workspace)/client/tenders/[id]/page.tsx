@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getAgreementForTender } from "@/src/modules/agreements/application/get-agreement";
+import { getBidSummary } from "@/src/modules/bidding/application/get-bid-summary";
 import { listTenderBids } from "@/src/modules/bidding/application/list-tender-bids";
 import {
   displayedSelectionEnd,
@@ -13,12 +14,17 @@ import {
   bidComparisonCopy,
 } from "@/src/modules/bidding/ui/bid-comparison";
 import { requireCapability } from "@/src/modules/identity/application/require-capability";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 import { WorkspaceDenied } from "@/src/modules/identity/ui/workspace-view";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { getOwnedTender } from "@/src/modules/tenders/application/get-owned-tender";
+import { TenderAiChat } from "@/src/modules/tenders/ui/tender-ai-chat";
 import { TenderDetail } from "@/src/modules/tenders/ui/tender-detail";
-import { formatTenderDate } from "@/src/modules/tenders/ui/tender-format";
+import {
+  formatTenderDate,
+  formatTenderMoney,
+} from "@/src/modules/tenders/ui/tender-format";
 import { resolveCustomerRouteAccess } from "@/src/modules/tenders/ui/customer-route-access";
 
 export default async function ClientTenderDetailPage({
@@ -37,11 +43,14 @@ export default async function ClientTenderDetailPage({
   }
   if (routeAccess.kind === "DENIED") {
     return (
-      <WorkspaceDenied
-        error={routeAccess.error}
-        locale={locale}
-        messages={messages}
-      />
+      <>
+        <WorkspaceDenied
+          error={routeAccess.error}
+          locale={locale}
+          messages={messages}
+        />
+        <HomeAiChat locale={locale} />
+      </>
     );
   }
 
@@ -50,11 +59,13 @@ export default async function ClientTenderDetailPage({
 
   // No offers can exist against a DRAFT tender, so the comparison slot is
   // only ever built once the tender has been published.
-  const [bidsResult, agreement] = await Promise.all([
+  const [bidsResult, agreement, summary] = await Promise.all([
     owned.value.status === "DRAFT"
       ? Promise.resolve(null)
       : listTenderBids(id, routeAccess.actor),
     getAgreementForTender(id, routeAccess.actor),
+    // Tender AI quotes the same count and lowest offer competitors see.
+    owned.value.status === "DRAFT" ? Promise.resolve(null) : getBidSummary(id),
   ]);
   const bids = bidsResult?.ok ? bidsResult.value : [];
 
@@ -134,15 +145,37 @@ export default async function ClientTenderDetailPage({
   const hasActiveBids = bids.some((bid) => bid.status !== "WITHDRAWN");
 
   return (
-    <TenderDetail
-      actor={routeAccess.actor}
-      hasBids={hasActiveBids}
-      offerCount={bids.length}
-      id={id}
-      locale={locale}
-      messages={messages}
-      tender={owned.value}
-      {...(comparison === undefined ? {} : { comparison })}
-    />
+    <>
+      <TenderDetail
+        actor={routeAccess.actor}
+        hasBids={hasActiveBids}
+        offerCount={bids.length}
+        id={id}
+        locale={locale}
+        messages={messages}
+        tender={owned.value}
+        {...(comparison === undefined ? {} : { comparison })}
+      />
+      <TenderAiChat
+        copy={messages.detail.ai}
+        context={{
+          kind: "tender",
+          title: owned.value.title,
+          budget: formatTenderMoney(
+            owned.value.budgetMinorUnits,
+            owned.value.currency,
+            locale,
+          ),
+          offerCount: summary?.ok ? summary.value.bidCount : null,
+          lowestOffer: summary?.ok
+            ? formatTenderMoney(
+                summary.value.lowestAmountMinorUnits,
+                summary.value.currency,
+                locale,
+              )
+            : null,
+        }}
+      />
+    </>
   );
 }

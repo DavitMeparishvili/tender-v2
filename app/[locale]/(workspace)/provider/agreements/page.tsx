@@ -11,6 +11,7 @@ import { WorkspaceDenied } from "@/src/modules/identity/ui/workspace-view";
 import { isLocale } from "@/src/modules/localization/config";
 import { getMessages } from "@/src/modules/localization/get-messages";
 import { getProviderDisplayNames } from "@/src/modules/profiles/application/get-provider-display-names";
+import { HomeAiChat } from "@/src/modules/shell/ui/home-ai-chat";
 
 export default async function Page({
   params,
@@ -22,11 +23,14 @@ export default async function Page({
   if (!access.ok) {
     if (access.error === "UNAUTHENTICATED") redirect(`/${locale}/login`);
     return (
-      <WorkspaceDenied
-        error={access.error}
-        locale={locale}
-        messages={messages}
-      />
+      <>
+        <WorkspaceDenied
+          error={access.error}
+          locale={locale}
+          messages={messages}
+        />
+        <HomeAiChat locale={locale} />
+      </>
     );
   }
   const agreements = await listAgreements(access.value, "PROVIDER");
@@ -34,13 +38,16 @@ export default async function Page({
     ...new Set(agreements.map(counterpartyOf)),
   ]);
   return (
-    <IdentityShell title={messages.agreements.title} width="wide">
-      <AgreementList
-        agreements={agreements}
-        locale={locale}
-        messages={messages}
-        partyNames={partyNames}
-      />
-    </IdentityShell>
+    <>
+      <IdentityShell title={messages.agreements.title} width="wide">
+        <AgreementList
+          agreements={agreements}
+          locale={locale}
+          messages={messages}
+          partyNames={partyNames}
+        />
+      </IdentityShell>
+      <HomeAiChat locale={locale} />
+    </>
   );
 }
