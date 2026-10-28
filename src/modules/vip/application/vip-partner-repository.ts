@@ -15,6 +15,8 @@ export type VipPartnerCandidate = Readonly<{
   serviceLabel: unknown;
   description: unknown;
   logoPath: string | null;
+  // Pinned partners lead the Lounge, lowest rank first; null rotates daily.
+  pinnedRank: number | null;
 }>;
 
 export interface VipPartnerRepository {
