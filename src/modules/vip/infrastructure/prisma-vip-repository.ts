@@ -28,6 +28,7 @@ export class PrismaVipRepository
         logoPath: true,
         serviceLabel: true,
         description: true,
+        pinnedRank: true,
         user: {
           select: {
             id: true,
@@ -67,6 +68,7 @@ export class PrismaVipRepository
           serviceLabel: row.serviceLabel,
           description: row.description,
           logoPath: row.logoPath,
+          pinnedRank: row.pinnedRank,
         },
       ];
     });

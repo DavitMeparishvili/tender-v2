@@ -3,7 +3,7 @@ import {
   type ReviewScores,
 } from "../../reviews/domain/review";
 import { pickLocalizedText, type LoungeLocale } from "../domain/localized-text";
-import { dailyRotation, tbilisiDateKey } from "../domain/lounge-rotation";
+import { loungeOrder, tbilisiDateKey } from "../domain/lounge-rotation";
 import type { VipPartner, VipSpecialty } from "../domain/partner";
 import {
   loadEligiblePartnerCandidates,
@@ -30,9 +30,9 @@ export function createListVipPartners(
   ): Promise<readonly VipPartner[]> {
     const { repository } = dependencies;
     const eligible = await loadEligiblePartnerCandidates(repository);
-    // Rotation happens before the category filter, so a category keeps the
+    // Ordering happens before the category filter, so a category keeps the
     // same relative order that the full Lounge has on that day.
-    const rotated = dailyRotation(eligible, tbilisiDateKey(query.now)).filter(
+    const rotated = loungeOrder(eligible, tbilisiDateKey(query.now)).filter(
       (candidate) =>
         query.specialty === undefined ||
         candidate.specialty === query.specialty,

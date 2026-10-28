@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dailyRotation, tbilisiDateKey } from "./lounge-rotation";
+import { dailyRotation, loungeOrder, tbilisiDateKey } from "./lounge-rotation";
 
 const partners = [
   "kartli-build",
@@ -72,5 +72,55 @@ describe("dailyRotation", () => {
 
   it("handles an empty list", () => {
     expect(dailyRotation([], "2026-10-22")).toEqual([]);
+  });
+});
+
+describe("loungeOrder", () => {
+  const ranked = (ranks: Readonly<Record<string, number>>) =>
+    partners.map((partner) => ({
+      ...partner,
+      pinnedRank: ranks[partner.userId] ?? null,
+    }));
+
+  it("puts pinned partners first, by rank, then the daily rotation", () => {
+    const items = ranked({
+      "saguramo-stone": 1,
+      "aragvi-electric": 2,
+      geolift: 3,
+    });
+    const rest = dailyRotation(
+      items.filter((item) => item.pinnedRank === null),
+      "2026-10-22",
+    );
+    expect(orderOf(loungeOrder(items, "2026-10-22"))).toEqual([
+      "saguramo-stone",
+      "aragvi-electric",
+      "geolift",
+      ...orderOf(rest),
+    ]);
+  });
+
+  it("keeps the pinned order on every day", () => {
+    const items = ranked({ "iveria-roofing": 1, "kartli-build": 2 });
+    for (const day of ["2026-10-22", "2026-10-23", "2026-10-24"]) {
+      expect(orderOf(loungeOrder(items, day)).slice(0, 2)).toEqual([
+        "iveria-roofing",
+        "kartli-build",
+      ]);
+    }
+  });
+
+  it("breaks equal ranks by userId", () => {
+    const items = ranked({ "rioni-concrete": 1, geolift: 1 });
+    expect(orderOf(loungeOrder(items, "2026-10-22")).slice(0, 2)).toEqual([
+      "geolift",
+      "rioni-concrete",
+    ]);
+  });
+
+  it("is the daily rotation when nobody is pinned", () => {
+    expect(orderOf(loungeOrder(ranked({}), "2026-10-22"))).toEqual(
+      orderOf(dailyRotation(partners, "2026-10-22")),
+    );
   });
 });

@@ -31,6 +31,7 @@ function candidate(
     serviceLabel: { en: "General contractor", ka: "გენერალური" },
     description: { en: "Builds on time." },
     logoPath: `/vip/logos/${userId}_icon.svg`,
+    pinnedRank: null,
     ...overrides,
   };
 }
@@ -124,6 +125,24 @@ describe("listVipPartners", () => {
       "a",
       "c",
     ]);
+  });
+
+  it("lists pinned partners first, by rank, in every category", async () => {
+    const repository = fakeRepository([
+      candidate("a"),
+      candidate("b", { pinnedRank: 2 }),
+      candidate("c"),
+      candidate("d", { pinnedRank: 1, specialties: ["TRANSPORT"] }),
+      candidate("e", { specialties: ["TRANSPORT"] }),
+    ]);
+    const list = createListVipPartners({ repository });
+    const all = await list({ locale: "en", now });
+    expect(all.map((partner) => partner.userId).slice(0, 2)).toEqual([
+      "d",
+      "b",
+    ]);
+    const transport = await list({ locale: "en", now, specialty: "TRANSPORT" });
+    expect(transport.map((partner) => partner.userId)).toEqual(["d", "e"]);
   });
 });
 

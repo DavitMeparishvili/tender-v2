@@ -59,3 +59,24 @@ export function dailyRotation<T extends Readonly<{ userId: string }>>(
   }
   return ordered;
 }
+
+/**
+ * The Lounge order: partners with a pinned rank come first, lowest rank first
+ * (ties by userId), and every other partner follows in the daily rotation.
+ */
+export function loungeOrder<
+  T extends Readonly<{ userId: string; pinnedRank: number | null }>,
+>(items: readonly T[], dateKey: string): T[] {
+  const pinned = items
+    .filter((item) => item.pinnedRank !== null)
+    .sort(
+      (left, right) =>
+        (left.pinnedRank ?? 0) - (right.pinnedRank ?? 0) ||
+        (left.userId < right.userId ? -1 : left.userId > right.userId ? 1 : 0),
+    );
+  const rotated = dailyRotation(
+    items.filter((item) => item.pinnedRank === null),
+    dateKey,
+  );
+  return [...pinned, ...rotated];
+}
