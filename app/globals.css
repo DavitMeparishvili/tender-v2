@@ -6628,6 +6628,7 @@ img {
   .profile-identity
     > :is(
       .profile-descriptor,
+      .vip-disclosure,
       .profile-meta,
       .profile-contacts,
       .profile-contacts-hidden
